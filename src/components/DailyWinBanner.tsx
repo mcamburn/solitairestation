@@ -4,6 +4,7 @@ import { getWinRate, formatStatTime } from "@/lib/stats";
 import { WinCelebration } from "./WinCelebration";
 import { useDailyChallenge } from "@/contexts/DailyChallengeContext";
 import { getTodayKey } from "@/lib/daily";
+import { SITE_URL } from "@/lib/site";
 
 interface DailyWinBannerProps {
   message?: string;
@@ -93,12 +94,13 @@ export function DailyWinBanner({ message, onNew, variant = "win", stats }: Daily
       ? "1st daily complete!"
       : `${justWonDailyStreak}-day streak 🔥`;
 
+  const siteHost = SITE_URL.replace(/^https?:\/\/(www\.)?/, "");
   const shareText = [
-    `🃏 Neon Solitaire – Daily Challenge`,
+    `🃏 Solitaire Station – Daily Challenge`,
     `📅 ${dateLabel}`,
     `🔥 ${streakLabel}`,
     ``,
-    `Play free at neon-solitaire.replit.app`,
+    `16 free card games at ${siteHost}`,
   ].join("\n");
 
   const handleCopy = () => {
