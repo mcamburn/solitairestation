@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { TriPeaks } from "@/components/TriPeaks";
 import { GamePageLayout } from "@/components/GamePageLayout";
+import { SITE_URL } from "@/lib/site";
 
 export const Route = createFileRoute("/tripeaks")({
   head: () => ({
@@ -13,18 +14,18 @@ export const Route = createFileRoute("/tripeaks")({
       { property: "og:title", content: "Free TriPeaks Solitaire — Solitaire Station" },
       { property: "og:description", content: "Play free TriPeaks solitaire at Solitaire Station — clear three peaks by chaining cards one rank apart. Build streaks for bonus points. No download or sign-up." },
       { property: "og:type", content: "website" },
-      { property: "og:url", content: "https://www.free-klondike-solitaire.com/tripeaks" },
-      { property: "og:image", content: "https://www.free-klondike-solitaire.com/og/tripeaks.png" },
+      { property: "og:url", content: `${SITE_URL}/tripeaks` },
+      { property: "og:image", content: `${SITE_URL}/og/tripeaks.png` },
       { property: "og:image:width", content: "1200" },
       { property: "og:image:height", content: "630" },
       { property: "og:image:alt", content: "Free TriPeaks Solitaire — Solitaire Station" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "Free TriPeaks Solitaire — Solitaire Station" },
       { name: "twitter:description", content: "Play free TriPeaks solitaire at Solitaire Station — chain cards one rank apart to clear three peaks. No download or sign-up." },
-      { name: "twitter:image", content: "https://www.free-klondike-solitaire.com/og/tripeaks.png" },
+      { name: "twitter:image", content: `${SITE_URL}/og/tripeaks.png` },
     ],
     links: [
-      { rel: "canonical", href: "https://www.free-klondike-solitaire.com/tripeaks" },
+      { rel: "canonical", href: `${SITE_URL}/tripeaks` },
       { rel: "icon", type: "image/svg+xml", href: "/favicon.svg" },
       { rel: "icon", type: "image/png", sizes: "32x32", href: "/favicon-32x32.png" },
     ],
@@ -36,14 +37,14 @@ const TRIPEAKS_LD = JSON.stringify({
   "@context": "https://schema.org",
   "@type": "WebApplication",
   "name": "Free TriPeaks Solitaire — Solitaire Station",
-  "url": "https://www.free-klondike-solitaire.com/tripeaks",
+  "url": `${SITE_URL}/tripeaks`,
   "description": "Play free TriPeaks solitaire at Solitaire Station — chain cards one rank apart to clear three peaks. Hints, undo, and auto-save. No download, no sign-up.",
   "applicationCategory": "GameApplication",
   "operatingSystem": "Any",
   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
   "genre": ["Card Game", "Solitaire"],
   "inLanguage": "en-US",
-  "publisher": { "@type": "Organization", "name": "Solitaire Station", "url": "https://www.free-klondike-solitaire.com/" },
+  "publisher": { "@type": "Organization", "name": "Solitaire Station", "url": `${SITE_URL}/` },
 });
 
 function TriPeaksPage() {

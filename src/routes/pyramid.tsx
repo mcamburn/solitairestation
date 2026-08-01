@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Pyramid } from "@/components/Pyramid";
 import { GamePageLayout } from "@/components/GamePageLayout";
+import { SITE_URL } from "@/lib/site";
 
 export const Route = createFileRoute("/pyramid")({
   head: () => ({
@@ -13,18 +14,18 @@ export const Route = createFileRoute("/pyramid")({
       { property: "og:title", content: "Free Pyramid Solitaire — Solitaire Station" },
       { property: "og:description", content: "Play free Pyramid solitaire at Solitaire Station — pair cards that sum to 13 to clear all 28 cards. Kings remove alone. Hints and auto-save." },
       { property: "og:type", content: "website" },
-      { property: "og:url", content: "https://www.free-klondike-solitaire.com/pyramid" },
-      { property: "og:image", content: "https://www.free-klondike-solitaire.com/og/pyramid.png" },
+      { property: "og:url", content: `${SITE_URL}/pyramid` },
+      { property: "og:image", content: `${SITE_URL}/og/pyramid.png` },
       { property: "og:image:width", content: "1200" },
       { property: "og:image:height", content: "630" },
       { property: "og:image:alt", content: "Free Pyramid Solitaire — Solitaire Station" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "Free Pyramid Solitaire — Solitaire Station" },
       { name: "twitter:description", content: "Play free Pyramid solitaire at Solitaire Station — pair cards that sum to 13 to clear the pyramid. No download or sign-up." },
-      { name: "twitter:image", content: "https://www.free-klondike-solitaire.com/og/pyramid.png" },
+      { name: "twitter:image", content: `${SITE_URL}/og/pyramid.png` },
     ],
     links: [
-      { rel: "canonical", href: "https://www.free-klondike-solitaire.com/pyramid" },
+      { rel: "canonical", href: `${SITE_URL}/pyramid` },
       { rel: "icon", type: "image/svg+xml", href: "/favicon.svg" },
       { rel: "icon", type: "image/png", sizes: "32x32", href: "/favicon-32x32.png" },
     ],
@@ -36,14 +37,14 @@ const PYRAMID_LD = JSON.stringify({
   "@context": "https://schema.org",
   "@type": "WebApplication",
   "name": "Free Pyramid Solitaire — Solitaire Station",
-  "url": "https://www.free-klondike-solitaire.com/pyramid",
+  "url": `${SITE_URL}/pyramid`,
   "description": "Play free Pyramid solitaire at Solitaire Station — pair cards that add to 13. Hints, undo, and auto-save. No download, no sign-up.",
   "applicationCategory": "GameApplication",
   "operatingSystem": "Any",
   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
   "genre": ["Card Game", "Solitaire"],
   "inLanguage": "en-US",
-  "publisher": { "@type": "Organization", "name": "Solitaire Station", "url": "https://www.free-klondike-solitaire.com/" },
+  "publisher": { "@type": "Organization", "name": "Solitaire Station", "url": `${SITE_URL}/` },
 });
 
 function PyramidPage() {

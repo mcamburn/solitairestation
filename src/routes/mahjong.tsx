@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Mahjong } from "@/components/Mahjong";
 import { GamePageLayout } from "@/components/GamePageLayout";
+import { SITE_URL } from "@/lib/site";
 
 export const Route = createFileRoute("/mahjong")({
   head: () => ({
@@ -13,18 +14,18 @@ export const Route = createFileRoute("/mahjong")({
       { property: "og:title", content: "Free Mahjong Solitaire — Solitaire Station" },
       { property: "og:description", content: "Play free Mahjong solitaire at Solitaire Station — match identical free tiles to clear all 144 from the board. Hints and auto-save. No download or sign-up." },
       { property: "og:type", content: "website" },
-      { property: "og:url", content: "https://www.free-klondike-solitaire.com/mahjong" },
-      { property: "og:image", content: "https://www.free-klondike-solitaire.com/og/mahjong.png" },
+      { property: "og:url", content: `${SITE_URL}/mahjong` },
+      { property: "og:image", content: `${SITE_URL}/og/mahjong.png` },
       { property: "og:image:width", content: "1200" },
       { property: "og:image:height", content: "630" },
       { property: "og:image:alt", content: "Free Mahjong Solitaire — Solitaire Station" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "Free Mahjong Solitaire — Solitaire Station" },
       { name: "twitter:description", content: "Play free Mahjong solitaire at Solitaire Station — match identical free tiles to clear all 144. No download or sign-up." },
-      { name: "twitter:image", content: "https://www.free-klondike-solitaire.com/og/mahjong.png" },
+      { name: "twitter:image", content: `${SITE_URL}/og/mahjong.png` },
     ],
     links: [
-      { rel: "canonical", href: "https://www.free-klondike-solitaire.com/mahjong" },
+      { rel: "canonical", href: `${SITE_URL}/mahjong` },
       { rel: "icon", type: "image/svg+xml", href: "/favicon.svg" },
       { rel: "icon", type: "image/png", sizes: "32x32", href: "/favicon-32x32.png" },
     ],
@@ -36,14 +37,14 @@ const MAHJONG_LD = JSON.stringify({
   "@context": "https://schema.org",
   "@type": "WebApplication",
   "name": "Free Mahjong Solitaire — Solitaire Station",
-  "url": "https://www.free-klondike-solitaire.com/mahjong",
+  "url": `${SITE_URL}/mahjong`,
   "description": "Play free Mahjong solitaire at Solitaire Station — match identical free tiles to clear all 144 from the board. Hints and auto-save. No download, no sign-up.",
   "applicationCategory": "GameApplication",
   "operatingSystem": "Any",
   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
   "genre": ["Card Game", "Mahjong Solitaire"],
   "inLanguage": "en-US",
-  "publisher": { "@type": "Organization", "name": "Solitaire Station", "url": "https://www.free-klondike-solitaire.com/" },
+  "publisher": { "@type": "Organization", "name": "Solitaire Station", "url": `${SITE_URL}/` },
 });
 
 function MahjongPage() {
