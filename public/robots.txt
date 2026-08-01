@@ -1,5 +1,5 @@
 User-agent: *
 Allow: /
 
-# Solitaire Station — 16 free card games at free-klondike-solitaire.com
+# Solitaire Station — 16 free card games at solitairestation.com
 Sitemap: https://www.free-klondike-solitaire.com/sitemap.xml
