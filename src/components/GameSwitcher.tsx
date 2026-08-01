@@ -68,9 +68,9 @@ export function GameSwitcher() {
         }}
       >
         {/* Left: emoji + name */}
-        <span className="flex items-center gap-3 min-w-0">
-          <span className="text-3xl leading-none shrink-0">{active.emoji}</span>
-          <span className="text-lg font-bold tracking-tight truncate">{active.title}</span>
+        <span className="flex items-center gap-2 min-w-0">
+          <span className="text-xl leading-none shrink-0">{active.emoji}</span>
+          <span className="text-sm font-semibold tracking-tight truncate">{active.title}</span>
         </span>
 
         {/* Right: in-progress badge + chevron */}
