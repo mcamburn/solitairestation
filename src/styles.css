@@ -1,0 +1,379 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-neon: var(--neon);
+  --color-neon-2: var(--neon-2);
+  --color-red-suit: var(--red-suit);
+  --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+}
+
+:root {
+  --sticky-nav-height: 56px;
+  --radius: 0.875rem;
+  /* Card corner radius — kept small on mobile so narrow cards don't look like pills */
+  --card-radius: 0.25rem;
+  --background: oklch(0.16 0.02 265);
+  --foreground: oklch(0.98 0.005 250);
+  --surface: oklch(0.20 0.025 265);
+  --surface-2: oklch(0.24 0.03 265);
+  --card: oklch(0.99 0.003 250);
+  --card-foreground: oklch(0.15 0.02 265);
+  --popover: oklch(0.20 0.025 265);
+  --popover-foreground: oklch(0.98 0.005 250);
+  --primary: oklch(0.78 0.19 155);
+  --primary-foreground: oklch(0.15 0.02 265);
+  --secondary: oklch(0.28 0.03 265);
+  --secondary-foreground: oklch(0.98 0.005 250);
+  --muted: oklch(0.24 0.03 265);
+  --muted-foreground: oklch(0.68 0.02 260);
+  --accent: oklch(0.72 0.20 305);
+  --accent-foreground: oklch(0.15 0.02 265);
+  --destructive: oklch(0.65 0.25 25);
+  --destructive-foreground: oklch(0.98 0.005 250);
+  --border: oklch(1 0 0 / 8%);
+  --input: oklch(1 0 0 / 12%);
+  --ring: oklch(0.78 0.19 155);
+  --neon: oklch(0.85 0.18 165);
+  --neon-2: oklch(0.72 0.22 305);
+  --red-suit: oklch(0.68 0.22 20);
+}
+
+@layer base {
+  * { border-color: var(--color-border); }
+  :focus { scroll-margin-top: var(--sticky-nav-height); }
+  /* Visible keyboard focus ring for all interactive game elements */
+  [role="button"]:focus-visible {
+    outline: 2px solid var(--neon);
+    outline-offset: 2px;
+    border-radius: var(--card-radius);
+  }
+  html, body { height: 100%; }
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    background-image:
+      radial-gradient(ellipse 80% 60% at 20% 0%, color-mix(in oklab, var(--neon) 18%, transparent), transparent 60%),
+      radial-gradient(ellipse 60% 50% at 85% 100%, color-mix(in oklab, var(--neon-2) 20%, transparent), transparent 60%),
+      linear-gradient(180deg, var(--background), oklch(0.13 0.02 265));
+    background-attachment: fixed;
+  }
+}
+
+@utility glass {
+  background: color-mix(in oklab, var(--surface) 70%, transparent);
+  backdrop-filter: blur(14px) saturate(140%);
+  border: 1px solid color-mix(in oklab, white 8%, transparent);
+}
+
+@utility playing-card {
+  background: linear-gradient(160deg, oklch(0.995 0.003 250), oklch(0.94 0.01 250));
+  color: var(--card-foreground);
+  border: 1px solid oklch(0 0 0 / 8%);
+  box-shadow:
+    0 1px 0 oklch(1 0 0 / 60%) inset,
+    0 8px 20px -8px oklch(0 0 0 / 55%),
+    0 2px 4px oklch(0 0 0 / 30%);
+}
+
+@utility card-back {
+  background:
+    linear-gradient(135deg, var(--neon) 0%, var(--neon-2) 100%);
+  background-size: 200% 200%;
+  border: 1px solid oklch(1 0 0 / 15%);
+  box-shadow:
+    0 0 0 1px oklch(0 0 0 / 20%) inset,
+    0 8px 20px -8px oklch(0 0 0 / 55%);
+  position: relative;
+  overflow: hidden;
+}
+
+@utility card-back-pattern {
+  position: absolute;
+  inset: 4px;
+  border-radius: calc(var(--radius) - 6px);
+  border: 1px solid oklch(1 0 0 / 20%);
+}
+
+/* Skin: Neon (default checker) */
+.skin-neon .card-back-pattern {
+  background-image:
+    linear-gradient(45deg, oklch(1 0 0 / 12%) 25%, transparent 25%),
+    linear-gradient(-45deg, oklch(1 0 0 / 12%) 25%, transparent 25%);
+  background-size: 10px 10px;
+}
+
+/* Skin: Aurora — soft flowing gradient */
+.skin-aurora.card-back {
+  background:
+    radial-gradient(ellipse at 20% 20%, oklch(0.85 0.18 200) 0%, transparent 55%),
+    radial-gradient(ellipse at 80% 80%, oklch(0.75 0.22 320) 0%, transparent 55%),
+    linear-gradient(135deg, oklch(0.35 0.15 270), oklch(0.25 0.12 220));
+}
+.skin-aurora .card-back-pattern {
+  background-image: radial-gradient(oklch(1 0 0 / 18%) 1px, transparent 1px);
+  background-size: 8px 8px;
+}
+
+/* Skin: Circuit — grid + node dots */
+.skin-circuit.card-back {
+  background: linear-gradient(160deg, oklch(0.22 0.04 260), oklch(0.14 0.03 260));
+  border-color: color-mix(in oklab, var(--neon) 40%, transparent);
+}
+.skin-circuit .card-back-pattern {
+  background-image:
+    linear-gradient(to right, color-mix(in oklab, var(--neon) 30%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in oklab, var(--neon) 30%, transparent) 1px, transparent 1px);
+  background-size: 12px 12px;
+  box-shadow: 0 0 20px -4px color-mix(in oklab, var(--neon) 40%, transparent) inset;
+}
+
+/* Skin: Wave — diagonal ribbons */
+.skin-wave.card-back {
+  background: linear-gradient(135deg, oklch(0.72 0.20 305), oklch(0.55 0.22 260));
+}
+.skin-wave .card-back-pattern {
+  background-image: repeating-linear-gradient(
+    45deg,
+    oklch(1 0 0 / 14%) 0 6px,
+    transparent 6px 14px
+  );
+}
+
+/* Skin: Ember — warm plasma */
+.skin-ember.card-back {
+  background:
+    radial-gradient(ellipse at 30% 30%, oklch(0.82 0.19 55) 0%, transparent 60%),
+    linear-gradient(135deg, oklch(0.55 0.22 25), oklch(0.32 0.15 15));
+  border-color: oklch(0.75 0.18 45 / 40%);
+}
+.skin-ember .card-back-pattern {
+  background-image:
+    repeating-linear-gradient(0deg, oklch(1 0 0 / 8%) 0 2px, transparent 2px 6px);
+}
+
+/* (Mono skin removed) */
+
+/* Skin: Prism — chromatic bands */
+.skin-prism.card-back {
+  background: linear-gradient(
+    135deg,
+    oklch(0.78 0.19 30) 0%,
+    oklch(0.82 0.18 90) 25%,
+    oklch(0.80 0.20 165) 50%,
+    oklch(0.72 0.22 240) 75%,
+    oklch(0.70 0.22 320) 100%
+  );
+}
+.skin-prism .card-back-pattern {
+  background-image: repeating-linear-gradient(
+    90deg,
+    oklch(1 0 0 / 18%) 0 1px,
+    transparent 1px 8px
+  );
+  border-color: oklch(1 0 0 / 28%);
+}
+
+/* Skin: Holo — iridescent foil */
+.skin-holo.card-back {
+  background:
+    conic-gradient(from 210deg at 50% 50%,
+      oklch(0.82 0.15 190),
+      oklch(0.78 0.18 260),
+      oklch(0.80 0.20 320),
+      oklch(0.82 0.18 40),
+      oklch(0.82 0.15 190));
+}
+.skin-holo .card-back-pattern {
+  background-image:
+    repeating-linear-gradient(60deg, oklch(1 0 0 / 12%) 0 2px, transparent 2px 8px),
+    repeating-linear-gradient(-60deg, oklch(0 0 0 / 10%) 0 2px, transparent 2px 8px);
+}
+
+/* Skin: Grid — architect blueprint */
+.skin-grid.card-back {
+  background: linear-gradient(160deg, oklch(0.30 0.10 240), oklch(0.20 0.09 240));
+  border-color: oklch(0.85 0.10 220 / 40%);
+}
+.skin-grid .card-back-pattern {
+  background-image:
+    linear-gradient(to right, oklch(1 0 0 / 18%) 1px, transparent 1px),
+    linear-gradient(to bottom, oklch(1 0 0 / 18%) 1px, transparent 1px),
+    linear-gradient(to right, oklch(1 0 0 / 8%) 1px, transparent 1px),
+    linear-gradient(to bottom, oklch(1 0 0 / 8%) 1px, transparent 1px);
+  background-size: 20px 20px, 20px 20px, 4px 4px, 4px 4px;
+}
+
+/* Skin: Marble — soft veined stone */
+.skin-marble.card-back {
+  background:
+    radial-gradient(ellipse at 30% 20%, oklch(0.96 0.01 260) 0%, transparent 50%),
+    radial-gradient(ellipse at 70% 80%, oklch(0.90 0.02 280) 0%, transparent 55%),
+    linear-gradient(135deg, oklch(0.88 0.01 260), oklch(0.78 0.02 260));
+  border-color: oklch(0 0 0 / 15%);
+}
+.skin-marble .card-back-pattern {
+  background-image:
+    repeating-linear-gradient(115deg, oklch(0 0 0 / 6%) 0 1px, transparent 1px 22px),
+    repeating-linear-gradient(65deg, oklch(0 0 0 / 4%) 0 1px, transparent 1px 34px);
+  border-color: oklch(0 0 0 / 12%);
+}
+
+/* ===== Face styles ===== */
+.face-classic {
+  font-family: "Georgia", "Times New Roman", serif !important;
+  background: linear-gradient(160deg, oklch(0.99 0.01 90), oklch(0.94 0.02 80)) !important;
+}
+.face-minimal {
+  background: linear-gradient(160deg, oklch(0.995 0.003 250), oklch(0.96 0.005 250)) !important;
+}
+.face-bold {
+  background: linear-gradient(160deg, oklch(0.15 0.02 265), oklch(0.10 0.02 265)) !important;
+  color: oklch(0.98 0.005 250) !important;
+  border-color: oklch(1 0 0 / 12%) !important;
+}
+.face-pixel {
+  font-family: "JetBrains Mono", ui-monospace, monospace !important;
+  background: linear-gradient(160deg, oklch(0.99 0.005 250), oklch(0.92 0.01 250)) !important;
+}
+.face-script {
+  background: linear-gradient(160deg, oklch(0.98 0.02 60), oklch(0.92 0.04 55)) !important;
+}
+.face-outline {
+  background: linear-gradient(160deg, oklch(0.99 0.003 250), oklch(0.95 0.005 250)) !important;
+}
+.face-retro {
+  background: linear-gradient(160deg, oklch(0.14 0.02 265), oklch(0.08 0.02 265)) !important;
+  border-color: color-mix(in oklab, var(--neon) 40%, transparent) !important;
+  box-shadow:
+    0 0 0 1px color-mix(in oklab, var(--neon) 25%, transparent) inset,
+    0 8px 20px -8px oklch(0 0 0 / 55%) !important;
+}
+.face-stencil {
+  background: linear-gradient(160deg, oklch(0.96 0.01 90), oklch(0.88 0.02 85)) !important;
+  border-color: oklch(0 0 0 / 20%) !important;
+}
+
+@utility slot-empty {
+  background: color-mix(in oklab, var(--surface) 40%, transparent);
+  border: 1.5px dashed color-mix(in oklab, white 14%, transparent);
+}
+
+@utility glow-primary {
+  box-shadow:
+    0 0 0 1px color-mix(in oklab, var(--neon) 60%, transparent),
+    0 0 32px -4px color-mix(in oklab, var(--neon) 55%, transparent);
+}
+
+/* On md+ screens cards are wide enough for a fuller radius */
+@media (min-width: 768px) {
+  :root {
+    --card-radius: 0.625rem;
+  }
+}
+
+/* ── Card slot container queries ────────────────────────────────────────────
+   Each card wrapper gets container-type so @container rules can scale the
+   card's typography based on its actual rendered width, not the viewport. */
+.card-slot-container {
+  container-type: inline-size;
+  container-name: card-slot;
+}
+
+/* Narrow cards (≤65 px wide) — typical on phone portrait */
+@container card-slot (max-width: 65px) {
+  .playing-card { padding: 4px; }
+  .card-rank       { font-size: 10px !important; line-height: 1; }
+  .card-rank-suit  { font-size: 9px  !important; }
+  .card-top-glyph  { font-size: 14px !important; }
+  /* Scale large center labels / glyphs */
+  .playing-card [class*="text-5xl"] { font-size: 1.5rem  !important; }
+  .playing-card [class*="text-4xl"] { font-size: 1.25rem !important; }
+  .playing-card [class*="text-3xl"] { font-size: 1rem    !important; }
+  .playing-card [class*="text-2xl"] { font-size: 0.85rem !important; }
+}
+
+/* Very narrow cards (≤50 px wide) — small phones or zoomed-out */
+@container card-slot (max-width: 50px) {
+  .playing-card { padding: 3px; }
+  .card-rank       { font-size: 9px !important; line-height: 1; }
+  .card-rank-suit  { font-size: 8px !important; }
+  .card-top-glyph  { font-size: 11px !important; }
+  .playing-card [class*="text-5xl"] { font-size: 1.1rem  !important; }
+  .playing-card [class*="text-4xl"] { font-size: 0.95rem !important; }
+  .playing-card [class*="text-3xl"] { font-size: 0.8rem  !important; }
+  .playing-card [class*="text-2xl"] { font-size: 0.7rem  !important; }
+}
+
+@utility hint-glow {
+  animation: hint-pulse 1.1s ease-in-out infinite;
+  z-index: 5;
+}
+
+/* ─── Phone landscape: compact chrome so the game board gets the screen ─── */
+/* Targets phones rotated to landscape (viewport height ≤ 540 px) but not   */
+/* tablets or desktop monitors, which are both wider and taller.             */
+@media (orientation: landscape) and (max-height: 540px) {
+  /* Strip portrait breathing room from the page wrapper */
+  .game-page-main  { padding-top: 0.25rem !important; padding-bottom: 0.25rem !important; }
+  /* Hero (badge + title + tagline) — not needed while actively playing */
+  .game-hero       { display: none !important; }
+  /* Sticky nav strip — tighten bottom margin */
+  .game-nav-wrap   { margin-bottom: 0.25rem !important; }
+  /* Controls bar (time / moves / score / hint) */
+  .game-controls   { padding-top: 0.375rem !important; padding-bottom: 0.375rem !important; }
+  /* Card picker rows */
+  .picker-wrap     { margin-top: 0.375rem !important; padding-top: 0.375rem !important; padding-bottom: 0.375rem !important; }
+  /* Outer game wrapper — collapse the large bottom pad used in portrait */
+  .game-board-wrap { padding-bottom: 1rem !important; }
+  /* Glass board container — pull it closer to the pickers */
+  .game-board-glass { margin-top: 0.5rem !important; }
+}
+
+@keyframes hint-pulse {
+  0%,
+  100% {
+    box-shadow:
+      0 0 0 2px color-mix(in oklab, var(--neon-2) 75%, transparent),
+      0 0 20px -2px color-mix(in oklab, var(--neon-2) 70%, transparent);
+    transform: translateY(0);
+  }
+  50% {
+    box-shadow:
+      0 0 0 3px color-mix(in oklab, var(--neon-2) 95%, transparent),
+      0 0 40px 4px color-mix(in oklab, var(--neon-2) 85%, transparent);
+    transform: translateY(-3px);
+  }
+}

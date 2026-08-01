@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Basic Meta Tags -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Free Online Solitaire - Play Classic Klondike Solitaire (Turn 1 & 3)</title>
+  <meta name="description" content="Play free online Solitaire with no registration, no downloads, and no full-screen ads. Enjoy classic Klondike Solitaire Turn 1 or Turn 3, unlimited undo, and daily games on mobile or desktop.">
+  <meta name="keywords" content="free online solitaire, klondike solitaire, classic solitaire free, solitaire turn 3, solitaire turn 1, play solitaire online, solitaire no download">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+  <link rel="canonical" href="https://free-klondike-solitaire.com/">
+
+  <!-- Open Graph / Facebook / LinkedIn Meta Tags -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://free-klondike-solitaire.com/">
+  <meta property="og:title" content="Free Online Solitaire - Play Classic Klondike Solitaire">
+  <meta property="og:description" content="Play full-screen Klondike Solitaire for free in your browser. Features Turn 1, Turn 3, hints, unlimited undo, and daily challenges. No downloads required.">
+  <meta property="og:image" content="https://free-klondike-solitaire.com/assets/og-solitaire-preview.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:site_name" content="Free Klondike Solitaire">
+
+  <!-- Twitter Card Meta Tags -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="https://free-klondike-solitaire.com/">
+  <meta name="twitter:title" content="Free Online Solitaire - Play Classic Klondike Solitaire">
+  <meta name="twitter:description" content="Play full-screen Klondike Solitaire for free in your browser. Features Turn 1, Turn 3, hints, unlimited undo, and daily challenges. No downloads required.">
+  <meta name="twitter:image" content="https://free-klondike-solitaire.com/assets/twitter-solitaire-preview.jpg">
+
+  <!-- Mobile & Progressive Web App (PWA) Meta Tags -->
+  <meta name="theme-color" content="#1b5e20">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Solitaire">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+
+  <!-- JSON-LD Structured Data Schema -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": ["SoftwareApplication", "VideoGame"],
+        "@id": "https://free-klondike-solitaire.com/#game",
+        "url": "https://free-klondike-solitaire.com/",
+        "name": "Free Klondike Solitaire",
+        "headline": "Play Free Online Klondike Solitaire",
+        "description": "An interactive, browser-based classic Klondike Solitaire card game with Turn 1, Turn 3, daily challenges, and custom deck themes.",
+        "applicationCategory": "GameApplication",
+        "gameItem": "Card Game",
+        "genre": ["Solitaire", "Card Game", "Casual Game"],
+        "operatingSystem": "Any (Browser-based)",
+        "inLanguage": "en",
+        "isAccessibleForFree": true,
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD",
+          "availability": "https://schema.org/InStock"
+        },
+        "publisher": {
+          "@type": "Organization",
+          "name": "Free Klondike Solitaire",
+          "url": "https://free-klondike-solitaire.com/"
+        }
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://free-klondike-solitaire.com/#website",
+        "url": "https://free-klondike-solitaire.com/",
+        "name": "Free Klondike Solitaire",
+        "publisher": {
+          "@id": "https://free-klondike-solitaire.com/#game"
+        }
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://free-klondike-solitaire.com/#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Is this Klondike Solitaire game completely free to play?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes, Free Klondike Solitaire is 100% free to play directly in your web browser with no download, subscription, or account creation required."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What is the difference between Solitaire Turn 1 and Turn 3?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "In Turn 1 Solitaire, one card is drawn from the stockpile at a time, making games easier to win. In Turn 3 Solitaire, three cards are drawn at a time, increasing difficulty and requiring deeper strategic planning."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Can I play Klondike Solitaire on mobile devices?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes, our game is fully optimized for touch controls on smartphones and tablets, compatible with both iOS and Android browsers."
+            }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+</head>
