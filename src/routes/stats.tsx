@@ -1,6 +1,14 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
-import { loadStats, getWinRate, formatStatTime, type GameStats, type GameRecord } from "@/lib/stats";
+import { useEffect, useRef, useState } from "react";
+import {
+  loadStats,
+  getWinRate,
+  formatStatTime,
+  downloadStatsExport,
+  importStatsFromExport,
+  type GameStats,
+  type GameRecord,
+} from "@/lib/stats";
 import { GAMES } from "@/lib/games";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SITE_URL } from "@/lib/site";
@@ -356,6 +364,9 @@ function StatsPage() {
         );
       })()}
 
+      {/* Export / Import */}
+      {hydrated && <ExportImportControls onImported={() => setRows(loadRows())} />}
+
       <p className="mt-5 text-xs text-muted-foreground">
         Stats are stored locally in your browser and never leave your device.
       </p>
@@ -616,6 +627,96 @@ function HistoryMobileRow({ entry }: { entry: HistoryEntry }) {
         </span>
         <span style={{ color: "var(--muted-foreground)" }}>{dateStr}</span>
       </div>
+    </div>
+  );
+}
+
+/* ── Export / Import controls ─────────────────────────────────────────────── */
+
+function ExportImportControls({ onImported }: { onImported: () => void }) {
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [status, setStatus] = useState<{ kind: "success" | "error"; message: string } | null>(null);
+
+  function handleExport() {
+    downloadStatsExport();
+  }
+
+  function handleImportClick() {
+    fileInputRef.current?.click();
+  }
+
+  async function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    // Reset so the same file can be picked again after an error
+    e.target.value = "";
+    try {
+      const text = await file.text();
+      const data = JSON.parse(text) as unknown;
+      const count = importStatsFromExport(data);
+      onImported();
+      setStatus({ kind: "success", message: `Imported stats for ${count} game${count !== 1 ? "s" : ""}.` });
+    } catch (err) {
+      setStatus({
+        kind: "error",
+        message: err instanceof Error ? err.message : "Could not read the file.",
+      });
+    }
+    // Auto-clear after 5 s
+    setTimeout(() => setStatus(null), 5000);
+  }
+
+  return (
+    <div className="mt-10 flex flex-col gap-3">
+      <h2
+        className="text-lg font-semibold tracking-tight"
+        style={{ fontFamily: "var(--font-display)" }}
+      >
+        Backup &amp; Restore
+      </h2>
+      <p className="text-xs text-muted-foreground">
+        Export your stats to a file you can keep as a backup or load on another device.
+      </p>
+      <div className="flex flex-wrap gap-3">
+        <button
+          onClick={handleExport}
+          className="flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold transition"
+          style={{
+            background: "color-mix(in oklab, var(--neon) 14%, oklch(0.16 0.03 155))",
+            border: "1px solid color-mix(in oklab, var(--neon) 35%, transparent)",
+            color: "var(--neon)",
+          }}
+        >
+          ↓ Export stats
+        </button>
+        <button
+          onClick={handleImportClick}
+          className="flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold transition"
+          style={{
+            background: "color-mix(in oklab, var(--neon) 6%, oklch(0.16 0.03 155))",
+            border: "1px solid color-mix(in oklab, var(--neon) 18%, transparent)",
+            color: "var(--muted-foreground)",
+          }}
+        >
+          ↑ Import stats
+        </button>
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept=".json,application/json"
+          className="hidden"
+          onChange={handleFileChange}
+        />
+      </div>
+      {status && (
+        <p
+          className="text-xs font-medium"
+          style={{ color: status.kind === "success" ? "var(--neon)" : "oklch(0.75 0.18 25)" }}
+        >
+          {status.kind === "success" ? "✓ " : "✗ "}
+          {status.message}
+        </p>
+      )}
     </div>
   );
 }

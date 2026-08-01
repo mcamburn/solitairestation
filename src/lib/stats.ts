@@ -170,6 +170,77 @@ export function recordLoss(
   return updated;
 }
 
+/* ── Export / Import ──────────────────────────────────────────────────────── */
+
+export interface StatsExport {
+  version: 1;
+  exportedAt: number;
+  games: Record<string, GameStats>;
+}
+
+/**
+ * Collect all game stats from localStorage and return a portable snapshot.
+ * Only keys that match the STATS_PREFIX are included.
+ */
+export function exportAllStats(): StatsExport {
+  const games: Record<string, GameStats> = {};
+  try {
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (key && key.startsWith(STATS_PREFIX)) {
+        const gameKey = key.slice(STATS_PREFIX.length);
+        games[gameKey] = loadStats(gameKey);
+      }
+    }
+  } catch {
+    // SSR or private-browsing — return empty export
+  }
+  return { version: 1, exportedAt: Date.now(), games };
+}
+
+/**
+ * Trigger a JSON file download containing all stats.
+ */
+export function downloadStatsExport(): void {
+  const data = exportAllStats();
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  const date = new Date().toISOString().slice(0, 10);
+  a.download = `solitaire-stats-${date}.json`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+/**
+ * Import a StatsExport object, writing each game's stats to localStorage.
+ * Existing stats for each game are replaced entirely.
+ * Returns the number of games imported, or throws on invalid data.
+ */
+export function importStatsFromExport(data: unknown): number {
+  if (
+    typeof data !== "object" ||
+    data === null ||
+    (data as StatsExport).version !== 1 ||
+    typeof (data as StatsExport).games !== "object"
+  ) {
+    throw new Error("Invalid stats file — please use a file exported from Solitaire Station.");
+  }
+  const { games } = data as StatsExport;
+  let count = 0;
+  for (const [gameKey, stats] of Object.entries(games)) {
+    if (typeof gameKey !== "string" || typeof stats !== "object" || stats === null) continue;
+    // Merge with defaults so forward-compat fields don't disappear
+    const merged: GameStats = { ...defaultStats(), ...(stats as Partial<GameStats>) };
+    saveStats(gameKey, merged);
+    count++;
+  }
+  return count;
+}
+
 /** Win percentage (0–100), rounded to nearest integer. */
 export function getWinRate(stats: GameStats): number {
   if (stats.gamesPlayed === 0) return 0;
