@@ -11,12 +11,12 @@
  * automatically after each game without prop drilling.
  */
 
-import { useEffect, useState } from "react";
-import { loadStats, getWinRate, type GameStats } from "@/lib/stats";
+import { useState } from "react";
 import { useDailyChallenge } from "@/contexts/DailyChallengeContext";
 import { StatsModal } from "./StatsModal";
 import { DailyChallengeModal } from "./DailyChallengeModal";
 import { GAMES } from "@/lib/games";
+import { useGameTopBarStats } from "@/hooks/useGameTopBarStats";
 
 interface Props {
   gameKey: string;
@@ -24,27 +24,11 @@ interface Props {
 }
 
 export function GameStatsBar({ gameKey, variant = "bar" }: Props) {
-  const [stats, setStats] = useState<GameStats>(() => loadStats(gameKey));
+  const { streak } = useGameTopBarStats(gameKey);
   const [statsOpen, setStatsOpen] = useState(false);
   const [dailyOpen, setDailyOpen] = useState(false);
 
   const { activateDaily, completedToday, dailyStreak, longestDailyStreak } = useDailyChallenge();
-
-  // Refresh stats whenever a game records a win/loss
-  useEffect(() => {
-    const handler = (e: Event) => {
-      const key = (e as CustomEvent<{ gameKey: string }>).detail?.gameKey;
-      if (key === gameKey) setStats(loadStats(gameKey));
-    };
-    window.addEventListener("neon-solitaire:stats-updated", handler);
-    return () => window.removeEventListener("neon-solitaire:stats-updated", handler);
-  }, [gameKey]);
-
-  useEffect(() => {
-    setStats(loadStats(gameKey));
-  }, [gameKey]);
-
-  const streak = stats.currentStreak;
 
   const game = GAMES.find((g) => g.saveKey === gameKey);
   const gameTitle = game?.title ?? gameKey;
