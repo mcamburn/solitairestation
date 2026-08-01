@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { saveGame, loadGame, clearGame } from "@/lib/persist";
+import { recordWin, recordLoss, type GameStats } from "@/lib/stats";
 import {
   newGolfGame,
   playTableauCard,
@@ -49,6 +50,24 @@ export function Golf() {
   const boardRef = useRef<HTMLDivElement>(null);
   const [scale, setScale] = useState(1);
 
+  const statsRef = useRef(false);
+  const [gameStats, setGameStats] = useState<GameStats | null>(null);
+
+  useEffect(() => {
+    if (statsRef.current) return;
+    if (state?.won) {
+      statsRef.current = true;
+      const elapsed = Math.floor((Date.now() - state.startedAt) / 1000);
+      setGameStats(recordWin("golf", elapsed));
+      setHistory([]);
+    } else if (gameOver) {
+      statsRef.current = true;
+      setGameStats(recordLoss("golf"));
+      setHistory([]);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state?.won, gameOver]);
+
   const { dragMode, toggleDragMode } = useDragMode();
   const dragRef = useRef<DragInfo | null>(null);
   const commitDragRef = useRef<(dr: DragInfo, zone: string) => void>(() => {});
@@ -60,7 +79,9 @@ export function Golf() {
     const saved = loadGame<GolfState>("golf");
     if (saved && saved.moves > 0) {
       setState(saved);
-      setGameOver(isGolfGameOver(saved));
+      const over = isGolfGameOver(saved);
+      setGameOver(over);
+      if (saved.won || over) statsRef.current = true;
     } else {
       if (saved) clearGame("golf");
       setState(newGolfGame());
@@ -159,6 +180,8 @@ export function Golf() {
 
   const reset = () => {
     clearGame("golf");
+    statsRef.current = false;
+    setGameStats(null);
     setHistory([]);
     setHint(null);
     setGameOver(false);
@@ -351,10 +374,11 @@ export function Golf() {
           variant="stuck"
           message={`Game over — ${remaining} card${remaining !== 1 ? "s" : ""} remaining in tableau.`}
           onNew={reset}
+          stats={gameStats}
         />
       )}
       {game.won && (
-        <WinBanner message={`Golf cleared in ${game.moves} moves! All tableau cards played.`} onNew={reset} />
+        <WinBanner message={`Golf cleared in ${game.moves} moves! All tableau cards played.`} onNew={reset} stats={gameStats} />
       )}
 
       <p className="mt-3 text-center text-xs text-muted-foreground">

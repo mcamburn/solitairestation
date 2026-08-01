@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { saveGame, loadGame, clearGame } from "@/lib/persist";
+import { recordWin, type GameStats } from "@/lib/stats";
 import {
   newYukonGame,
   tryYukonTableauMove,
@@ -52,6 +53,17 @@ export function Yukon() {
   const { skin, face, setSkin, setFace } = useCardAppearance();
   const { visible: toastVisible, show: showToast } = useNewGameToast();
   const [, forceUpdate] = useState(0);
+  const statsRef = useRef(false);
+  const [gameStats, setGameStats] = useState<GameStats | null>(null);
+
+  useEffect(() => {
+    if (!state?.won || statsRef.current) return;
+    statsRef.current = true;
+    const elapsed = Math.floor((Date.now() - state.startedAt) / 1000);
+    setGameStats(recordWin("yukon", elapsed));
+    setHistory([]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state?.won]);
 
   // Drag state
   const dragRef = useRef<DragInfo | null>(null);
@@ -64,6 +76,7 @@ export function Yukon() {
     const saved = loadGame<YukonState>("yukon");
     if (saved && saved.moves > 0) {
       setState(saved);
+      if (saved.won) statsRef.current = true;
     } else {
       if (saved) clearGame("yukon");
       setState(newYukonGame());
@@ -176,6 +189,8 @@ export function Yukon() {
 
   const reset = () => {
     clearGame("yukon");
+    statsRef.current = false;
+    setGameStats(null);
     setHistory([]);
     setSel(null);
     setHint(null);
@@ -356,7 +371,7 @@ export function Yukon() {
       </div>
 
       {game.won && (
-        <WinBanner message={`All cards moved to foundations in ${game.moves} moves!`} onNew={reset} />
+        <WinBanner message={`All cards moved to foundations in ${game.moves} moves!`} onNew={reset} stats={gameStats} />
       )}
 
       {/* Drag ghost */}

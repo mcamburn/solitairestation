@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { saveGame, loadGame, clearGame } from "@/lib/persist";
+import { recordWin, type GameStats } from "@/lib/stats";
 import {
   newBakersGame,
   isValidBGSequence,
@@ -54,6 +55,17 @@ export function BakersGame() {
   const { visible: toastVisible, show: showToast } = useNewGameToast();
   const [, forceUpdate] = useState(0);
   const { dragMode, toggleDragMode } = useDragMode();
+  const statsRef = useRef(false);
+  const [gameStats, setGameStats] = useState<GameStats | null>(null);
+
+  useEffect(() => {
+    if (!state?.won || statsRef.current) return;
+    statsRef.current = true;
+    const elapsed = Math.floor((Date.now() - state.startedAt) / 1000);
+    setGameStats(recordWin("bakersgame", elapsed));
+    setHistory([]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state?.won]);
 
   const dragRef = useRef<DragInfo | null>(null);
   const [ghostPos, setGhostPos] = useState<{ x: number; y: number } | null>(null);
@@ -65,6 +77,7 @@ export function BakersGame() {
     const saved = loadGame<BakersGameState>("bakersgame");
     if (saved && saved.moves > 0) {
       setState(saved);
+      if (saved.won) statsRef.current = true;
     } else {
       if (saved) clearGame("bakersgame");
       setState(newBakersGame());
@@ -169,6 +182,8 @@ export function BakersGame() {
 
   const reset = () => {
     clearGame("bakersgame");
+    statsRef.current = false;
+    setGameStats(null);
     setHistory([]);
     setSel(null);
     setHint(null);
@@ -395,7 +410,7 @@ export function BakersGame() {
       </div>
 
       {game.won && (
-        <WinBanner message={`All 52 cards sorted in ${game.moves} moves!`} onNew={reset} />
+        <WinBanner message={`All 52 cards sorted in ${game.moves} moves!`} onNew={reset} stats={gameStats} />
       )}
 
       <DragModeToggle

@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { saveGame, loadGame, clearGame } from "@/lib/persist";
+import { recordWin, type GameStats } from "@/lib/stats";
 import {
   newScorpionGame,
   tryScorpionMove,
@@ -50,6 +51,17 @@ export function Scorpion() {
   const { skin, face, setSkin, setFace } = useCardAppearance();
   const { visible: toastVisible, show: showToast } = useNewGameToast();
   const [, forceUpdate] = useState(0);
+  const statsRef = useRef(false);
+  const [gameStats, setGameStats] = useState<GameStats | null>(null);
+
+  useEffect(() => {
+    if (!state?.won || statsRef.current) return;
+    statsRef.current = true;
+    const elapsed = Math.floor((Date.now() - state.startedAt) / 1000);
+    setGameStats(recordWin("scorpion", elapsed));
+    setHistory([]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state?.won]);
 
   // Drag state
   const dragRef = useRef<DragInfo | null>(null);
@@ -62,6 +74,7 @@ export function Scorpion() {
     const saved = loadGame<ScorpionState>("scorpion");
     if (saved && saved.moves > 0) {
       setState(saved);
+      if (saved.won) statsRef.current = true;
     } else {
       if (saved) clearGame("scorpion");
       setState(newScorpionGame());
@@ -169,6 +182,8 @@ export function Scorpion() {
 
   const reset = () => {
     clearGame("scorpion");
+    statsRef.current = false;
+    setGameStats(null);
     setHistory([]);
     setSel(null);
     setHint(null);
@@ -310,7 +325,7 @@ export function Scorpion() {
       </div>
 
       {game.won && (
-        <WinBanner message={`All 4 sequences completed in ${game.moves} moves!`} onNew={reset} />
+        <WinBanner message={`All 4 sequences completed in ${game.moves} moves!`} onNew={reset} stats={gameStats} />
       )}
 
       {/* Drag ghost */}

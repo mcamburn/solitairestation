@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { saveGame, loadGame, clearGame } from "@/lib/persist";
+import { recordWin, type GameStats } from "@/lib/stats";
 import {
   newFortyThievesGame,
   ftDrawFromStock,
@@ -52,6 +53,17 @@ export function FortyThieves() {
   const { skin, face, setSkin, setFace } = useCardAppearance();
   const { visible: toastVisible, show: showToast } = useNewGameToast();
   const [, forceUpdate] = useState(0);
+  const statsRef = useRef(false);
+  const [gameStats, setGameStats] = useState<GameStats | null>(null);
+
+  useEffect(() => {
+    if (!state?.won || statsRef.current) return;
+    statsRef.current = true;
+    const elapsed = Math.floor((Date.now() - state.startedAt) / 1000);
+    setGameStats(recordWin(SAVE_KEY, elapsed));
+    setHistory([]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state?.won]);
 
   const { dragMode, toggleDragMode } = useDragMode();
   const dragRef = useRef<DragInfo | null>(null);
@@ -62,8 +74,10 @@ export function FortyThieves() {
 
   useEffect(() => {
     const saved = loadGame<FortyThievesState>(SAVE_KEY);
-    if (saved && saved.moves > 0) setState(saved);
-    else setState(newFortyThievesGame());
+    if (saved && saved.moves > 0) {
+      setState(saved);
+      if (saved.won) statsRef.current = true;
+    } else setState(newFortyThievesGame());
   }, []);
 
   useEffect(() => {
@@ -162,6 +176,8 @@ export function FortyThieves() {
 
   const reset = () => {
     clearGame(SAVE_KEY);
+    statsRef.current = false;
+    setGameStats(null);
     setHistory([]);
     setSel(null);
     setHint(null);
@@ -394,7 +410,7 @@ export function FortyThieves() {
       </div>
 
       {state.won && (
-        <WinBanner message={`All 104 cards on foundations in ${state.moves} moves!`} onNew={reset} />
+        <WinBanner message={`All 104 cards on foundations in ${state.moves} moves!`} onNew={reset} stats={gameStats} />
       )}
 
       <p className="mt-3 text-center text-xs text-muted-foreground">

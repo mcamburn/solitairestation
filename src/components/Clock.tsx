@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { saveGame, loadGame, clearGame } from "@/lib/persist";
+import { recordWin, recordLoss, type GameStats } from "@/lib/stats";
 import {
   newClockGame,
   clockStep,
@@ -119,6 +120,8 @@ export function Clock() {
   const [state, setState] = useState<ClockState | null>(null);
   const [autoPlay, setAutoPlay] = useState(false);
   const autoPlayRef = useRef(false);
+  const statsRef = useRef(false);
+  const [gameStats, setGameStats] = useState<GameStats | null>(null);
   const { skin, face, setSkin, setFace } = useCardAppearance();
   const { visible: toastVisible, show: showToast } = useNewGameToast();
   const [, forceUpdate] = useState(0);
@@ -129,11 +132,25 @@ export function Clock() {
     const saved = loadGame<ClockState>("clock");
     if (saved && saved.moves > 0) {
       setState(saved);
+      if (saved.won || saved.lost) statsRef.current = true;
     } else {
       if (saved) clearGame("clock");
       setState(newClockGame());
     }
   }, []);
+
+  useEffect(() => {
+    if (statsRef.current) return;
+    if (state?.won) {
+      statsRef.current = true;
+      const elapsed = Math.floor((Date.now() - state.startedAt) / 1000);
+      setGameStats(recordWin("clock", elapsed));
+    } else if (state?.lost) {
+      statsRef.current = true;
+      setGameStats(recordLoss("clock"));
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state?.won, state?.lost]);
 
   useEffect(() => {
     if (state && state.moves > 0) saveGame("clock", state);
@@ -199,6 +216,8 @@ export function Clock() {
   const reset = () => {
     clearGame("clock");
     setAutoPlay(false);
+    statsRef.current = false;
+    setGameStats(null);
     setState(newClockGame());
     showToast();
   };
@@ -337,6 +356,7 @@ export function Clock() {
           variant="stuck"
           message={`All 4 Kings revealed — the game ends. Better luck next time!`}
           onNew={reset}
+          stats={gameStats}
         />
       )}
 
@@ -344,6 +364,7 @@ export function Clock() {
         <WinBanner
           message={`Incredible! All cards revealed before the 4th King — you beat Clock Patience!`}
           onNew={reset}
+          stats={gameStats}
         />
       )}
 

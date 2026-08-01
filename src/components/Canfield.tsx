@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { saveGame, loadGame, clearGame } from "@/lib/persist";
+import { recordWin, type GameStats } from "@/lib/stats";
 import {
   newCanfieldGame,
   cloneCanfield,
@@ -62,6 +63,17 @@ export function Canfield() {
   const [, forceUpdate] = useState(0);
   const boardRef = useRef<HTMLDivElement>(null);
   const [scale, setScale] = useState(1);
+  const statsRef = useRef(false);
+  const [gameStats, setGameStats] = useState<GameStats | null>(null);
+
+  useEffect(() => {
+    if (!state?.won || statsRef.current) return;
+    statsRef.current = true;
+    const elapsed = Math.floor((Date.now() - state.startedAt) / 1000);
+    setGameStats(recordWin("canfield", elapsed));
+    setHistory([]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state?.won]);
 
   const { dragMode, toggleDragMode } = useDragMode();
   const dragRef = useRef<DragInfo | null>(null);
@@ -72,8 +84,10 @@ export function Canfield() {
 
   useEffect(() => {
     const saved = loadGame<CanfieldState>("canfield");
-    if (saved && saved.moves > 0) setState(saved);
-    else setState(newCanfieldGame());
+    if (saved && saved.moves > 0) {
+      setState(saved);
+      if (saved.won) statsRef.current = true;
+    } else setState(newCanfieldGame());
   }, []);
 
   useEffect(() => {
@@ -178,6 +192,8 @@ export function Canfield() {
 
   const reset = () => {
     clearGame("canfield");
+    statsRef.current = false;
+    setGameStats(null);
     setHistory([]);
     setSelection(null);
     setHint(null);
@@ -499,7 +515,7 @@ export function Canfield() {
       </div>
 
       {game.won && (
-        <WinBanner message={`Canfield won in ${game.moves} moves!`} onNew={reset} />
+        <WinBanner message={`Canfield won in ${game.moves} moves!`} onNew={reset} stats={gameStats} />
       )}
 
       <p className="mt-3 text-center text-xs text-muted-foreground">

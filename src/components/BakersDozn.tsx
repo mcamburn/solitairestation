@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { saveGame, loadGame, clearGame } from "@/lib/persist";
+import { recordWin, type GameStats } from "@/lib/stats";
 import {
   newBakersDozenGame,
   bdMoveToTableau,
@@ -46,6 +47,17 @@ export function BakersDozn() {
   const [, forceUpdate] = useState(0);
   const boardRef = useRef<HTMLDivElement>(null);
   const [scale, setScale] = useState(1);
+  const statsRef = useRef(false);
+  const [gameStats, setGameStats] = useState<GameStats | null>(null);
+
+  useEffect(() => {
+    if (!state?.won || statsRef.current) return;
+    statsRef.current = true;
+    const elapsed = Math.floor((Date.now() - state.startedAt) / 1000);
+    setGameStats(recordWin("bakersdozen", elapsed));
+    setHistory([]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state?.won]);
 
   const { dragMode, toggleDragMode } = useDragMode();
   const dragRef = useRef<DragInfo | null>(null);
@@ -56,8 +68,10 @@ export function BakersDozn() {
 
   useEffect(() => {
     const saved = loadGame<BakersDozenState>("bakersdozen");
-    if (saved && saved.moves > 0) setState(saved);
-    else setState(newBakersDozenGame());
+    if (saved && saved.moves > 0) {
+      setState(saved);
+      if (saved.won) statsRef.current = true;
+    } else setState(newBakersDozenGame());
   }, []);
 
   useEffect(() => {
@@ -157,6 +171,8 @@ export function BakersDozn() {
 
   const reset = () => {
     clearGame("bakersdozen");
+    statsRef.current = false;
+    setGameStats(null);
     setHistory([]);
     setSelectedCol(null);
     setHint(null);
@@ -332,7 +348,7 @@ export function BakersDozn() {
       </div>
 
       {game.won && (
-        <WinBanner message={`Baker's Dozen solved in ${game.moves} moves!`} onNew={reset} />
+        <WinBanner message={`Baker's Dozen solved in ${game.moves} moves!`} onNew={reset} stats={gameStats} />
       )}
 
       <p className="mt-3 text-center text-xs text-muted-foreground">

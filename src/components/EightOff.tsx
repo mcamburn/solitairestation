@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { saveGame, loadGame, clearGame } from "@/lib/persist";
+import { recordWin, type GameStats } from "@/lib/stats";
 import {
   newEightOffGame,
   isValidEOSequence,
@@ -54,6 +55,17 @@ export function EightOff() {
   const { visible: toastVisible, show: showToast } = useNewGameToast();
   const [, forceUpdate] = useState(0);
   const { dragMode, toggleDragMode } = useDragMode();
+  const statsRef = useRef(false);
+  const [gameStats, setGameStats] = useState<GameStats | null>(null);
+
+  useEffect(() => {
+    if (!state?.won || statsRef.current) return;
+    statsRef.current = true;
+    const elapsed = Math.floor((Date.now() - state.startedAt) / 1000);
+    setGameStats(recordWin("eightoff", elapsed));
+    setHistory([]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state?.won]);
 
   const dragRef = useRef<DragInfo | null>(null);
   const [ghostPos, setGhostPos] = useState<{ x: number; y: number } | null>(null);
@@ -65,6 +77,7 @@ export function EightOff() {
     const saved = loadGame<EightOffState>("eightoff");
     if (saved && saved.moves > 0) {
       setState(saved);
+      if (saved.won) statsRef.current = true;
     } else {
       if (saved) clearGame("eightoff");
       setState(newEightOffGame());
@@ -169,6 +182,8 @@ export function EightOff() {
 
   const reset = () => {
     clearGame("eightoff");
+    statsRef.current = false;
+    setGameStats(null);
     setHistory([]);
     setSel(null);
     setHint(null);
@@ -392,7 +407,7 @@ export function EightOff() {
       </div>
 
       {game.won && (
-        <WinBanner message={`All 52 cards sorted in ${game.moves} moves!`} onNew={reset} />
+        <WinBanner message={`All 52 cards sorted in ${game.moves} moves!`} onNew={reset} stats={gameStats} />
       )}
 
       <DragModeToggle
