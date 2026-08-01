@@ -52,8 +52,16 @@ export function GameStatsBar({ gameKey, variant = "bar" }: Props) {
 
   const items = (
     <>
-      {/* Streak */}
-      <div className="flex items-center gap-1 shrink-0">
+      {/* Streak — click to open stats modal */}
+      <button
+        onClick={() => setModalOpen(true)}
+        className="flex items-center gap-1 rounded-lg px-2 py-1 shrink-0 transition-all hover:opacity-80 active:scale-95"
+        style={{
+          background: "color-mix(in oklab, var(--neon) 10%, transparent)",
+          border: "1px solid color-mix(in oklab, var(--neon) 22%, transparent)",
+        }}
+        title="View full statistics"
+      >
         <span className="text-sm leading-none">🔥</span>
         <span
           className="text-xs font-bold tabular-nums"
@@ -67,7 +75,7 @@ export function GameStatsBar({ gameKey, variant = "bar" }: Props) {
         >
           streak
         </span>
-      </div>
+      </button>
 
       <NavDivider />
 
@@ -100,20 +108,6 @@ export function GameStatsBar({ gameKey, variant = "bar" }: Props) {
         </button>
       )}
 
-      {/* Stats modal button */}
-      <button
-        onClick={() => setModalOpen(true)}
-        className="flex items-center gap-1 rounded-lg px-2 py-1 text-xs font-medium transition-all hover:opacity-80 active:scale-95 shrink-0"
-        style={{
-          background: "color-mix(in oklab, var(--neon) 12%, transparent)",
-          color: "color-mix(in oklab, var(--neon) 75%, white)",
-          border: "1px solid color-mix(in oklab, var(--neon) 25%, transparent)",
-        }}
-        title="View full statistics"
-      >
-        <span>📊</span>
-        <span className="hidden sm:inline">Stats</span>
-      </button>
     </>
   );
 
