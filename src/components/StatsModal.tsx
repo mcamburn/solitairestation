@@ -172,6 +172,21 @@ export function StatsModal({ gameKey, gameTitle, gameEmoji, open, onClose, daily
               </p>
             </div>
           )}
+
+          {/* Link to the all-games stats page */}
+          <div className="flex justify-center pt-1 pb-1">
+            <a
+              href="/stats"
+              onClick={onClose}
+              className="inline-flex items-center gap-1 text-xs transition-opacity hover:opacity-80"
+              style={{ color: "color-mix(in oklab, var(--neon) 55%, white)" }}
+            >
+              View all games
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+                <path d="M2.5 6h7M6.5 3l3 3-3 3" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </a>
+          </div>
         </div>
       </div>
     </div>,
