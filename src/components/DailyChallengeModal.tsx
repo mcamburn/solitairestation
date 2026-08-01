@@ -152,7 +152,7 @@ export function DailyChallengeModal({
               >
                 {completedToday
                   ? "You've already completed today's deal"
-                  : "Every player gets the same shuffled deal today"}
+                  : "Players in your timezone get the same deal today — resets at local midnight"}
               </p>
             </div>
           </div>
@@ -179,7 +179,7 @@ export function DailyChallengeModal({
               className="text-xs leading-relaxed"
               style={{ color: "color-mix(in oklab, var(--neon) 50%, white)" }}
             >
-              Complete the challenge once to add to your daily streak. The deal resets every midnight UTC.
+              Complete the challenge once to add to your daily streak. The deal resets at local midnight.
             </p>
           )}
 
