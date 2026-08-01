@@ -4,8 +4,12 @@ description: Which GitHub remote is the real one, and how to push correctly.
 ---
 
 ## Rule
-Always push to `origin`, which now correctly points to `https://github.com/mcamburn/solitairestation.git`.
+Always push using the direct token command — the `gitPush` skill callback returns `null` for provider on this repo and does not actually push.
 
-**Why:** The repo had two GitHub remotes — `origin` (old `free-klondike-solitaire` repo) and `solitairestation` (correct repo). `origin` was reset to `solitairestation` so the `gitPush` tool works correctly. The old `solitairestation` remote alias still exists as a redundant alias.
+**Why:** The repo remote is `https://github.com/mcamburn/solitairestation.git`. The `gitPush` tool cannot detect the GitHub provider from this URL (returns `null`) and silently no-ops. Direct shell push with the token works reliably.
 
-**How to apply:** Use `gitPush({ branch: "main" })` for all pushes. If authentication fails via shell, use `git push "https://$GITHUB_PERSONAL_ACCESS_TOKEN@github.com/mcamburn/solitairestation.git" HEAD:main`.
+**How to apply:** For every push, run:
+```
+git push "https://$GITHUB_PERSONAL_ACCESS_TOKEN@github.com/mcamburn/solitairestation.git" HEAD:main
+```
+Do NOT use `gitPush({})` or `gitPush({ branch: "main" })` — they will appear to succeed but push nothing.
