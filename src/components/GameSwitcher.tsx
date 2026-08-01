@@ -133,8 +133,8 @@ export function GameSwitcher() {
           className="flex w-full items-center justify-between px-4 py-3 text-sm font-semibold transition-colors"
           style={{
             background: open
-              ? "color-mix(in oklab, var(--neon) 16%, oklch(0.18 0.03 250))"
-              : "color-mix(in oklab, var(--neon) 10%, oklch(0.18 0.03 250))",
+              ? "color-mix(in oklab, var(--neon) 16%, oklch(0.18 0.03 155))"
+              : "color-mix(in oklab, var(--neon) 10%, oklch(0.18 0.03 155))",
             borderBottom: "1px solid color-mix(in oklab, var(--neon) 35%, transparent)",
             color: "var(--neon)",
           }}
@@ -162,7 +162,7 @@ export function GameSwitcher() {
           <div
             className="absolute left-0 right-0 top-full z-50"
             style={{
-              background: "color-mix(in oklab, var(--neon) 7%, oklch(0.17 0.03 250))",
+              background: "color-mix(in oklab, var(--neon) 7%, oklch(0.17 0.03 155))",
               borderBottom: "1px solid color-mix(in oklab, var(--neon) 28%, transparent)",
               boxShadow: "0 16px 48px -4px rgba(0,0,0,0.7), 0 0 0 0 transparent",
             }}

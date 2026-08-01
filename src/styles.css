@@ -34,7 +34,7 @@
   --color-neon: var(--neon);
   --color-neon-2: var(--neon-2);
   --color-red-suit: var(--red-suit);
-  --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Playfair Display", Georgia, ui-serif, serif;
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, monospace;
 }
@@ -44,30 +44,36 @@
   --radius: 0.875rem;
   /* Card corner radius — kept small on mobile so narrow cards don't look like pills */
   --card-radius: 0.25rem;
-  --background: oklch(0.16 0.02 265);
-  --foreground: oklch(0.98 0.005 250);
-  --surface: oklch(0.20 0.025 265);
-  --surface-2: oklch(0.24 0.03 265);
-  --card: oklch(0.99 0.003 250);
-  --card-foreground: oklch(0.15 0.02 265);
-  --popover: oklch(0.20 0.025 265);
-  --popover-foreground: oklch(0.98 0.005 250);
-  --primary: oklch(0.78 0.19 155);
-  --primary-foreground: oklch(0.15 0.02 265);
-  --secondary: oklch(0.28 0.03 265);
-  --secondary-foreground: oklch(0.98 0.005 250);
-  --muted: oklch(0.24 0.03 265);
-  --muted-foreground: oklch(0.68 0.02 260);
-  --accent: oklch(0.72 0.20 305);
-  --accent-foreground: oklch(0.15 0.02 265);
-  --destructive: oklch(0.65 0.25 25);
-  --destructive-foreground: oklch(0.98 0.005 250);
+
+  /* ── Solitaire Station palette ── deep casino felt + warm gold + crimson ── */
+  --background: oklch(0.14 0.025 155);
+  --foreground: oklch(0.97 0.015 80);
+  --surface: oklch(0.18 0.030 155);
+  --surface-2: oklch(0.22 0.035 155);
+  --card: oklch(0.99 0.004 90);
+  --card-foreground: oklch(0.12 0.020 155);
+  --popover: oklch(0.18 0.030 155);
+  --popover-foreground: oklch(0.97 0.015 80);
+  /* Gold primary */
+  --primary: oklch(0.80 0.14 86);
+  --primary-foreground: oklch(0.12 0.020 155);
+  --secondary: oklch(0.26 0.040 155);
+  --secondary-foreground: oklch(0.97 0.015 80);
+  --muted: oklch(0.22 0.030 155);
+  --muted-foreground: oklch(0.65 0.020 155);
+  /* Crimson accent */
+  --accent: oklch(0.55 0.190 22);
+  --accent-foreground: oklch(0.97 0.015 80);
+  --destructive: oklch(0.62 0.240 25);
+  --destructive-foreground: oklch(0.97 0.015 80);
   --border: oklch(1 0 0 / 8%);
   --input: oklch(1 0 0 / 12%);
-  --ring: oklch(0.78 0.19 155);
-  --neon: oklch(0.85 0.18 165);
-  --neon-2: oklch(0.72 0.22 305);
-  --red-suit: oklch(0.68 0.22 20);
+  --ring: oklch(0.80 0.14 86);
+  /* Gold glow */
+  --neon: oklch(0.84 0.14 86);
+  /* Crimson glow */
+  --neon-2: oklch(0.62 0.18 22);
+  --red-suit: oklch(0.65 0.22 20);
 }
 
 @layer base {
@@ -85,9 +91,9 @@
     color: var(--color-foreground);
     font-family: var(--font-sans);
     background-image:
-      radial-gradient(ellipse 80% 60% at 20% 0%, color-mix(in oklab, var(--neon) 18%, transparent), transparent 60%),
-      radial-gradient(ellipse 60% 50% at 85% 100%, color-mix(in oklab, var(--neon-2) 20%, transparent), transparent 60%),
-      linear-gradient(180deg, var(--background), oklch(0.13 0.02 265));
+      radial-gradient(ellipse 80% 60% at 20% 0%, color-mix(in oklab, var(--neon) 14%, transparent), transparent 60%),
+      radial-gradient(ellipse 60% 50% at 85% 100%, color-mix(in oklab, var(--neon-2) 12%, transparent), transparent 60%),
+      linear-gradient(180deg, var(--background), oklch(0.10 0.020 155));
     background-attachment: fixed;
   }
 }
@@ -99,7 +105,7 @@
 }
 
 @utility playing-card {
-  background: linear-gradient(160deg, oklch(0.995 0.003 250), oklch(0.94 0.01 250));
+  background: linear-gradient(160deg, oklch(0.995 0.004 90), oklch(0.94 0.010 85));
   color: var(--card-foreground);
   border: 1px solid oklch(0 0 0 / 8%);
   box-shadow:
@@ -110,7 +116,7 @@
 
 @utility card-back {
   background:
-    linear-gradient(135deg, var(--neon) 0%, var(--neon-2) 100%);
+    linear-gradient(135deg, oklch(0.30 0.09 155) 0%, oklch(0.20 0.06 155) 100%);
   background-size: 200% 200%;
   border: 1px solid oklch(1 0 0 / 15%);
   box-shadow:
@@ -127,11 +133,11 @@
   border: 1px solid oklch(1 0 0 / 20%);
 }
 
-/* Skin: Neon (default checker) */
+/* Skin: Neon (default — gold diamond lattice on green felt) */
 .skin-neon .card-back-pattern {
   background-image:
-    linear-gradient(45deg, oklch(1 0 0 / 12%) 25%, transparent 25%),
-    linear-gradient(-45deg, oklch(1 0 0 / 12%) 25%, transparent 25%);
+    linear-gradient(45deg, color-mix(in oklab, var(--neon) 22%, transparent) 25%, transparent 25%),
+    linear-gradient(-45deg, color-mix(in oklab, var(--neon) 22%, transparent) 25%, transparent 25%);
   background-size: 10px 10px;
 }
 
@@ -183,8 +189,6 @@
   background-image:
     repeating-linear-gradient(0deg, oklch(1 0 0 / 8%) 0 2px, transparent 2px 6px);
 }
-
-/* (Mono skin removed) */
 
 /* Skin: Prism — chromatic bands */
 .skin-prism.card-back {
@@ -260,7 +264,7 @@
   background: linear-gradient(160deg, oklch(0.995 0.003 250), oklch(0.96 0.005 250)) !important;
 }
 .face-bold {
-  background: linear-gradient(160deg, oklch(0.15 0.02 265), oklch(0.10 0.02 265)) !important;
+  background: linear-gradient(160deg, oklch(0.15 0.025 155), oklch(0.10 0.020 155)) !important;
   color: oklch(0.98 0.005 250) !important;
   border-color: oklch(1 0 0 / 12%) !important;
 }
@@ -275,7 +279,7 @@
   background: linear-gradient(160deg, oklch(0.99 0.003 250), oklch(0.95 0.005 250)) !important;
 }
 .face-retro {
-  background: linear-gradient(160deg, oklch(0.14 0.02 265), oklch(0.08 0.02 265)) !important;
+  background: linear-gradient(160deg, oklch(0.14 0.025 155), oklch(0.08 0.020 155)) !important;
   border-color: color-mix(in oklab, var(--neon) 40%, transparent) !important;
   box-shadow:
     0 0 0 1px color-mix(in oklab, var(--neon) 25%, transparent) inset,

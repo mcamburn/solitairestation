@@ -1,11 +1,11 @@
 {
-  "name": "Free Klondike Solitaire",
-  "short_name": "Solitaire",
-  "description": "Play free online Klondike Solitaire — Turn 1, Turn 3, Vegas scoring, Double Klondike, and five more card games. No download required.",
+  "name": "Solitaire Station",
+  "short_name": "Solitaire Station",
+  "description": "Play free online solitaire at Solitaire Station — Klondike, FreeCell, Spider, Pyramid, TriPeaks, and Mahjong. No download required.",
   "start_url": "/klondike",
   "display": "standalone",
-  "background_color": "#0d1a12",
-  "theme_color": "#1b5e20",
+  "background_color": "#0e1c10",
+  "theme_color": "#b8901e",
   "orientation": "any",
   "icons": [
     {
