@@ -67,19 +67,10 @@ export function GameSwitcher() {
           boxShadow: open ? "0 0 20px -6px var(--neon)" : "none",
         }}
       >
-        {/* Left: emoji + name + description */}
+        {/* Left: emoji + name */}
         <span className="flex items-center gap-3 min-w-0">
           <span className="text-3xl leading-none shrink-0">{active.emoji}</span>
-          <span className="flex items-baseline gap-2.5 min-w-0">
-            <span className="text-lg font-bold tracking-tight shrink-0">{active.title}</span>
-            <span className="shrink-0 opacity-40">·</span>
-            <span
-              className="text-lg font-normal truncate"
-              style={{ color: "color-mix(in oklab, var(--neon) 65%, white)" }}
-            >
-              {active.desc}
-            </span>
-          </span>
+          <span className="text-lg font-bold tracking-tight truncate">{active.title}</span>
         </span>
 
         {/* Right: in-progress badge + chevron */}

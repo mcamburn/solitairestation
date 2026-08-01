@@ -65,7 +65,7 @@ export function GamePageLayout({ gameKey, badge, title, tagline, rulesIntro, rul
               {VERT_DIVIDER}
               <GameStatsBar gameKey={gameKey} variant="inline" />
               {VERT_DIVIDER}
-              <div className="flex-1 min-w-0">
+              <div className="w-52 shrink-0">
                 <GameSwitcher />
               </div>
             </div>
