@@ -16,7 +16,7 @@ import {
 } from "@/lib/eightoff";
 import { PlayingCard, type CardBackSkin, type CardFaceStyle } from "./PlayingCard";
 import { AppearanceBar, useCardAppearance, useNewGameToast, NewGameToast } from "./CardPickers";
-import { WinBanner } from "./WinBanner";
+import { DailyWinBanner } from "./DailyWinBanner";
 import { useDragMode, DragModeToggle } from "./DragModeToggle";
 import type { Card } from "@/lib/solitaire";
 
@@ -430,7 +430,7 @@ export function EightOff() {
       </div>
 
       {game.won && (
-        <WinBanner message={`All 52 cards sorted in ${game.moves} moves!`} onNew={reset} stats={gameStats} />
+        <DailyWinBanner message={`All 52 cards sorted in ${game.moves} moves!`} onNew={reset} stats={gameStats} />
       )}
 
       <DragModeToggle

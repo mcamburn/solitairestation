@@ -13,7 +13,7 @@ import {
 } from "@/lib/scorpion";
 import { PlayingCard, type CardBackSkin, type CardFaceStyle } from "./PlayingCard";
 import { AppearanceBar, useCardAppearance, useNewGameToast, NewGameToast } from "./CardPickers";
-import { WinBanner } from "./WinBanner";
+import { DailyWinBanner } from "./DailyWinBanner";
 import type { Card } from "@/lib/solitaire";
 
 const CARD_H = 110;
@@ -348,7 +348,7 @@ export function Scorpion() {
       </div>
 
       {game.won && (
-        <WinBanner message={`All 4 sequences completed in ${game.moves} moves!`} onNew={reset} stats={gameStats} />
+        <DailyWinBanner message={`All 4 sequences completed in ${game.moves} moves!`} onNew={reset} stats={gameStats} />
       )}
 
       {/* Drag ghost */}

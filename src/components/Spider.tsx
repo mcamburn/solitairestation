@@ -14,7 +14,7 @@ import {
 } from "@/lib/spider";
 import { PlayingCard, type CardBackSkin, type CardFaceStyle } from "./PlayingCard";
 import { AppearanceBar, useCardAppearance, useNewGameToast, NewGameToast } from "./CardPickers";
-import { WinBanner } from "./WinBanner";
+import { DailyWinBanner } from "./DailyWinBanner";
 import { useDragMode, DragModeToggle } from "./DragModeToggle";
 import type { Card } from "@/lib/solitaire";
 
@@ -384,7 +384,7 @@ export function Spider({ initialDifficulty }: { initialDifficulty?: SpiderDiffic
       </div>
 
       {game.won && (
-        <WinBanner message={`All 8 sequences cleared in ${game.moves} moves!`} onNew={() => reset()} stats={gameStats} />
+        <DailyWinBanner message={`All 8 sequences cleared in ${game.moves} moves!`} onNew={() => reset()} stats={gameStats} />
       )}
 
       <DragModeToggle

@@ -14,7 +14,7 @@ import {
 import { rankLabel, suitGlyph, type Card } from "@/lib/solitaire";
 import { PlayingCard } from "./PlayingCard";
 import { AppearanceBar, useCardAppearance, useNewGameToast, NewGameToast } from "./CardPickers";
-import { WinBanner } from "./WinBanner";
+import { DailyWinBanner } from "./DailyWinBanner";
 import { useDragMode, DragModeToggle } from "./DragModeToggle";
 
 const CARD_W = 64;
@@ -372,7 +372,7 @@ export function BakersDozn() {
       </div>
 
       {game.won && (
-        <WinBanner message={`Baker's Dozen solved in ${game.moves} moves!`} onNew={reset} stats={gameStats} />
+        <DailyWinBanner message={`Baker's Dozen solved in ${game.moves} moves!`} onNew={reset} stats={gameStats} />
       )}
 
       <p className="mt-3 text-center text-xs text-muted-foreground">

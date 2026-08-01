@@ -17,7 +17,7 @@ import {
 import { rankLabel, suitGlyph, type Card } from "@/lib/solitaire";
 import { PlayingCard } from "./PlayingCard";
 import { AppearanceBar, useCardAppearance, useNewGameToast, NewGameToast } from "./CardPickers";
-import { WinBanner } from "./WinBanner";
+import { DailyWinBanner } from "./DailyWinBanner";
 import { useDragMode, DragModeToggle } from "./DragModeToggle";
 
 const CARD_W = 72;
@@ -394,7 +394,7 @@ export function Golf() {
       </div>
 
       {gameOver && !game.won && (
-        <WinBanner
+        <DailyWinBanner
           variant="stuck"
           message={`Game over — ${remaining} card${remaining !== 1 ? "s" : ""} remaining in tableau.`}
           onNew={reset}
@@ -402,7 +402,7 @@ export function Golf() {
         />
       )}
       {game.won && (
-        <WinBanner message={`Golf cleared in ${game.moves} moves! All tableau cards played.`} onNew={reset} stats={gameStats} />
+        <DailyWinBanner message={`Golf cleared in ${game.moves} moves! All tableau cards played.`} onNew={reset} stats={gameStats} />
       )}
 
       <p className="mt-3 text-center text-xs text-muted-foreground">

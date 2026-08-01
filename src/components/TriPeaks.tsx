@@ -17,7 +17,7 @@ import {
 } from "@/lib/tripeaks";
 import { PlayingCard, type CardBackSkin, type CardFaceStyle } from "./PlayingCard";
 import { AppearanceBar, useCardAppearance, useNewGameToast, NewGameToast } from "./CardPickers";
-import { WinBanner } from "./WinBanner";
+import { DailyWinBanner } from "./DailyWinBanner";
 
 // Layout constants
 const UNIT = 78;   // horizontal unit in px (card-position multiplier)
@@ -369,7 +369,7 @@ export function TriPeaks() {
       )}
 
       {game.won && (
-        <WinBanner
+        <DailyWinBanner
           message={`All peaks cleared in ${game.moves} moves!`}
           onNew={reset}
           stats={gameStats}

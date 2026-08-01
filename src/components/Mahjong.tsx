@@ -17,7 +17,7 @@ import {
   BOARD_W,
   BOARD_H,
 } from "./MahjongTile";
-import { WinBanner } from "./WinBanner";
+import { DailyWinBanner } from "./DailyWinBanner";
 
 function formatTime(startedAt: number): string {
   const secs = Math.floor((Date.now() - startedAt) / 1000);
@@ -284,7 +284,7 @@ export function Mahjong() {
       )}
 
       {game.won && (
-        <WinBanner
+        <DailyWinBanner
           message={`All 144 tiles cleared in ${game.moves} moves!`}
           onNew={reset}
           stats={gameStats}

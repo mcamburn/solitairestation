@@ -15,7 +15,7 @@ import {
   type AddictionHint,
 } from "@/lib/addiction";
 import { AppearanceBar, useCardAppearance, useNewGameToast, NewGameToast } from "./CardPickers";
-import { WinBanner } from "./WinBanner";
+import { DailyWinBanner } from "./DailyWinBanner";
 import { rankLabel, suitGlyph, suitColor } from "@/lib/solitaire";
 
 const SAVE_KEY = "addiction";
@@ -358,7 +358,7 @@ export function Addiction() {
       )}
 
       {state.won && (
-        <WinBanner message={`All rows complete in ${state.moves} moves!`} onNew={reset} stats={gameStats} />
+        <DailyWinBanner message={`All rows complete in ${state.moves} moves!`} onNew={reset} stats={gameStats} />
       )}
 
       <p className="mt-3 text-center text-xs text-muted-foreground">

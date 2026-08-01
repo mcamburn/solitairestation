@@ -16,7 +16,7 @@ import {
 } from "@/lib/pyramid";
 import { PlayingCard, type CardBackSkin, type CardFaceStyle } from "./PlayingCard";
 import { AppearanceBar, useCardAppearance, useNewGameToast, NewGameToast } from "./CardPickers";
-import { WinBanner } from "./WinBanner";
+import { DailyWinBanner } from "./DailyWinBanner";
 
 const CARD_W = 74;
 const CARD_H = 106;
@@ -392,7 +392,7 @@ export function Pyramid() {
       )}
 
       {game.won && (
-        <WinBanner
+        <DailyWinBanner
           message={`Pyramid cleared in ${game.moves} moves!`}
           onNew={reset}
           stats={gameStats}

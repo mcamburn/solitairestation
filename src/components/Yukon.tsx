@@ -15,7 +15,7 @@ import {
 } from "@/lib/yukon";
 import { PlayingCard, type CardBackSkin, type CardFaceStyle } from "./PlayingCard";
 import { AppearanceBar, useCardAppearance, useNewGameToast, NewGameToast } from "./CardPickers";
-import { WinBanner } from "./WinBanner";
+import { DailyWinBanner } from "./DailyWinBanner";
 import type { Card } from "@/lib/solitaire";
 
 const CARD_H = 110;
@@ -394,7 +394,7 @@ export function Yukon() {
       </div>
 
       {game.won && (
-        <WinBanner message={`All cards moved to foundations in ${game.moves} moves!`} onNew={reset} stats={gameStats} />
+        <DailyWinBanner message={`All cards moved to foundations in ${game.moves} moves!`} onNew={reset} stats={gameStats} />
       )}
 
       {/* Drag ghost */}

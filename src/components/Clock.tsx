@@ -11,7 +11,7 @@ import {
 } from "@/lib/clock";
 import { PlayingCard, type CardBackSkin, type CardFaceStyle } from "./PlayingCard";
 import { AppearanceBar, useCardAppearance, useNewGameToast, NewGameToast } from "./CardPickers";
-import { WinBanner } from "./WinBanner";
+import { DailyWinBanner } from "./DailyWinBanner";
 
 const CARD_W = 56;
 const CARD_H = 80;
@@ -364,7 +364,7 @@ export function Clock() {
       </div>
 
       {game.lost && (
-        <WinBanner
+        <DailyWinBanner
           variant="stuck"
           message={`All 4 Kings revealed — the game ends. Better luck next time!`}
           onNew={reset}
@@ -373,7 +373,7 @@ export function Clock() {
       )}
 
       {game.won && (
-        <WinBanner
+        <DailyWinBanner
           message={`Incredible! All cards revealed before the 4th King — you beat Clock Patience!`}
           onNew={reset}
           stats={gameStats}

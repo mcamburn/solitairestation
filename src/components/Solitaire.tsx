@@ -851,14 +851,61 @@ function WinOverlay({ onNew, moves, time, mode, score }: {
 }) {
   const modeLabel = MODE_LABELS.find(m => m.value === mode)?.label ?? "Klondike";
   const [celebrating, setCelebrating] = useState(true);
+  const [copied, setCopied] = useState(false);
+  const { justWonDailyStreak, clearDailyWin } = useDailyChallenge();
+
+  const handleNew = () => { clearDailyWin(); onNew(); };
+
+  const isDaily = justWonDailyStreak !== null;
+  const today = new Date().toISOString().slice(0, 10);
+  const dateLabel = new Date(today + "T12:00:00Z").toLocaleDateString("en-US", {
+    weekday: "long", month: "long", day: "numeric",
+  });
+  const streakLabel = justWonDailyStreak === 1 ? "1st daily complete!" : `${justWonDailyStreak}-day streak 🔥`;
+
+  const handleCopy = () => {
+    const shareText = [`🃏 Neon Solitaire – Daily Challenge`, `📅 ${dateLabel}`, `🔥 ${streakLabel}`, ``, `Play free at neon-solitaire.replit.app`].join("\n");
+    navigator.clipboard.writeText(shareText).then(() => { setCopied(true); setTimeout(() => setCopied(false), 2500); }).catch(() => window.prompt("Copy this result:", shareText));
+  };
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/70 backdrop-blur-md">
       {celebrating && <WinCelebration onDone={() => setCelebrating(false)} />}
-      <div className="glass mx-4 max-w-sm rounded-3xl p-8 text-center">
-        <div className="mx-auto mb-4 h-12 w-12 rounded-2xl" style={{ background: "linear-gradient(135deg, var(--neon), var(--neon-2))", boxShadow: "0 0 40px -4px var(--neon)" }} />
-        <h2 className="text-2xl font-bold tracking-tight" style={{ fontFamily: "var(--font-display)" }}>You won.</h2>
-        <p className="mt-1 text-sm text-muted-foreground">{modeLabel} · {time} · {moves} moves{mode === "vegas" ? ` · ${score}` : ""}</p>
-        <button onClick={onNew} className="mt-6 w-full rounded-xl px-4 py-2.5 text-sm font-semibold text-primary-foreground" style={{ background: "linear-gradient(135deg, var(--neon), var(--neon-2))" }}>Play again</button>
+      <div
+        className="glass mx-4 max-w-sm rounded-3xl p-8 text-center"
+        style={isDaily ? { borderColor: "var(--neon-2)", boxShadow: "0 0 60px -8px var(--neon-2), 0 0 20px -4px var(--neon)" } : {}}
+      >
+        {isDaily && (
+          <div className="mx-auto mb-3 inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-widest"
+            style={{ background: "linear-gradient(135deg, var(--neon), var(--neon-2))", color: "var(--primary-foreground)" }}>
+            ☀️ Daily Complete
+          </div>
+        )}
+        {!isDaily && <div className="mx-auto mb-4 h-12 w-12 rounded-2xl" style={{ background: "linear-gradient(135deg, var(--neon), var(--neon-2))", boxShadow: "0 0 40px -4px var(--neon)" }} />}
+        <div className="text-4xl">{isDaily ? "🎉" : ""}</div>
+        <h2 className="mt-2 text-2xl font-bold tracking-tight" style={{ fontFamily: "var(--font-display)", color: isDaily ? "var(--neon)" : undefined }}>You won.</h2>
+        <p className="mt-1 text-sm text-muted-foreground">
+          {isDaily ? dateLabel : `${modeLabel} · ${time} · ${moves} moves${mode === "vegas" ? ` · ${score}` : ""}`}
+        </p>
+        {isDaily && (
+          <div className="mx-auto mt-4 inline-flex items-center gap-2 rounded-xl px-5 py-2.5"
+            style={{ background: "linear-gradient(135deg, color-mix(in srgb, var(--neon) 15%, transparent), color-mix(in srgb, var(--neon-2) 15%, transparent))", border: "1px solid color-mix(in srgb, var(--neon-2) 40%, transparent)" }}>
+            <span className="text-xl">🔥</span>
+            <span className="text-base font-bold" style={{ color: "var(--neon-2)", fontFamily: "var(--font-display)" }}>{streakLabel}</span>
+          </div>
+        )}
+        {isDaily && <p className="mt-2 text-xs text-muted-foreground">{modeLabel} · {time} · {moves} moves{mode === "vegas" ? ` · ${score}` : ""}</p>}
+        {isDaily ? (
+          <div className="mt-5 flex flex-col gap-2 sm:flex-row sm:justify-center">
+            <button onClick={handleCopy} className="rounded-xl px-4 py-2.5 text-sm font-semibold transition hover:opacity-90"
+              style={{ background: copied ? "linear-gradient(135deg, var(--neon), var(--neon-2))" : "color-mix(in srgb, var(--neon-2) 20%, transparent)", border: "1px solid color-mix(in srgb, var(--neon-2) 50%, transparent)", color: copied ? "var(--primary-foreground)" : "var(--neon-2)" }}>
+              {copied ? "✓ Copied!" : "📋 Share Result"}
+            </button>
+            <button onClick={handleNew} className="rounded-xl px-4 py-2.5 text-sm font-semibold text-primary-foreground" style={{ background: "linear-gradient(135deg, var(--neon), var(--neon-2))" }}>Play again</button>
+          </div>
+        ) : (
+          <button onClick={handleNew} className="mt-6 w-full rounded-xl px-4 py-2.5 text-sm font-semibold text-primary-foreground" style={{ background: "linear-gradient(135deg, var(--neon), var(--neon-2))" }}>Play again</button>
+        )}
       </div>
     </div>
   );

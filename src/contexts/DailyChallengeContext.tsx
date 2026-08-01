@@ -36,10 +36,19 @@ interface DailyChallengeContextValue {
    * Game components watch this value and call reset(dailySeed) when it changes.
    */
   dailyTrigger: number;
+  /**
+   * Set to the new streak value immediately after onDailyWin is called;
+   * null otherwise. Used to show the daily win celebration banner.
+   */
+  justWonDailyStreak: number | null;
+  /** The game key for the current daily provider instance. */
+  gameKey: string;
   /** Call this when the player wins a daily challenge game. */
   onDailyWin: () => void;
   /** Activate (or re-start) the daily challenge. */
   activateDaily: () => void;
+  /** Clear the just-won state (called when the player starts a new game). */
+  clearDailyWin: () => void;
 }
 
 const DailyChallengeContext = createContext<DailyChallengeContextValue | null>(null);
@@ -56,6 +65,7 @@ export function DailyChallengeProvider({ gameKey, children }: ProviderProps) {
     loadDailyStats(gameKey)
   );
   const [dailyTrigger, setDailyTrigger] = useState(0);
+  const [justWonDailyStreak, setJustWonDailyStreak] = useState<number | null>(null);
 
   // Keep daily stats fresh after external updates (e.g. after onDailyWin)
   useEffect(() => {
@@ -69,6 +79,7 @@ export function DailyChallengeProvider({ gameKey, children }: ProviderProps) {
 
   const activateDaily = useCallback(() => {
     setDailyTrigger((t) => t + 1);
+    setJustWonDailyStreak(null);
     // Scroll to game board so the player sees the reset
     if (typeof document !== "undefined") {
       document.getElementById("game-board")?.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -78,7 +89,12 @@ export function DailyChallengeProvider({ gameKey, children }: ProviderProps) {
   const onDailyWin = useCallback(() => {
     const updated = recordDailyWin(gameKey);
     setDailyStats(updated);
+    setJustWonDailyStreak(updated.streak);
   }, [gameKey]);
+
+  const clearDailyWin = useCallback(() => {
+    setJustWonDailyStreak(null);
+  }, []);
 
   const value: DailyChallengeContextValue = {
     dailySeed,
@@ -86,8 +102,11 @@ export function DailyChallengeProvider({ gameKey, children }: ProviderProps) {
     dailyStreak: dailyStats.streak,
     longestDailyStreak: dailyStats.longestStreak,
     dailyTrigger,
+    justWonDailyStreak,
+    gameKey,
     onDailyWin,
     activateDaily,
+    clearDailyWin,
   };
 
   return (
@@ -108,8 +127,11 @@ export function useDailyChallenge(): DailyChallengeContextValue {
       dailyStreak: 0,
       longestDailyStreak: 0,
       dailyTrigger: 0,
+      justWonDailyStreak: null,
+      gameKey: "",
       onDailyWin: () => {},
       activateDaily: () => {},
+      clearDailyWin: () => {},
     };
   }
   return ctx;
