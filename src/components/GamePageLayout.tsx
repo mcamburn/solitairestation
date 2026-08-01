@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import { Link } from "@tanstack/react-router";
 import { GameSwitcher } from "./GameSwitcher";
 import { SiteFooter } from "./SiteFooter";
+import { SolitaireStationLogo } from "./SolitaireStationLogo";
 
 export interface RuleItem {
   title: string;
@@ -49,13 +50,28 @@ export function GamePageLayout({ badge, title, tagline, rulesIntro, rules, child
       >
         {/* On mobile the switcher is full-bleed; desktop is constrained + padded */}
         <div className="mx-auto max-w-[900px] xl:max-w-[1200px] md:px-4 md:py-2">
-          <GameSwitcher />
+          {/* Desktop: logo left + switcher right */}
+          <div className="hidden md:flex items-center gap-4">
+            <SolitaireStationLogo variant="full" className="shrink-0" />
+            <div className="w-px self-stretch" style={{ background: "color-mix(in oklab, white 10%, transparent)" }} />
+            <div className="flex-1">
+              <GameSwitcher />
+            </div>
+          </div>
+          {/* Mobile: switcher only (logo shows in hero) */}
+          <div className="md:hidden">
+            <GameSwitcher />
+          </div>
         </div>
       </div>
 
       {/* Header — hidden in phone landscape via .game-hero CSS rule */}
       <header className="game-hero mx-auto mb-8 xl:mb-12 max-w-[900px] xl:max-w-[1200px] px-4 text-center">
-        <div className="inline-flex items-center gap-2 rounded-full border border-border bg-surface/60 px-3 py-1 text-[10px] uppercase tracking-[0.22em] text-muted-foreground backdrop-blur">
+        {/* Mobile: show full logo lockup; desktop: show slim badge (logo already in nav) */}
+        <div className="md:hidden flex justify-center mb-4">
+          <SolitaireStationLogo variant="full" />
+        </div>
+        <div className="hidden md:inline-flex items-center gap-2 rounded-full border border-border bg-surface/60 px-3 py-1 text-[10px] uppercase tracking-[0.22em] text-muted-foreground backdrop-blur">
           <span
             className="h-1.5 w-1.5 rounded-full"
             style={{ background: "var(--neon)", boxShadow: "0 0 8px var(--neon)" }}

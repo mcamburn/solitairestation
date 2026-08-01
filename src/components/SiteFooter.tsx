@@ -1,4 +1,5 @@
 import { Link } from "@tanstack/react-router";
+import { SolitaireStationLogo } from "./SolitaireStationLogo";
 
 interface SiteFooterProps {
   /** Show a "← Back to game" link above the legal row (for content pages). */
@@ -25,6 +26,11 @@ export function SiteFooter({ showBackLink }: SiteFooterProps) {
             </Link>
           </div>
         )}
+
+        {/* Brand + legal row */}
+        <div className="mb-3 pb-3 flex justify-center" style={{ borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
+          <SolitaireStationLogo variant="full" className="opacity-80 hover:opacity-100 transition-opacity" />
+        </div>
 
         {/* Legal row */}
         <div className="flex flex-col items-center justify-between gap-2 sm:flex-row">
