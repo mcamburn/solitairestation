@@ -72,8 +72,9 @@ export function GameSwitcher() {
           <span className="text-3xl leading-none shrink-0">{active.emoji}</span>
           <span className="flex items-baseline gap-2.5 min-w-0">
             <span className="text-lg font-bold tracking-tight shrink-0">{active.title}</span>
+            <span className="shrink-0 opacity-40">·</span>
             <span
-              className="text-sm font-normal truncate"
+              className="text-lg font-normal truncate"
               style={{ color: "color-mix(in oklab, var(--neon) 65%, white)" }}
             >
               {active.desc}
