@@ -68,7 +68,24 @@ for route in "${ROUTES[@]}"; do
   fi
 done
 
-# ── 4. Report ─────────────────────────────────────────────────────────────────
+# ── 4. Hardcoded-domain regression check ─────────────────────────────────────
+echo "==> Checking for hardcoded domain strings in source files…"
+HARDCODED=$(grep -r --include="*.ts" --include="*.tsx" \
+  "free-klondike-solitaire\.com" src/ \
+  -l 2>/dev/null \
+  | grep -v "src/lib/site\.ts" \
+  || true)
+
+if [[ -n "${HARDCODED}" ]]; then
+  echo ""
+  echo "ERROR: Hardcoded domain 'free-klondike-solitaire.com' found in source file(s):" >&2
+  echo "${HARDCODED}" | sed 's/^/  /' >&2
+  echo "Use the SITE_URL constant from @/lib/site instead." >&2
+  exit 1
+fi
+echo "  PASS  No hardcoded domain strings found."
+
+# ── 5. Report ─────────────────────────────────────────────────────────────────
 echo ""
 if [[ ${FAILED} -eq 0 ]]; then
   echo "All ${#ROUTES[@]} routes returned 200. Smoke test passed."

@@ -45,5 +45,10 @@ in this environment.
 - `src/lib/solitaire.ts` — core game logic
 - `src/server.ts` / `src/start.ts` — SSR server entry with error-capture wrapping
 
+## Domain URL convention
+The canonical site domain is defined **once** in `src/lib/site.ts` as the `SITE_URL` constant. All route files and components that need an absolute URL (e.g. `og:url`, `og:image`, canonical links) **must** import and use `SITE_URL` — never hardcode `https://www.free-klondike-solitaire.com` directly.
+
+`scripts/smoke-test.sh` enforces this: it greps every `*.ts` / `*.tsx` file under `src/` (excluding `src/lib/site.ts` itself) and fails the build if the literal string `free-klondike-solitaire.com` appears anywhere. Any pull request that introduces a hardcoded domain will be caught immediately.
+
 ## User preferences
 None recorded yet.
