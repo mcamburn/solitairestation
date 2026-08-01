@@ -59,23 +59,23 @@ export function GamePageLayout({ gameKey, badge, title, tagline, rulesIntro, rul
         >
           <div className="relative mx-auto max-w-[900px] xl:max-w-[1200px] md:px-4 md:py-2">
 
-            {/* Desktop: [Logo] | [GameSwitcher] | [stats inline] */}
+            {/* Desktop: [Logo] | [stats inline] | [GameSwitcher] */}
             <div className="hidden md:flex items-center gap-3">
               <SolitaireStationLogo variant="full" className="shrink-0" />
+              {VERT_DIVIDER}
+              <GameStatsBar gameKey={gameKey} variant="inline" />
               {VERT_DIVIDER}
               <div className="flex-1 min-w-0">
                 <GameSwitcher />
               </div>
-              {VERT_DIVIDER}
-              <GameStatsBar gameKey={gameKey} variant="inline" />
             </div>
 
-            {/* Mobile: [GameSwitcher] then [stats row] */}
+            {/* Mobile: [stats row] then [GameSwitcher] */}
             <div className="md:hidden flex flex-col gap-1 py-1">
-              <GameSwitcher />
-              <div className="flex items-center gap-2 px-2 pb-1">
+              <div className="flex items-center gap-2 px-2 pt-1">
                 <GameStatsBar gameKey={gameKey} variant="inline" />
               </div>
+              <GameSwitcher />
             </div>
 
           </div>
