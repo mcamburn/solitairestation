@@ -57,7 +57,7 @@ export function GameSwitcher() {
         onClick={() => setOpen(o => !o)}
         aria-expanded={open}
         aria-haspopup="listbox"
-        className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2 text-sm font-semibold transition-all duration-150 select-none"
+        className="flex w-full items-center justify-between gap-3 rounded-xl px-4 py-2.5 text-sm font-semibold transition-all duration-150 select-none"
         style={{
           background: open
             ? "color-mix(in oklab, var(--neon) 20%, oklch(0.18 0.03 155))"
@@ -67,36 +67,41 @@ export function GameSwitcher() {
           boxShadow: open ? "0 0 20px -6px var(--neon)" : "none",
         }}
       >
-        {/* Current game identity */}
-        <span className="text-xl leading-none">{active.emoji}</span>
-        <span className="flex flex-col items-start leading-none">
-          <span className="text-sm font-bold tracking-tight">{active.title}</span>
-          <span
-            className="text-[10px] font-normal mt-0.5"
-            style={{ color: "color-mix(in oklab, var(--neon) 65%, white)" }}
-          >
-            {active.subtitle}
+        {/* Left: emoji + name + subtitle */}
+        <span className="flex items-center gap-3 min-w-0">
+          <span className="text-3xl leading-none shrink-0">{active.emoji}</span>
+          <span className="flex flex-col items-start leading-none min-w-0">
+            <span className="text-base font-bold tracking-tight truncate">{active.title}</span>
+            <span
+              className="text-xs font-normal mt-1"
+              style={{ color: "color-mix(in oklab, var(--neon) 65%, white)" }}
+            >
+              {active.subtitle}
+            </span>
           </span>
         </span>
-        {activeInProgress && (
-          <span
-            className="rounded-full px-1.5 py-0.5 text-[9px] font-bold leading-none tracking-wide uppercase shrink-0"
-            style={{
-              background: "color-mix(in srgb, var(--neon) 22%, transparent)",
-              color: "var(--neon)",
-              border: "1px solid color-mix(in srgb, var(--neon) 40%, transparent)",
-            }}
+
+        {/* Right: in-progress badge + chevron */}
+        <span className="flex items-center gap-2.5 shrink-0">
+          {activeInProgress && (
+            <span
+              className="rounded-full px-2 py-1 text-[10px] font-bold leading-none tracking-wide uppercase"
+              style={{
+                background: "color-mix(in srgb, var(--neon) 22%, transparent)",
+                color: "var(--neon)",
+                border: "1px solid color-mix(in srgb, var(--neon) 40%, transparent)",
+              }}
+            >
+              In Progress
+            </span>
+          )}
+          <svg
+            width="12" height="12" viewBox="0 0 10 10" fill="none"
+            className={`transition-transform duration-200 ${open ? "rotate-180" : ""}`}
           >
-            In Progress
-          </span>
-        )}
-        {/* Chevron */}
-        <svg
-          width="10" height="10" viewBox="0 0 10 10" fill="none"
-          className={`shrink-0 ml-0.5 transition-transform duration-200 ${open ? "rotate-180" : ""}`}
-        >
-          <path d="M1.5 3.5l3.5 3.5 3.5-3.5" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"/>
-        </svg>
+            <path d="M1.5 3.5l3.5 3.5 3.5-3.5" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        </span>
       </button>
 
       {/* ── Dropdown panel ──────────────────────────────────────────── */}
