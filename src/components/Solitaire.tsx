@@ -22,6 +22,7 @@ import {
 import { PlayingCard, type CardBackSkin, type CardFaceStyle } from "./PlayingCard";
 import { AppearanceBar, useCardAppearance, useNewGameToast, NewGameToast } from "./CardPickers";
 import { useDragMode, DragModeToggle } from "./DragModeToggle";
+import { WinCelebration } from "./WinCelebration";
 
 const CARD_W = 88;
 const CARD_H = 124;
@@ -846,8 +847,10 @@ function WinOverlay({ onNew, moves, time, mode, score }: {
   onNew: () => void; moves: number; time: string; mode: KlondikeMode; score: string;
 }) {
   const modeLabel = MODE_LABELS.find(m => m.value === mode)?.label ?? "Klondike";
+  const [celebrating, setCelebrating] = useState(true);
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/70 backdrop-blur-md">
+      {celebrating && <WinCelebration onDone={() => setCelebrating(false)} />}
       <div className="glass mx-4 max-w-sm rounded-3xl p-8 text-center">
         <div className="mx-auto mb-4 h-12 w-12 rounded-2xl" style={{ background: "linear-gradient(135deg, var(--neon), var(--neon-2))", boxShadow: "0 0 40px -4px var(--neon)" }} />
         <h2 className="text-2xl font-bold tracking-tight" style={{ fontFamily: "var(--font-display)" }}>You won.</h2>
