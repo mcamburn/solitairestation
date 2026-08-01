@@ -46,7 +46,7 @@ in this environment.
 - `src/server.ts` / `src/start.ts` — SSR server entry with error-capture wrapping
 
 ## Domain URL convention
-The canonical site domain is defined **once** in `src/lib/site.ts` as the `SITE_URL` constant. All route files and components that need an absolute URL (e.g. `og:url`, `og:image`, canonical links) **must** import and use `SITE_URL` — never hardcode `https://www.free-klondike-solitaire.com` directly.
+The canonical site domain is defined **once** in `src/lib/site.ts` as the `SITE_URL` constant (Solitaire Station — defaults to `https://www.free-klondike-solitaire.com`, overridden via `VITE_SITE_URL`). All route files and components that need an absolute URL (e.g. `og:url`, `og:image`, canonical links) **must** import and use `SITE_URL` — never hardcode the domain string directly.
 
 Two layers of enforcement exist:
 

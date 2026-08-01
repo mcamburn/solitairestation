@@ -116,7 +116,7 @@ function buildSvg(game: (typeof GAMES)[0], emojiB64: string): string {
         font-family="system-ui, -apple-system, sans-serif"
         font-weight="500" font-size="22"
         fill="rgba(255,255,255,0.35)" text-anchor="end" dominant-baseline="middle">
-    free-klondike-solitaire.com
+    solitairestation.com
   </text>
 </svg>`;
 }
