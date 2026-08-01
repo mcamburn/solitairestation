@@ -223,14 +223,15 @@ function RootShell({ children }: { children: ReactNode }) {
     <html lang="en">
       <head suppressHydrationWarning>
         <HeadContent />
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: WEBSITE_LD }} />
-        {/* Google tag (gtag.js) */}
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-LC34HC1KHJ" />
-        <script dangerouslySetInnerHTML={{ __html: `window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());gtag('config', 'G-LC34HC1KHJ');` }} />
       </head>
       <body>
         {children}
         <Scripts />
+        {/* JSON-LD and analytics kept in <body> so Replit's <head> script injection
+            never causes a child-node-order hydration mismatch */}
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: WEBSITE_LD }} />
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-LC34HC1KHJ" />
+        <script dangerouslySetInnerHTML={{ __html: `window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());gtag('config', 'G-LC34HC1KHJ');` }} />
       </body>
     </html>
   );
