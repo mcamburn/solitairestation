@@ -11,11 +11,11 @@ export const Route = createFileRoute("/terms")({
       { property: "og:site_name", content: "Free-Klondike-Solitaire.com" },
       { property: "og:title", content: "Terms of Use · Free-Klondike-Solitaire.com" },
       { property: "og:type", content: "website" },
-      { property: "og:url", content: "https://www.free-klondike-solitaire.com/terms" },
+      { property: "og:url", content: "https://www.solitairestation.com/terms" },
       { name: "twitter:card", content: "summary" },
     ],
     links: [
-      { rel: "canonical", href: "https://www.free-klondike-solitaire.com/terms" },
+      { rel: "canonical", href: "https://www.solitairestation.com/terms" },
     ],
   }),
 });
@@ -42,7 +42,7 @@ function TermsPage() {
       <div className="mt-8 space-y-8 text-sm leading-relaxed text-muted-foreground">
 
         <Section n="1" title="Acceptance of Terms">
-          <p>These Terms of Use ("Terms") describes the terms of service applicable for your access and/or use of our website located at https://www.free-klondike-solitaire.com and any services offered or provided by Publish Port ("Company", or "we", "our" or "us") through the website located at https://www.free-klondike-solitaire.com or otherwise provided by us, including but not limited to the providing a solitaire game for you to play, all other services that may be made available by us, and the content on the website (the "Site"). We own and operate the Site.</p>
+          <p>These Terms of Use ("Terms") describes the terms of service applicable for your access and/or use of our website located at https://www.solitairestation.com and any services offered or provided by Publish Port ("Company", or "we", "our" or "us") through the website located at https://www.solitairestation.com or otherwise provided by us, including but not limited to the providing a solitaire game for you to play, all other services that may be made available by us, and the content on the website (the "Site"). We own and operate the Site.</p>
           <p className="mt-3">If you are accessing and/or using our Site and/or services for an entity, such as the company you work for, you represent that you have authority to bind that entity to these Terms, and you agree that "you," and "your," and "yourself" as used in these Terms includes both you personally and the entity you represent. If you are accessing our Site and/or services on behalf of only yourself as an individual, then "you," "your," and "yourself" includes only you personally.</p>
           <p className="mt-3">These Terms constitute a legally binding agreement made between you and us. By accessing and using the Site, you represent and agree that: (i) you have read and familiarized yourself with these Terms; (ii) you understand these Terms; and (iii) you are bound by these Terms. If you do not accept and agree to all of these Terms, then you MUST NOT access and/or use this Site and/or our services.</p>
         </Section>
@@ -130,11 +130,11 @@ function TermsPage() {
         </Section>
 
         <Section n="12" title="Privacy Policy">
-          <p>Our Privacy Policy (currently published at https://www.free-klondike-solitaire.com/privacy) applies to your access and/or use of the Site and its terms are incorporated into these Terms by this reference. By accessing and/or using the Site and/or our services, you acknowledge and agree that Internet transmissions are never completely private or secure. The Privacy Policy may be changed from time to time and such changes are effective immediately upon their posting.</p>
+          <p>Our Privacy Policy (currently published at https://www.solitairestation.com/privacy) applies to your access and/or use of the Site and its terms are incorporated into these Terms by this reference. By accessing and/or using the Site and/or our services, you acknowledge and agree that Internet transmissions are never completely private or secure. The Privacy Policy may be changed from time to time and such changes are effective immediately upon their posting.</p>
         </Section>
 
         <Section n="13" title="Cookies Policy">
-          <p>We and our partners (including, but not limited to Google Adsense) use cookies or similar technologies to optimize the functionality of the Site, to help us understand how the Site is used, and to provide you with interest-based advertising. For more information about the cookies and similar technologies used on our Site, please refer to our Cookie Policy located in our Privacy Policy (currently published at https://www.free-klondike-solitaire.com/privacy).</p>
+          <p>We and our partners (including, but not limited to Google Adsense) use cookies or similar technologies to optimize the functionality of the Site, to help us understand how the Site is used, and to provide you with interest-based advertising. For more information about the cookies and similar technologies used on our Site, please refer to our Cookie Policy located in our Privacy Policy (currently published at https://www.solitairestation.com/privacy).</p>
         </Section>
 
         <Section n="14" title="Disclaimer of Warranties">
@@ -176,7 +176,7 @@ function TermsPage() {
 
         <Section n="22" title="Electronic Communications">
           <p>When you visit the Site and/or use our services and/or send emails to us, you are communicating with us electronically, and you consent to receive communications from us electronically. We may communicate with you by email or by posting notices on the Site. You agree that all agreements, notices, disclosures and other communications that we provide to you electronically satisfy any legal requirement that such communications be in writing.</p>
-          <p className="mt-3">You have a right to withdraw your consent to receive electronic communications at any time by contacting us via email at <a href="mailto:contact@free-klondike-solitaire.com" className="text-foreground underline underline-offset-2 hover:no-underline">contact@free-klondike-solitaire.com</a> with the subject line "Terms."</p>
+          <p className="mt-3">You have a right to withdraw your consent to receive electronic communications at any time by contacting us via email at <a href="mailto:contact@solitairestation.com" className="text-foreground underline underline-offset-2 hover:no-underline">contact@solitairestation.com</a> with the subject line "Terms."</p>
         </Section>
 
         <Section n="23" title="Employment Opportunities">
@@ -187,19 +187,19 @@ function TermsPage() {
           <p>We respect the rights of copyright holders and abide by the federal Digital Millennium Copyright Act ("DMCA") and similar regulations in other jurisdictions by responding to written notifications of alleged infringement by copyright holders.</p>
           <div className="mt-4 space-y-4">
             <SubSection title="24.1 Reporting Instances of Copyright Infringement">
-              If you believe that any content residing or accessible on or through the Site infringes your copyright, please send a notice of copyright infringement to <a href="mailto:contact@free-klondike-solitaire.com" className="text-foreground underline underline-offset-2 hover:no-underline">contact@free-klondike-solitaire.com</a> with the subject line "DMCA." The notice must include: identification of the allegedly infringed work; identification and location of the allegedly infringing material; your contact information; if you are not the copyright owner, a description of your relationship to the copyright holder; a good faith belief statement; a statement under penalty of perjury that the information is accurate; and a physical or electronic signature.
+              If you believe that any content residing or accessible on or through the Site infringes your copyright, please send a notice of copyright infringement to <a href="mailto:contact@solitairestation.com" className="text-foreground underline underline-offset-2 hover:no-underline">contact@solitairestation.com</a> with the subject line "DMCA." The notice must include: identification of the allegedly infringed work; identification and location of the allegedly infringing material; your contact information; if you are not the copyright owner, a description of your relationship to the copyright holder; a good faith belief statement; a statement under penalty of perjury that the information is accurate; and a physical or electronic signature.
             </SubSection>
             <SubSection title="24.2 Our Response To A Copyright Infringement Notification">
               Following receipt of a proper written notification, we will promptly remove or disable access to the allegedly infringing content and notify the user who posted the material.
             </SubSection>
             <SubSection title="24.3 Submitting A DMCA Counter-Notification">
-              If you believe your content was removed or disabled by mistake or misidentification, you may send us a counter-notification to <a href="mailto:contact@free-klondike-solitaire.com" className="text-foreground underline underline-offset-2 hover:no-underline">contact@free-klondike-solitaire.com</a> with the subject line "DMCA" that includes: identification of the removed material and its prior location; your contact information; a consent to jurisdiction statement; a statement under penalty of perjury that the material was removed by mistake; and your physical or electronic signature.
+              If you believe your content was removed or disabled by mistake or misidentification, you may send us a counter-notification to <a href="mailto:contact@solitairestation.com" className="text-foreground underline underline-offset-2 hover:no-underline">contact@solitairestation.com</a> with the subject line "DMCA" that includes: identification of the removed material and its prior location; your contact information; a consent to jurisdiction statement; a statement under penalty of perjury that the material was removed by mistake; and your physical or electronic signature.
             </SubSection>
             <SubSection title="24.4 Repeat Infringer Policy">
               We have adopted a policy of terminating access to the Site for any users who, in our sole discretion, are deemed to be repeat infringers.
             </SubSection>
             <SubSection title="24.5 Copyright Agent Contact Information">
-              Both infringement notifications and counter notifications should be submitted to our Copyright Agent via email at <a href="mailto:contact@free-klondike-solitaire.com" className="text-foreground underline underline-offset-2 hover:no-underline">contact@free-klondike-solitaire.com</a> with the subject line "DMCA."
+              Both infringement notifications and counter notifications should be submitted to our Copyright Agent via email at <a href="mailto:contact@solitairestation.com" className="text-foreground underline underline-offset-2 hover:no-underline">contact@solitairestation.com</a> with the subject line "DMCA."
             </SubSection>
           </div>
         </Section>
@@ -216,13 +216,13 @@ function TermsPage() {
 
         <Section n="27" title="Advertising">
           <p>You will see advertising material submitted by third parties on the Site. Each individual advertiser is solely responsible for the content of its advertising material. We accept no responsibility for the content of advertising material, including, without limitation, any error, omission, or inaccuracy therein.</p>
-          <p className="mt-3">If you are interested in advertising on our Site, please contact us via email at <a href="mailto:contact@free-klondike-solitaire.com" className="text-foreground underline underline-offset-2 hover:no-underline">contact@free-klondike-solitaire.com</a> with the subject line "Ads."</p>
+          <p className="mt-3">If you are interested in advertising on our Site, please contact us via email at <a href="mailto:contact@solitairestation.com" className="text-foreground underline underline-offset-2 hover:no-underline">contact@solitairestation.com</a> with the subject line "Ads."</p>
         </Section>
 
         <Section n="28" title="Link Usage and Requests">
           <p>The following organizations may link to our Site without our prior written approval: government agencies; search engines; news organizations; online directory distributors; and system wide accredited businesses (except soliciting non-profit organizations, charity shopping malls, and charity fundraising groups).</p>
           <p className="mt-3">These organizations may link to our home page so long as the link: (a) is not in any way deceptive; (b) does not falsely imply sponsorship, endorsement or approval of the linking party and its products and/or services; and (c) fits within the context of the linking party's site.</p>
-          <p className="mt-3">If you are interested in linking to our Site, you must inform us by contacting us via email at <a href="mailto:contact@free-klondike-solitaire.com" className="text-foreground underline underline-offset-2 hover:no-underline">contact@free-klondike-solitaire.com</a> with the subject line "Link Requests," providing your name, organization name, contact information, the URL of your site, a list of any URLs from which you intend to link to our Site, and a list of the URLs on our site to which you would like to link. It may take us 2–3 weeks to respond. No use of the Company's logo or other artwork will be allowed for linking absent a written trademark license agreement signed by the parties.</p>
+          <p className="mt-3">If you are interested in linking to our Site, you must inform us by contacting us via email at <a href="mailto:contact@solitairestation.com" className="text-foreground underline underline-offset-2 hover:no-underline">contact@solitairestation.com</a> with the subject line "Link Requests," providing your name, organization name, contact information, the URL of your site, a list of any URLs from which you intend to link to our Site, and a list of the URLs on our site to which you would like to link. It may take us 2–3 weeks to respond. No use of the Company's logo or other artwork will be allowed for linking absent a written trademark license agreement signed by the parties.</p>
         </Section>
 
         <Section n="29" title="Changes to Terms">
@@ -236,7 +236,7 @@ function TermsPage() {
         </Section>
 
         <Section n="31" title="Contact Us">
-          <p>In order to resolve a complaint regarding the Site or to receive further information regarding use of the Site or if you have a question about these Terms, please contact us via email at <a href="mailto:contact@free-klondike-solitaire.com" className="text-foreground underline underline-offset-2 hover:no-underline">contact@free-klondike-solitaire.com</a> with the subject line "Terms" and please make sure you provide us with enough information in the email so we can clearly understand the issue.</p>
+          <p>In order to resolve a complaint regarding the Site or to receive further information regarding use of the Site or if you have a question about these Terms, please contact us via email at <a href="mailto:contact@solitairestation.com" className="text-foreground underline underline-offset-2 hover:no-underline">contact@solitairestation.com</a> with the subject line "Terms" and please make sure you provide us with enough information in the email so we can clearly understand the issue.</p>
         </Section>
 
       </div>

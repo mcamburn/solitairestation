@@ -11,11 +11,11 @@ export const Route = createFileRoute("/privacy")({
       { property: "og:site_name", content: "Free-Klondike-Solitaire.com" },
       { property: "og:title", content: "Privacy Policy · Free-Klondike-Solitaire.com" },
       { property: "og:type", content: "website" },
-      { property: "og:url", content: "https://www.free-klondike-solitaire.com/privacy" },
+      { property: "og:url", content: "https://www.solitairestation.com/privacy" },
       { name: "twitter:card", content: "summary" },
     ],
     links: [
-      { rel: "canonical", href: "https://www.free-klondike-solitaire.com/privacy" },
+      { rel: "canonical", href: "https://www.solitairestation.com/privacy" },
     ],
   }),
 });
@@ -42,7 +42,7 @@ function PrivacyPage() {
       <div className="mt-8 space-y-8 text-sm leading-relaxed text-muted-foreground">
 
         <Section n="1" title="Introduction">
-          <p>This Privacy Policy (the "Privacy Policy") describes the privacy policy for your access and/or use of our website located at https://www.free-klondike-solitaire.com and any services offered or provided by Publish Port ("Company," "we," "our," or "us") through the website located at https://www.free-klondike-solitaire.com or otherwise provided by us (the "Site"). We own and operate the Site.</p>
+          <p>This Privacy Policy (the "Privacy Policy") describes the privacy policy for your access and/or use of our website located at https://www.solitairestation.com and any services offered or provided by Publish Port ("Company," "we," "our," or "us") through the website located at https://www.solitairestation.com or otherwise provided by us (the "Site"). We own and operate the Site.</p>
           <p className="mt-3">We are committed to protecting the privacy and security of your personal information. This Privacy Policy describes how we collect, use, share, and protect the personal information of visitors to our Site.</p>
         </Section>
 
@@ -53,7 +53,7 @@ function PrivacyPage() {
 
         <Section n="3" title="Minimum Age">
           <p>You represent to us that you are lawfully able to enter into contracts in the jurisdiction where you are a citizen (e.g., you are not a minor according to applicable local laws). The Site is not intended to be used by persons who are minors under applicable law. If you are a minor according to applicable laws, then you must not use the Site and/or any of the services offered by us.</p>
-          <p className="mt-3">We do not knowingly collect, solicit data from, or market to persons who are a minor according to applicable local laws. If we learn that personal information from users who is a minor according to applicable local law has been collected, we will deactivate the account and take reasonable measures to promptly delete such data from our records. If you become aware of any data we may have collected from someone who is a minor according to applicable local laws, please contact us immediately by emailing us at contact@free-klondike-solitaire.com with the subject line "Privacy Policy."</p>
+          <p className="mt-3">We do not knowingly collect, solicit data from, or market to persons who are a minor according to applicable local laws. If we learn that personal information from users who is a minor according to applicable local law has been collected, we will deactivate the account and take reasonable measures to promptly delete such data from our records. If you become aware of any data we may have collected from someone who is a minor according to applicable local laws, please contact us immediately by emailing us at contact@solitairestation.com with the subject line "Privacy Policy."</p>
         </Section>
 
         <Section n="4" title="Information We Collect">
@@ -88,7 +88,7 @@ function PrivacyPage() {
               "To comply with legal and regulatory requirements.",
             ].map((item, i) => <li key={i}>{item}</li>)}
           </ul>
-          <p className="mt-3">We may use your email to tell you about your usage of the Site and/or our services, new features, solicit your feedback, or to inform you about our products, upcoming events or other promotions. If you do not want to receive such communications, please contact us at contact@free-klondike-solitaire.com with the subject line "Privacy Policy." You may also follow unsubscribe instructions included in emails or access email preferences in your account settings where available.</p>
+          <p className="mt-3">We may use your email to tell you about your usage of the Site and/or our services, new features, solicit your feedback, or to inform you about our products, upcoming events or other promotions. If you do not want to receive such communications, please contact us at contact@solitairestation.com with the subject line "Privacy Policy." You may also follow unsubscribe instructions included in emails or access email preferences in your account settings where available.</p>
         </Section>
 
         <Section n="6" title="How We Share Your Information">
@@ -103,7 +103,7 @@ function PrivacyPage() {
         </Section>
 
         <Section n="7" title="Cookies Policy">
-          <p>This Cookies Policy explains the different types of cookies and similar technologies that may be applied on the browsers and devices of consumers who visit our Site. If you have questions, please contact us via email at contact@free-klondike-solitaire.com.</p>
+          <p>This Cookies Policy explains the different types of cookies and similar technologies that may be applied on the browsers and devices of consumers who visit our Site. If you have questions, please contact us via email at contact@solitairestation.com.</p>
           <div className="mt-4 space-y-4">
             <SubSection title="7.1 Consent">
               By continuing to use our Site and/or our services, you are agreeing to the use of cookies and other similar technologies for the purposes we describe in this Cookies Policy.
@@ -150,7 +150,7 @@ function PrivacyPage() {
         </Section>
 
         <Section n="12" title="Marketing Opt-Out Rights">
-          <p>You have the right to opt-out of receiving marketing communications from us at any time by following the unsubscribe link in our emails or by contacting us directly via email at contact@free-klondike-solitaire.com with the subject line "Privacy Policy." Depending on your jurisdiction, you may also have other rights regarding your personal information. Even if you opt-out of marketing communications, we may still send you transactional messages related to purchases you make regarding our Site and/or services.</p>
+          <p>You have the right to opt-out of receiving marketing communications from us at any time by following the unsubscribe link in our emails or by contacting us directly via email at contact@solitairestation.com with the subject line "Privacy Policy." Depending on your jurisdiction, you may also have other rights regarding your personal information. Even if you opt-out of marketing communications, we may still send you transactional messages related to purchases you make regarding our Site and/or services.</p>
         </Section>
 
         <Section n="13" title="Data Protection Rights">
@@ -165,50 +165,50 @@ function PrivacyPage() {
             <li><strong className="text-foreground/80">Object to Processing or Withdraw Consent:</strong> Object to our use of your personal information or withdraw consent where you have given it.</li>
             <li><strong className="text-foreground/80">Avoid Automated Decision-Making:</strong> The right not to be subject to a decision based solely on automated processing, subject to certain exceptions.</li>
           </ul>
-          <p className="mt-3">You may contact us directly via email at contact@free-klondike-solitaire.com with the subject line "Privacy Rights" to request a copy or deletion of your personal data. We will respond within a reasonable timeframe.</p>
+          <p className="mt-3">You may contact us directly via email at contact@solitairestation.com with the subject line "Privacy Rights" to request a copy or deletion of your personal data. We will respond within a reasonable timeframe.</p>
 
           <div className="mt-6 space-y-5">
             <SubSection title="13.1 Rights of California Residents">
-              If you reside in the State of California, you have additional rights under the California Consumer Privacy Act. You have the right to know about personal information collected, disclosed or sold; to request deletion of personal information; and to be free from discrimination for exercising your rights. To exercise these rights, contact us at contact@free-klondike-solitaire.com with the subject line "California Privacy Rights." We will respond to verifiable consumer requests within forty-five (45) days.
+              If you reside in the State of California, you have additional rights under the California Consumer Privacy Act. You have the right to know about personal information collected, disclosed or sold; to request deletion of personal information; and to be free from discrimination for exercising your rights. To exercise these rights, contact us at contact@solitairestation.com with the subject line "California Privacy Rights." We will respond to verifiable consumer requests within forty-five (45) days.
             </SubSection>
             <SubSection title="13.2 Rights of Colorado Residents">
-              If you reside in the State of Colorado, you have additional rights under the Colorado Privacy Act ("CPA"), including the right to be informed, access, correct, delete, and port your personal data, and to opt out of targeted advertising, sale, or profiling. We do not sell or share your personal information as defined under the CPA. To appeal a declined request, contact us at contact@free-klondike-solitaire.com with the subject line "Colorado Privacy Rights."
+              If you reside in the State of Colorado, you have additional rights under the Colorado Privacy Act ("CPA"), including the right to be informed, access, correct, delete, and port your personal data, and to opt out of targeted advertising, sale, or profiling. We do not sell or share your personal information as defined under the CPA. To appeal a declined request, contact us at contact@solitairestation.com with the subject line "Colorado Privacy Rights."
             </SubSection>
             <SubSection title="13.3 Rights of Connecticut Residents">
-              If you reside in the State of Connecticut, you have additional rights under the Connecticut Data Privacy Act ("CTDPA"), including the right to be informed, access, correct, delete, and port your personal data, and to opt out of targeted advertising, sale, or profiling. We do not sell or share your personal information as defined under the CTDPA. To appeal a declined request, contact us at contact@free-klondike-solitaire.com with the subject line "Connecticut Privacy Rights."
+              If you reside in the State of Connecticut, you have additional rights under the Connecticut Data Privacy Act ("CTDPA"), including the right to be informed, access, correct, delete, and port your personal data, and to opt out of targeted advertising, sale, or profiling. We do not sell or share your personal information as defined under the CTDPA. To appeal a declined request, contact us at contact@solitairestation.com with the subject line "Connecticut Privacy Rights."
             </SubSection>
             <SubSection title="13.4 Rights of Nevada Residents">
-              If you reside in the State of Nevada, you have the right to request that we do not sell your personal information. Please submit your request to contact@free-klondike-solitaire.com with the subject line "Nevada Privacy Rights."
+              If you reside in the State of Nevada, you have the right to request that we do not sell your personal information. Please submit your request to contact@solitairestation.com with the subject line "Nevada Privacy Rights."
             </SubSection>
             <SubSection title="13.5 Rights of Utah Residents">
-              If you reside in the State of Utah, you have additional rights under the Utah Consumer Privacy Act ("UCPA"), including the right to be informed, access, delete, and port your personal data, and to opt out of targeted advertising or the sale of personal data. We do not sell or share your personal information as defined under the UCPA. Contact us at contact@free-klondike-solitaire.com with the subject line "Utah Privacy Rights."
+              If you reside in the State of Utah, you have additional rights under the Utah Consumer Privacy Act ("UCPA"), including the right to be informed, access, delete, and port your personal data, and to opt out of targeted advertising or the sale of personal data. We do not sell or share your personal information as defined under the UCPA. Contact us at contact@solitairestation.com with the subject line "Utah Privacy Rights."
             </SubSection>
             <SubSection title="13.6 Rights of Virginia Residents">
-              If you reside in the State of Virginia, you have additional rights under the Virginia Consumer Data Protection Act ("VCDPA"), including the right to be informed, access, correct, delete, and port your personal data, and to opt out of targeted advertising, sale, or profiling. We do not sell or share your personal information as defined under the VCDPA. Contact us at contact@free-klondike-solitaire.com with the subject line "Virginia Privacy Rights." If your appeal is denied, you may contact the Attorney General to submit a complaint.
+              If you reside in the State of Virginia, you have additional rights under the Virginia Consumer Data Protection Act ("VCDPA"), including the right to be informed, access, correct, delete, and port your personal data, and to opt out of targeted advertising, sale, or profiling. We do not sell or share your personal information as defined under the VCDPA. Contact us at contact@solitairestation.com with the subject line "Virginia Privacy Rights." If your appeal is denied, you may contact the Attorney General to submit a complaint.
             </SubSection>
             <SubSection title="13.7 Rights of Australia Residents">
-              If you reside in Australia, you have rights to access and correct your personal information, and to opt out of direct marketing. Contact us at contact@free-klondike-solitaire.com with the subject line "Australia Privacy Rights." If unsatisfied with our handling of a complaint, you may refer it to the Office of the Australian Information Commissioner (enquiries@oaic.gov.au, Telephone: 1300 363 992, www.oaic.gov.au).
+              If you reside in Australia, you have rights to access and correct your personal information, and to opt out of direct marketing. Contact us at contact@solitairestation.com with the subject line "Australia Privacy Rights." If unsatisfied with our handling of a complaint, you may refer it to the Office of the Australian Information Commissioner (enquiries@oaic.gov.au, Telephone: 1300 363 992, www.oaic.gov.au).
             </SubSection>
             <SubSection title="13.8 Rights of Canada Residents">
-              If you reside in Canada, you have rights to access and correct your personal information and to withdraw consent. Contact us at contact@free-klondike-solitaire.com with the subject line "Canada Privacy Rights." If unsatisfied, you may lodge a complaint with the Office of the Privacy Commissioner of Canada: https://www.priv.gc.ca/en/report-a-concern/file-a-formal-privacy-complaint/.
+              If you reside in Canada, you have rights to access and correct your personal information and to withdraw consent. Contact us at contact@solitairestation.com with the subject line "Canada Privacy Rights." If unsatisfied, you may lodge a complaint with the Office of the Privacy Commissioner of Canada: https://www.priv.gc.ca/en/report-a-concern/file-a-formal-privacy-complaint/.
             </SubSection>
             <SubSection title="13.9 Rights of New Zealand Residents">
-              If you reside in New Zealand and have an established business relationship with us, you may have rights to access and correct your personal information. Contact us at contact@free-klondike-solitaire.com with the subject line "New Zealand Privacy Rights."
+              If you reside in New Zealand and have an established business relationship with us, you may have rights to access and correct your personal information. Contact us at contact@solitairestation.com with the subject line "New Zealand Privacy Rights."
             </SubSection>
             <SubSection title="13.10 Rights of European Economic Area and United Kingdom Residents">
-              Our operations are located primarily in the United States. If you provide information to us, it will be transferred to the United States. By providing personal information, you are consenting to its storage and use as described in this Policy. Under the GDPR you have rights including: the right to be informed, the right of access, the right to rectification, the right to erasure, the right to restrict processing, the right of data portability, and the right to object. Contact us at contact@free-klondike-solitaire.com with the subject line "UK or EU Privacy Rights."
+              Our operations are located primarily in the United States. If you provide information to us, it will be transferred to the United States. By providing personal information, you are consenting to its storage and use as described in this Policy. Under the GDPR you have rights including: the right to be informed, the right of access, the right to rectification, the right to erasure, the right to restrict processing, the right of data portability, and the right to object. Contact us at contact@solitairestation.com with the subject line "UK or EU Privacy Rights."
             </SubSection>
             <SubSection title="13.11 Rights of South Africa Residents">
-              If you reside in South Africa, you have the right to request access to or correction of your personal information. Contact us at contact@free-klondike-solitaire.com with the subject line "South Africa Privacy Rights." If unsatisfied, you may contact The Information Regulator (South Africa) at enquiries@inforegulator.org.za.
+              If you reside in South Africa, you have the right to request access to or correction of your personal information. Contact us at contact@solitairestation.com with the subject line "South Africa Privacy Rights." If unsatisfied, you may contact The Information Regulator (South Africa) at enquiries@inforegulator.org.za.
             </SubSection>
             <SubSection title="13.12 Rights for Other Jurisdictions">
-              If you are located in another jurisdiction not specifically discussed in this Privacy Policy, you may have rights under applicable data privacy laws. Please send your written request to contact@free-klondike-solitaire.com with the subject line "Other Privacy Rights."
+              If you are located in another jurisdiction not specifically discussed in this Privacy Policy, you may have rights under applicable data privacy laws. Please send your written request to contact@solitairestation.com with the subject line "Other Privacy Rights."
             </SubSection>
           </div>
         </Section>
 
         <Section n="14" title="Terms of Use">
-          <p>Our Terms of Use (currently published at https://www.free-klondike-solitaire.com/terms) applies to your access and/or use of the Site and/or our services, and its terms are made a part of and incorporated into this Privacy Policy by this reference. By accessing and/or using the Site and/or our services, you acknowledge that you have read our Terms and agree to our Terms.</p>
+          <p>Our Terms of Use (currently published at https://www.solitairestation.com/terms) applies to your access and/or use of the Site and/or our services, and its terms are made a part of and incorporated into this Privacy Policy by this reference. By accessing and/or using the Site and/or our services, you acknowledge that you have read our Terms and agree to our Terms.</p>
         </Section>
 
         <Section n="15" title="Privacy Policy Changes">
@@ -220,7 +220,7 @@ function PrivacyPage() {
         </Section>
 
         <Section n="17" title="Contact Us">
-          <p>If you have questions or comments about this Privacy Policy, please contact us by email at <a href="mailto:contact@free-klondike-solitaire.com" className="text-foreground underline underline-offset-2 hover:no-underline">contact@free-klondike-solitaire.com</a> with the subject line "Privacy Policy" and please make sure you provide us with enough information in the email so we can clearly understand the issue.</p>
+          <p>If you have questions or comments about this Privacy Policy, please contact us by email at <a href="mailto:contact@solitairestation.com" className="text-foreground underline underline-offset-2 hover:no-underline">contact@solitairestation.com</a> with the subject line "Privacy Policy" and please make sure you provide us with enough information in the email so we can clearly understand the issue.</p>
         </Section>
 
       </div>
