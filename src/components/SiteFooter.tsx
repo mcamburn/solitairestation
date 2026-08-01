@@ -37,6 +37,7 @@ export function SiteFooter({ showBackLink }: SiteFooterProps) {
           <div>© 2026 Publish Port. All rights reserved.</div>
           <nav className="flex items-center gap-5" aria-label="Site links">
             <Link to="/guides" className="transition hover:text-foreground">Guides</Link>
+            <Link to="/stats" className="transition hover:text-foreground">My Stats</Link>
             <Link to="/about" className="transition hover:text-foreground">About</Link>
             <Link to="/privacy" className="transition hover:text-foreground">Privacy Policy</Link>
             <Link to="/terms" className="transition hover:text-foreground">Terms of Use</Link>

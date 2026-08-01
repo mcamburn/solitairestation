@@ -33,6 +33,7 @@ import { Route as PyramidRouteImport } from './routes/pyramid'
 import { Route as ScorpionRouteImport } from './routes/scorpion'
 import { Route as SpiderRouteImport } from './routes/spider'
 import { Route as SpiderSolitaireRouteImport } from './routes/spider-solitaire'
+import { Route as StatsRouteImport } from './routes/stats'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as TripeaksRouteImport } from './routes/tripeaks'
 import { Route as Turn3SolitaireRouteImport } from './routes/turn-3-solitaire'
@@ -161,6 +162,11 @@ const SpiderSolitaireRoute = SpiderSolitaireRouteImport.update({
   path: '/spider-solitaire',
   getParentRoute: () => rootRouteImport,
 } as any)
+const StatsRoute = StatsRouteImport.update({
+  id: '/stats',
+  path: '/stats',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TermsRoute = TermsRouteImport.update({
   id: '/terms',
   path: '/terms',
@@ -222,6 +228,7 @@ export interface FileRoutesByFullPath {
   '/scorpion': typeof ScorpionRoute
   '/spider': typeof SpiderRoute
   '/spider-solitaire': typeof SpiderSolitaireRoute
+  '/stats': typeof StatsRoute
   '/terms': typeof TermsRoute
   '/tripeaks': typeof TripeaksRoute
   '/turn-3-solitaire': typeof Turn3SolitaireRoute
@@ -255,6 +262,7 @@ export interface FileRoutesByTo {
   '/scorpion': typeof ScorpionRoute
   '/spider': typeof SpiderRoute
   '/spider-solitaire': typeof SpiderSolitaireRoute
+  '/stats': typeof StatsRoute
   '/terms': typeof TermsRoute
   '/tripeaks': typeof TripeaksRoute
   '/turn-3-solitaire': typeof Turn3SolitaireRoute
@@ -289,6 +297,7 @@ export interface FileRoutesById {
   '/scorpion': typeof ScorpionRoute
   '/spider': typeof SpiderRoute
   '/spider-solitaire': typeof SpiderSolitaireRoute
+  '/stats': typeof StatsRoute
   '/terms': typeof TermsRoute
   '/tripeaks': typeof TripeaksRoute
   '/turn-3-solitaire': typeof Turn3SolitaireRoute
@@ -324,6 +333,7 @@ export interface FileRouteTypes {
     | '/scorpion'
     | '/spider'
     | '/spider-solitaire'
+    | '/stats'
     | '/terms'
     | '/tripeaks'
     | '/turn-3-solitaire'
@@ -357,6 +367,7 @@ export interface FileRouteTypes {
     | '/scorpion'
     | '/spider'
     | '/spider-solitaire'
+    | '/stats'
     | '/terms'
     | '/tripeaks'
     | '/turn-3-solitaire'
@@ -390,6 +401,7 @@ export interface FileRouteTypes {
     | '/scorpion'
     | '/spider'
     | '/spider-solitaire'
+    | '/stats'
     | '/terms'
     | '/tripeaks'
     | '/turn-3-solitaire'
@@ -424,6 +436,7 @@ export interface RootRouteChildren {
   ScorpionRoute: typeof ScorpionRoute
   SpiderRoute: typeof SpiderRoute
   SpiderSolitaireRoute: typeof SpiderSolitaireRoute
+  StatsRoute: typeof StatsRoute
   TermsRoute: typeof TermsRoute
   TripeaksRoute: typeof TripeaksRoute
   Turn3SolitaireRoute: typeof Turn3SolitaireRoute
@@ -603,6 +616,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SpiderSolitaireRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/stats': {
+      id: '/stats'
+      path: '/stats'
+      fullPath: '/stats'
+      preLoaderRoute: typeof StatsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/terms': {
       id: '/terms'
       path: '/terms'
@@ -680,6 +700,7 @@ const rootRouteChildren: RootRouteChildren = {
   ScorpionRoute: ScorpionRoute,
   SpiderRoute: SpiderRoute,
   SpiderSolitaireRoute: SpiderSolitaireRoute,
+  StatsRoute: StatsRoute,
   TermsRoute: TermsRoute,
   TripeaksRoute: TripeaksRoute,
   Turn3SolitaireRoute: Turn3SolitaireRoute,
