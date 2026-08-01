@@ -59,20 +59,26 @@ export function GamePageLayout({ gameKey, badge, title, tagline, rulesIntro, rul
         >
           <div className="relative mx-auto max-w-[900px] xl:max-w-[1200px] md:px-4 md:py-2">
 
-            {/* Desktop: [Logo] | [stats inline] | [GameSwitcher] */}
-            <div className="hidden md:flex items-center gap-3">
-              <SolitaireStationLogo variant="full" className="shrink-0" />
-              {VERT_DIVIDER}
-              <GameStatsBar gameKey={gameKey} variant="inline" />
-              {VERT_DIVIDER}
-              <div className="w-52 shrink-0">
-                <GameSwitcher />
+            {/* Desktop: [Logo | divider] — [stats centered] — [divider | GameSwitcher] */}
+            <div className="hidden md:grid items-center" style={{ gridTemplateColumns: "auto 1fr auto" }}>
+              <div className="flex items-center gap-3 pr-3">
+                <SolitaireStationLogo variant="full" className="shrink-0" />
+                {VERT_DIVIDER}
+              </div>
+              <div className="flex items-center justify-center">
+                <GameStatsBar gameKey={gameKey} variant="inline" />
+              </div>
+              <div className="flex items-center gap-3 pl-3">
+                {VERT_DIVIDER}
+                <div className="w-52 shrink-0">
+                  <GameSwitcher />
+                </div>
               </div>
             </div>
 
-            {/* Mobile: [stats row] then [GameSwitcher] */}
+            {/* Mobile: [stats centered] then [GameSwitcher] */}
             <div className="md:hidden flex flex-col gap-1 py-1">
-              <div className="flex items-center gap-2 px-2 pt-1">
+              <div className="flex items-center justify-center gap-2 px-2 pt-1">
                 <GameStatsBar gameKey={gameKey} variant="inline" />
               </div>
               <GameSwitcher />
