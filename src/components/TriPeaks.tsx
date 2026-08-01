@@ -193,7 +193,7 @@ export function TriPeaks() {
           <span className="tabular-nums text-muted-foreground">{time}</span>
           {game.streak > 1 && (
             <span className="font-semibold" style={{ color: "var(--neon)" }}>
-              🔥 Streak ×{game.streak}
+              🔥 Run ×{game.streak}
             </span>
           )}
           {topBarStats.hasPlayed && (
