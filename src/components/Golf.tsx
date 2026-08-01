@@ -11,13 +11,25 @@ import {
   type GolfState,
   type GolfHint,
 } from "@/lib/golf";
-import { rankLabel, suitGlyph } from "@/lib/solitaire";
-import { PlayingCard, type CardBackSkin, type CardFaceStyle } from "./PlayingCard";
+import { rankLabel, suitGlyph, type Card } from "@/lib/solitaire";
+import { PlayingCard } from "./PlayingCard";
 import { AppearanceBar, useCardAppearance, useNewGameToast, NewGameToast } from "./CardPickers";
 import { WinBanner } from "./WinBanner";
+import { useDragMode, DragModeToggle } from "./DragModeToggle";
 
 const CARD_W = 72;
 const CARD_H = 103;
+const DRAG_THRESHOLD = 6;
+
+type DragInfo = {
+  srcCol: number;
+  card: Card;
+  startX: number; startY: number;
+  offsetX: number; offsetY: number;
+  cardW: number; cardH: number;
+  moved: boolean;
+  onTap: () => void;
+};
 
 function formatTime(startedAt: number): string {
   const secs = Math.floor((Date.now() - startedAt) / 1000);
@@ -36,6 +48,13 @@ export function Golf() {
   const [, forceUpdate] = useState(0);
   const boardRef = useRef<HTMLDivElement>(null);
   const [scale, setScale] = useState(1);
+
+  const { dragMode, toggleDragMode } = useDragMode();
+  const dragRef = useRef<DragInfo | null>(null);
+  const commitDragRef = useRef<(dr: DragInfo, zone: string) => void>(() => {});
+  const [ghostPos, setGhostPos] = useState<{ x: number; y: number } | null>(null);
+  const [dropZone, setDropZone] = useState<string | null>(null);
+  const [draggingSrc, setDraggingSrc] = useState<number | null>(null);
 
   useEffect(() => {
     const saved = loadGame<GolfState>("golf");
@@ -63,7 +82,6 @@ export function Golf() {
     if (!el) return;
     const measure = () => {
       const w = el.getBoundingClientRect().width;
-      // Design width: 7 × CARD_W + 6 × 8px gap = 7×72 + 48 = 552px
       setScale(Math.min(1, w / 552));
     };
     measure();
@@ -71,6 +89,36 @@ export function Golf() {
     ro.observe(el);
     return () => ro.disconnect();
   }, [stateLoaded]);
+
+  // Global pointer handlers for drag
+  useEffect(() => {
+    const onMove = (e: PointerEvent) => {
+      const dr = dragRef.current;
+      if (!dr) return;
+      if (Math.hypot(e.clientX - dr.startX, e.clientY - dr.startY) > DRAG_THRESHOLD) dr.moved = true;
+      setGhostPos({ x: e.clientX, y: e.clientY });
+      const els = document.elementsFromPoint(e.clientX, e.clientY) as Element[];
+      setDropZone(els.find(el => el.hasAttribute?.("data-drop-zone"))?.getAttribute("data-drop-zone") ?? null);
+    };
+    const onUp = (e: PointerEvent) => {
+      const dr = dragRef.current;
+      if (!dr) return;
+      dragRef.current = null;
+      setGhostPos(null);
+      setDropZone(null);
+      setDraggingSrc(null);
+      if (!dr.moved) { dr.onTap(); return; }
+      const els = document.elementsFromPoint(e.clientX, e.clientY) as Element[];
+      const zone = els.find(el => el.hasAttribute?.("data-drop-zone"))?.getAttribute("data-drop-zone") ?? null;
+      if (zone) commitDragRef.current(dr, zone);
+    };
+    window.addEventListener("pointermove", onMove, { passive: true });
+    window.addEventListener("pointerup", onUp);
+    return () => {
+      window.removeEventListener("pointermove", onMove);
+      window.removeEventListener("pointerup", onUp);
+    };
+  }, []);
 
   if (!state) {
     return (
@@ -84,6 +132,10 @@ export function Golf() {
   const cardW = Math.max(32, Math.round(CARD_W * scale));
   const cardH = Math.round(cardW * 10 / 7);
   const cardGap = Math.max(2, Math.round(8 * scale));
+
+  commitDragRef.current = (dr: DragInfo, zone: string) => {
+    if (zone === "waste") commit(playTableauCard(game, dr.srcCol));
+  };
 
   const commit = (next: GolfState | null) => {
     if (!next) return false;
@@ -127,12 +179,35 @@ export function Golf() {
     commit(drawGolfStock(game));
   };
 
+  const startDrag = (e: React.PointerEvent<Element>, col: number, card: Card) => {
+    if (!dragMode) return;
+    e.preventDefault();
+    e.stopPropagation();
+    const rect = e.currentTarget.getBoundingClientRect();
+    dragRef.current = {
+      srcCol: col, card,
+      startX: e.clientX, startY: e.clientY,
+      offsetX: e.clientX - rect.left, offsetY: e.clientY - rect.top,
+      cardW: rect.width, cardH: cardH,
+      moved: false, onTap: () => handleColClick(col),
+    };
+    setDraggingSrc(col);
+    setGhostPos({ x: e.clientX, y: e.clientY });
+  };
+
+  const isDragging = ghostPos !== null;
+  const dropHighlight = (zone: string) =>
+    dropZone === zone ? "ring-2 ring-[var(--neon)] ring-offset-1 ring-offset-transparent" : "";
+
   const time = formatTime(game.startedAt);
   const wasteTop = game.waste[game.waste.length - 1];
   const remaining = tableauCardCount(game);
 
   return (
-    <div className="game-board-wrap mx-auto w-full max-w-[900px] xl:max-w-[1200px] px-4 xl:px-6 pb-16">
+    <div
+      className="game-board-wrap mx-auto w-full max-w-[900px] xl:max-w-[1200px] px-4 xl:px-6 pb-16"
+      style={isDragging ? { userSelect: "none", touchAction: "none" } : undefined}
+    >
       {/* Top bar */}
       <div className="glass mt-3 flex flex-wrap items-center justify-between gap-3 rounded-2xl px-4 py-2.5 text-xs">
         <div className="flex items-center gap-4">
@@ -148,34 +223,14 @@ export function Golf() {
           </span>
         </div>
         <div className="flex items-center gap-2">
-          <button
-            onClick={showHint}
-            className="rounded-lg border border-border px-2.5 py-1 transition hover:bg-secondary/70"
-          >
-            Hint
-          </button>
-          <button
-            onClick={undo}
-            disabled={history.length === 0}
-            className="rounded-lg border border-border px-2.5 py-1 transition hover:bg-secondary/70 disabled:opacity-40"
-          >
-            Undo
-          </button>
-          <button
-            onClick={reset}
-            className="rounded-lg px-2.5 py-1 text-primary-foreground transition hover:opacity-90"
-            style={{ background: "linear-gradient(135deg, var(--neon), var(--neon-2))" }}
-          >
-            New Game
-          </button>
+          <button onClick={showHint} className="rounded-lg border border-border px-2.5 py-1 transition hover:bg-secondary/70">Hint</button>
+          <button onClick={undo} disabled={history.length === 0} className="rounded-lg border border-border px-2.5 py-1 transition hover:bg-secondary/70 disabled:opacity-40">Undo</button>
+          <button onClick={reset} className="rounded-lg px-2.5 py-1 text-primary-foreground transition hover:opacity-90" style={{ background: "linear-gradient(135deg, var(--neon), var(--neon-2))" }}>New Game</button>
         </div>
       </div>
 
       {hint && (
-        <div
-          className="glass mt-3 flex items-center justify-between gap-3 rounded-2xl px-4 py-2.5 text-xs"
-          style={{ borderColor: "var(--neon)" }}
-        >
+        <div className="glass mt-3 flex items-center justify-between gap-3 rounded-2xl px-4 py-2.5 text-xs" style={{ borderColor: "var(--neon)" }}>
           <div className="flex items-center gap-2">
             <span className="h-1.5 w-1.5 rounded-full" style={{ background: "var(--neon)", boxShadow: "0 0 8px var(--neon)" }} />
             <span className="font-medium">Hint</span>
@@ -186,6 +241,12 @@ export function Golf() {
       )}
 
       <AppearanceBar skin={skin} face={face} onSkinChange={setSkin} onFaceChange={setFace} />
+      <DragModeToggle
+        dragMode={dragMode}
+        onToggle={toggleDragMode}
+        dragHint="Drag tableau cards onto the waste pile"
+        clickHint="Click a tableau card to play it onto the waste pile"
+      />
       <NewGameToast visible={toastVisible} skin={skin} face={face} />
 
       {/* Board */}
@@ -196,16 +257,15 @@ export function Golf() {
             {game.tableau.map((col, colIdx) => {
               const topCard = col[col.length - 1];
               const isHinted = hint?.col === colIdx;
-              const isPlayable = topCard && wasteTop
-                ? canPlayOnWaste(topCard.rank, wasteTop.rank)
-                : false;
+              const isPlayable = topCard && wasteTop ? canPlayOnWaste(topCard.rank, wasteTop.rank) : false;
+              const isDraggingThis = draggingSrc === colIdx;
 
               return (
                 <div
                   key={colIdx}
-                  className={`relative flex flex-col cursor-pointer select-none`}
+                  className="relative flex flex-col cursor-pointer select-none"
                   style={{ width: cardW, minHeight: cardH }}
-                  onClick={() => handleColClick(colIdx)}
+                  onClick={() => !dragMode && handleColClick(colIdx)}
                 >
                   {col.length === 0 ? (
                     <div
@@ -227,6 +287,7 @@ export function Golf() {
                             zIndex: cardIdx,
                             width: cardW,
                             height: cardH,
+                            opacity: isTop && isDraggingThis ? 0.35 : 1,
                           }}
                         >
                           <PlayingCard
@@ -236,7 +297,10 @@ export function Golf() {
                             backSkin={skin}
                             faceStyle={face}
                             interactive={isTop}
-                            onPointerDown={isTop ? (e) => { e.stopPropagation(); handleColClick(colIdx); } : undefined}
+                            onPointerDown={isTop ? (e) => {
+                              if (dragMode) startDrag(e, colIdx, card);
+                              else { e.stopPropagation(); handleColClick(colIdx); }
+                            } : undefined}
                           />
                         </div>
                       );
@@ -251,11 +315,7 @@ export function Golf() {
           <div className="mt-8 flex items-center justify-center gap-6">
             {/* Stock */}
             <div className="flex flex-col items-center gap-1">
-              <div
-                style={{ width: cardW, height: cardH }}
-                onClick={handleStockClick}
-                className="card-slot-container cursor-pointer"
-              >
+              <div style={{ width: cardW, height: cardH }} onClick={handleStockClick} className="card-slot-container cursor-pointer">
                 {game.stock.length > 0 ? (
                   <PlayingCard
                     card={{ ...game.stock[game.stock.length - 1], faceUp: false }}
@@ -265,26 +325,21 @@ export function Golf() {
                     interactive
                   />
                 ) : (
-                  <div
-                    className="slot-empty flex h-full w-full items-center justify-center rounded-[var(--card-radius)] text-2xl text-muted-foreground/40"
-                    title="Stock empty"
-                  >
-                    ∅
-                  </div>
+                  <div className="slot-empty flex h-full w-full items-center justify-center rounded-[var(--card-radius)] text-2xl text-muted-foreground/40" title="Stock empty">∅</div>
                 )}
               </div>
               <span className="text-xs text-muted-foreground">{game.stock.length} left</span>
             </div>
 
-            {/* Waste */}
+            {/* Waste — drop target */}
             <div className="flex flex-col items-center gap-1">
-              <div style={{ width: cardW, height: cardH }} className="card-slot-container">
+              <div
+                data-drop-zone="waste"
+                style={{ width: cardW, height: cardH }}
+                className={`card-slot-container rounded-[var(--card-radius)] ${dropHighlight("waste")}`}
+              >
                 {wasteTop ? (
-                  <PlayingCard
-                    card={wasteTop}
-                    backSkin={skin}
-                    faceStyle={face}
-                  />
+                  <PlayingCard card={wasteTop} backSkin={skin} faceStyle={face} />
                 ) : (
                   <div className="slot-empty h-full w-full rounded-[var(--card-radius)]" />
                 )}
@@ -304,17 +359,33 @@ export function Golf() {
           onNew={reset}
         />
       )}
-
       {game.won && (
-        <WinBanner
-          message={`Golf cleared in ${game.moves} moves! All tableau cards played.`}
-          onNew={reset}
-        />
+        <WinBanner message={`Golf cleared in ${game.moves} moves! All tableau cards played.`} onNew={reset} />
       )}
 
       <p className="mt-3 text-center text-xs text-muted-foreground">
         Play tableau top cards ±1 from waste top. Click stock to draw. No wrapping (Ace ≠ King).
       </p>
+
+      {/* Drag ghost */}
+      {isDragging && dragRef.current && (
+        <div
+          style={{
+            position: "fixed",
+            left: ghostPos!.x - dragRef.current.offsetX,
+            top: ghostPos!.y - dragRef.current.offsetY,
+            width: dragRef.current.cardW,
+            height: dragRef.current.cardH,
+            pointerEvents: "none",
+            zIndex: 9999,
+            opacity: 0.92,
+            transform: "rotate(3deg)",
+            filter: "drop-shadow(0 8px 24px rgba(0,0,0,0.55))",
+          }}
+        >
+          <PlayingCard card={dragRef.current.card} backSkin={skin} faceStyle={face} />
+        </div>
+      )}
     </div>
   );
 }
