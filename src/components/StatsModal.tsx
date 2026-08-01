@@ -6,6 +6,7 @@
  */
 
 import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { loadStats, getWinRate, formatStatTime, type GameStats, type GameRecord } from "@/lib/stats";
 import { loadDailyStats } from "@/lib/daily";
 
@@ -51,11 +52,13 @@ export function StatsModal({ gameKey, gameTitle, gameEmoji, open, onClose, daily
   }, [open]);
 
   if (!open) return null;
+  // Guard SSR and hydration — createPortal requires a live document.body
+  if (typeof document === "undefined" || !document.body) return null;
 
   const winRate = getWinRate(stats);
   const dailyStats = loadDailyStats(gameKey);
 
-  return (
+  return createPortal(
     <div
       ref={backdropRef}
       className="fixed inset-0 z-[200] flex items-center justify-center p-4"
@@ -171,7 +174,8 @@ export function StatsModal({ gameKey, gameTitle, gameEmoji, open, onClose, daily
           )}
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
 
