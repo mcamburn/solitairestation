@@ -357,16 +357,16 @@ export function Golf() {
         <WinBanner message={`Golf cleared in ${game.moves} moves! All tableau cards played.`} onNew={reset} />
       )}
 
+      <p className="mt-3 text-center text-xs text-muted-foreground">
+        Play tableau top cards ±1 from waste top. Click stock to draw. No wrapping (Ace ≠ King).
+      </p>
+
       <DragModeToggle
         dragMode={dragMode}
         onToggle={toggleDragMode}
         dragHint="Drag tableau cards onto the waste pile"
         clickHint="Click a tableau card to play it onto the waste pile"
       />
-
-      <p className="mt-3 text-center text-xs text-muted-foreground">
-        Play tableau top cards ±1 from waste top. Click stock to draw. No wrapping (Ace ≠ King).
-      </p>
 
       {/* Drag ghost */}
       {isDragging && dragRef.current && (

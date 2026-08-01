@@ -335,18 +335,18 @@ export function BakersDozn() {
         <WinBanner message={`Baker's Dozen solved in ${game.moves} moves!`} onNew={reset} />
       )}
 
+      <p className="mt-3 text-center text-xs text-muted-foreground">
+        {dragMode
+          ? "Drag a column's top card to move it. Double-click to send to foundation."
+          : "Click a column to select its top card, then click a destination. Double-click to send to foundation."}
+      </p>
+
       <DragModeToggle
         dragMode={dragMode}
         onToggle={toggleDragMode}
         dragHint="Drag a column's top card to another column or foundation"
         clickHint="Click a column to select its top card, then click a destination"
       />
-
-      <p className="mt-3 text-center text-xs text-muted-foreground">
-        {dragMode
-          ? "Drag a column's top card to move it. Double-click to send to foundation."
-          : "Click a column to select its top card, then click a destination. Double-click to send to foundation."}
-      </p>
 
       {/* Drag ghost */}
       {isDragging && dragRef.current && (

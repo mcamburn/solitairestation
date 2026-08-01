@@ -397,16 +397,16 @@ export function FortyThieves() {
         <WinBanner message={`All 104 cards on foundations in ${state.moves} moves!`} onNew={reset} />
       )}
 
+      <p className="mt-3 text-center text-xs text-muted-foreground">
+        Click stock to draw. Build tableau down in same suit. Move Aces to foundations first.
+      </p>
+
       <DragModeToggle
         dragMode={dragMode}
         onToggle={toggleDragMode}
         dragHint="Drag cards to a tableau column or foundation"
         clickHint="Click a card to select, then click a destination"
       />
-
-      <p className="mt-3 text-center text-xs text-muted-foreground">
-        Click stock to draw. Build tableau down in same suit. Move Aces to foundations first.
-      </p>
 
       {/* Drag ghost */}
       {isDragging && dragRef.current && (
