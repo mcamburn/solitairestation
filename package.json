@@ -4,6 +4,7 @@
   "sideEffects": false,
   "type": "module",
   "scripts": {
+    "prepare": "git config core.hooksPath .githooks",
     "dev": "vite dev",
     "start": "node .output/server/index.mjs",
     "build": "vite build",

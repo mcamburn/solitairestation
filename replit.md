@@ -48,7 +48,11 @@ in this environment.
 ## Domain URL convention
 The canonical site domain is defined **once** in `src/lib/site.ts` as the `SITE_URL` constant. All route files and components that need an absolute URL (e.g. `og:url`, `og:image`, canonical links) **must** import and use `SITE_URL` — never hardcode `https://www.free-klondike-solitaire.com` directly.
 
-`scripts/smoke-test.sh` enforces this: it greps every `*.ts` / `*.tsx` file under `src/` (excluding `src/lib/site.ts` itself) and fails the build if the literal string `free-klondike-solitaire.com` appears anywhere. Any pull request that introduces a hardcoded domain will be caught immediately.
+Two layers of enforcement exist:
+
+1. **Pre-commit hook** (`.githooks/pre-commit`) — runs instantly at commit time, greping only the staged `.ts`/`.tsx` files for the hardcoded domain string. Installed automatically via the `prepare` npm/bun script (`git config core.hooksPath .githooks`), so it activates after the first `bun install`. No extra dependencies required.
+
+2. **Smoke test** (`scripts/smoke-test.sh`) — greps the full `src/` tree as part of the production build verification. Any pull request that slips past the hook is caught here before merging.
 
 ## User preferences
 None recorded yet.

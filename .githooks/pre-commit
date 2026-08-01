@@ -1,0 +1,52 @@
+#!/usr/bin/env bash
+# pre-commit: catch hardcoded domain strings in the staged index blobs of .ts/.tsx files.
+# Reads each file from the Git index (`git show ":$file"`) — not the working tree —
+# so only what is actually being committed is checked.
+#
+# The staged blob is written to a temp file before grepping to avoid the
+# SIGPIPE / pipefail interaction: `git show … | grep -q` exits with a non-zero
+# pipeline status when grep exits early on a match in a large file, causing
+# false negatives under `set -o pipefail`.
+#
+# Installed automatically via `prepare` in package.json (git config core.hooksPath .githooks).
+
+set -euo pipefail
+
+DOMAIN="free-klondike-solitaire\.com"
+ALLOWED="src/lib/site.ts"
+
+# Collect staged .ts/.tsx files (excluding deletions)
+STAGED=$(git diff --cached --name-only --diff-filter=ACMR | grep -E '\.(ts|tsx)$' || true)
+
+if [[ -z "${STAGED}" ]]; then
+  exit 0
+fi
+
+# Temp file receives each staged blob; grepping the file avoids SIGPIPE
+TMPFILE=$(mktemp)
+trap 'rm -f "${TMPFILE}"' EXIT
+
+FAIL=0
+while IFS= read -r file; do
+  # Skip the canonical definition file
+  if [[ "${file}" == "${ALLOWED}" ]]; then
+    continue
+  fi
+  # Write the staged index blob to a temp file, then grep the file (no pipe)
+  if git show ":${file}" > "${TMPFILE}" 2>/dev/null && grep -q "${DOMAIN}" "${TMPFILE}"; then
+    if [[ "${FAIL}" -eq 0 ]]; then
+      echo "" >&2
+      echo "ERROR: Hardcoded domain 'free-klondike-solitaire.com' found in staged file(s):" >&2
+    fi
+    echo "  ${file}" >&2
+    FAIL=1
+  fi
+done <<< "${STAGED}"
+
+if [[ "${FAIL}" -ne 0 ]]; then
+  echo "Use the SITE_URL constant from @/lib/site instead." >&2
+  echo "" >&2
+  exit 1
+fi
+
+exit 0
