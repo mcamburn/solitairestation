@@ -29,7 +29,8 @@ export const Route = createFileRoute("/freecell-solitaire")({
     ],
     links: [
       { rel: "canonical", href: `${SITE_URL}/freecell-solitaire` },
-      { rel: "icon", href: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔲</text></svg>" },
+      { rel: "icon", type: "image/svg+xml", href: "/favicon.svg" },
+      { rel: "icon", type: "image/png", sizes: "32x32", href: "/favicon-32x32.png" },
     ],
   }),
   component: FreeCellSolitairePage,
