@@ -3,15 +3,15 @@ import { createPortal } from "react-dom";
 import { type CardBackSkin, type CardFaceStyle } from "./PlayingCard";
 
 export const SKINS: { id: CardBackSkin; label: string }[] = [
-  { id: "neon", label: "Neon" },
-  { id: "aurora", label: "Aurora" },
-  { id: "circuit", label: "Circuit" },
-  { id: "wave", label: "Wave" },
-  { id: "ember", label: "Ember" },
-  { id: "prism", label: "Prism" },
-  { id: "holo", label: "Holo" },
-  { id: "grid", label: "Grid" },
-  { id: "marble", label: "Marble" },
+  { id: "neon",    label: "Felt"       },
+  { id: "aurora",  label: "Damask"     },
+  { id: "circuit", label: "Velvet"     },
+  { id: "wave",    label: "Gold"       },
+  { id: "ember",   label: "Ember"      },
+  { id: "prism",   label: "Royal"      },
+  { id: "holo",    label: "Jade"       },
+  { id: "grid",    label: "Crosshatch" },
+  { id: "marble",  label: "Marble"     },
 ];
 
 export const FACES: { id: CardFaceStyle; label: string }[] = [

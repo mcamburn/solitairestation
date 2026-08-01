@@ -133,126 +133,143 @@
   border: 1px solid oklch(1 0 0 / 20%);
 }
 
-/* Skin: Neon (default — gold diamond lattice on green felt) */
+/* Skin: Felt — casino green felt with gold diamond lattice */
+.skin-neon.card-back {
+  background: linear-gradient(145deg, oklch(0.28 0.09 155) 0%, oklch(0.17 0.06 155) 100%);
+  border-color: oklch(0.80 0.14 86 / 30%);
+}
 .skin-neon .card-back-pattern {
   background-image:
-    linear-gradient(45deg, color-mix(in oklab, var(--neon) 22%, transparent) 25%, transparent 25%),
-    linear-gradient(-45deg, color-mix(in oklab, var(--neon) 22%, transparent) 25%, transparent 25%);
+    linear-gradient(45deg,  color-mix(in oklab, var(--neon) 28%, transparent) 25%, transparent 25%),
+    linear-gradient(-45deg, color-mix(in oklab, var(--neon) 28%, transparent) 25%, transparent 25%);
   background-size: 10px 10px;
+  border-color: color-mix(in oklab, var(--neon) 30%, transparent);
 }
 
-/* Skin: Aurora — soft flowing gradient */
+/* Skin: Damask — deep green with repeating gold radial medallions */
 .skin-aurora.card-back {
   background:
-    radial-gradient(ellipse at 20% 20%, oklch(0.85 0.18 200) 0%, transparent 55%),
-    radial-gradient(ellipse at 80% 80%, oklch(0.75 0.22 320) 0%, transparent 55%),
-    linear-gradient(135deg, oklch(0.35 0.15 270), oklch(0.25 0.12 220));
+    radial-gradient(ellipse at 35% 30%, oklch(0.30 0.09 148) 0%, transparent 55%),
+    radial-gradient(ellipse at 70% 72%, oklch(0.22 0.07 158) 0%, transparent 55%),
+    linear-gradient(145deg, oklch(0.26 0.08 152), oklch(0.15 0.06 155));
+  border-color: oklch(0.80 0.14 86 / 35%);
 }
 .skin-aurora .card-back-pattern {
-  background-image: radial-gradient(oklch(1 0 0 / 18%) 1px, transparent 1px);
-  background-size: 8px 8px;
+  background-image:
+    radial-gradient(circle, color-mix(in oklab, var(--neon) 30%, transparent) 1.5px, transparent 1.5px),
+    radial-gradient(circle, color-mix(in oklab, var(--neon) 12%, transparent) 5px,   transparent 5px);
+  background-size: 16px 16px, 16px 16px;
+  border-color: color-mix(in oklab, var(--neon) 35%, transparent);
 }
 
-/* Skin: Circuit — grid + node dots */
+/* Skin: Velvet — deep crimson velvet with subtle diagonal weave */
 .skin-circuit.card-back {
-  background: linear-gradient(160deg, oklch(0.22 0.04 260), oklch(0.14 0.03 260));
-  border-color: color-mix(in oklab, var(--neon) 40%, transparent);
+  background:
+    radial-gradient(ellipse at 40% 28%, oklch(0.38 0.13 22) 0%, transparent 58%),
+    linear-gradient(155deg, oklch(0.30 0.15 22), oklch(0.18 0.10 18));
+  border-color: oklch(0.62 0.18 22 / 40%);
 }
 .skin-circuit .card-back-pattern {
   background-image:
-    linear-gradient(to right, color-mix(in oklab, var(--neon) 30%, transparent) 1px, transparent 1px),
-    linear-gradient(to bottom, color-mix(in oklab, var(--neon) 30%, transparent) 1px, transparent 1px);
-  background-size: 12px 12px;
-  box-shadow: 0 0 20px -4px color-mix(in oklab, var(--neon) 40%, transparent) inset;
+    repeating-linear-gradient( 45deg, oklch(1 0 0 / 7%) 0 3px, transparent 3px 9px),
+    repeating-linear-gradient(-45deg, oklch(1 0 0 / 7%) 0 3px, transparent 3px 9px);
+  border-color: oklch(1 0 0 / 14%);
 }
 
-/* Skin: Wave — diagonal ribbons */
+/* Skin: Gold — warm gold gradient with diagonal shadow stripes */
 .skin-wave.card-back {
-  background: linear-gradient(135deg, oklch(0.72 0.20 305), oklch(0.55 0.22 260));
+  background:
+    radial-gradient(ellipse at 28% 28%, oklch(0.90 0.13 90) 0%, transparent 55%),
+    linear-gradient(135deg, oklch(0.74 0.16 84), oklch(0.52 0.13 78));
+  border-color: oklch(0.88 0.12 88 / 50%);
 }
 .skin-wave .card-back-pattern {
   background-image: repeating-linear-gradient(
     45deg,
-    oklch(1 0 0 / 14%) 0 6px,
-    transparent 6px 14px
+    oklch(0 0 0 / 12%) 0 5px,
+    transparent 5px 14px
   );
+  border-color: oklch(1 0 0 / 22%);
 }
 
-/* Skin: Ember — warm plasma */
+/* Skin: Ember — mahogany amber with horizontal grain lines */
 .skin-ember.card-back {
   background:
-    radial-gradient(ellipse at 30% 30%, oklch(0.82 0.19 55) 0%, transparent 60%),
-    linear-gradient(135deg, oklch(0.55 0.22 25), oklch(0.32 0.15 15));
-  border-color: oklch(0.75 0.18 45 / 40%);
+    radial-gradient(ellipse at 32% 25%, oklch(0.68 0.16 52) 0%, transparent 55%),
+    linear-gradient(140deg, oklch(0.44 0.16 36), oklch(0.26 0.11 22));
+  border-color: oklch(0.68 0.14 50 / 40%);
 }
 .skin-ember .card-back-pattern {
   background-image:
-    repeating-linear-gradient(0deg, oklch(1 0 0 / 8%) 0 2px, transparent 2px 6px);
+    repeating-linear-gradient(0deg, oklch(1 0 0 / 9%) 0 1.5px, transparent 1.5px 7px);
+  border-color: oklch(0.72 0.12 55 / 28%);
 }
 
-/* Skin: Prism — chromatic bands */
+/* Skin: Royal — midnight-to-forest sweep with gold pinstripes */
 .skin-prism.card-back {
   background: linear-gradient(
-    135deg,
-    oklch(0.78 0.19 30) 0%,
-    oklch(0.82 0.18 90) 25%,
-    oklch(0.80 0.20 165) 50%,
-    oklch(0.72 0.22 240) 75%,
-    oklch(0.70 0.22 320) 100%
+    155deg,
+    oklch(0.20 0.06 265) 0%,
+    oklch(0.16 0.04 210) 45%,
+    oklch(0.20 0.06 155) 100%
   );
+  border-color: oklch(0.80 0.14 86 / 30%);
 }
 .skin-prism .card-back-pattern {
   background-image: repeating-linear-gradient(
     90deg,
-    oklch(1 0 0 / 18%) 0 1px,
-    transparent 1px 8px
+    color-mix(in oklab, var(--neon) 28%, transparent) 0 1px,
+    transparent 1px 16px
   );
-  border-color: oklch(1 0 0 / 28%);
+  border-color: color-mix(in oklab, var(--neon) 38%, transparent);
 }
 
-/* Skin: Holo — iridescent foil */
+/* Skin: Jade — emerald conic shimmer */
 .skin-holo.card-back {
   background:
-    conic-gradient(from 210deg at 50% 50%,
-      oklch(0.82 0.15 190),
-      oklch(0.78 0.18 260),
-      oklch(0.80 0.20 320),
-      oklch(0.82 0.18 40),
-      oklch(0.82 0.15 190));
+    conic-gradient(from 180deg at 50% 50%,
+      oklch(0.55 0.18 158),
+      oklch(0.40 0.14 145),
+      oklch(0.58 0.20 168),
+      oklch(0.44 0.16 152),
+      oklch(0.55 0.18 158));
+  border-color: oklch(0.70 0.16 158 / 45%);
 }
 .skin-holo .card-back-pattern {
   background-image:
-    repeating-linear-gradient(60deg, oklch(1 0 0 / 12%) 0 2px, transparent 2px 8px),
-    repeating-linear-gradient(-60deg, oklch(0 0 0 / 10%) 0 2px, transparent 2px 8px);
+    repeating-linear-gradient( 60deg, oklch(1 0 0 / 14%) 0 2px, transparent 2px 10px),
+    repeating-linear-gradient(-60deg, oklch(0 0 0 / 10%) 0 2px, transparent 2px 10px);
+  border-color: oklch(1 0 0 / 20%);
 }
 
-/* Skin: Grid — architect blueprint */
+/* Skin: Crosshatch — warm dark leather with gold grid lines */
 .skin-grid.card-back {
-  background: linear-gradient(160deg, oklch(0.30 0.10 240), oklch(0.20 0.09 240));
-  border-color: oklch(0.85 0.10 220 / 40%);
+  background: linear-gradient(155deg, oklch(0.28 0.055 55), oklch(0.18 0.040 50));
+  border-color: oklch(0.80 0.14 86 / 30%);
 }
 .skin-grid .card-back-pattern {
   background-image:
-    linear-gradient(to right, oklch(1 0 0 / 18%) 1px, transparent 1px),
-    linear-gradient(to bottom, oklch(1 0 0 / 18%) 1px, transparent 1px),
-    linear-gradient(to right, oklch(1 0 0 / 8%) 1px, transparent 1px),
-    linear-gradient(to bottom, oklch(1 0 0 / 8%) 1px, transparent 1px);
-  background-size: 20px 20px, 20px 20px, 4px 4px, 4px 4px;
+    linear-gradient(to right,  color-mix(in oklab, var(--neon) 22%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in oklab, var(--neon) 22%, transparent) 1px, transparent 1px),
+    linear-gradient(to right,  oklch(1 0 0 / 7%) 1px, transparent 1px),
+    linear-gradient(to bottom, oklch(1 0 0 / 7%) 1px, transparent 1px);
+  background-size: 16px 16px, 16px 16px, 4px 4px, 4px 4px;
+  border-color: color-mix(in oklab, var(--neon) 30%, transparent);
 }
 
-/* Skin: Marble — soft veined stone */
+/* Skin: Marble — warm ivory with green-gold veining */
 .skin-marble.card-back {
   background:
-    radial-gradient(ellipse at 30% 20%, oklch(0.96 0.01 260) 0%, transparent 50%),
-    radial-gradient(ellipse at 70% 80%, oklch(0.90 0.02 280) 0%, transparent 55%),
-    linear-gradient(135deg, oklch(0.88 0.01 260), oklch(0.78 0.02 260));
-  border-color: oklch(0 0 0 / 15%);
+    radial-gradient(ellipse at 30% 20%, oklch(0.96 0.02 82) 0%, transparent 52%),
+    radial-gradient(ellipse at 72% 80%, oklch(0.91 0.03 88) 0%, transparent 55%),
+    linear-gradient(135deg, oklch(0.89 0.025 84), oklch(0.80 0.020 80));
+  border-color: oklch(0 0 0 / 14%);
 }
 .skin-marble .card-back-pattern {
   background-image:
-    repeating-linear-gradient(115deg, oklch(0 0 0 / 6%) 0 1px, transparent 1px 22px),
-    repeating-linear-gradient(65deg, oklch(0 0 0 / 4%) 0 1px, transparent 1px 34px);
-  border-color: oklch(0 0 0 / 12%);
+    repeating-linear-gradient(115deg, color-mix(in oklab, var(--neon) 16%, transparent) 0 1px, transparent 1px 22px),
+    repeating-linear-gradient( 65deg, oklch(0 0 0 / 5%) 0 1px, transparent 1px 34px);
+  border-color: oklch(0 0 0 / 10%);
 }
 
 /* ===== Face styles ===== */
