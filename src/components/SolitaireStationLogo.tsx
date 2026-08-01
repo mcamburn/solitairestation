@@ -28,49 +28,50 @@ export function SolitaireStationLogo({ variant = "full", className = "" }: Props
   }
 
   return (
-    <Link to="/" aria-label="Solitaire Station — home" className={`flex w-full items-center ${className}`}>
-      {/* Single combined SVG — card icon + wordmark — fills available width */}
+    <Link to="/" aria-label="Solitaire Station — home" className={`inline-flex shrink-0 items-center gap-2.5 ${className}`}>
+      {/* Card icon */}
       <svg
-        viewBox="0 0 340 44"
+        viewBox="0 0 36 44"
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
         aria-hidden="true"
-        width="100%"
-        height="3.5rem"
-        preserveAspectRatio="xMinYMid meet"
-        style={{ display: "block" }}
+        style={{ display: "block", height: "2.2rem", width: "auto" }}
       >
-        {/* Card icon — native 36×44, fills full viewBox height */}
         <CardIcon />
+      </svg>
 
-        {/* SOLITAIRE — stretched to fill remaining width */}
+      {/* Wordmark */}
+      <svg
+        viewBox="0 0 118 38"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        aria-hidden="true"
+        style={{ display: "block", height: "2.2rem", width: "auto" }}
+      >
+        {/* SOLITAIRE */}
         <text
-          x="50" y="22"
+          x="0" y="20"
           fontFamily="'Playfair Display', Georgia, serif"
-          fontSize="20"
+          fontSize="17"
           fontWeight="700"
           fill="#d4a832"
-          textLength="286"
-          lengthAdjust="spacingAndGlyphs"
+          letterSpacing="1.5"
         >
           SOLITAIRE
         </text>
-
-        {/* Decorative rule */}
-        <line x1="50" y1="27" x2="340" y2="27" stroke="#d4a832" strokeWidth="0.6" strokeOpacity="0.35"/>
-
-        {/* STATION — stretched to fill remaining width */}
+        {/* STATION */}
         <text
-          x="50" y="40"
+          x="1" y="34"
           fontFamily="'Playfair Display', Georgia, serif"
-          fontSize="14"
+          fontSize="13"
           fontWeight="500"
           fill="#9a7820"
-          textLength="286"
-          lengthAdjust="spacingAndGlyphs"
+          letterSpacing="5"
         >
           STATION
         </text>
+        {/* Decorative rule between the two lines */}
+        <line x1="0" y1="23.5" x2="118" y2="23.5" stroke="#d4a832" strokeWidth="0.6" strokeOpacity="0.35"/>
       </svg>
     </Link>
   );

@@ -52,11 +52,9 @@ export function GamePageLayout({ badge, title, tagline, rulesIntro, rules, child
         <div className="relative mx-auto max-w-[900px] xl:max-w-[1200px] md:px-4 md:py-2">
           {/* Desktop: logo left + switcher right */}
           <div className="hidden md:flex items-center gap-4">
-            <div className="flex-1 flex items-center">
-              <SolitaireStationLogo variant="full" />
-            </div>
+            <SolitaireStationLogo variant="full" className="shrink-0" />
             <div className="w-px self-stretch" style={{ background: "color-mix(in oklab, white 10%, transparent)" }} />
-            <div className="w-[380px] shrink-0">
+            <div className="flex-1">
               <GameSwitcher />
             </div>
           </div>
