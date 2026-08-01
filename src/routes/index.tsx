@@ -1,29 +1,11 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { GAMES } from "@/lib/games";
-import { SITE_URL } from "@/lib/site";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 
-const TITLE = "Solitaire Station — Play 16 Free Online Solitaire Games";
-const DESC =
-  "Play 16 free solitaire games online — Klondike, Spider, FreeCell, Pyramid, Mahjong, TriPeaks, Golf, Forty Thieves, Yukon, and more. No download, no sign-up.";
-
+// The home page redirects to /klondike (Klondike is the primary game)
 export const Route = createFileRoute("/")({
-  head: () => ({
-    meta: [
-      { title: TITLE },
-      { name: "description", content: DESC },
-      { name: "robots", content: "index, follow" },
-      { property: "og:site_name", content: "Solitaire Station" },
-      { property: "og:locale", content: "en_US" },
-      { property: "og:title", content: TITLE },
-      { property: "og:description", content: DESC },
-      { property: "og:type", content: "website" },
-      { property: "og:url", content: SITE_URL },
-      { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: TITLE },
-      { name: "twitter:description", content: DESC },
-    ],
-  }),
-  component: HomePage,
+  beforeLoad: () => {
+    throw redirect({ to: "/klondike" });
+  },
+  component: () => null,
 });
 
 function HomePage() {
