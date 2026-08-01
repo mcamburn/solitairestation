@@ -3,7 +3,7 @@ import { Spider } from "@/components/Spider";
 import { GamePageLayout } from "@/components/GamePageLayout";
 import { SITE_URL } from "@/lib/site";
 
-const TITLE = "Spider Solitaire — Solitaire Station";
+const TITLE = "Solitaire Station — Spider Solitaire";
 const DESC = "Play free Spider Solitaire at Solitaire Station — choose 1 suit, 2 suits, or 4 suits across 10 tableau columns. No download or sign-up. Hints, undo, and auto-save progress.";
 const OG_IMG = `${SITE_URL}/og/spider.png`;
 
@@ -39,7 +39,7 @@ export const Route = createFileRoute("/spider-solitaire")({
 const LD = JSON.stringify({
   "@context": "https://schema.org",
   "@type": "WebApplication",
-  name: "Spider Solitaire — Solitaire Station",
+  name: "Solitaire Station — Spider Solitaire",
   url: `${SITE_URL}/spider-solitaire`,
   description: DESC,
   applicationCategory: "GameApplication",

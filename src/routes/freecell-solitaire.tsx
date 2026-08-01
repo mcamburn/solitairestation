@@ -3,7 +3,7 @@ import { FreeCell } from "@/components/FreeCell";
 import { GamePageLayout } from "@/components/GamePageLayout";
 import { SITE_URL } from "@/lib/site";
 
-const TITLE = "FreeCell Solitaire — Solitaire Station";
+const TITLE = "Solitaire Station — FreeCell Solitaire";
 const DESC = "Play free FreeCell Solitaire online at Solitaire Station — all 52 cards are visible from the start. Nearly every deal is solvable with the right strategy. Hints, undo, and auto-save. No download required.";
 const OG_IMG = `${SITE_URL}/og/freecell.png`;
 
@@ -39,7 +39,7 @@ export const Route = createFileRoute("/freecell-solitaire")({
 const LD = JSON.stringify({
   "@context": "https://schema.org",
   "@type": "WebApplication",
-  name: "FreeCell Solitaire — Solitaire Station",
+  name: "Solitaire Station — FreeCell Solitaire",
   url: `${SITE_URL}/freecell-solitaire`,
   description: DESC,
   applicationCategory: "GameApplication",

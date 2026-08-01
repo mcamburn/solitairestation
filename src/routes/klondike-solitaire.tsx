@@ -3,7 +3,7 @@ import { Solitaire } from "@/components/Solitaire";
 import { GamePageLayout } from "@/components/GamePageLayout";
 import { SITE_URL } from "@/lib/site";
 
-const TITLE = "Klondike Solitaire — Solitaire Station";
+const TITLE = "Solitaire Station — Klondike Solitaire";
 const DESC = "Play Klondike Solitaire free online at Solitaire Station — the classic card game, no download or sign-up needed. Choose Turn 1, Turn 3, Vegas, or Double mode. Hints, undo, and auto-save included.";
 const OG_IMG = `${SITE_URL}/og/klondike.png`;
 
@@ -39,7 +39,7 @@ export const Route = createFileRoute("/klondike-solitaire")({
 const LD = JSON.stringify({
   "@context": "https://schema.org",
   "@type": "WebApplication",
-  name: "Klondike Solitaire — Solitaire Station",
+  name: "Solitaire Station — Klondike Solitaire",
   url: `${SITE_URL}/klondike-solitaire`,
   description: DESC,
   applicationCategory: "GameApplication",

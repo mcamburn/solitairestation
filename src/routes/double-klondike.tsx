@@ -3,7 +3,7 @@ import { Solitaire } from "@/components/Solitaire";
 import { GamePageLayout } from "@/components/GamePageLayout";
 import { SITE_URL } from "@/lib/site";
 
-const TITLE = "Double Klondike Solitaire — Solitaire Station";
+const TITLE = "Solitaire Station — Double Klondike Solitaire";
 const DESC = "Play Double Klondike Solitaire free online at Solitaire Station — two full decks, 9 columns, 8 foundation piles. A longer, more epic version of classic Klondike. No download, no sign-up.";
 const OG_IMG = `${SITE_URL}/og/klondike.png`;
 
@@ -39,7 +39,7 @@ export const Route = createFileRoute("/double-klondike")({
 const LD = JSON.stringify({
   "@context": "https://schema.org",
   "@type": "WebApplication",
-  name: "Double Klondike Solitaire — Solitaire Station",
+  name: "Solitaire Station — Double Klondike Solitaire",
   url: `${SITE_URL}/double-klondike`,
   description: DESC,
   applicationCategory: "GameApplication",

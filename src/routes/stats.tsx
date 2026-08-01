@@ -17,14 +17,14 @@ export const Route = createFileRoute("/stats")({
   component: StatsPage,
   head: () => ({
     meta: [
-      { title: "My Stats — Solitaire Station" },
+      { title: "Solitaire Station — My Stats" },
       {
         name: "description",
         content:
           "View your lifetime solitaire stats: games played, win rate, best time, and longest streak across every game on Solitaire Station.",
       },
       { name: "robots", content: "noindex, follow" },
-      { property: "og:title", content: "My Stats — Solitaire Station" },
+      { property: "og:title", content: "Solitaire Station — My Stats" },
       {
         property: "og:description",
         content:

@@ -3,7 +3,7 @@ import { Solitaire } from "@/components/Solitaire";
 import { GamePageLayout } from "@/components/GamePageLayout";
 import { SITE_URL } from "@/lib/site";
 
-const TITLE = "Free Klondike Solitaire — Solitaire Station";
+const TITLE = "Solitaire Station — Free Klondike Solitaire";
 const DESC = "Play free Klondike solitaire online at Solitaire Station — no download, no sign-up. Draw 1 or Draw 3, hints, undo, and auto-save. One of sixteen free card games.";
 const OG_IMG = `${SITE_URL}/og/klondike.png`;
 
@@ -22,7 +22,7 @@ export const Route = createFileRoute("/klondike")({
       { property: "og:image", content: OG_IMG },
       { property: "og:image:width", content: "1200" },
       { property: "og:image:height", content: "630" },
-      { property: "og:image:alt", content: "Free Klondike Solitaire — Solitaire Station" },
+      { property: "og:image:alt", content: "Solitaire Station — Free Klondike Solitaire" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: TITLE },
       { name: "twitter:description", content: DESC },
@@ -40,7 +40,7 @@ export const Route = createFileRoute("/klondike")({
 const KLONDIKE_LD = JSON.stringify({
   "@context": "https://schema.org",
   "@type": "WebApplication",
-  "name": "Free Klondike Solitaire — Solitaire Station",
+  "name": "Solitaire Station — Free Klondike Solitaire",
   "url": `${SITE_URL}/klondike`,
   "description": "Play free Klondike solitaire online at Solitaire Station — Draw 1 or Draw 3, hints, undo, and auto-save. No download, no sign-up.",
   "applicationCategory": "GameApplication",

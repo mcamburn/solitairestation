@@ -6,7 +6,7 @@ import { SITE_URL } from "@/lib/site";
 export const Route = createFileRoute("/canfield")({
   head: () => ({
     meta: [
-      { title: "Free Canfield Solitaire — Solitaire Station" },
+      { title: "Solitaire Station — Free Canfield Solitaire" },
       {
         name: "description",
         content:
@@ -15,7 +15,7 @@ export const Route = createFileRoute("/canfield")({
       { name: "robots", content: "index, follow" },
       { property: "og:site_name", content: "Solitaire Station" },
       { property: "og:locale", content: "en_US" },
-      { property: "og:title", content: "Free Canfield Solitaire — Solitaire Station" },
+      { property: "og:title", content: "Solitaire Station — Free Canfield Solitaire" },
       {
         property: "og:description",
         content:
@@ -26,9 +26,9 @@ export const Route = createFileRoute("/canfield")({
       { property: "og:image", content: `${SITE_URL}/og/canfield.png` },
       { property: "og:image:width", content: "1200" },
       { property: "og:image:height", content: "630" },
-      { property: "og:image:alt", content: "Free Canfield Solitaire — Solitaire Station" },
+      { property: "og:image:alt", content: "Solitaire Station — Free Canfield Solitaire" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "Free Canfield Solitaire — Solitaire Station" },
+      { name: "twitter:title", content: "Solitaire Station — Free Canfield Solitaire" },
       {
         name: "twitter:description",
         content:
@@ -48,7 +48,7 @@ export const Route = createFileRoute("/canfield")({
 const CANFIELD_LD = JSON.stringify({
   "@context": "https://schema.org",
   "@type": "WebApplication",
-  name: "Free Canfield Solitaire — Solitaire Station",
+  name: "Solitaire Station — Free Canfield Solitaire",
   url: `${SITE_URL}/canfield`,
   description:
     "Play free Canfield solitaire — a challenging variant with a reserve pile, wrapping foundations starting at a random rank, and draw-3 stock. Hints, undo, and auto-save. No download, no sign-up.",

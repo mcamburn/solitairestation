@@ -3,7 +3,7 @@ import { Spider } from "@/components/Spider";
 import { GamePageLayout } from "@/components/GamePageLayout";
 import { SITE_URL } from "@/lib/site";
 
-const TITLE = "Free Spider Solitaire — Solitaire Station";
+const TITLE = "Solitaire Station — Free Spider Solitaire";
 const DESC = "Play free Spider Solitaire at Solitaire Station — choose 1, 2, or 4 suits across 10 columns. No download, no sign-up. Hints, undo, and auto-save progress.";
 const OG_IMG = `${SITE_URL}/og/spider.png`;
 
@@ -22,7 +22,7 @@ export const Route = createFileRoute("/spider")({
       { property: "og:image", content: OG_IMG },
       { property: "og:image:width", content: "1200" },
       { property: "og:image:height", content: "630" },
-      { property: "og:image:alt", content: "Free Spider Solitaire — Solitaire Station" },
+      { property: "og:image:alt", content: "Solitaire Station — Free Spider Solitaire" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: TITLE },
       { name: "twitter:description", content: DESC },
@@ -40,7 +40,7 @@ export const Route = createFileRoute("/spider")({
 const SPIDER_LD = JSON.stringify({
   "@context": "https://schema.org",
   "@type": "WebApplication",
-  "name": "Free Spider Solitaire — Solitaire Station",
+  "name": "Solitaire Station — Free Spider Solitaire",
   "url": `${SITE_URL}/spider`,
   "description": "Play free Spider Solitaire at Solitaire Station — choose 1, 2, or 4 suits. Hints, undo, and auto-save. No download, no sign-up.",
   "applicationCategory": "GameApplication",

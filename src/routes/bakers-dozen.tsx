@@ -6,7 +6,7 @@ import { SITE_URL } from "@/lib/site";
 export const Route = createFileRoute("/bakers-dozen")({
   head: () => ({
     meta: [
-      { title: "Free Baker's Dozen Solitaire — Solitaire Station" },
+      { title: "Solitaire Station — Free Baker's Dozen Solitaire" },
       {
         name: "description",
         content:
@@ -15,7 +15,7 @@ export const Route = createFileRoute("/bakers-dozen")({
       { name: "robots", content: "index, follow" },
       { property: "og:site_name", content: "Solitaire Station" },
       { property: "og:locale", content: "en_US" },
-      { property: "og:title", content: "Free Baker's Dozen Solitaire — Solitaire Station" },
+      { property: "og:title", content: "Solitaire Station — Free Baker's Dozen Solitaire" },
       {
         property: "og:description",
         content:
@@ -26,9 +26,9 @@ export const Route = createFileRoute("/bakers-dozen")({
       { property: "og:image", content: `${SITE_URL}/og/bakers-dozen.png` },
       { property: "og:image:width", content: "1200" },
       { property: "og:image:height", content: "630" },
-      { property: "og:image:alt", content: "Free Baker's Dozen Solitaire — Solitaire Station" },
+      { property: "og:image:alt", content: "Solitaire Station — Free Baker's Dozen Solitaire" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "Free Baker's Dozen Solitaire — Solitaire Station" },
+      { name: "twitter:title", content: "Solitaire Station — Free Baker's Dozen Solitaire" },
       {
         name: "twitter:description",
         content:
@@ -48,7 +48,7 @@ export const Route = createFileRoute("/bakers-dozen")({
 const BAKERS_DOZEN_LD = JSON.stringify({
   "@context": "https://schema.org",
   "@type": "WebApplication",
-  name: "Free Baker's Dozen Solitaire — Solitaire Station",
+  name: "Solitaire Station — Free Baker's Dozen Solitaire",
   url: `${SITE_URL}/bakers-dozen`,
   description:
     "Play free Baker's Dozen solitaire — 13 face-up columns, rank-only moves, Kings pinned to the bottom. Hints, undo, and auto-save. No download, no sign-up.",

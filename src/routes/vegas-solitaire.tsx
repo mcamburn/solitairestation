@@ -3,7 +3,7 @@ import { Solitaire } from "@/components/Solitaire";
 import { GamePageLayout } from "@/components/GamePageLayout";
 import { SITE_URL } from "@/lib/site";
 
-const TITLE = "Vegas Solitaire — Solitaire Station";
+const TITLE = "Solitaire Station — Vegas Solitaire";
 const DESC = "Play Vegas Solitaire free online at Solitaire Station — the classic casino scoring variant. Start with a $52 wager, earn $5 per card on the foundation, and survive three passes through the stock. No download required.";
 const OG_IMG = `${SITE_URL}/og/klondike.png`;
 
@@ -39,7 +39,7 @@ export const Route = createFileRoute("/vegas-solitaire")({
 const LD = JSON.stringify({
   "@context": "https://schema.org",
   "@type": "WebApplication",
-  name: "Vegas Solitaire — Solitaire Station",
+  name: "Solitaire Station — Vegas Solitaire",
   url: `${SITE_URL}/vegas-solitaire`,
   description: DESC,
   applicationCategory: "GameApplication",

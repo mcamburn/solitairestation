@@ -7,7 +7,7 @@ export const Route = createFileRoute("/guides/")({
   component: GuidesPage,
   head: () => ({
     meta: [
-      { title: "Solitaire Strategy Guides — Solitaire Station" },
+      { title: "Solitaire Station — Solitaire Strategy Guides" },
       {
         name: "description",
         content:
@@ -15,7 +15,7 @@ export const Route = createFileRoute("/guides/")({
       },
       { name: "robots", content: "index, follow" },
       { property: "og:type", content: "website" },
-      { property: "og:title", content: "Solitaire Strategy Guides — Solitaire Station" },
+      { property: "og:title", content: "Solitaire Station — Solitaire Strategy Guides" },
       {
         property: "og:description",
         content:
