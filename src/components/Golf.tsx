@@ -305,6 +305,7 @@ export function Golf() {
                             width: cardW,
                             height: cardH,
                             opacity: isTop && isDraggingThis ? 0.35 : 1,
+                            touchAction: isTop && dragMode ? "none" : undefined,
                           }}
                         >
                           <PlayingCard

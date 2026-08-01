@@ -325,6 +325,7 @@ export function BakersDozn() {
                             position: "absolute", top: cardIdx * overlap,
                             width: cardW, height: cardH, zIndex: cardIdx,
                             opacity: isTop && isDraggingThis ? 0.35 : 1,
+                            touchAction: isTop && dragMode ? "none" : undefined,
                           }}
                         >
                           <PlayingCard

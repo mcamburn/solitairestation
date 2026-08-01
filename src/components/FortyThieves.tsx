@@ -310,7 +310,7 @@ export function FortyThieves() {
             </div>
             {/* Waste */}
             <div
-              style={{ width: cardW, height: cardH, flexShrink: 0 }}
+              style={{ width: cardW, height: cardH, flexShrink: 0, touchAction: wasteTop && dragMode ? "none" : undefined }}
               onClick={() => !dragMode && handleSourceClick({ kind: "waste" })}
               className={wasteTop ? "cursor-pointer" : ""}
             >
@@ -386,6 +386,7 @@ export function FortyThieves() {
                             position: "absolute", top: offset,
                             width: cardW, height: cardH,
                             opacity: isTop && isDraggingThis ? 0.35 : 1,
+                            touchAction: isTop && dragMode ? "none" : undefined,
                           }}
                           onClick={isTop && !dragMode ? () => handleSourceClick({ kind: "tableau", col: colIdx }) : undefined}
                           className={isTop ? "cursor-pointer" : ""}

@@ -491,6 +491,7 @@ function YukonColumn({
               height: cardH,
               opacity: isDraggingFrom(i) ? 0.4 : 1,
               transition: "opacity 0.1s",
+              touchAction: c.faceUp ? "none" : undefined,
               ...(isTopDrop ? { boxShadow: "0 0 20px -2px var(--neon)" } : {}),
             }}
           >

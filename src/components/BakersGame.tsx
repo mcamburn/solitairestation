@@ -322,7 +322,7 @@ export function BakersGame() {
                 aria-label={card ? undefined : `Free cell ${i + 1}, empty`}
               >
                 {card ? (
-                  <div style={{ opacity: isDraggingFromFC(i) ? 0.4 : 1, transition: "opacity 0.1s" }}>
+                  <div style={{ opacity: isDraggingFromFC(i) ? 0.4 : 1, transition: "opacity 0.1s", touchAction: dragMode ? "none" : undefined }}>
                     <PlayingCard
                       card={card}
                       selected={selected}
@@ -531,6 +531,7 @@ function BGColumn({
               height: cardH,
               opacity: isDraggingFrom(i) ? 0.4 : 1,
               transition: "opacity 0.1s",
+              touchAction: dragMode ? "none" : undefined,
               ...(isTopCard ? { boxShadow: "0 0 20px -2px var(--neon)" } : {}),
             }}
           >

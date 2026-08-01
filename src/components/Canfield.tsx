@@ -368,7 +368,7 @@ export function Canfield() {
 
             {/* Waste */}
             <div
-              style={{ width: cardW, height: cardH, flexShrink: 0, opacity: isDraggingWaste ? 0.35 : 1 }}
+              style={{ width: cardW, height: cardH, flexShrink: 0, opacity: isDraggingWaste ? 0.35 : 1, touchAction: wasteTop && dragMode ? "none" : undefined }}
               onClick={() => !dragMode && handleWasteClick()}
               className={`card-slot-container${wasteTop ? " cursor-pointer" : ""}`}
               title="Waste pile"
@@ -404,7 +404,7 @@ export function Canfield() {
                 }} />
               )}
               {reserveTop ? (
-                <div style={{ position: "relative", zIndex: 1, width: cardW, height: cardH }}>
+                <div style={{ position: "relative", zIndex: 1, width: cardW, height: cardH, touchAction: dragMode ? "none" : undefined }}>
                   <PlayingCard
                     card={reserveTop}
                     selected={isSelReserve}
@@ -484,6 +484,7 @@ export function Canfield() {
                             position: "absolute", top: cardIdx * overlap,
                             width: cardW, height: cardH, zIndex: cardIdx,
                             opacity: isTop && isDraggingThisCol ? 0.35 : 1,
+                            touchAction: isTop && dragMode ? "none" : undefined,
                           }}
                           onClick={() => !dragMode && handleTableauClick(colIdx, cardIdx)}
                         >
