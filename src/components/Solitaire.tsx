@@ -287,7 +287,7 @@ export function Solitaire({ initialMode }: { initialMode?: KlondikeMode } = {}) 
 
   // ── Drag helpers ───────────────────────────────────────────────────────────
   const startDrag = (
-    e: React.PointerEvent<HTMLElement>,
+    e: React.PointerEvent<Element>,
     source: Source,
     cards: Card[],
     onTap: () => void,
@@ -561,7 +561,7 @@ function FoundationSlot({
   face: CardFaceStyle;
   isDraggingFromFoundation: boolean;
   onFoundationClick: (pile: number) => void;
-  onStartDrag: (e: React.PointerEvent<HTMLElement>, source: Source, cards: Card[], onTap: () => void) => void;
+  onStartDrag: (e: React.PointerEvent<Element>, source: Source, cards: Card[], onTap: () => void) => void;
 }) {
   const zone = `foundation-${pileIndex}`;
   const highlighted = dropZone === zone;
@@ -692,7 +692,7 @@ function TableauColumn({
   onCardClick: (i: number) => void;
   onEmptyClick: () => void;
   onDoubleClick: (i: number) => void;
-  onDragStart: (e: React.PointerEvent<HTMLElement>, i: number) => void;
+  onDragStart: (e: React.PointerEvent<Element>, i: number) => void;
 }) {
   const offsets = useMemo(() => {
     const arr: number[] = [];

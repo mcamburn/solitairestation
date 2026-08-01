@@ -38,7 +38,7 @@ function GuidePage() {
   const guide = GUIDES.find((g) => g.slug === slug);
 
   if (!guide) {
-    return <Navigate to="/guides/" />;
+    return <Navigate to="/guides" />;
   }
 
   const gameInfo = GUIDE_GAMES.find((g) => g.tag === guide.game)!;
@@ -59,7 +59,7 @@ function GuidePage() {
           Home
         </Link>
         <span>/</span>
-        <Link to="/guides/" className="transition hover:text-foreground">
+        <Link to="/guides" className="transition hover:text-foreground">
           Guides
         </Link>
         <span>/</span>
@@ -180,13 +180,13 @@ function GuidePage() {
       {/* Bottom nav */}
       <div className="mt-10 flex items-center justify-between">
         <Link
-          to="/guides/"
+          to="/guides"
           className="text-xs uppercase tracking-[0.22em] text-muted-foreground transition hover:text-foreground"
         >
           ← All guides
         </Link>
         <Link
-          to="/guides/"
+          to="/guides"
           className="text-xs text-muted-foreground transition hover:text-foreground"
         >
           Browse all {GUIDES.length} guides →

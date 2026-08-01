@@ -1,16 +1,16 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { saveGame, loadGame, clearGame } from "@/lib/persist";
 import {
-  newFreeCellGame,
-  isValidFCSequence,
-  tryFCMove,
-  autoFCToFoundation,
-  findFreeCellHint,
-  type FreeCellHint,
-  type FreeCellState,
-  type FCSrc,
-  type FCDest,
-} from "@/lib/freecell";
+  newBakersGame,
+  isValidBGSequence,
+  tryBGMove,
+  autoBGToFoundation,
+  findBakersGameHint,
+  type BakersGameHint,
+  type BakersGameState,
+  type BGSrc,
+  type BGDest,
+} from "@/lib/bakersgame";
 import { PlayingCard, type CardBackSkin, type CardFaceStyle } from "./PlayingCard";
 import { AppearanceBar, useCardAppearance, useNewGameToast, NewGameToast } from "./CardPickers";
 import { WinBanner } from "./WinBanner";
@@ -21,12 +21,12 @@ const CARD_H = 110;
 const CARD_W_BASE = Math.round(CARD_H * 7 / 10);
 const FAN = 26;
 const DRAG_THRESHOLD = 6;
-const GHOST_FAN = 22; // px between ghost cards
+const GHOST_FAN = 22;
 
-type Sel = FCSrc | null;
+type Sel = BGSrc | null;
 
 type DragInfo = {
-  src: FCSrc;
+  src: BGSrc;
   cards: Card[];
   startX: number;
   startY: number;
@@ -45,35 +45,34 @@ function formatTime(startedAt: number): string {
   return `${m}:${s}`;
 }
 
-export function FreeCell() {
-  const [state, setState] = useState<FreeCellState | null>(null);
-  const [history, setHistory] = useState<FreeCellState[]>([]);
+export function BakersGame() {
+  const [state, setState] = useState<BakersGameState | null>(null);
+  const [history, setHistory] = useState<BakersGameState[]>([]);
   const [sel, setSel] = useState<Sel>(null);
-  const [hint, setHint] = useState<FreeCellHint | null>(null);
+  const [hint, setHint] = useState<BakersGameHint | null>(null);
   const { skin, face, setSkin, setFace } = useCardAppearance();
   const { visible: toastVisible, show: showToast } = useNewGameToast();
   const [, forceUpdate] = useState(0);
   const { dragMode, toggleDragMode } = useDragMode();
 
-  // ── Drag state ────────────────────────────────────────────────────────────
   const dragRef = useRef<DragInfo | null>(null);
   const [ghostPos, setGhostPos] = useState<{ x: number; y: number } | null>(null);
   const [dropZone, setDropZone] = useState<string | null>(null);
-  const [draggingSrc, setDraggingSrc] = useState<FCSrc | null>(null);
+  const [draggingSrc, setDraggingSrc] = useState<BGSrc | null>(null);
   const commitRef = useRef<(info: DragInfo, zone: string) => void>(() => {});
 
   useEffect(() => {
-    const saved = loadGame<FreeCellState>("freecell");
+    const saved = loadGame<BakersGameState>("bakersgame");
     if (saved && saved.moves > 0) {
       setState(saved);
     } else {
-      if (saved) clearGame("freecell");
-      setState(newFreeCellGame());
+      if (saved) clearGame("bakersgame");
+      setState(newBakersGame());
     }
   }, []);
 
   useEffect(() => {
-    if (state && state.moves > 0) saveGame("freecell", state);
+    if (state && state.moves > 0) saveGame("bakersgame", state);
   }, [state]);
 
   useEffect(() => {
@@ -81,7 +80,6 @@ export function FreeCell() {
     return () => clearInterval(id);
   }, []);
 
-  // ── Grid measurement ───────────────────────────────────────────────────────
   const gridRef = useRef<HTMLDivElement>(null);
   const [colW, setColW] = useState(CARD_W_BASE);
   const stateLoaded = state !== null;
@@ -99,9 +97,8 @@ export function FreeCell() {
   }, [stateLoaded]);
   const vh = typeof window !== "undefined" ? window.innerHeight : 900;
   const cardH = Math.min(Math.round(colW * 10 / 7), Math.round(vh * 0.30));
-  const fan   = Math.max(10, Math.round(FAN * cardH / CARD_H));
+  const fan = Math.max(10, Math.round(FAN * cardH / CARD_H));
 
-  // ── Global pointer handlers ────────────────────────────────────────────────
   useEffect(() => {
     const onMove = (e: PointerEvent) => {
       const dr = dragRef.current;
@@ -143,7 +140,7 @@ export function FreeCell() {
 
   const game = state;
 
-  const commit = (next: FreeCellState | null) => {
+  const commit = (next: BakersGameState | null) => {
     if (!next) return false;
     setHistory((h) => [...h.slice(-30), game]);
     setState(next);
@@ -153,11 +150,11 @@ export function FreeCell() {
   };
 
   commitRef.current = (dr: DragInfo, zone: string) => {
-    let dest: FCDest | null = null;
-    if (zone.startsWith("tableau-"))    dest = { kind: "tableau", col: parseInt(zone.slice(8), 10) };
+    let dest: BGDest | null = null;
+    if (zone.startsWith("tableau-"))     dest = { kind: "tableau", col: parseInt(zone.slice(8), 10) };
     else if (zone.startsWith("freecell-")) dest = { kind: "freecell", cell: parseInt(zone.slice(9), 10) };
     else if (zone.startsWith("foundation-")) dest = { kind: "foundation", pile: parseInt(zone.slice(11), 10) };
-    if (dest) commit(tryFCMove(game, dr.src, dest));
+    if (dest) commit(tryBGMove(game, dr.src, dest));
   };
 
   const undo = () => {
@@ -171,63 +168,59 @@ export function FreeCell() {
   };
 
   const reset = () => {
-    clearGame("freecell");
+    clearGame("bakersgame");
     setHistory([]);
     setSel(null);
     setHint(null);
-    setState(newFreeCellGame());
+    setState(newBakersGame());
     showToast();
   };
 
   const showHint = () => {
-    const h = findFreeCellHint(game);
+    const h = findBakersGameHint(game);
     setHint(h ?? { src: { kind: "tableau", col: 0, index: 0 }, description: "No moves available — try undoing or starting a new game." });
     if (h) setSel(h.src);
   };
 
-  // ── Click handlers ─────────────────────────────────────────────────────────
-
-  const move = (dest: FCDest) => {
+  const move = (dest: BGDest) => {
     if (!sel) return;
-    commit(tryFCMove(game, sel, dest));
+    commit(tryBGMove(game, sel, dest));
   };
 
   const handleFreeCellClick = (cell: number) => {
     const card = game.freeCells[cell];
     if (sel) {
       if (sel.kind === "freecell" && sel.cell === cell) { setSel(null); return; }
-      if (commit(tryFCMove(game, sel, { kind: "freecell", cell }))) return;
+      if (commit(tryBGMove(game, sel, { kind: "freecell", cell }))) return;
     }
     if (card) setSel({ kind: "freecell", cell });
   };
 
   const handleFoundationClick = (pile: number) => {
     if (!sel) return;
-    commit(tryFCMove(game, sel, { kind: "foundation", pile }));
+    commit(tryBGMove(game, sel, { kind: "foundation", pile }));
   };
 
   const handleTableauClick = (col: number, index: number) => {
     const pile = game.tableau[col];
     if (sel) {
       if (sel.kind === "tableau" && sel.col === col && sel.index === index) { setSel(null); return; }
-      if (commit(tryFCMove(game, sel, { kind: "tableau", col }))) return;
+      if (commit(tryBGMove(game, sel, { kind: "tableau", col }))) return;
     }
     if (!pile || pile.length === 0) { setSel(null); return; }
     const sub = pile.slice(index);
     const isTop = index === pile.length - 1;
-    if (isTop || isValidFCSequence(sub)) setSel({ kind: "tableau", col, index });
+    if (isTop || isValidBGSequence(sub)) setSel({ kind: "tableau", col, index });
     else setSel(null);
   };
 
-  const handleDoubleClick = (src: FCSrc) => {
-    commit(autoFCToFoundation(game, src));
+  const handleDoubleClick = (src: BGSrc) => {
+    commit(autoBGToFoundation(game, src));
   };
-
-  // ── Drag helpers ───────────────────────────────────────────────────────────
 
   const startDrag = (
     e: React.PointerEvent<Element>,
-    src: FCSrc,
+    src: BGSrc,
     cards: Card[],
     onTap: () => void,
   ) => {
@@ -249,10 +242,6 @@ export function FreeCell() {
 
   const isDraggingFromFC = (cell: number) =>
     draggingSrc?.kind === "freecell" && draggingSrc.cell === cell;
-  const isDraggingFromTableau = (col: number, i: number) => {
-    if (!draggingSrc || draggingSrc.kind !== "tableau") return false;
-    return draggingSrc.col === col && i >= draggingSrc.index;
-  };
 
   const time = formatTime(game.startedAt);
   const isDragging = ghostPos !== null;
@@ -377,7 +366,7 @@ export function FreeCell() {
         {/* Tableau */}
         <div ref={gridRef} className="grid gap-1.5" style={{ gridTemplateColumns: "repeat(8, minmax(0, 1fr))" }}>
           {game.tableau.map((pile, col) => (
-            <FCColumn
+            <BGColumn
               key={col}
               pile={pile}
               col={col}
@@ -397,7 +386,7 @@ export function FreeCell() {
               onDragStart={(e, i) => {
                 const sub = pile.slice(i);
                 const isTop = i === pile.length - 1;
-                if (!isTop && !isValidFCSequence(sub)) return;
+                if (!isTop && !isValidBGSequence(sub)) return;
                 startDrag(e, { kind: "tableau", col, index: i }, sub, () => handleTableauClick(col, i));
               }}
             />
@@ -416,9 +405,8 @@ export function FreeCell() {
         clickHint="Click a card to select, then click a destination · Double-click to auto-move to foundation"
       />
 
-      {/* Drag ghost */}
       {isDragging && dragRef.current && (
-        <FCGhost dragInfo={dragRef.current} ghostPos={ghostPos!} skin={skin} face={face} />
+        <BGGhost dragInfo={dragRef.current} ghostPos={ghostPos!} skin={skin} face={face} />
       )}
     </div>
   );
@@ -426,7 +414,7 @@ export function FreeCell() {
 
 // ─── Ghost overlay ────────────────────────────────────────────────────────────
 
-function FCGhost({
+function BGGhost({
   dragInfo,
   ghostPos,
   skin,
@@ -459,14 +447,14 @@ function FCGhost({
   );
 }
 
-// ─── FCColumn ─────────────────────────────────────────────────────────────────
+// ─── BGColumn ─────────────────────────────────────────────────────────────────
 
-interface FCColumnProps {
+interface BGColumnProps {
   pile: Card[];
   col: number;
   sel: Sel;
-  draggingSrc: FCSrc | null;
-  hintSrc: FCSrc | null;
+  draggingSrc: BGSrc | null;
+  hintSrc: BGSrc | null;
   skin: CardBackSkin;
   face: CardFaceStyle;
   cardH: number;
@@ -480,10 +468,10 @@ interface FCColumnProps {
   onDragStart: (e: React.PointerEvent<Element>, i: number) => void;
 }
 
-function FCColumn({
+function BGColumn({
   pile, col, sel, draggingSrc, hintSrc, skin, face, cardH, fan,
   dragMode, dropZone, highlighted, onCardClick, onDoubleClick, onEmptyClick, onDragStart,
-}: FCColumnProps) {
+}: BGColumnProps) {
   const offsets = useMemo(() => {
     let y = 0;
     return pile.map(() => { const off = y; y += fan; return off; });
@@ -520,32 +508,32 @@ function FCColumn({
       {pile.map((c, i) => {
         const isTopCard = highlighted && i === pile.length - 1;
         return (
-        <div
-          key={c.id}
-          className={`absolute left-0 right-0 card-slot-container${isTopCard ? " ring-2 ring-[var(--neon)] ring-offset-1 ring-offset-background rounded-[var(--card-radius)]" : ""}`}
-          style={{
-            top: offsets[i],
-            height: cardH,
-            opacity: isDraggingFrom(i) ? 0.4 : 1,
-            transition: "opacity 0.1s",
-            ...(isTopCard ? { boxShadow: "0 0 20px -2px var(--neon)" } : {}),
-          }}
-        >
-          <PlayingCard
-            card={c}
-            selected={selIndex >= 0 && i >= selIndex}
-            hinted={hintIndex >= 0 && i >= hintIndex}
-            backSkin={skin}
-            faceStyle={face}
-            onPointerDown={
-              dragMode
-                ? (e) => onDragStart(e, i)
-                : (e) => { e.stopPropagation(); onCardClick(i); }
-            }
-            onDoubleClick={() => onDoubleClick(i)}
-            interactive
-          />
-        </div>
+          <div
+            key={c.id}
+            className={`absolute left-0 right-0 card-slot-container${isTopCard ? " ring-2 ring-[var(--neon)] ring-offset-1 ring-offset-background rounded-[var(--card-radius)]" : ""}`}
+            style={{
+              top: offsets[i],
+              height: cardH,
+              opacity: isDraggingFrom(i) ? 0.4 : 1,
+              transition: "opacity 0.1s",
+              ...(isTopCard ? { boxShadow: "0 0 20px -2px var(--neon)" } : {}),
+            }}
+          >
+            <PlayingCard
+              card={c}
+              selected={selIndex >= 0 && i >= selIndex}
+              hinted={hintIndex >= 0 && i >= hintIndex}
+              backSkin={skin}
+              faceStyle={face}
+              onPointerDown={
+                dragMode
+                  ? (e) => onDragStart(e, i)
+                  : (e) => { e.stopPropagation(); onCardClick(i); }
+              }
+              onDoubleClick={() => onDoubleClick(i)}
+              interactive
+            />
+          </div>
         );
       })}
     </div>

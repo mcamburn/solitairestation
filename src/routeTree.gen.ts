@@ -14,20 +14,30 @@ import { Route as R1SuitSpiderSolitaireRouteImport } from './routes/1-suit-spide
 import { Route as R2SuitSpiderSolitaireRouteImport } from './routes/2-suit-spider-solitaire'
 import { Route as R4SuitSpiderSolitaireRouteImport } from './routes/4-suit-spider-solitaire'
 import { Route as AboutRouteImport } from './routes/about'
+import { Route as AddictionRouteImport } from './routes/addiction'
+import { Route as BakersDozenRouteImport } from './routes/bakers-dozen'
+import { Route as BakersGameRouteImport } from './routes/bakers-game'
+import { Route as CanfieldRouteImport } from './routes/canfield'
+import { Route as ClockRouteImport } from './routes/clock'
 import { Route as DoubleKlondikeRouteImport } from './routes/double-klondike'
+import { Route as EightOffRouteImport } from './routes/eight-off'
+import { Route as FortyThievesRouteImport } from './routes/forty-thieves'
 import { Route as FreecellRouteImport } from './routes/freecell'
 import { Route as FreecellSolitaireRouteImport } from './routes/freecell-solitaire'
+import { Route as GolfRouteImport } from './routes/golf'
 import { Route as KlondikeRouteImport } from './routes/klondike'
 import { Route as KlondikeSolitaireRouteImport } from './routes/klondike-solitaire'
 import { Route as MahjongRouteImport } from './routes/mahjong'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as PyramidRouteImport } from './routes/pyramid'
+import { Route as ScorpionRouteImport } from './routes/scorpion'
 import { Route as SpiderRouteImport } from './routes/spider'
 import { Route as SpiderSolitaireRouteImport } from './routes/spider-solitaire'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as TripeaksRouteImport } from './routes/tripeaks'
 import { Route as Turn3SolitaireRouteImport } from './routes/turn-3-solitaire'
 import { Route as VegasSolitaireRouteImport } from './routes/vegas-solitaire'
+import { Route as YukonRouteImport } from './routes/yukon'
 import { Route as GuidesIndexRouteImport } from './routes/guides/index'
 import { Route as GuidesSlugRouteImport } from './routes/guides/$slug'
 
@@ -56,9 +66,44 @@ const AboutRoute = AboutRouteImport.update({
   path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AddictionRoute = AddictionRouteImport.update({
+  id: '/addiction',
+  path: '/addiction',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BakersDozenRoute = BakersDozenRouteImport.update({
+  id: '/bakers-dozen',
+  path: '/bakers-dozen',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BakersGameRoute = BakersGameRouteImport.update({
+  id: '/bakers-game',
+  path: '/bakers-game',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CanfieldRoute = CanfieldRouteImport.update({
+  id: '/canfield',
+  path: '/canfield',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ClockRoute = ClockRouteImport.update({
+  id: '/clock',
+  path: '/clock',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DoubleKlondikeRoute = DoubleKlondikeRouteImport.update({
   id: '/double-klondike',
   path: '/double-klondike',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EightOffRoute = EightOffRouteImport.update({
+  id: '/eight-off',
+  path: '/eight-off',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FortyThievesRoute = FortyThievesRouteImport.update({
+  id: '/forty-thieves',
+  path: '/forty-thieves',
   getParentRoute: () => rootRouteImport,
 } as any)
 const FreecellRoute = FreecellRouteImport.update({
@@ -69,6 +114,11 @@ const FreecellRoute = FreecellRouteImport.update({
 const FreecellSolitaireRoute = FreecellSolitaireRouteImport.update({
   id: '/freecell-solitaire',
   path: '/freecell-solitaire',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GolfRoute = GolfRouteImport.update({
+  id: '/golf',
+  path: '/golf',
   getParentRoute: () => rootRouteImport,
 } as any)
 const KlondikeRoute = KlondikeRouteImport.update({
@@ -94,6 +144,11 @@ const PrivacyRoute = PrivacyRouteImport.update({
 const PyramidRoute = PyramidRouteImport.update({
   id: '/pyramid',
   path: '/pyramid',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ScorpionRoute = ScorpionRouteImport.update({
+  id: '/scorpion',
+  path: '/scorpion',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SpiderRoute = SpiderRouteImport.update({
@@ -126,6 +181,11 @@ const VegasSolitaireRoute = VegasSolitaireRouteImport.update({
   path: '/vegas-solitaire',
   getParentRoute: () => rootRouteImport,
 } as any)
+const YukonRoute = YukonRouteImport.update({
+  id: '/yukon',
+  path: '/yukon',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const GuidesIndexRoute = GuidesIndexRouteImport.update({
   id: '/guides/',
   path: '/guides/',
@@ -143,20 +203,30 @@ export interface FileRoutesByFullPath {
   '/2-suit-spider-solitaire': typeof R2SuitSpiderSolitaireRoute
   '/4-suit-spider-solitaire': typeof R4SuitSpiderSolitaireRoute
   '/about': typeof AboutRoute
+  '/addiction': typeof AddictionRoute
+  '/bakers-dozen': typeof BakersDozenRoute
+  '/bakers-game': typeof BakersGameRoute
+  '/canfield': typeof CanfieldRoute
+  '/clock': typeof ClockRoute
   '/double-klondike': typeof DoubleKlondikeRoute
+  '/eight-off': typeof EightOffRoute
+  '/forty-thieves': typeof FortyThievesRoute
   '/freecell': typeof FreecellRoute
   '/freecell-solitaire': typeof FreecellSolitaireRoute
+  '/golf': typeof GolfRoute
   '/klondike': typeof KlondikeRoute
   '/klondike-solitaire': typeof KlondikeSolitaireRoute
   '/mahjong': typeof MahjongRoute
   '/privacy': typeof PrivacyRoute
   '/pyramid': typeof PyramidRoute
+  '/scorpion': typeof ScorpionRoute
   '/spider': typeof SpiderRoute
   '/spider-solitaire': typeof SpiderSolitaireRoute
   '/terms': typeof TermsRoute
   '/tripeaks': typeof TripeaksRoute
   '/turn-3-solitaire': typeof Turn3SolitaireRoute
   '/vegas-solitaire': typeof VegasSolitaireRoute
+  '/yukon': typeof YukonRoute
   '/guides/$slug': typeof GuidesSlugRoute
   '/guides/': typeof GuidesIndexRoute
 }
@@ -166,20 +236,30 @@ export interface FileRoutesByTo {
   '/2-suit-spider-solitaire': typeof R2SuitSpiderSolitaireRoute
   '/4-suit-spider-solitaire': typeof R4SuitSpiderSolitaireRoute
   '/about': typeof AboutRoute
+  '/addiction': typeof AddictionRoute
+  '/bakers-dozen': typeof BakersDozenRoute
+  '/bakers-game': typeof BakersGameRoute
+  '/canfield': typeof CanfieldRoute
+  '/clock': typeof ClockRoute
   '/double-klondike': typeof DoubleKlondikeRoute
+  '/eight-off': typeof EightOffRoute
+  '/forty-thieves': typeof FortyThievesRoute
   '/freecell': typeof FreecellRoute
   '/freecell-solitaire': typeof FreecellSolitaireRoute
+  '/golf': typeof GolfRoute
   '/klondike': typeof KlondikeRoute
   '/klondike-solitaire': typeof KlondikeSolitaireRoute
   '/mahjong': typeof MahjongRoute
   '/privacy': typeof PrivacyRoute
   '/pyramid': typeof PyramidRoute
+  '/scorpion': typeof ScorpionRoute
   '/spider': typeof SpiderRoute
   '/spider-solitaire': typeof SpiderSolitaireRoute
   '/terms': typeof TermsRoute
   '/tripeaks': typeof TripeaksRoute
   '/turn-3-solitaire': typeof Turn3SolitaireRoute
   '/vegas-solitaire': typeof VegasSolitaireRoute
+  '/yukon': typeof YukonRoute
   '/guides/$slug': typeof GuidesSlugRoute
   '/guides': typeof GuidesIndexRoute
 }
@@ -190,20 +270,30 @@ export interface FileRoutesById {
   '/2-suit-spider-solitaire': typeof R2SuitSpiderSolitaireRoute
   '/4-suit-spider-solitaire': typeof R4SuitSpiderSolitaireRoute
   '/about': typeof AboutRoute
+  '/addiction': typeof AddictionRoute
+  '/bakers-dozen': typeof BakersDozenRoute
+  '/bakers-game': typeof BakersGameRoute
+  '/canfield': typeof CanfieldRoute
+  '/clock': typeof ClockRoute
   '/double-klondike': typeof DoubleKlondikeRoute
+  '/eight-off': typeof EightOffRoute
+  '/forty-thieves': typeof FortyThievesRoute
   '/freecell': typeof FreecellRoute
   '/freecell-solitaire': typeof FreecellSolitaireRoute
+  '/golf': typeof GolfRoute
   '/klondike': typeof KlondikeRoute
   '/klondike-solitaire': typeof KlondikeSolitaireRoute
   '/mahjong': typeof MahjongRoute
   '/privacy': typeof PrivacyRoute
   '/pyramid': typeof PyramidRoute
+  '/scorpion': typeof ScorpionRoute
   '/spider': typeof SpiderRoute
   '/spider-solitaire': typeof SpiderSolitaireRoute
   '/terms': typeof TermsRoute
   '/tripeaks': typeof TripeaksRoute
   '/turn-3-solitaire': typeof Turn3SolitaireRoute
   '/vegas-solitaire': typeof VegasSolitaireRoute
+  '/yukon': typeof YukonRoute
   '/guides/$slug': typeof GuidesSlugRoute
   '/guides/': typeof GuidesIndexRoute
 }
@@ -215,20 +305,30 @@ export interface FileRouteTypes {
     | '/2-suit-spider-solitaire'
     | '/4-suit-spider-solitaire'
     | '/about'
+    | '/addiction'
+    | '/bakers-dozen'
+    | '/bakers-game'
+    | '/canfield'
+    | '/clock'
     | '/double-klondike'
+    | '/eight-off'
+    | '/forty-thieves'
     | '/freecell'
     | '/freecell-solitaire'
+    | '/golf'
     | '/klondike'
     | '/klondike-solitaire'
     | '/mahjong'
     | '/privacy'
     | '/pyramid'
+    | '/scorpion'
     | '/spider'
     | '/spider-solitaire'
     | '/terms'
     | '/tripeaks'
     | '/turn-3-solitaire'
     | '/vegas-solitaire'
+    | '/yukon'
     | '/guides/$slug'
     | '/guides/'
   fileRoutesByTo: FileRoutesByTo
@@ -238,20 +338,30 @@ export interface FileRouteTypes {
     | '/2-suit-spider-solitaire'
     | '/4-suit-spider-solitaire'
     | '/about'
+    | '/addiction'
+    | '/bakers-dozen'
+    | '/bakers-game'
+    | '/canfield'
+    | '/clock'
     | '/double-klondike'
+    | '/eight-off'
+    | '/forty-thieves'
     | '/freecell'
     | '/freecell-solitaire'
+    | '/golf'
     | '/klondike'
     | '/klondike-solitaire'
     | '/mahjong'
     | '/privacy'
     | '/pyramid'
+    | '/scorpion'
     | '/spider'
     | '/spider-solitaire'
     | '/terms'
     | '/tripeaks'
     | '/turn-3-solitaire'
     | '/vegas-solitaire'
+    | '/yukon'
     | '/guides/$slug'
     | '/guides'
   id:
@@ -261,20 +371,30 @@ export interface FileRouteTypes {
     | '/2-suit-spider-solitaire'
     | '/4-suit-spider-solitaire'
     | '/about'
+    | '/addiction'
+    | '/bakers-dozen'
+    | '/bakers-game'
+    | '/canfield'
+    | '/clock'
     | '/double-klondike'
+    | '/eight-off'
+    | '/forty-thieves'
     | '/freecell'
     | '/freecell-solitaire'
+    | '/golf'
     | '/klondike'
     | '/klondike-solitaire'
     | '/mahjong'
     | '/privacy'
     | '/pyramid'
+    | '/scorpion'
     | '/spider'
     | '/spider-solitaire'
     | '/terms'
     | '/tripeaks'
     | '/turn-3-solitaire'
     | '/vegas-solitaire'
+    | '/yukon'
     | '/guides/$slug'
     | '/guides/'
   fileRoutesById: FileRoutesById
@@ -285,20 +405,30 @@ export interface RootRouteChildren {
   R2SuitSpiderSolitaireRoute: typeof R2SuitSpiderSolitaireRoute
   R4SuitSpiderSolitaireRoute: typeof R4SuitSpiderSolitaireRoute
   AboutRoute: typeof AboutRoute
+  AddictionRoute: typeof AddictionRoute
+  BakersDozenRoute: typeof BakersDozenRoute
+  BakersGameRoute: typeof BakersGameRoute
+  CanfieldRoute: typeof CanfieldRoute
+  ClockRoute: typeof ClockRoute
   DoubleKlondikeRoute: typeof DoubleKlondikeRoute
+  EightOffRoute: typeof EightOffRoute
+  FortyThievesRoute: typeof FortyThievesRoute
   FreecellRoute: typeof FreecellRoute
   FreecellSolitaireRoute: typeof FreecellSolitaireRoute
+  GolfRoute: typeof GolfRoute
   KlondikeRoute: typeof KlondikeRoute
   KlondikeSolitaireRoute: typeof KlondikeSolitaireRoute
   MahjongRoute: typeof MahjongRoute
   PrivacyRoute: typeof PrivacyRoute
   PyramidRoute: typeof PyramidRoute
+  ScorpionRoute: typeof ScorpionRoute
   SpiderRoute: typeof SpiderRoute
   SpiderSolitaireRoute: typeof SpiderSolitaireRoute
   TermsRoute: typeof TermsRoute
   TripeaksRoute: typeof TripeaksRoute
   Turn3SolitaireRoute: typeof Turn3SolitaireRoute
   VegasSolitaireRoute: typeof VegasSolitaireRoute
+  YukonRoute: typeof YukonRoute
   GuidesSlugRoute: typeof GuidesSlugRoute
   GuidesIndexRoute: typeof GuidesIndexRoute
 }
@@ -340,11 +470,60 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/addiction': {
+      id: '/addiction'
+      path: '/addiction'
+      fullPath: '/addiction'
+      preLoaderRoute: typeof AddictionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/bakers-dozen': {
+      id: '/bakers-dozen'
+      path: '/bakers-dozen'
+      fullPath: '/bakers-dozen'
+      preLoaderRoute: typeof BakersDozenRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/bakers-game': {
+      id: '/bakers-game'
+      path: '/bakers-game'
+      fullPath: '/bakers-game'
+      preLoaderRoute: typeof BakersGameRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/canfield': {
+      id: '/canfield'
+      path: '/canfield'
+      fullPath: '/canfield'
+      preLoaderRoute: typeof CanfieldRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/clock': {
+      id: '/clock'
+      path: '/clock'
+      fullPath: '/clock'
+      preLoaderRoute: typeof ClockRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/double-klondike': {
       id: '/double-klondike'
       path: '/double-klondike'
       fullPath: '/double-klondike'
       preLoaderRoute: typeof DoubleKlondikeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/eight-off': {
+      id: '/eight-off'
+      path: '/eight-off'
+      fullPath: '/eight-off'
+      preLoaderRoute: typeof EightOffRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/forty-thieves': {
+      id: '/forty-thieves'
+      path: '/forty-thieves'
+      fullPath: '/forty-thieves'
+      preLoaderRoute: typeof FortyThievesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/freecell': {
@@ -359,6 +538,13 @@ declare module '@tanstack/react-router' {
       path: '/freecell-solitaire'
       fullPath: '/freecell-solitaire'
       preLoaderRoute: typeof FreecellSolitaireRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/golf': {
+      id: '/golf'
+      path: '/golf'
+      fullPath: '/golf'
+      preLoaderRoute: typeof GolfRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/klondike': {
@@ -394,6 +580,13 @@ declare module '@tanstack/react-router' {
       path: '/pyramid'
       fullPath: '/pyramid'
       preLoaderRoute: typeof PyramidRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/scorpion': {
+      id: '/scorpion'
+      path: '/scorpion'
+      fullPath: '/scorpion'
+      preLoaderRoute: typeof ScorpionRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/spider': {
@@ -438,6 +631,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof VegasSolitaireRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/yukon': {
+      id: '/yukon'
+      path: '/yukon'
+      fullPath: '/yukon'
+      preLoaderRoute: typeof YukonRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/guides/': {
       id: '/guides/'
       path: '/guides'
@@ -461,20 +661,30 @@ const rootRouteChildren: RootRouteChildren = {
   R2SuitSpiderSolitaireRoute: R2SuitSpiderSolitaireRoute,
   R4SuitSpiderSolitaireRoute: R4SuitSpiderSolitaireRoute,
   AboutRoute: AboutRoute,
+  AddictionRoute: AddictionRoute,
+  BakersDozenRoute: BakersDozenRoute,
+  BakersGameRoute: BakersGameRoute,
+  CanfieldRoute: CanfieldRoute,
+  ClockRoute: ClockRoute,
   DoubleKlondikeRoute: DoubleKlondikeRoute,
+  EightOffRoute: EightOffRoute,
+  FortyThievesRoute: FortyThievesRoute,
   FreecellRoute: FreecellRoute,
   FreecellSolitaireRoute: FreecellSolitaireRoute,
+  GolfRoute: GolfRoute,
   KlondikeRoute: KlondikeRoute,
   KlondikeSolitaireRoute: KlondikeSolitaireRoute,
   MahjongRoute: MahjongRoute,
   PrivacyRoute: PrivacyRoute,
   PyramidRoute: PyramidRoute,
+  ScorpionRoute: ScorpionRoute,
   SpiderRoute: SpiderRoute,
   SpiderSolitaireRoute: SpiderSolitaireRoute,
   TermsRoute: TermsRoute,
   TripeaksRoute: TripeaksRoute,
   Turn3SolitaireRoute: Turn3SolitaireRoute,
   VegasSolitaireRoute: VegasSolitaireRoute,
+  YukonRoute: YukonRoute,
   GuidesSlugRoute: GuidesSlugRoute,
   GuidesIndexRoute: GuidesIndexRoute,
 }
