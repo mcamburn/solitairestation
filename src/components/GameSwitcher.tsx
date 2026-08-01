@@ -57,7 +57,7 @@ export function GameSwitcher() {
         onClick={() => setOpen(o => !o)}
         aria-expanded={open}
         aria-haspopup="listbox"
-        className="flex items-center gap-2.5 rounded-xl px-3 py-2 text-sm font-semibold transition-all duration-150 select-none"
+        className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2 text-sm font-semibold transition-all duration-150 select-none"
         style={{
           background: open
             ? "color-mix(in oklab, var(--neon) 20%, oklch(0.18 0.03 155))"
