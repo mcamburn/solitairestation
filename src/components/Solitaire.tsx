@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { saveGame, loadGame, clearGame } from "@/lib/persist";
 import { recordWin, recordLoss, type GameStats } from "@/lib/stats";
 import { useDailyChallenge } from "@/contexts/DailyChallengeContext";
+import { getGameLabel } from "@/lib/gameLabels";
 import {
   autoMoveToFoundation,
   canDraw,
@@ -852,7 +853,7 @@ function WinOverlay({ onNew, moves, time, mode, score }: {
   const modeLabel = MODE_LABELS.find(m => m.value === mode)?.label ?? "Klondike";
   const [celebrating, setCelebrating] = useState(true);
   const [copied, setCopied] = useState(false);
-  const { justWonDailyStreak, clearDailyWin, activateDaily } = useDailyChallenge();
+  const { justWonDailyStreak, clearDailyWin, activateDaily, gameKey } = useDailyChallenge();
 
   const handleNew = () => { clearDailyWin(); onNew(); };
   const handleReplayDaily = () => { activateDaily(); };
@@ -865,7 +866,8 @@ function WinOverlay({ onNew, moves, time, mode, score }: {
   const streakLabel = justWonDailyStreak === 1 ? "1st daily complete!" : `${justWonDailyStreak}-day streak 🔥`;
 
   const handleCopy = () => {
-    const shareText = [`🃏 Neon Solitaire – Daily Challenge`, `📅 ${dateLabel}`, `🔥 ${streakLabel}`, ``, `Play free at neon-solitaire.replit.app`].join("\n");
+    const gameLabel = getGameLabel(gameKey || "klondike");
+    const shareText = [`🃏 Solitaire Station – Daily ${gameLabel}`, `📅 ${dateLabel}`, `🔥 ${streakLabel}`, ``, `Play free at solitairestation.com`].join("\n");
     navigator.clipboard.writeText(shareText).then(() => { setCopied(true); setTimeout(() => setCopied(false), 2500); }).catch(() => window.prompt("Copy this result:", shareText));
   };
 

@@ -5,6 +5,7 @@ import { WinCelebration } from "./WinCelebration";
 import { useDailyChallenge } from "@/contexts/DailyChallengeContext";
 import { getTodayKey } from "@/lib/daily";
 import { SITE_URL } from "@/lib/site";
+import { getGameLabel } from "@/lib/gameLabels";
 
 interface DailyWinBannerProps {
   message?: string;
@@ -19,7 +20,7 @@ interface DailyWinBannerProps {
  * standard WinBanner UI for regular wins and for stuck/no-moves states.
  */
 export function DailyWinBanner({ message, onNew, variant = "win", stats }: DailyWinBannerProps) {
-  const { justWonDailyStreak, clearDailyWin, activateDaily } = useDailyChallenge();
+  const { justWonDailyStreak, clearDailyWin, activateDaily, gameKey } = useDailyChallenge();
   const [celebrating, setCelebrating] = useState(true);
   const [copied, setCopied] = useState(false);
 
@@ -100,8 +101,9 @@ export function DailyWinBanner({ message, onNew, variant = "win", stats }: Daily
       : `${justWonDailyStreak}-day streak 🔥`;
 
   const siteHost = SITE_URL.replace(/^https?:\/\/(www\.)?/, "");
+  const gameLabel = getGameLabel(gameKey);
   const shareText = [
-    `🃏 Solitaire Station – Daily Challenge`,
+    `🃏 Solitaire Station – Daily ${gameLabel}`,
     `📅 ${dateLabel}`,
     `🔥 ${streakLabel}`,
     ``,
