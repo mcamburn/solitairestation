@@ -42,7 +42,7 @@ function PrivacyPage() {
       <div className="mt-8 space-y-8 text-sm leading-relaxed text-muted-foreground">
 
         <Section n="1" title="Introduction">
-          <p>This Privacy Policy (the "Privacy Policy") describes the privacy policy for your access and/or use of our website located at https://www.solitairestation.com and any services offered or provided by Publish Port ("Company," "we," "our," or "us") through the website located at https://www.solitairestation.com or otherwise provided by us (the "Site"). We own and operate the Site.</p>
+          <p>This Privacy Policy (the "Privacy Policy") describes the privacy policy for your access and/or use of our website located at https://www.solitairestation.com and any services offered or provided by Solitaire Station ("Company," "we," "our," or "us") through the website located at https://www.solitairestation.com or otherwise provided by us (the "Site"). We own and operate the Site.</p>
           <p className="mt-3">We are committed to protecting the privacy and security of your personal information. This Privacy Policy describes how we collect, use, share, and protect the personal information of visitors to our Site.</p>
         </Section>
 

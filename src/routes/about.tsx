@@ -36,7 +36,7 @@ function AboutPage() {
         className="mt-6 text-3xl font-bold tracking-tight sm:text-4xl"
         style={{ fontFamily: "var(--font-display)" }}
       >
-        About Free-Klondike-Solitaire.com
+        About Solitaire Station
       </h1>
       <p className="mt-2 text-xs uppercase tracking-[0.22em] text-muted-foreground">
         Free online solitaire — six games, zero friction
@@ -46,10 +46,10 @@ function AboutPage() {
 
         <section>
           <h2 className="mb-3 text-base font-bold tracking-tight text-foreground">
-            What is Free-Klondike-Solitaire.com?
+            What is Solitaire Station?
           </h2>
           <p>
-            Free-Klondike-Solitaire.com is a free online solitaire platform built for players who want a
+            Solitaire Station is a free online solitaire platform built for players who want a
             beautiful, distraction-free card game experience right in their browser. There is
             nothing to download, nothing to install, and no account required — just open the
             site and start playing instantly on any device.
@@ -144,7 +144,7 @@ function AboutPage() {
               ["Auto-save progress", "Your game state is saved automatically after every move using your browser's local storage. No account needed; your progress never leaves your device."],
               ["Undo & hints", "All six games include unlimited undo and a built-in hint system so you never feel stuck."],
               ["Customisable card styles", "Choose from nine card back designs and nine card face styles to make the table feel like yours."],
-              ["Completely free", "Free-Klondike-Solitaire.com is free to play with no paywalls, no mandatory sign-ups, and no ads interrupting your game."],
+              ["Completely free", "Solitaire Station is free to play with no paywalls, no mandatory sign-ups, and no ads interrupting your game."],
               ["Works on any device", "The layout adapts from a large desktop monitor down to a small phone screen, so you can play free online solitaire wherever you are."],
             ].map(([label, body]) => (
               <li key={label} className="flex flex-col gap-0.5">
@@ -161,7 +161,7 @@ function AboutPage() {
           </h2>
           <p>
             We believe the best free online solitaire experience is one that gets out of
-            your way. Free-Klondike-Solitaire.com was designed from the ground up to load fast, feel
+            your way. Solitaire Station was designed from the ground up to load fast, feel
             responsive, and look great — without dark patterns, intrusive notifications, or
             paywalled features. The entire game runs client-side; no moves are sent to a
             server, and nothing about how you play is tracked beyond standard anonymous
@@ -171,7 +171,7 @@ function AboutPage() {
             Whether you are a lifelong Klondike Solitaire fan looking for a clean modern
             version, or you want to explore free Spider Solitaire, free FreeCell Solitaire,
             free Pyramid Solitaire, free TriPeaks Solitaire, or free Mahjong Solitaire for
-            the first time, Free-Klondike-Solitaire.com is built for you.
+            the first time, Solitaire Station is built for you.
           </p>
         </section>
 
@@ -180,7 +180,7 @@ function AboutPage() {
             Legal
           </h2>
           <p>
-            Use of Free-Klondike-Solitaire.com is subject to our{" "}
+            Use of Solitaire Station is subject to our{" "}
             <Link to="/privacy" className="text-foreground underline underline-offset-2 transition hover:opacity-75">
               Privacy Policy
             </Link>{" "}
@@ -188,7 +188,7 @@ function AboutPage() {
             <Link to="/terms" className="text-foreground underline underline-offset-2 transition hover:opacity-75">
               Terms of Use
             </Link>
-            . All games and content are © 2026 Publish Port. All rights reserved.
+            . All games and content are © 2026 Solitaire Station. All rights reserved.
           </p>
         </section>
 
