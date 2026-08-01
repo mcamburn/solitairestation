@@ -273,38 +273,55 @@
 }
 
 /* ===== Face styles ===== */
+
+/* Classic — warm serif ivory, like aged card stock */
 .face-classic {
   font-family: "Georgia", "Times New Roman", serif !important;
-  background: linear-gradient(160deg, oklch(0.99 0.01 90), oklch(0.94 0.02 80)) !important;
+  background: linear-gradient(160deg, oklch(0.99 0.012 88), oklch(0.93 0.022 78)) !important;
 }
+
+/* Ivory — clean warm white, barely tinted */
 .face-minimal {
-  background: linear-gradient(160deg, oklch(0.995 0.003 250), oklch(0.96 0.005 250)) !important;
+  background: linear-gradient(160deg, oklch(0.995 0.004 85), oklch(0.96 0.005 82)) !important;
 }
+
+/* Onyx — deep casino-green face with warm cream text + faint gold border */
 .face-bold {
-  background: linear-gradient(160deg, oklch(0.15 0.025 155), oklch(0.10 0.020 155)) !important;
-  color: oklch(0.98 0.005 250) !important;
-  border-color: oklch(1 0 0 / 12%) !important;
+  background: linear-gradient(160deg, oklch(0.16 0.030 155), oklch(0.10 0.022 155)) !important;
+  color: oklch(0.97 0.015 80) !important;
+  border-color: color-mix(in oklab, var(--neon) 22%, oklch(0 0 0 / 10%)) !important;
 }
+
+/* Pixel — warm off-white for monospace */
 .face-pixel {
   font-family: "JetBrains Mono", ui-monospace, monospace !important;
-  background: linear-gradient(160deg, oklch(0.99 0.005 250), oklch(0.92 0.01 250)) !important;
+  background: linear-gradient(160deg, oklch(0.99 0.004 85), oklch(0.92 0.008 82)) !important;
 }
+
+/* Antique — rich warm parchment, like old casino cards */
 .face-script {
-  background: linear-gradient(160deg, oklch(0.98 0.02 60), oklch(0.92 0.04 55)) !important;
+  background: linear-gradient(160deg, oklch(0.97 0.030 74), oklch(0.90 0.045 68)) !important;
 }
+
+/* Outline — warm near-white for thin-stroke suits */
 .face-outline {
-  background: linear-gradient(160deg, oklch(0.99 0.003 250), oklch(0.95 0.005 250)) !important;
+  background: linear-gradient(160deg, oklch(0.995 0.004 85), oklch(0.95 0.006 82)) !important;
 }
+
+/* Verdant — deep casino green with gold glow + warm cream text */
 .face-retro {
-  background: linear-gradient(160deg, oklch(0.14 0.025 155), oklch(0.08 0.020 155)) !important;
-  border-color: color-mix(in oklab, var(--neon) 40%, transparent) !important;
+  background: linear-gradient(160deg, oklch(0.15 0.030 155), oklch(0.08 0.022 155)) !important;
+  color: oklch(0.97 0.015 80) !important;
+  border-color: color-mix(in oklab, var(--neon) 45%, transparent) !important;
   box-shadow:
-    0 0 0 1px color-mix(in oklab, var(--neon) 25%, transparent) inset,
+    0 0 0 1px color-mix(in oklab, var(--neon) 28%, transparent) inset,
     0 8px 20px -8px oklch(0 0 0 / 55%) !important;
 }
+
+/* Parchment — warm tan like casino-table felt lining */
 .face-stencil {
-  background: linear-gradient(160deg, oklch(0.96 0.01 90), oklch(0.88 0.02 85)) !important;
-  border-color: oklch(0 0 0 / 20%) !important;
+  background: linear-gradient(160deg, oklch(0.93 0.030 78), oklch(0.84 0.040 72)) !important;
+  border-color: oklch(0 0 0 / 18%) !important;
 }
 
 @utility slot-empty {

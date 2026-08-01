@@ -15,15 +15,15 @@ export const SKINS: { id: CardBackSkin; label: string }[] = [
 ];
 
 export const FACES: { id: CardFaceStyle; label: string }[] = [
-  { id: "modern", label: "Modern" },
-  { id: "classic", label: "Classic" },
-  { id: "minimal", label: "Minimal" },
-  { id: "bold", label: "Bold" },
-  { id: "pixel", label: "Pixel" },
-  { id: "script", label: "Script" },
-  { id: "outline", label: "Outline" },
-  { id: "retro", label: "Retro" },
-  { id: "stencil", label: "Stencil" },
+  { id: "modern",  label: "Modern"    },
+  { id: "classic", label: "Classic"   },
+  { id: "minimal", label: "Ivory"     },
+  { id: "bold",    label: "Onyx"      },
+  { id: "pixel",   label: "Pixel"     },
+  { id: "script",  label: "Antique"   },
+  { id: "outline", label: "Outline"   },
+  { id: "retro",   label: "Verdant"   },
+  { id: "stencil", label: "Parchment" },
 ];
 
 /* ---------- shared context ---------- */
