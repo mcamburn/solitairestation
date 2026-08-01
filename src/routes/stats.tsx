@@ -14,6 +14,9 @@ import { SiteFooter } from "@/components/SiteFooter";
 import { SITE_URL } from "@/lib/site";
 
 export const Route = createFileRoute("/stats")({
+  validateSearch: (search: Record<string, unknown>): { from?: string } => ({
+    from: typeof search.from === "string" ? search.from : undefined,
+  }),
   component: StatsPage,
   head: () => ({
     meta: [
@@ -154,10 +157,17 @@ function aggregateStats(rows: GameRow[]) {
 /* ── Page component ───────────────────────────────────────────────────────── */
 
 function StatsPage() {
+  const { from } = Route.useSearch();
+
   // Start with default (zero) stats so SSR and first client render match.
   // Real localStorage data is loaded in the effect below.
   const [rows, setRows] = useState<GameRow[]>(buildDefaultRows);
   const [hydrated, setHydrated] = useState(false);
+  const [highlightedKey, setHighlightedKey] = useState<string | null>(null);
+  // Separate ref maps for desktop table rows and mobile cards so the later-mounted
+  // mobile card doesn't overwrite the desktop row under the same saveKey.
+  const tableRowRefs = useRef<Map<string, HTMLElement>>(new Map());
+  const mobileCardRefs = useRef<Map<string, HTMLElement>>(new Map());
 
   const [sortKey, setSortKey] = useState<SortKey>("title");
   const [sortDir, setSortDir] = useState<SortDir>("asc");
@@ -186,6 +196,25 @@ function StatsPage() {
     return () =>
       window.removeEventListener("neon-solitaire:stats-updated", handler);
   }, []);
+
+  // Scroll to and highlight the game the player just came from.
+  // Pick whichever rendering is actually visible (desktop table row vs mobile card).
+  useEffect(() => {
+    if (!hydrated || !from) return;
+    setHighlightedKey(from);
+    const tableEl = tableRowRefs.current.get(from);
+    const mobileEl = mobileCardRefs.current.get(from);
+    // An element hidden via display:none has offsetWidth === 0 and offsetHeight === 0
+    const visibleEl =
+      tableEl && (tableEl.offsetWidth > 0 || tableEl.offsetHeight > 0)
+        ? tableEl
+        : mobileEl;
+    if (visibleEl) {
+      visibleEl.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+    const timer = setTimeout(() => setHighlightedKey(null), 2200);
+    return () => clearTimeout(timer);
+  }, [hydrated, from]);
 
   const sorted = sortRows(rows, sortKey, sortDir);
   const totals = aggregateStats(rows);
@@ -220,6 +249,19 @@ function StatsPage() {
 
   return (
     <main className="mx-auto min-h-screen w-full max-w-[900px] px-4 py-10 sm:py-16">
+      {/* Highlight animation */}
+      <style>{`
+        @keyframes stats-row-flash {
+          0%   { background: color-mix(in oklab, var(--neon) 24%, oklch(0.16 0.03 155)); outline: 2px solid color-mix(in oklab, var(--neon) 55%, transparent); }
+          60%  { background: color-mix(in oklab, var(--neon) 14%, oklch(0.16 0.03 155)); outline: 2px solid color-mix(in oklab, var(--neon) 30%, transparent); }
+          100% { background: color-mix(in oklab, var(--neon) 4%, oklch(0.16 0.03 155)); outline: 2px solid transparent; }
+        }
+        .stats-row-highlighted {
+          animation: stats-row-flash 2.2s ease-out forwards;
+          border-radius: 0.5rem;
+        }
+      `}</style>
+
       {/* Back link */}
       <Link
         to="/"
@@ -282,7 +324,16 @@ function StatsPage() {
             </thead>
             <tbody>
               {sorted.map((row, i) => (
-                <TableRow key={row.saveKey} row={row} isLast={i === sorted.length - 1} />
+                <TableRow
+                  key={row.saveKey}
+                  row={row}
+                  isLast={i === sorted.length - 1}
+                  highlighted={highlightedKey === row.saveKey}
+                  rowRef={(el) => {
+                    if (el) tableRowRefs.current.set(row.saveKey, el);
+                    else tableRowRefs.current.delete(row.saveKey);
+                  }}
+                />
               ))}
             </tbody>
           </table>
@@ -337,7 +388,15 @@ function StatsPage() {
         {/* Mobile card list */}
         <div className="sm:hidden space-y-3">
           {sorted.map((row) => (
-            <MobileCard key={row.saveKey} row={row} />
+            <MobileCard
+              key={row.saveKey}
+              row={row}
+              highlighted={highlightedKey === row.saveKey}
+              rowRef={(el) => {
+                if (el) mobileCardRefs.current.set(row.saveKey, el);
+                else mobileCardRefs.current.delete(row.saveKey);
+              }}
+            />
           ))}
         </div>
       </div>
@@ -504,14 +563,25 @@ function SummaryCard({ label, value }: { label: string; value: string }) {
 
 /* ── Desktop table row ────────────────────────────────────────────────────── */
 
-function TableRow({ row, isLast }: { row: GameRow; isLast: boolean }) {
+function TableRow({
+  row,
+  isLast,
+  highlighted,
+  rowRef,
+}: {
+  row: GameRow;
+  isLast: boolean;
+  highlighted?: boolean;
+  rowRef?: (el: HTMLTableRowElement | null) => void;
+}) {
   const { stats } = row;
   const hasPlayed = stats.gamesPlayed > 0;
   const winRate = getWinRate(stats);
 
   return (
     <tr
-      className="transition-colors hover:bg-white/[0.03]"
+      ref={rowRef}
+      className={`transition-colors hover:bg-white/[0.03]${highlighted ? " stats-row-highlighted" : ""}`}
       style={
         !isLast
           ? { borderBottom: "1px solid color-mix(in oklab, var(--neon) 8%, transparent)" }
@@ -792,14 +862,23 @@ function ExportImportControls({ onImported }: { onImported: () => void }) {
 
 /* ── Mobile card ──────────────────────────────────────────────────────────── */
 
-function MobileCard({ row }: { row: GameRow }) {
+function MobileCard({
+  row,
+  highlighted,
+  rowRef,
+}: {
+  row: GameRow;
+  highlighted?: boolean;
+  rowRef?: (el: HTMLDivElement | null) => void;
+}) {
   const { stats } = row;
   const hasPlayed = stats.gamesPlayed > 0;
   const winRate = getWinRate(stats);
 
   return (
     <div
-      className="rounded-xl px-4 py-3"
+      ref={rowRef}
+      className={`rounded-xl px-4 py-3${highlighted ? " stats-row-highlighted" : ""}`}
       style={{
         background: "color-mix(in oklab, var(--neon) 4%, oklch(0.16 0.03 155))",
         border: "1px solid color-mix(in oklab, var(--neon) 14%, transparent)",

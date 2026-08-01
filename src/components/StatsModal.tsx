@@ -176,7 +176,7 @@ export function StatsModal({ gameKey, gameTitle, gameEmoji, open, onClose, daily
           {/* Link to the all-games stats page */}
           <div className="flex justify-center pt-1 pb-1">
             <a
-              href="/stats"
+              href={`/stats?from=${encodeURIComponent(gameKey)}`}
               onClick={onClose}
               className="inline-flex items-center gap-1 text-xs transition-opacity hover:opacity-80"
               style={{ color: "color-mix(in oklab, var(--neon) 55%, white)" }}
