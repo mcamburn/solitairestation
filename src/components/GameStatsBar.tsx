@@ -71,24 +71,6 @@ export function GameStatsBar({ gameKey, variant = "bar" }: Props) {
 
       <NavDivider />
 
-      {/* Win rate */}
-      <div className="flex items-center gap-1 shrink-0">
-        <span
-          className="text-xs font-bold tabular-nums"
-          style={{ color: hasPlayed ? "var(--neon)" : "color-mix(in oklab, var(--neon) 45%, white)" }}
-        >
-          {hasPlayed ? `${winRate}%` : "—"}
-        </span>
-        <span
-          className="text-xs hidden sm:inline"
-          style={{ color: "color-mix(in oklab, var(--neon) 45%, white)" }}
-        >
-          win rate
-        </span>
-      </div>
-
-      <NavDivider />
-
       {/* Daily challenge */}
       {completedToday ? (
         <div className="flex items-center gap-1 shrink-0">
