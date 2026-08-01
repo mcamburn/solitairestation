@@ -49,7 +49,7 @@ export function GamePageLayout({ badge, title, tagline, rulesIntro, rules, child
         }}
       >
         {/* On mobile the switcher is full-bleed; desktop is constrained + padded */}
-        <div className="mx-auto max-w-[900px] xl:max-w-[1200px] md:px-4 md:py-2">
+        <div className="relative mx-auto max-w-[900px] xl:max-w-[1200px] md:px-4 md:py-2">
           {/* Desktop: logo left + switcher right */}
           <div className="hidden md:flex items-center gap-4">
             <SolitaireStationLogo variant="full" className="shrink-0" />

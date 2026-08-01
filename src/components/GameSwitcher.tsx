@@ -51,7 +51,7 @@ export function GameSwitcher() {
   }, [open]);
 
   return (
-    <div ref={containerRef} className="relative">
+    <div ref={containerRef}>
       {/* ── Trigger ─────────────────────────────────────────────────── */}
       <button
         onClick={() => setOpen(o => !o)}
@@ -102,12 +102,12 @@ export function GameSwitcher() {
       {/* ── Dropdown panel ──────────────────────────────────────────── */}
       {open && (
         <div
-          className="absolute left-0 top-full mt-2 z-50 rounded-2xl overflow-hidden"
+          className="absolute left-0 right-0 top-full z-50 rounded-b-2xl overflow-hidden"
           style={{
             background: "color-mix(in oklab, var(--neon) 6%, oklch(0.15 0.03 155))",
             border: "1px solid color-mix(in oklab, var(--neon) 28%, transparent)",
-            boxShadow: "0 24px 64px -8px rgba(0,0,0,0.8), 0 0 0 0 transparent",
-            minWidth: "min(600px, 92vw)",
+            borderTop: "none",
+            boxShadow: "0 24px 64px -8px rgba(0,0,0,0.8)",
           }}
         >
           {/* Panel header */}
