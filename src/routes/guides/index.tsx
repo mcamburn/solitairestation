@@ -11,7 +11,7 @@ export const Route = createFileRoute("/guides/")({
       {
         name: "description",
         content:
-          "Free solitaire strategy guides at Solitaire Station — Klondike, Spider, FreeCell, Pyramid, TriPeaks, Mahjong, Golf, Forty Thieves, Yukon, Scorpion, and more. Rules, win rates, tips, and history for all 16 games.",
+          "Free solitaire strategy guides at Solitaire Station — Klondike, Spider, FreeCell, Pyramid, TriPeaks, Mahjong, Golf, Forty Thieves, Yukon, Scorpion, Eight Off, Canfield, Addiction, Baker\u2019s Dozen, Baker\u2019s Game, and Clock. Learn rules, win rates, tips, and history.",
       },
       { name: "robots", content: "index, follow" },
       { property: "og:type", content: "website" },
@@ -19,7 +19,7 @@ export const Route = createFileRoute("/guides/")({
       {
         property: "og:description",
         content:
-          "Solitaire Station — guides for all 16 solitaire games: rules, win-rate breakdowns, strategy tips, history, and glossary.",
+          "Solitaire Station — strategy guides for 16 solitaire games: rules, win-rate breakdowns, strategy tips, history, and glossary.",
       },
       { property: "og:url", content: `${SITE_URL}/guides` },
     ],

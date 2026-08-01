@@ -24,13 +24,23 @@ export const Route = createFileRoute("/guides/$slug")({
 });
 
 const TAG_COLOR: Record<GameTag, string> = {
-  klondike: "#16a34a",
-  spider:   "#7c3aed",
-  freecell: "#0e7490",
-  pyramid:  "#b45309",
-  tripeaks: "#be185d",
-  mahjong:  "#dc2626",
-  general:  "#374151",
+  klondike:     "#16a34a",
+  spider:       "#7c3aed",
+  freecell:     "#0e7490",
+  pyramid:      "#b45309",
+  tripeaks:     "#be185d",
+  mahjong:      "#dc2626",
+  golf:         "#15803d",
+  fortythieves: "#92400e",
+  yukon:        "#1d4ed8",
+  scorpion:     "#b91c1c",
+  eightoff:     "#0f766e",
+  canfield:     "#7e22ce",
+  addiction:    "#c2410c",
+  bakersdozen:  "#a16207",
+  bakersgame:   "#1e3a5f",
+  clock:        "#374151",
+  general:      "#4b5563",
 };
 
 function GuidePage() {
