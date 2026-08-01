@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { loadStats, getWinRate, formatStatTime, type GameStats } from "@/lib/stats";
+import { loadStats, getWinRate, formatStatTime, type GameStats, type GameRecord } from "@/lib/stats";
 import { GAMES } from "@/lib/games";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SITE_URL } from "@/lib/site";
@@ -38,6 +38,13 @@ interface GameRow {
   emoji: string;
   to: string;
   stats: GameStats;
+}
+
+interface HistoryEntry {
+  record: GameRecord;
+  gameTitle: string;
+  gameEmoji: string;
+  gameTo: string;
 }
 
 type SortKey = "title" | "gamesPlayed" | "wins" | "winRate" | "bestTime" | "longestStreak";
@@ -105,6 +112,25 @@ function sortRows(rows: GameRow[], key: SortKey, dir: SortDir): GameRow[] {
   });
 }
 
+/* ── Combined history builder ─────────────────────────────────────────────── */
+
+function buildCombinedHistory(rows: GameRow[]): HistoryEntry[] {
+  const entries: HistoryEntry[] = [];
+  for (const row of rows) {
+    for (const record of row.stats.history) {
+      entries.push({
+        record,
+        gameTitle: row.title,
+        gameEmoji: row.emoji,
+        gameTo: row.to,
+      });
+    }
+  }
+  // Most recent first
+  entries.sort((a, b) => b.record.date - a.record.date);
+  return entries;
+}
+
 /* ── Aggregation ─────────────────────────────────────────────────────────── */
 
 function aggregateStats(rows: GameRow[]) {
@@ -127,6 +153,7 @@ function StatsPage() {
 
   const [sortKey, setSortKey] = useState<SortKey>("title");
   const [sortDir, setSortDir] = useState<SortDir>("asc");
+  const [dailyOnly, setDailyOnly] = useState(false);
 
   // Load real stats from localStorage after first mount (client-only)
   useEffect(() => {
@@ -237,6 +264,97 @@ function StatsPage() {
           ))}
         </div>
       </div>
+
+      {/* Recent history */}
+      {hydrated && (() => {
+        const allHistory = buildCombinedHistory(rows);
+        const filteredHistory = dailyOnly
+          ? allHistory.filter((e) => e.record.isDaily)
+          : allHistory;
+
+        if (allHistory.length === 0) return null;
+
+        return (
+          <div className="mt-10">
+            {/* Section header + filter toggle */}
+            <div className="flex items-center justify-between mb-4">
+              <h2
+                className="text-lg font-semibold tracking-tight"
+                style={{ fontFamily: "var(--font-display)" }}
+              >
+                Recent History
+              </h2>
+              <button
+                onClick={() => setDailyOnly((v) => !v)}
+                className="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold transition"
+                style={{
+                  background: dailyOnly
+                    ? "color-mix(in oklab, var(--neon) 22%, oklch(0.16 0.03 155))"
+                    : "color-mix(in oklab, var(--neon) 6%, oklch(0.16 0.03 155))",
+                  border: `1px solid color-mix(in oklab, var(--neon) ${dailyOnly ? "40%" : "16%"}, transparent)`,
+                  color: dailyOnly ? "var(--neon)" : "var(--muted-foreground)",
+                }}
+                aria-pressed={dailyOnly}
+              >
+                <span>📅</span>
+                <span>Daily only</span>
+              </button>
+            </div>
+
+            {filteredHistory.length === 0 ? (
+              <p className="text-sm text-muted-foreground">No daily challenge games recorded yet.</p>
+            ) : (
+              <>
+                {/* Desktop history table */}
+                <div
+                  className="hidden sm:block overflow-x-auto rounded-2xl"
+                  style={{
+                    background: "color-mix(in oklab, var(--neon) 4%, oklch(0.16 0.03 155))",
+                    border: "1px solid color-mix(in oklab, var(--neon) 14%, transparent)",
+                  }}
+                >
+                  <table className="w-full text-sm">
+                    <thead>
+                      <tr
+                        className="text-left text-xs uppercase tracking-[0.18em]"
+                        style={{
+                          color: "color-mix(in oklab, var(--neon) 55%, white)",
+                          borderBottom: "1px solid color-mix(in oklab, var(--neon) 8%, transparent)",
+                        }}
+                      >
+                        <th className="px-5 py-3 font-semibold">Game</th>
+                        <th className="px-4 py-3 font-semibold">Result</th>
+                        <th className="px-4 py-3 font-semibold text-right">Time</th>
+                        <th className="px-4 py-3 font-semibold text-right">Moves</th>
+                        <th className="px-4 py-3 font-semibold text-right">Date</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {filteredHistory.map((entry, i) => (
+                        <HistoryTableRow
+                          key={`${entry.gameTo}-${entry.record.date}`}
+                          entry={entry}
+                          isLast={i === filteredHistory.length - 1}
+                        />
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+
+                {/* Mobile history cards */}
+                <div className="sm:hidden space-y-2">
+                  {filteredHistory.map((entry) => (
+                    <HistoryMobileRow
+                      key={`${entry.gameTo}-${entry.record.date}`}
+                      entry={entry}
+                    />
+                  ))}
+                </div>
+              </>
+            )}
+          </div>
+        );
+      })()}
 
       <p className="mt-5 text-xs text-muted-foreground">
         Stats are stored locally in your browser and never leave your device.
@@ -376,6 +494,129 @@ function TableRow({ row, isLast }: { row: GameRow; isLast: boolean }) {
         </span>
       </td>
     </tr>
+  );
+}
+
+/* ── Daily badge ──────────────────────────────────────────────────────────── */
+
+function DailyBadge() {
+  return (
+    <span
+      className="inline-flex items-center gap-0.5 rounded px-1.5 py-0.5 text-[10px] font-semibold leading-none"
+      style={{
+        background: "color-mix(in oklab, var(--neon) 18%, oklch(0.16 0.03 155))",
+        border: "1px solid color-mix(in oklab, var(--neon) 35%, transparent)",
+        color: "var(--neon)",
+      }}
+    >
+      📅 Daily
+    </span>
+  );
+}
+
+/* ── History table row (desktop) ──────────────────────────────────────────── */
+
+function HistoryTableRow({ entry, isLast }: { entry: HistoryEntry; isLast: boolean }) {
+  const { record, gameTitle, gameEmoji, gameTo } = entry;
+  const dateStr = new Date(record.date).toLocaleDateString(undefined, {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  });
+
+  return (
+    <tr
+      className="transition-colors hover:bg-white/[0.03]"
+      style={
+        !isLast
+          ? { borderBottom: "1px solid color-mix(in oklab, var(--neon) 8%, transparent)" }
+          : undefined
+      }
+    >
+      {/* Game */}
+      <td className="px-5 py-3">
+        <div className="flex items-center gap-2 flex-wrap">
+          <Link
+            to={gameTo as "/klondike"}
+            className="flex items-center gap-1.5 font-medium text-foreground hover:underline underline-offset-2 transition"
+          >
+            <span>{gameEmoji}</span>
+            <span>{gameTitle}</span>
+          </Link>
+          {record.isDaily && <DailyBadge />}
+        </div>
+      </td>
+
+      {/* Result */}
+      <td className="px-4 py-3">
+        <span
+          className="text-xs font-semibold"
+          style={{ color: record.won ? "var(--neon)" : "var(--muted-foreground)" }}
+        >
+          {record.won ? "Win" : "Loss"}
+        </span>
+      </td>
+
+      {/* Time */}
+      <td className="px-4 py-3 text-right tabular-nums text-sm" style={{ color: "var(--foreground)" }}>
+        {record.won && record.durationSeconds > 0
+          ? formatStatTime(record.durationSeconds)
+          : "—"}
+      </td>
+
+      {/* Moves */}
+      <td className="px-4 py-3 text-right tabular-nums text-sm" style={{ color: "var(--foreground)" }}>
+        {record.moves > 0 ? record.moves : "—"}
+      </td>
+
+      {/* Date */}
+      <td className="px-4 py-3 text-right text-xs" style={{ color: "var(--muted-foreground)" }}>
+        {dateStr}
+      </td>
+    </tr>
+  );
+}
+
+/* ── History mobile row ───────────────────────────────────────────────────── */
+
+function HistoryMobileRow({ entry }: { entry: HistoryEntry }) {
+  const { record, gameTitle, gameEmoji, gameTo } = entry;
+  const dateStr = new Date(record.date).toLocaleDateString(undefined, {
+    month: "short",
+    day: "numeric",
+  });
+
+  return (
+    <div
+      className="rounded-xl px-4 py-3 flex items-center justify-between gap-3"
+      style={{
+        background: "color-mix(in oklab, var(--neon) 4%, oklch(0.16 0.03 155))",
+        border: "1px solid color-mix(in oklab, var(--neon) 14%, transparent)",
+      }}
+    >
+      {/* Left: game + badges */}
+      <div className="flex items-center gap-2 flex-wrap min-w-0">
+        <Link
+          to={gameTo as "/klondike"}
+          className="flex items-center gap-1.5 font-medium text-foreground hover:underline underline-offset-2 text-sm truncate"
+        >
+          <span>{gameEmoji}</span>
+          <span>{gameTitle}</span>
+        </Link>
+        {record.isDaily && <DailyBadge />}
+      </div>
+
+      {/* Right: result + date */}
+      <div className="flex items-center gap-3 shrink-0 text-xs">
+        <span
+          className="font-semibold"
+          style={{ color: record.won ? "var(--neon)" : "var(--muted-foreground)" }}
+        >
+          {record.won ? "Win" : "Loss"}
+        </span>
+        <span style={{ color: "var(--muted-foreground)" }}>{dateStr}</span>
+      </div>
+    </div>
   );
 }
 
