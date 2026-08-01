@@ -78,18 +78,18 @@ export function GameSwitcher() {
                       color: "var(--neon)",
                       boxShadow: "0 0 16px -6px var(--neon), inset 0 0 0 1px color-mix(in srgb, var(--neon) 35%, transparent)",
                     }
-                  : { color: "rgba(255,255,255,0.45)" }
+                  : { color: "var(--muted-foreground)" }
               }
               onMouseEnter={e => {
                 if (!isCurrent) {
-                  (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.07)";
-                  (e.currentTarget as HTMLElement).style.color = "rgba(255,255,255,0.85)";
+                  (e.currentTarget as HTMLElement).style.background = "color-mix(in oklab, var(--neon) 8%, transparent)";
+                  (e.currentTarget as HTMLElement).style.color = "var(--foreground)";
                 }
               }}
               onMouseLeave={e => {
                 if (!isCurrent) {
                   (e.currentTarget as HTMLElement).style.background = "";
-                  (e.currentTarget as HTMLElement).style.color = "rgba(255,255,255,0.45)";
+                  (e.currentTarget as HTMLElement).style.color = "var(--muted-foreground)";
                 }
               }}
             >
@@ -196,7 +196,7 @@ export function GameSwitcher() {
                     <span className="text-2xl leading-none">{g.emoji}</span>
                     <span
                       className="mt-1.5 text-[11px] font-bold leading-tight tracking-tight"
-                      style={isCurrent ? { color: "var(--neon)" } : { color: "rgba(255,255,255,0.8)" }}
+                      style={isCurrent ? { color: "var(--neon)" } : { color: "var(--foreground)" }}
                     >
                       {g.title}
                     </span>
