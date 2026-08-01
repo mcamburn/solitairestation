@@ -95,26 +95,26 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" },
-      { title: "Free Online Solitaire - Play Classic Klondike Solitaire (Turn 1 & 3)" },
-      { name: "description", content: "Play free online Solitaire with no registration, no downloads, and no full-screen ads. Enjoy classic Klondike Solitaire Turn 1 or Turn 3, Vegas scoring, Double Klondike, unlimited undo, and six card games on mobile or desktop." },
+      { title: "Solitaire Station — Play Free Online Solitaire" },
+      { name: "description", content: "Solitaire Station — play free online Solitaire with no registration, no downloads, and no full-screen ads. Enjoy classic Klondike Solitaire Turn 1 or Turn 3, Vegas scoring, Double Klondike, unlimited undo, and six card games on mobile or desktop." },
       { name: "keywords", content: "free online solitaire, klondike solitaire, classic solitaire free, solitaire turn 3, solitaire turn 1, play solitaire online, solitaire no download, spider solitaire, freecell, pyramid solitaire" },
       { name: "robots", content: "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" },
       // Open Graph
       { property: "og:type", content: "website" },
       { property: "og:url", content: "https://free-klondike-solitaire.com/" },
-      { property: "og:title", content: "Free Online Solitaire - Play Classic Klondike Solitaire" },
-      { property: "og:description", content: "Play full-screen Klondike Solitaire for free in your browser. Features Turn 1, Turn 3, Vegas scoring, Double Klondike, hints, unlimited undo, and six card games. No downloads required." },
-      { property: "og:site_name", content: "Free Klondike Solitaire" },
+      { property: "og:title", content: "Solitaire Station — Play Free Online Solitaire" },
+      { property: "og:description", content: "Play free online Solitaire at Solitaire Station. Features Klondike Turn 1 & Turn 3, Vegas scoring, Double Klondike, hints, unlimited undo, and six card games. No downloads required." },
+      { property: "og:site_name", content: "Solitaire Station" },
       { property: "og:locale", content: "en_US" },
       { property: "og:image", content: "https://free-klondike-solitaire.com/og/klondike.png" },
       { property: "og:image:width", content: "1200" },
       { property: "og:image:height", content: "630" },
-      { property: "og:image:alt", content: "Free Klondike Solitaire — Play Free Online Solitaire" },
+      { property: "og:image:alt", content: "Solitaire Station — Play Free Online Solitaire" },
       // Twitter Card
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:url", content: "https://free-klondike-solitaire.com/" },
-      { name: "twitter:title", content: "Free Online Solitaire - Play Classic Klondike Solitaire" },
-      { name: "twitter:description", content: "Play full-screen Klondike Solitaire for free in your browser. Features Turn 1, Turn 3, hints, unlimited undo, and six card games. No downloads required." },
+      { name: "twitter:title", content: "Solitaire Station — Play Free Online Solitaire" },
+      { name: "twitter:description", content: "Play free online Solitaire at Solitaire Station. Features Klondike Turn 1 & Turn 3, hints, unlimited undo, and six card games. No downloads required." },
       { name: "twitter:image", content: "https://free-klondike-solitaire.com/og/klondike.png" },
       // PWA / mobile
       { name: "theme-color", content: "#b8901e" },
@@ -154,9 +154,9 @@ const WEBSITE_LD = JSON.stringify({
       "@type": ["SoftwareApplication", "VideoGame"],
       "@id": "https://free-klondike-solitaire.com/#game",
       "url": "https://free-klondike-solitaire.com/",
-      "name": "Free Klondike Solitaire",
-      "headline": "Play Free Online Klondike Solitaire",
-      "description": "An interactive, browser-based classic Klondike Solitaire card game with Turn 1, Turn 3, Vegas scoring, Double Klondike, daily challenges, and custom deck themes.",
+      "name": "Solitaire Station",
+      "headline": "Play Free Online Solitaire at Solitaire Station",
+      "description": "Solitaire Station — play free online solitaire in your browser. Klondike Turn 1 & Turn 3, Vegas scoring, Double Klondike, Spider, FreeCell, Pyramid, TriPeaks, and Mahjong. No download required.",
       "applicationCategory": "GameApplication",
       "gameItem": "Card Game",
       "genre": ["Solitaire", "Card Game", "Casual Game"],
@@ -171,7 +171,7 @@ const WEBSITE_LD = JSON.stringify({
       },
       "publisher": {
         "@type": "Organization",
-        "name": "Free Klondike Solitaire",
+        "name": "Solitaire Station",
         "url": "https://free-klondike-solitaire.com/"
       }
     },
@@ -179,7 +179,7 @@ const WEBSITE_LD = JSON.stringify({
       "@type": "WebSite",
       "@id": "https://free-klondike-solitaire.com/#website",
       "url": "https://free-klondike-solitaire.com/",
-      "name": "Free Klondike Solitaire",
+      "name": "Solitaire Station",
       "publisher": {
         "@id": "https://free-klondike-solitaire.com/#game"
       }
@@ -193,7 +193,7 @@ const WEBSITE_LD = JSON.stringify({
           "name": "Is this Klondike Solitaire game completely free to play?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Yes, Free Klondike Solitaire is 100% free to play directly in your web browser with no download, subscription, or account creation required."
+            "text": "Yes, Solitaire Station is 100% free to play directly in your web browser with no download, subscription, or account creation required."
           }
         },
         {

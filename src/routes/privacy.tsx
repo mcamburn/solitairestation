@@ -5,11 +5,11 @@ export const Route = createFileRoute("/privacy")({
   component: PrivacyPage,
   head: () => ({
     meta: [
-      { title: "Privacy Policy · Free-Klondike-Solitaire.com" },
-      { name: "description", content: "Privacy Policy for Free-Klondike-Solitaire.com by Publish Port." },
+      { title: "Privacy Policy · Solitaire Station" },
+      { name: "description", content: "Privacy Policy for Solitaire Station." },
       { name: "robots", content: "noindex, follow" },
-      { property: "og:site_name", content: "Free-Klondike-Solitaire.com" },
-      { property: "og:title", content: "Privacy Policy · Free-Klondike-Solitaire.com" },
+      { property: "og:site_name", content: "Solitaire Station" },
+      { property: "og:title", content: "Privacy Policy · Solitaire Station" },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "https://www.solitairestation.com/privacy" },
       { name: "twitter:card", content: "summary" },

@@ -5,22 +5,22 @@ import { GamePageLayout } from "@/components/GamePageLayout";
 export const Route = createFileRoute("/mahjong")({
   head: () => ({
     meta: [
-      { title: "Free Mahjong Solitaire — Play Free Online, No Download" },
-      { name: "description", content: "Play free Mahjong solitaire online — match identical free tiles to clear all 144 from the board. Flowers and seasons match within their group. Free online solitaire with hints and auto-save." },
+      { title: "Free Mahjong Solitaire — Solitaire Station" },
+      { name: "description", content: "Play free Mahjong solitaire at Solitaire Station — match identical free tiles to clear all 144 from the board. Flowers and seasons match within their group. Hints and auto-save. No download or sign-up." },
       { name: "robots", content: "index, follow" },
-      { property: "og:site_name", content: "Free-Klondike-Solitaire.com" },
+      { property: "og:site_name", content: "Solitaire Station" },
       { property: "og:locale", content: "en_US" },
-      { property: "og:title", content: "Free Mahjong Solitaire — Play Free Online, No Download" },
-      { property: "og:description", content: "Play free Mahjong solitaire online — match identical free tiles to clear all 144 from the board. Free online solitaire with hints and auto-save. No download or sign-up." },
+      { property: "og:title", content: "Free Mahjong Solitaire — Solitaire Station" },
+      { property: "og:description", content: "Play free Mahjong solitaire at Solitaire Station — match identical free tiles to clear all 144 from the board. Hints and auto-save. No download or sign-up." },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "https://www.free-klondike-solitaire.com/mahjong" },
       { property: "og:image", content: "https://www.free-klondike-solitaire.com/og/mahjong.png" },
       { property: "og:image:width", content: "1200" },
       { property: "og:image:height", content: "630" },
-      { property: "og:image:alt", content: "Free Mahjong Solitaire — Free-Klondike-Solitaire.com" },
+      { property: "og:image:alt", content: "Free Mahjong Solitaire — Solitaire Station" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "Free Mahjong Solitaire — Play Free Online, No Download" },
-      { name: "twitter:description", content: "Play free Mahjong solitaire online — match identical free tiles to clear all 144. No download or sign-up." },
+      { name: "twitter:title", content: "Free Mahjong Solitaire — Solitaire Station" },
+      { name: "twitter:description", content: "Play free Mahjong solitaire at Solitaire Station — match identical free tiles to clear all 144. No download or sign-up." },
       { name: "twitter:image", content: "https://www.free-klondike-solitaire.com/og/mahjong.png" },
     ],
     links: [
@@ -34,15 +34,15 @@ export const Route = createFileRoute("/mahjong")({
 const MAHJONG_LD = JSON.stringify({
   "@context": "https://schema.org",
   "@type": "WebApplication",
-  "name": "Free Mahjong Solitaire",
+  "name": "Free Mahjong Solitaire — Solitaire Station",
   "url": "https://www.free-klondike-solitaire.com/mahjong",
-  "description": "Play free Mahjong solitaire online — match identical free tiles to clear all 144 from the board. Hints and auto-save. No download, no sign-up.",
+  "description": "Play free Mahjong solitaire at Solitaire Station — match identical free tiles to clear all 144 from the board. Hints and auto-save. No download, no sign-up.",
   "applicationCategory": "GameApplication",
   "operatingSystem": "Any",
   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
   "genre": ["Card Game", "Mahjong Solitaire"],
   "inLanguage": "en-US",
-  "publisher": { "@type": "Organization", "name": "Publish Port", "url": "https://www.free-klondike-solitaire.com/" },
+  "publisher": { "@type": "Organization", "name": "Solitaire Station", "url": "https://www.free-klondike-solitaire.com/" },
 });
 
 function MahjongPage() {

@@ -3,8 +3,8 @@ import { Spider } from "@/components/Spider";
 import { GamePageLayout } from "@/components/GamePageLayout";
 import { SITE_URL } from "@/lib/site";
 
-const TITLE = "1 Suit Spider Solitaire — Free Easy Spider Online";
-const DESC = "Play 1 Suit Spider Solitaire free online — the easiest Spider variant, played entirely with spades. Build 8 complete K–A sequences across 10 columns. No download or sign-up.";
+const TITLE = "1 Suit Spider Solitaire — Solitaire Station";
+const DESC = "Play 1 Suit Spider Solitaire free online at Solitaire Station — the easiest Spider variant, played entirely with spades. Build 8 complete K–A sequences across 10 columns. No download or sign-up.";
 const OG_IMG = `${SITE_URL}/og/spider.png`;
 
 export const Route = createFileRoute("/1-suit-spider-solitaire")({
@@ -13,7 +13,7 @@ export const Route = createFileRoute("/1-suit-spider-solitaire")({
       { title: TITLE },
       { name: "description", content: DESC },
       { name: "robots", content: "index, follow" },
-      { property: "og:site_name", content: "Free-Klondike-Solitaire.com" },
+      { property: "og:site_name", content: "Solitaire Station" },
       { property: "og:locale", content: "en_US" },
       { property: "og:title", content: TITLE },
       { property: "og:description", content: DESC },
@@ -38,7 +38,7 @@ export const Route = createFileRoute("/1-suit-spider-solitaire")({
 const LD = JSON.stringify({
   "@context": "https://schema.org",
   "@type": "WebApplication",
-  name: "1 Suit Spider Solitaire",
+  name: "1 Suit Spider Solitaire — Solitaire Station",
   url: `${SITE_URL}/1-suit-spider-solitaire`,
   description: DESC,
   applicationCategory: "GameApplication",

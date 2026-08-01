@@ -5,22 +5,22 @@ import { GamePageLayout } from "@/components/GamePageLayout";
 export const Route = createFileRoute("/freecell")({
   head: () => ({
     meta: [
-      { title: "Free FreeCell Solitaire — Play Free Online, No Download" },
-      { name: "description", content: "Play free FreeCell solitaire online — almost every deal is solvable. Use 4 free cells to plan your moves. Free online solitaire with hints, undo, and auto-save. No download or sign-up." },
+      { title: "Free FreeCell Solitaire — Solitaire Station" },
+      { name: "description", content: "Play free FreeCell solitaire at Solitaire Station — almost every deal is solvable. Use 4 free cells to plan your moves. Hints, undo, and auto-save. No download or sign-up." },
       { name: "robots", content: "index, follow" },
-      { property: "og:site_name", content: "Free-Klondike-Solitaire.com" },
+      { property: "og:site_name", content: "Solitaire Station" },
       { property: "og:locale", content: "en_US" },
-      { property: "og:title", content: "Free FreeCell Solitaire — Play Free Online, No Download" },
-      { property: "og:description", content: "Play free FreeCell solitaire online — almost every deal is solvable. Use 4 free cells to plan your moves. Free online solitaire with hints, undo, and auto-save." },
+      { property: "og:title", content: "Free FreeCell Solitaire — Solitaire Station" },
+      { property: "og:description", content: "Play free FreeCell solitaire at Solitaire Station — almost every deal is solvable. Use 4 free cells to plan your moves. Hints, undo, and auto-save." },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "https://www.free-klondike-solitaire.com/freecell" },
       { property: "og:image", content: "https://www.free-klondike-solitaire.com/og/freecell.png" },
       { property: "og:image:width", content: "1200" },
       { property: "og:image:height", content: "630" },
-      { property: "og:image:alt", content: "Free FreeCell Solitaire — Free-Klondike-Solitaire.com" },
+      { property: "og:image:alt", content: "Free FreeCell Solitaire — Solitaire Station" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "Free FreeCell Solitaire — Play Free Online, No Download" },
-      { name: "twitter:description", content: "Play free FreeCell solitaire online — almost every deal is solvable. Use 4 free cells to plan your moves. No download or sign-up." },
+      { name: "twitter:title", content: "Free FreeCell Solitaire — Solitaire Station" },
+      { name: "twitter:description", content: "Play free FreeCell solitaire at Solitaire Station — almost every deal is solvable. 4 free cells, hints, undo. No download or sign-up." },
       { name: "twitter:image", content: "https://www.free-klondike-solitaire.com/og/freecell.png" },
     ],
     links: [
@@ -34,15 +34,15 @@ export const Route = createFileRoute("/freecell")({
 const FREECELL_LD = JSON.stringify({
   "@context": "https://schema.org",
   "@type": "WebApplication",
-  "name": "Free FreeCell Solitaire",
+  "name": "Free FreeCell Solitaire — Solitaire Station",
   "url": "https://www.free-klondike-solitaire.com/freecell",
-  "description": "Play free FreeCell solitaire online — almost every deal is solvable. Hints, undo, and auto-save. No download, no sign-up.",
+  "description": "Play free FreeCell solitaire at Solitaire Station — almost every deal is solvable. Hints, undo, and auto-save. No download, no sign-up.",
   "applicationCategory": "GameApplication",
   "operatingSystem": "Any",
   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
   "genre": ["Card Game", "Solitaire"],
   "inLanguage": "en-US",
-  "publisher": { "@type": "Organization", "name": "Publish Port", "url": "https://www.free-klondike-solitaire.com/" },
+  "publisher": { "@type": "Organization", "name": "Solitaire Station", "url": "https://www.free-klondike-solitaire.com/" },
 });
 
 function FreeCellPage() {

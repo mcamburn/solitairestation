@@ -3,8 +3,8 @@ import { FreeCell } from "@/components/FreeCell";
 import { GamePageLayout } from "@/components/GamePageLayout";
 import { SITE_URL } from "@/lib/site";
 
-const TITLE = "FreeCell Solitaire — Play Free Online, No Download";
-const DESC = "Play free FreeCell Solitaire online — all 52 cards are visible from the start. Nearly every deal is solvable with the right strategy. Hints, undo, and auto-save. No download required.";
+const TITLE = "FreeCell Solitaire — Solitaire Station";
+const DESC = "Play free FreeCell Solitaire online at Solitaire Station — all 52 cards are visible from the start. Nearly every deal is solvable with the right strategy. Hints, undo, and auto-save. No download required.";
 const OG_IMG = `${SITE_URL}/og/freecell.png`;
 
 export const Route = createFileRoute("/freecell-solitaire")({
@@ -13,7 +13,7 @@ export const Route = createFileRoute("/freecell-solitaire")({
       { title: TITLE },
       { name: "description", content: DESC },
       { name: "robots", content: "index, follow" },
-      { property: "og:site_name", content: "Free-Klondike-Solitaire.com" },
+      { property: "og:site_name", content: "Solitaire Station" },
       { property: "og:locale", content: "en_US" },
       { property: "og:title", content: TITLE },
       { property: "og:description", content: DESC },
@@ -38,7 +38,7 @@ export const Route = createFileRoute("/freecell-solitaire")({
 const LD = JSON.stringify({
   "@context": "https://schema.org",
   "@type": "WebApplication",
-  name: "FreeCell Solitaire",
+  name: "FreeCell Solitaire — Solitaire Station",
   url: `${SITE_URL}/freecell-solitaire`,
   description: DESC,
   applicationCategory: "GameApplication",

@@ -5,22 +5,22 @@ import { GamePageLayout } from "@/components/GamePageLayout";
 export const Route = createFileRoute("/tripeaks")({
   head: () => ({
     meta: [
-      { title: "Free TriPeaks Solitaire — Play Free Online, No Download" },
-      { name: "description", content: "Play free TriPeaks solitaire online — clear three peaks by chaining cards one rank apart. Build streaks for bonus points. Free online solitaire with hints and auto-save. No download or sign-up." },
+      { title: "Free TriPeaks Solitaire — Solitaire Station" },
+      { name: "description", content: "Play free TriPeaks solitaire at Solitaire Station — clear three peaks by chaining cards one rank apart. Build streaks for bonus points. Hints and auto-save. No download or sign-up." },
       { name: "robots", content: "index, follow" },
-      { property: "og:site_name", content: "Free-Klondike-Solitaire.com" },
+      { property: "og:site_name", content: "Solitaire Station" },
       { property: "og:locale", content: "en_US" },
-      { property: "og:title", content: "Free TriPeaks Solitaire — Play Free Online, No Download" },
-      { property: "og:description", content: "Play free TriPeaks solitaire online — clear three peaks by chaining cards one rank apart. Build streaks for bonus points. No download or sign-up." },
+      { property: "og:title", content: "Free TriPeaks Solitaire — Solitaire Station" },
+      { property: "og:description", content: "Play free TriPeaks solitaire at Solitaire Station — clear three peaks by chaining cards one rank apart. Build streaks for bonus points. No download or sign-up." },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "https://www.free-klondike-solitaire.com/tripeaks" },
       { property: "og:image", content: "https://www.free-klondike-solitaire.com/og/tripeaks.png" },
       { property: "og:image:width", content: "1200" },
       { property: "og:image:height", content: "630" },
-      { property: "og:image:alt", content: "Free TriPeaks Solitaire — Free-Klondike-Solitaire.com" },
+      { property: "og:image:alt", content: "Free TriPeaks Solitaire — Solitaire Station" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "Free TriPeaks Solitaire — Play Free Online, No Download" },
-      { name: "twitter:description", content: "Play free TriPeaks solitaire online — chain cards one rank apart to clear three peaks. No download or sign-up." },
+      { name: "twitter:title", content: "Free TriPeaks Solitaire — Solitaire Station" },
+      { name: "twitter:description", content: "Play free TriPeaks solitaire at Solitaire Station — chain cards one rank apart to clear three peaks. No download or sign-up." },
       { name: "twitter:image", content: "https://www.free-klondike-solitaire.com/og/tripeaks.png" },
     ],
     links: [
@@ -34,15 +34,15 @@ export const Route = createFileRoute("/tripeaks")({
 const TRIPEAKS_LD = JSON.stringify({
   "@context": "https://schema.org",
   "@type": "WebApplication",
-  "name": "Free TriPeaks Solitaire",
+  "name": "Free TriPeaks Solitaire — Solitaire Station",
   "url": "https://www.free-klondike-solitaire.com/tripeaks",
-  "description": "Play free TriPeaks solitaire online — chain cards one rank apart to clear three peaks. Hints, undo, and auto-save. No download, no sign-up.",
+  "description": "Play free TriPeaks solitaire at Solitaire Station — chain cards one rank apart to clear three peaks. Hints, undo, and auto-save. No download, no sign-up.",
   "applicationCategory": "GameApplication",
   "operatingSystem": "Any",
   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
   "genre": ["Card Game", "Solitaire"],
   "inLanguage": "en-US",
-  "publisher": { "@type": "Organization", "name": "Publish Port", "url": "https://www.free-klondike-solitaire.com/" },
+  "publisher": { "@type": "Organization", "name": "Solitaire Station", "url": "https://www.free-klondike-solitaire.com/" },
 });
 
 function TriPeaksPage() {

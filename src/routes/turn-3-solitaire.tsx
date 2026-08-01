@@ -3,8 +3,8 @@ import { Solitaire } from "@/components/Solitaire";
 import { GamePageLayout } from "@/components/GamePageLayout";
 import { SITE_URL } from "@/lib/site";
 
-const TITLE = "Turn 3 Solitaire — Free Draw 3 Klondike Online";
-const DESC = "Play Turn 3 (Draw 3) Klondike Solitaire free online — no download, no sign-up. Draw 3 cards at a time for a harder, more strategic challenge. Hints, undo, and auto-save included.";
+const TITLE = "Turn 3 Solitaire — Solitaire Station";
+const DESC = "Play Turn 3 (Draw 3) Klondike Solitaire free online at Solitaire Station — no download, no sign-up. Draw 3 cards at a time for a harder, more strategic challenge. Hints, undo, and auto-save included.";
 const OG_IMG = `${SITE_URL}/og/klondike.png`;
 
 export const Route = createFileRoute("/turn-3-solitaire")({
@@ -13,7 +13,7 @@ export const Route = createFileRoute("/turn-3-solitaire")({
       { title: TITLE },
       { name: "description", content: DESC },
       { name: "robots", content: "index, follow" },
-      { property: "og:site_name", content: "Free-Klondike-Solitaire.com" },
+      { property: "og:site_name", content: "Solitaire Station" },
       { property: "og:locale", content: "en_US" },
       { property: "og:title", content: TITLE },
       { property: "og:description", content: DESC },
@@ -38,7 +38,7 @@ export const Route = createFileRoute("/turn-3-solitaire")({
 const LD = JSON.stringify({
   "@context": "https://schema.org",
   "@type": "WebApplication",
-  name: "Turn 3 Solitaire",
+  name: "Turn 3 Solitaire — Solitaire Station",
   url: `${SITE_URL}/turn-3-solitaire`,
   description: DESC,
   applicationCategory: "GameApplication",

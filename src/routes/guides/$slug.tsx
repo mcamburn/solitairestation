@@ -10,11 +10,11 @@ export const Route = createFileRoute("/guides/$slug")({
     if (!guide) return {};
     return {
       meta: [
-        { title: `${guide.title} — Free-Klondike-Solitaire.com` },
+        { title: `${guide.title} — Solitaire Station` },
         { name: "description", content: guide.description },
         { name: "robots", content: "index, follow" },
         { property: "og:type", content: "article" },
-        { property: "og:title", content: guide.title },
+        { property: "og:title", content: `${guide.title} — Solitaire Station` },
         { property: "og:description", content: guide.description },
         { property: "og:url", content: `${SITE_URL}/guides/${guide.slug}` },
       ],

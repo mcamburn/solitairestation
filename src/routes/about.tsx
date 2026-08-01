@@ -5,13 +5,13 @@ export const Route = createFileRoute("/about")({
   component: AboutPage,
   head: () => ({
     meta: [
-      { title: "About Free-Klondike-Solitaire.com — Free Online Solitaire Games" },
-      { name: "description", content: "About Free-Klondike-Solitaire.com — play free online solitaire including Klondike solitaire, free Spider Solitaire, free FreeCell, free Pyramid, free TriPeaks, and free Mahjong solitaire. No download, no sign-up." },
+      { title: "About Solitaire Station — Free Online Solitaire Games" },
+      { name: "description", content: "About Solitaire Station — play free online solitaire including Klondike solitaire, free Spider Solitaire, free FreeCell, free Pyramid, free TriPeaks, and free Mahjong solitaire. No download, no sign-up." },
       { name: "robots", content: "index, follow" },
-      { property: "og:site_name", content: "Free-Klondike-Solitaire.com" },
+      { property: "og:site_name", content: "Solitaire Station" },
       { property: "og:locale", content: "en_US" },
-      { property: "og:title", content: "About Free-Klondike-Solitaire.com — Free Online Solitaire Games" },
-      { property: "og:description", content: "Free-Klondike-Solitaire.com offers free online solitaire including Klondike, free Spider Solitaire, free FreeCell, free Pyramid, free TriPeaks, and free Mahjong solitaire." },
+      { property: "og:title", content: "About Solitaire Station — Free Online Solitaire Games" },
+      { property: "og:description", content: "Solitaire Station offers free online solitaire including Klondike, free Spider Solitaire, free FreeCell, free Pyramid, free TriPeaks, and free Mahjong solitaire." },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "https://www.free-klondike-solitaire.com/about" },
       { name: "twitter:card", content: "summary" },

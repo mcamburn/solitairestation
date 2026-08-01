@@ -5,11 +5,11 @@ export const Route = createFileRoute("/terms")({
   component: TermsPage,
   head: () => ({
     meta: [
-      { title: "Terms of Use · Free-Klondike-Solitaire.com" },
-      { name: "description", content: "Terms of Use for Free-Klondike-Solitaire.com by Publish Port." },
+      { title: "Terms of Use · Solitaire Station" },
+      { name: "description", content: "Terms of Use for Solitaire Station." },
       { name: "robots", content: "noindex, follow" },
-      { property: "og:site_name", content: "Free-Klondike-Solitaire.com" },
-      { property: "og:title", content: "Terms of Use · Free-Klondike-Solitaire.com" },
+      { property: "og:site_name", content: "Solitaire Station" },
+      { property: "og:title", content: "Terms of Use · Solitaire Station" },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "https://www.solitairestation.com/terms" },
       { name: "twitter:card", content: "summary" },

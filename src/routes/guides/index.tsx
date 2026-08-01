@@ -7,19 +7,19 @@ export const Route = createFileRoute("/guides/")({
   component: GuidesPage,
   head: () => ({
     meta: [
-      { title: "Solitaire Strategy Guides — Free-Klondike-Solitaire.com" },
+      { title: "Solitaire Strategy Guides — Solitaire Station" },
       {
         name: "description",
         content:
-          "Free solitaire strategy guides for Klondike, Spider, FreeCell, Pyramid, TriPeaks, and Mahjong Solitaire. Learn rules, win rates, tips, and the history of solitaire.",
+          "Free solitaire strategy guides at Solitaire Station — Klondike, Spider, FreeCell, Pyramid, TriPeaks, and Mahjong Solitaire. Learn rules, win rates, tips, and history.",
       },
       { name: "robots", content: "index, follow" },
       { property: "og:type", content: "website" },
-      { property: "og:title", content: "Solitaire Strategy Guides — Free-Klondike-Solitaire.com" },
+      { property: "og:title", content: "Solitaire Strategy Guides — Solitaire Station" },
       {
         property: "og:description",
         content:
-          "Guides for all six solitaire games: rules, win-rate breakdowns, strategy tips, history, and glossary.",
+          "Solitaire Station — guides for all six solitaire games: rules, win-rate breakdowns, strategy tips, history, and glossary.",
       },
       { property: "og:url", content: `${SITE_URL}/guides` },
     ],

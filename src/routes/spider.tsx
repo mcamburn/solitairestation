@@ -3,8 +3,8 @@ import { Spider } from "@/components/Spider";
 import { GamePageLayout } from "@/components/GamePageLayout";
 import { SITE_URL } from "@/lib/site";
 
-const TITLE = "Free Spider Solitaire — Play Free Online, No Download";
-const DESC = "Play free Spider Solitaire online — no download, no sign-up. Choose 1, 2, or 4 suits across 10 columns. Free online solitaire with hints, undo, and auto-save progress.";
+const TITLE = "Free Spider Solitaire — Solitaire Station";
+const DESC = "Play free Spider Solitaire at Solitaire Station — choose 1, 2, or 4 suits across 10 columns. No download, no sign-up. Hints, undo, and auto-save progress.";
 const OG_IMG = `${SITE_URL}/og/spider.png`;
 
 export const Route = createFileRoute("/spider")({
@@ -13,7 +13,7 @@ export const Route = createFileRoute("/spider")({
       { title: TITLE },
       { name: "description", content: DESC },
       { name: "robots", content: "index, follow" },
-      { property: "og:site_name", content: "Free-Klondike-Solitaire.com" },
+      { property: "og:site_name", content: "Solitaire Station" },
       { property: "og:locale", content: "en_US" },
       { property: "og:title", content: TITLE },
       { property: "og:description", content: DESC },
@@ -22,7 +22,7 @@ export const Route = createFileRoute("/spider")({
       { property: "og:image", content: OG_IMG },
       { property: "og:image:width", content: "1200" },
       { property: "og:image:height", content: "630" },
-      { property: "og:image:alt", content: "Free Spider Solitaire — Free-Klondike-Solitaire.com" },
+      { property: "og:image:alt", content: "Free Spider Solitaire — Solitaire Station" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: TITLE },
       { name: "twitter:description", content: DESC },
@@ -39,15 +39,15 @@ export const Route = createFileRoute("/spider")({
 const SPIDER_LD = JSON.stringify({
   "@context": "https://schema.org",
   "@type": "WebApplication",
-  "name": "Free Spider Solitaire",
+  "name": "Free Spider Solitaire — Solitaire Station",
   "url": "https://www.free-klondike-solitaire.com/spider",
-  "description": "Play free Spider Solitaire online — choose 1, 2, or 4 suits. Hints, undo, and auto-save. No download, no sign-up.",
+  "description": "Play free Spider Solitaire at Solitaire Station — choose 1, 2, or 4 suits. Hints, undo, and auto-save. No download, no sign-up.",
   "applicationCategory": "GameApplication",
   "operatingSystem": "Any",
   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
   "genre": ["Card Game", "Solitaire"],
   "inLanguage": "en-US",
-  "publisher": { "@type": "Organization", "name": "Publish Port", "url": "https://www.free-klondike-solitaire.com/" },
+  "publisher": { "@type": "Organization", "name": "Solitaire Station", "url": "https://www.free-klondike-solitaire.com/" },
 });
 
 function SpiderPage() {

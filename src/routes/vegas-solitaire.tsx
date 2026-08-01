@@ -3,8 +3,8 @@ import { Solitaire } from "@/components/Solitaire";
 import { GamePageLayout } from "@/components/GamePageLayout";
 import { SITE_URL } from "@/lib/site";
 
-const TITLE = "Vegas Solitaire — Free Online Vegas Scoring Klondike";
-const DESC = "Play Vegas Solitaire free online — the classic casino scoring variant. Start with a $52 wager, earn $5 per card on the foundation, and survive three passes through the stock. No download required.";
+const TITLE = "Vegas Solitaire — Solitaire Station";
+const DESC = "Play Vegas Solitaire free online at Solitaire Station — the classic casino scoring variant. Start with a $52 wager, earn $5 per card on the foundation, and survive three passes through the stock. No download required.";
 const OG_IMG = `${SITE_URL}/og/klondike.png`;
 
 export const Route = createFileRoute("/vegas-solitaire")({
@@ -13,7 +13,7 @@ export const Route = createFileRoute("/vegas-solitaire")({
       { title: TITLE },
       { name: "description", content: DESC },
       { name: "robots", content: "index, follow" },
-      { property: "og:site_name", content: "Free-Klondike-Solitaire.com" },
+      { property: "og:site_name", content: "Solitaire Station" },
       { property: "og:locale", content: "en_US" },
       { property: "og:title", content: TITLE },
       { property: "og:description", content: DESC },
@@ -38,7 +38,7 @@ export const Route = createFileRoute("/vegas-solitaire")({
 const LD = JSON.stringify({
   "@context": "https://schema.org",
   "@type": "WebApplication",
-  name: "Vegas Solitaire",
+  name: "Vegas Solitaire — Solitaire Station",
   url: `${SITE_URL}/vegas-solitaire`,
   description: DESC,
   applicationCategory: "GameApplication",

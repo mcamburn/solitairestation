@@ -5,22 +5,22 @@ import { GamePageLayout } from "@/components/GamePageLayout";
 export const Route = createFileRoute("/pyramid")({
   head: () => ({
     meta: [
-      { title: "Free Pyramid Solitaire — Play Free Online, No Download" },
-      { name: "description", content: "Play free Pyramid solitaire online — pair cards that sum to 13 to clear all 28 cards. Kings remove alone. Free online solitaire with hints, undo, and auto-save. No download or sign-up." },
+      { title: "Free Pyramid Solitaire — Solitaire Station" },
+      { name: "description", content: "Play free Pyramid solitaire at Solitaire Station — pair cards that sum to 13 to clear all 28 cards. Kings remove alone. Hints, undo, and auto-save. No download or sign-up." },
       { name: "robots", content: "index, follow" },
-      { property: "og:site_name", content: "Free-Klondike-Solitaire.com" },
+      { property: "og:site_name", content: "Solitaire Station" },
       { property: "og:locale", content: "en_US" },
-      { property: "og:title", content: "Free Pyramid Solitaire — Play Free Online, No Download" },
-      { property: "og:description", content: "Play free Pyramid solitaire online — pair cards that sum to 13 to clear all 28 cards. Kings remove alone. Free online solitaire with hints and auto-save." },
+      { property: "og:title", content: "Free Pyramid Solitaire — Solitaire Station" },
+      { property: "og:description", content: "Play free Pyramid solitaire at Solitaire Station — pair cards that sum to 13 to clear all 28 cards. Kings remove alone. Hints and auto-save." },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "https://www.free-klondike-solitaire.com/pyramid" },
       { property: "og:image", content: "https://www.free-klondike-solitaire.com/og/pyramid.png" },
       { property: "og:image:width", content: "1200" },
       { property: "og:image:height", content: "630" },
-      { property: "og:image:alt", content: "Free Pyramid Solitaire — Free-Klondike-Solitaire.com" },
+      { property: "og:image:alt", content: "Free Pyramid Solitaire — Solitaire Station" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "Free Pyramid Solitaire — Play Free Online, No Download" },
-      { name: "twitter:description", content: "Play free Pyramid solitaire online — pair cards that sum to 13 to clear the pyramid. No download or sign-up." },
+      { name: "twitter:title", content: "Free Pyramid Solitaire — Solitaire Station" },
+      { name: "twitter:description", content: "Play free Pyramid solitaire at Solitaire Station — pair cards that sum to 13 to clear the pyramid. No download or sign-up." },
       { name: "twitter:image", content: "https://www.free-klondike-solitaire.com/og/pyramid.png" },
     ],
     links: [
@@ -34,15 +34,15 @@ export const Route = createFileRoute("/pyramid")({
 const PYRAMID_LD = JSON.stringify({
   "@context": "https://schema.org",
   "@type": "WebApplication",
-  "name": "Free Pyramid Solitaire",
+  "name": "Free Pyramid Solitaire — Solitaire Station",
   "url": "https://www.free-klondike-solitaire.com/pyramid",
-  "description": "Play free Pyramid solitaire online — pair cards that add to 13. Hints, undo, and auto-save. No download, no sign-up.",
+  "description": "Play free Pyramid solitaire at Solitaire Station — pair cards that add to 13. Hints, undo, and auto-save. No download, no sign-up.",
   "applicationCategory": "GameApplication",
   "operatingSystem": "Any",
   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
   "genre": ["Card Game", "Solitaire"],
   "inLanguage": "en-US",
-  "publisher": { "@type": "Organization", "name": "Publish Port", "url": "https://www.free-klondike-solitaire.com/" },
+  "publisher": { "@type": "Organization", "name": "Solitaire Station", "url": "https://www.free-klondike-solitaire.com/" },
 });
 
 function PyramidPage() {
