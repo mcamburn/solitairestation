@@ -221,7 +221,7 @@ const WEBSITE_LD = JSON.stringify({
 function RootShell({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
-      <head>
+      <head suppressHydrationWarning>
         <HeadContent />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: WEBSITE_LD }} />
         {/* Google tag (gtag.js) */}
