@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { saveGame, loadGame, clearGame } from "@/lib/persist";
 import { recordWin, recordLoss, type GameStats } from "@/lib/stats";
+import { useGameTopBarStats } from "@/hooks/useGameTopBarStats";
 import { useDailyChallenge } from "@/contexts/DailyChallengeContext";
 import {
   newTriPeaksGame,
@@ -46,6 +47,7 @@ export function TriPeaks() {
   // Stats & daily challenge
   const statsRef = useRef(false);
   const [gameStats, setGameStats] = useState<GameStats | null>(null);
+  const topBarStats = useGameTopBarStats("tripeaks");
   const dailyModeRef = useRef(false);
   const { dailySeed, dailyTrigger, onDailyWin } = useDailyChallenge();
 
@@ -191,6 +193,12 @@ export function TriPeaks() {
             <span className="font-semibold" style={{ color: "var(--neon)" }}>
               🔥 Streak ×{game.streak}
             </span>
+          )}
+          {topBarStats.hasPlayed && (
+            <span className="text-muted-foreground">Streak <span className="font-semibold tabular-nums" style={{ color: "var(--neon)" }}>{topBarStats.streak}</span></span>
+          )}
+          {topBarStats.hasPlayed && (
+            <span className="text-muted-foreground"><span className="font-semibold tabular-nums" style={{ color: "var(--neon)" }}>{topBarStats.winRate}%</span> wins</span>
           )}
         </div>
         <div className="flex items-center gap-2">

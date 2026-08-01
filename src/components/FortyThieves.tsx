@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { saveGame, loadGame, clearGame } from "@/lib/persist";
 import { recordWin, recordLoss, type GameStats } from "@/lib/stats";
+import { useGameTopBarStats } from "@/hooks/useGameTopBarStats";
 import { useDailyChallenge } from "@/contexts/DailyChallengeContext";
 import {
   newFortyThievesGame,
@@ -56,6 +57,7 @@ export function FortyThieves() {
   const [, forceUpdate] = useState(0);
   const statsRef = useRef(false);
   const [gameStats, setGameStats] = useState<GameStats | null>(null);
+  const topBarStats = useGameTopBarStats(SAVE_KEY);
   const dailyModeRef = useRef(false);
   const { dailySeed, dailyTrigger, onDailyWin } = useDailyChallenge();
 
@@ -279,6 +281,12 @@ export function FortyThieves() {
           <span className="text-muted-foreground">Moves <span className="font-semibold text-foreground">{state.moves}</span></span>
           <span className="tabular-nums text-muted-foreground">{time}</span>
           <span className="text-muted-foreground">Stock <span className="font-semibold text-foreground">{state.stock.length}</span></span>
+          {topBarStats.hasPlayed && (
+            <span className="text-muted-foreground">Streak <span className="font-semibold tabular-nums" style={{ color: "var(--neon)" }}>{topBarStats.streak}</span></span>
+          )}
+          {topBarStats.hasPlayed && (
+            <span className="text-muted-foreground"><span className="font-semibold tabular-nums" style={{ color: "var(--neon)" }}>{topBarStats.winRate}%</span> wins</span>
+          )}
         </div>
         <div className="flex items-center gap-2">
           <button onClick={showHint} className="rounded-lg border border-border px-2.5 py-1 transition hover:bg-secondary/70">Hint</button>

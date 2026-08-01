@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { saveGame, loadGame, clearGame } from "@/lib/persist";
 import { recordWin, recordLoss, type GameStats } from "@/lib/stats";
+import { useGameTopBarStats } from "@/hooks/useGameTopBarStats";
 import { useDailyChallenge } from "@/contexts/DailyChallengeContext";
 import {
   newAddictionGame,
@@ -36,6 +37,7 @@ export function Addiction() {
   const [, forceUpdate] = useState(0);
   const statsRef = useRef(false);
   const [gameStats, setGameStats] = useState<GameStats | null>(null);
+  const topBarStats = useGameTopBarStats(SAVE_KEY);
   const dailyModeRef = useRef(false);
   const { dailySeed, dailyTrigger, onDailyWin } = useDailyChallenge();
 
@@ -187,6 +189,12 @@ export function Addiction() {
           <span className="text-muted-foreground">
             Shuffles <span className="font-semibold text-foreground">{state.shufflesLeft}</span>
           </span>
+          {topBarStats.hasPlayed && (
+            <span className="text-muted-foreground">Streak <span className="font-semibold tabular-nums" style={{ color: "var(--neon)" }}>{topBarStats.streak}</span></span>
+          )}
+          {topBarStats.hasPlayed && (
+            <span className="text-muted-foreground"><span className="font-semibold tabular-nums" style={{ color: "var(--neon)" }}>{topBarStats.winRate}%</span> wins</span>
+          )}
         </div>
         <div className="flex items-center gap-2">
           <button onClick={showHint} className="rounded-lg border border-border px-2.5 py-1 transition hover:bg-secondary/70">

@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { saveGame, loadGame, clearGame } from "@/lib/persist";
 import { recordWin, recordLoss, type GameStats } from "@/lib/stats";
+import { useGameTopBarStats } from "@/hooks/useGameTopBarStats";
 import { useDailyChallenge } from "@/contexts/DailyChallengeContext";
 import {
   newScorpionGame,
@@ -54,6 +55,7 @@ export function Scorpion() {
   const [, forceUpdate] = useState(0);
   const statsRef = useRef(false);
   const [gameStats, setGameStats] = useState<GameStats | null>(null);
+  const topBarStats = useGameTopBarStats("scorpion");
   const dailyModeRef = useRef(false);
   const { dailySeed, dailyTrigger, onDailyWin } = useDailyChallenge();
 
@@ -284,6 +286,12 @@ export function Scorpion() {
             Deal
             <span className="text-muted-foreground">({game.stock.length})</span>
           </button>
+          {topBarStats.hasPlayed && (
+            <span className="text-muted-foreground">Streak <span className="font-semibold tabular-nums" style={{ color: "var(--neon)" }}>{topBarStats.streak}</span></span>
+          )}
+          {topBarStats.hasPlayed && (
+            <span className="text-muted-foreground"><span className="font-semibold tabular-nums" style={{ color: "var(--neon)" }}>{topBarStats.winRate}%</span> wins</span>
+          )}
         </div>
         <div className="flex items-center gap-2">
           <button onClick={showHint} className="rounded-lg border border-border bg-secondary/60 px-3 py-1.5 text-xs font-medium text-secondary-foreground transition hover:bg-secondary">Hint</button>
