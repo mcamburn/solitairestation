@@ -166,6 +166,16 @@ function StatsPage() {
   // Load real stats from localStorage after first mount (client-only)
   useEffect(() => {
     setRows(loadRows());
+    // Restore persisted sort preference
+    try {
+      const savedKey = localStorage.getItem("stats-sort-key") as SortKey | null;
+      const savedDir = localStorage.getItem("stats-sort-dir") as SortDir | null;
+      const validKeys: SortKey[] = ["title", "gamesPlayed", "wins", "winRate", "bestTime", "longestStreak"];
+      if (savedKey && validKeys.includes(savedKey)) setSortKey(savedKey);
+      if (savedDir === "asc" || savedDir === "desc") setSortDir(savedDir);
+    } catch {
+      // localStorage unavailable — keep defaults
+    }
     setHydrated(true);
   }, []);
 
@@ -185,13 +195,26 @@ function StatsPage() {
       : 0;
   const gamesWithPlays = rows.filter((r) => r.stats.gamesPlayed > 0).length;
 
+  function persistSort(key: SortKey, dir: SortDir) {
+    try {
+      localStorage.setItem("stats-sort-key", key);
+      localStorage.setItem("stats-sort-dir", dir);
+    } catch {
+      // ignore
+    }
+  }
+
   function handleSort(key: SortKey) {
     if (key === sortKey) {
-      setSortDir((d) => (d === "asc" ? "desc" : "asc"));
+      const newDir: SortDir = sortDir === "asc" ? "desc" : "asc";
+      setSortDir(newDir);
+      persistSort(key, newDir);
     } else {
-      setSortKey(key);
       // For numeric columns, default descending (highest first); name → asc
-      setSortDir(key === "title" ? "asc" : "desc");
+      const newDir: SortDir = key === "title" ? "asc" : "desc";
+      setSortKey(key);
+      setSortDir(newDir);
+      persistSort(key, newDir);
     }
   }
 
@@ -274,8 +297,10 @@ function StatsPage() {
             onChange={(e) => {
               const key = e.target.value as SortKey;
               if (key === sortKey) return;
+              const newDir: SortDir = key === "title" ? "asc" : "desc";
               setSortKey(key);
-              setSortDir(key === "title" ? "asc" : "desc");
+              setSortDir(newDir);
+              persistSort(key, newDir);
             }}
             className="flex-1 rounded-lg px-3 py-2 text-sm font-medium appearance-none cursor-pointer transition"
             style={{
@@ -293,7 +318,11 @@ function StatsPage() {
           </select>
           <button
             aria-label={sortDir === "asc" ? "Sort descending" : "Sort ascending"}
-            onClick={() => setSortDir((d) => (d === "asc" ? "desc" : "asc"))}
+            onClick={() => {
+              const newDir: SortDir = sortDir === "asc" ? "desc" : "asc";
+              setSortDir(newDir);
+              persistSort(sortKey, newDir);
+            }}
             className="rounded-lg px-3 py-2 text-sm font-semibold transition shrink-0"
             style={{
               background: "color-mix(in oklab, var(--neon) 6%, oklch(0.16 0.03 155))",
