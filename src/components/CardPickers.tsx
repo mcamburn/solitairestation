@@ -357,9 +357,9 @@ const PANEL_BASE_STYLE: CSSProperties = {
 
 /** Distinct accent colour per section. */
 const ACCENT = {
-  mode: "#a78bfa", // violet  — game mode / rule set
-  back: "#22d3ee", // cyan    — card back design
-  face: "#fb923c", // amber   — card face style
+  mode: "#d4a832", // gold    — game mode / rule set
+  back: "#5a9e6f", // sage    — card back design
+  face: "#c05848", // crimson — card face style
 } as const;
 
 /** Compute fixed panel position from a trigger element's bounding rect.
