@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { SiteFooter } from "@/components/SiteFooter";
+import { SITE_URL } from "@/lib/site";
 
 export const Route = createFileRoute("/about")({
   component: AboutPage,
@@ -13,11 +14,11 @@ export const Route = createFileRoute("/about")({
       { property: "og:title", content: "About Solitaire Station — Free Online Solitaire Games" },
       { property: "og:description", content: "Solitaire Station offers free online solitaire including Klondike, free Spider Solitaire, free FreeCell, free Pyramid, free TriPeaks, and free Mahjong solitaire." },
       { property: "og:type", content: "website" },
-      { property: "og:url", content: "https://www.free-klondike-solitaire.com/about" },
+      { property: "og:url", content: `${SITE_URL}/about` },
       { name: "twitter:card", content: "summary" },
     ],
     links: [
-      { rel: "canonical", href: "https://www.free-klondike-solitaire.com/about" },
+      { rel: "canonical", href: `${SITE_URL}/about` },
     ],
   }),
 });

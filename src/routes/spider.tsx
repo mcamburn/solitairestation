@@ -41,14 +41,14 @@ const SPIDER_LD = JSON.stringify({
   "@context": "https://schema.org",
   "@type": "WebApplication",
   "name": "Free Spider Solitaire — Solitaire Station",
-  "url": "https://www.free-klondike-solitaire.com/spider",
+  "url": `${SITE_URL}/spider`,
   "description": "Play free Spider Solitaire at Solitaire Station — choose 1, 2, or 4 suits. Hints, undo, and auto-save. No download, no sign-up.",
   "applicationCategory": "GameApplication",
   "operatingSystem": "Any",
   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
   "genre": ["Card Game", "Solitaire"],
   "inLanguage": "en-US",
-  "publisher": { "@type": "Organization", "name": "Solitaire Station", "url": "https://www.free-klondike-solitaire.com/" },
+  "publisher": { "@type": "Organization", "name": "Solitaire Station", "url": `${SITE_URL}/` },
 });
 
 function SpiderPage() {

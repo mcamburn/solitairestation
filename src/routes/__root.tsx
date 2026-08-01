@@ -29,6 +29,7 @@ if (typeof window !== "undefined") {
 
 import appCss from "../styles.css?url";
 import { reportError } from "../lib/error-reporting";
+import { SITE_URL } from "../lib/site";
 
 function NotFoundComponent() {
   return (
@@ -101,21 +102,21 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "robots", content: "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" },
       // Open Graph
       { property: "og:type", content: "website" },
-      { property: "og:url", content: "https://free-klondike-solitaire.com/" },
+      { property: "og:url", content: `${SITE_URL}/` },
       { property: "og:title", content: "Solitaire Station — Play Free Online Solitaire" },
       { property: "og:description", content: "Play free online Solitaire at Solitaire Station. Features Klondike Turn 1 & Turn 3, Vegas scoring, Double Klondike, hints, unlimited undo, and six card games. No downloads required." },
       { property: "og:site_name", content: "Solitaire Station" },
       { property: "og:locale", content: "en_US" },
-      { property: "og:image", content: "https://free-klondike-solitaire.com/og/klondike.png" },
+      { property: "og:image", content: `${SITE_URL}/og/klondike.png` },
       { property: "og:image:width", content: "1200" },
       { property: "og:image:height", content: "630" },
       { property: "og:image:alt", content: "Solitaire Station — Play Free Online Solitaire" },
       // Twitter Card
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:url", content: "https://free-klondike-solitaire.com/" },
+      { name: "twitter:url", content: `${SITE_URL}/` },
       { name: "twitter:title", content: "Solitaire Station — Play Free Online Solitaire" },
       { name: "twitter:description", content: "Play free online Solitaire at Solitaire Station. Features Klondike Turn 1 & Turn 3, hints, unlimited undo, and six card games. No downloads required." },
-      { name: "twitter:image", content: "https://free-klondike-solitaire.com/og/klondike.png" },
+      { name: "twitter:image", content: `${SITE_URL}/og/klondike.png` },
       // PWA / mobile
       { name: "theme-color", content: "#b8901e" },
       { name: "mobile-web-app-capable", content: "yes" },
@@ -124,7 +125,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "apple-mobile-web-app-title", content: "Solitaire Station" },
     ],
     links: [
-      { rel: "canonical", href: "https://free-klondike-solitaire.com/" },
+      { rel: "canonical", href: `${SITE_URL}/` },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
@@ -152,8 +153,8 @@ const WEBSITE_LD = JSON.stringify({
   "@graph": [
     {
       "@type": ["SoftwareApplication", "VideoGame"],
-      "@id": "https://free-klondike-solitaire.com/#game",
-      "url": "https://free-klondike-solitaire.com/",
+      "@id": `${SITE_URL}/#game`,
+      "url": `${SITE_URL}/`,
       "name": "Solitaire Station",
       "headline": "Play Free Online Solitaire at Solitaire Station",
       "description": "Solitaire Station — play free online solitaire in your browser. Klondike Turn 1 & Turn 3, Vegas scoring, Double Klondike, Spider, FreeCell, Pyramid, TriPeaks, and Mahjong. No download required.",
@@ -172,21 +173,21 @@ const WEBSITE_LD = JSON.stringify({
       "publisher": {
         "@type": "Organization",
         "name": "Solitaire Station",
-        "url": "https://free-klondike-solitaire.com/"
+        "url": `${SITE_URL}/`
       }
     },
     {
       "@type": "WebSite",
-      "@id": "https://free-klondike-solitaire.com/#website",
-      "url": "https://free-klondike-solitaire.com/",
+      "@id": `${SITE_URL}/#website`,
+      "url": `${SITE_URL}/`,
       "name": "Solitaire Station",
       "publisher": {
-        "@id": "https://free-klondike-solitaire.com/#game"
+        "@id": `${SITE_URL}/#game`
       }
     },
     {
       "@type": "FAQPage",
-      "@id": "https://free-klondike-solitaire.com/#faq",
+      "@id": `${SITE_URL}/#faq`,
       "mainEntity": [
         {
           "@type": "Question",
