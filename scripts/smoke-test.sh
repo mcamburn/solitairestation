@@ -85,12 +85,22 @@ if [[ -n "${HARDCODED}" ]]; then
 fi
 echo "  PASS  No hardcoded domain strings found."
 
-# ── 5. Report ─────────────────────────────────────────────────────────────────
+# ── 5. OG image coverage check ───────────────────────────────────────────────
+# Verifies every canonical game in src/lib/games.ts has an entry in
+# scripts/og-game-registry.mjs and a corresponding file in public/og/.
+echo "==> Checking OG image coverage…"
+if node scripts/check-og-coverage.mjs; then
+  : # check-og-coverage prints its own PASS lines
+else
+  FAILED=$((FAILED + 1))
+fi
+
+# ── 6. Report ─────────────────────────────────────────────────────────────────
 echo ""
 if [[ ${FAILED} -eq 0 ]]; then
   echo "All ${#ROUTES[@]} routes returned 200. Smoke test passed."
   exit 0
 else
-  echo "Smoke test FAILED: ${FAILED}/${#ROUTES[@]} route(s) did not return 200." >&2
+  echo "Smoke test FAILED: ${FAILED} check(s) did not pass." >&2
   exit 1
 fi

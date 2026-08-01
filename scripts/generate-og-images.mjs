@@ -2,35 +2,22 @@
  * Generates OG social-preview images for all Solitaire Station games.
  * Uses SVG templates rendered to PNG via @resvg/resvg-js.
  * Output: public/og/{game}.png  (1200 × 630 px)
+ *
+ * Game list is imported from scripts/og-game-registry.mjs — the single
+ * source of truth.  To add a new game, update that file and re-run this script.
  */
 
 import { Resvg } from "@resvg/resvg-js";
 import { writeFileSync, mkdirSync } from "fs";
 import { join, dirname } from "path";
 import { fileURLToPath } from "url";
+import { OG_GAMES } from "./og-game-registry.mjs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const outDir = join(__dirname, "..", "public", "og");
 mkdirSync(outDir, { recursive: true });
 
-const games = [
-  { id: "klondike",     label: "Klondike Solitaire",      suits: ["♠", "♥", "♣", "♦"], accent: "#e8a020" },
-  { id: "spider",       label: "Spider Solitaire",        suits: ["♠", "♠", "♠", "♠"], accent: "#20a0e8" },
-  { id: "freecell",     label: "FreeCell",                suits: ["♣", "♦", "♥", "♠"], accent: "#5cb85c" },
-  { id: "pyramid",      label: "Pyramid Solitaire",       suits: ["♦", "♥", "♣", "♠"], accent: "#d4a017" },
-  { id: "tripeaks",     label: "TriPeaks Solitaire",      suits: ["♥", "♠", "♦", "♣"], accent: "#c0392b" },
-  { id: "mahjong",      label: "Mahjong",                 suits: ["🀄", "🀄", "🀄", "🀄"], accent: "#c0392b" },
-  { id: "golf",         label: "Golf Solitaire",          suits: ["♣", "♦", "♥", "♠"], accent: "#34d399" },
-  { id: "forty-thieves",label: "Forty Thieves Solitaire", suits: ["♠", "♦", "♣", "♥"], accent: "#f97316" },
-  { id: "yukon",        label: "Yukon Solitaire",         suits: ["♥", "♣", "♦", "♠"], accent: "#a78bfa" },
-  { id: "scorpion",     label: "Scorpion Solitaire",      suits: ["♠", "♠", "♣", "♣"], accent: "#ef4444" },
-  { id: "eight-off",    label: "Eight Off Solitaire",     suits: ["♣", "♠", "♦", "♥"], accent: "#06b6d4" },
-  { id: "canfield",     label: "Canfield Solitaire",      suits: ["♦", "♣", "♥", "♠"], accent: "#f59e0b" },
-  { id: "addiction",    label: "Addiction Solitaire",     suits: ["♥", "♦", "♠", "♣"], accent: "#ec4899" },
-  { id: "bakers-dozen", label: "Baker's Dozen Solitaire", suits: ["♣", "♥", "♦", "♠"], accent: "#84cc16" },
-  { id: "bakers-game",  label: "Baker's Game Solitaire",  suits: ["♠", "♣", "♥", "♦"], accent: "#6366f1" },
-  { id: "clock",        label: "Clock Solitaire",         suits: ["♦", "♠", "♣", "♥"], accent: "#e879f9" },
-];
+const games = OG_GAMES;
 
 // Card SVG path data (matches favicon.svg design — gold card with spade)
 const CARD_SVG = `
