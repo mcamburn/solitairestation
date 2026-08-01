@@ -12,6 +12,34 @@
 
 set -euo pipefail
 
+# ── OG image coverage check ───────────────────────────────────────────────────
+# Runs whenever src/lib/games.ts, the OG registry, or any route file is staged.
+#
+# Uses check-og-coverage-staged.mjs (not check-og-coverage.mjs) because the
+# staged variant reads all three sources — games.ts, og-game-registry.mjs, and
+# PNG existence — from the git INDEX, not the working tree.  This catches the
+# common mistake of generating images but forgetting to `git add` them.
+#
+# Authoritative source: src/lib/games.ts (the GAMES array `to:` slugs).
+# A route file in src/routes/ is NOT a "game" until registered in games.ts;
+# new route files still trigger this check so developers are reminded to update
+# both the games registry and the OG registry together.
+OG_TRIGGER=$(git diff --cached --name-only --diff-filter=ACMR | \
+  grep -E '^(src/lib/games\.ts|scripts/og-game-registry\.mjs|src/routes/.+\.tsx)$' || true)
+
+if [[ -n "${OG_TRIGGER}" ]]; then
+  echo "==> Checking OG image coverage (staged index — no build required)…"
+  if ! node scripts/check-og-coverage-staged.mjs; then
+    echo "" >&2
+    echo "Commit blocked: update the OG registry, regenerate images, and stage the PNGs." >&2
+    echo "  1. Edit scripts/og-game-registry.mjs (add the new game)" >&2
+    echo "  2. node scripts/generate-og-images.mjs" >&2
+    echo "  3. git add public/og/<slug>.png" >&2
+    echo "" >&2
+    exit 1
+  fi
+fi
+
 DOMAIN="free-klondike-solitaire\.com"
 ALLOWED="src/lib/site.ts"
 

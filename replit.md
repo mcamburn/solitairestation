@@ -54,5 +54,32 @@ Two layers of enforcement exist:
 
 2. **Smoke test** (`scripts/smoke-test.sh`) — greps the full `src/` tree as part of the production build verification. Any pull request that slips past the hook is caught here before merging.
 
+## OG image coverage
+
+Every game route must have a matching OG social-preview image in `public/og/<slug>.png`.
+
+**Adding a new game requires three steps:**
+1. Add the route file under `src/routes/<slug>.tsx` (set the `og:image` meta tag).
+2. Add an entry to `scripts/og-game-registry.mjs` (same `id` as the route slug).
+3. Regenerate images: `node scripts/generate-og-images.mjs`
+
+**Two layers of enforcement exist:**
+
+1. **Pre-commit hook** (`.githooks/pre-commit`) — when `src/lib/games.ts`, `scripts/og-game-registry.mjs`, or any route file is staged, `node scripts/check-og-coverage-staged.mjs` runs automatically. This staged-index variant reads all three sources (`games.ts`, the OG registry, PNG existence) from the **git index**, not the working tree, so a generated-but-not-`git add`-ed PNG correctly blocks the commit. No build step required.
+
+2. **Smoke test** (`scripts/smoke-test.sh`, section 5) — calls `node scripts/check-og-coverage.mjs` (the working-tree variant) as part of the full production build check. Catches gaps in CI even if the hook was bypassed.
+
+`src/lib/games.ts` is the authoritative game registry. A route file in `src/routes/` is not a "game" until its slug appears in the `GAMES` array there.
+
+To run the staged check standalone at any time (requires a git repo, no build needed):
+```bash
+node scripts/check-og-coverage-staged.mjs
+```
+
+To run the working-tree check (used by smoke-test):
+```bash
+node scripts/check-og-coverage.mjs
+```
+
 ## User preferences
 None recorded yet.
