@@ -97,7 +97,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" },
       { title: "Solitaire Station — Play Free Online Solitaire Instantly" },
-      { name: "description", content: "Play 16 free solitaire games instantly in your browser — no download, no sign-up, no ads. Klondike, Spider, FreeCell, Pyramid, TriPeaks, Mahjong, Golf, Forty Thieves, Yukon, Scorpion, Eight Off, Canfield, Baker's Dozen, and more. Works on mobile and desktop." },
+      { name: "description", content: "Solitaire Station — play 16 free card games instantly in your browser. Klondike, Spider, FreeCell, Pyramid, TriPeaks, Mahjong, Golf, Forty Thieves, Yukon, Scorpion, Eight Off, Canfield, Baker's Dozen, and more. No download, no sign-up." },
       { name: "keywords", content: "free online solitaire, play solitaire instantly, klondike solitaire, spider solitaire, freecell, pyramid solitaire, mahjong solitaire, golf solitaire, forty thieves, yukon solitaire, scorpion solitaire, canfield solitaire, tripeaks solitaire, solitaire no download, solitaire turn 1, solitaire turn 3" },
       { name: "robots", content: "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" },
       // Open Graph

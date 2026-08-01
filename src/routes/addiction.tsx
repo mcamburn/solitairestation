@@ -7,7 +7,7 @@ export const Route = createFileRoute("/addiction")({
   head: () => ({
     meta: [
       { title: "Solitaire Station — Free Addiction Solitaire" },
-      { name: "description", content: "Play free Addiction solitaire online — arrange cards in same-suit rows from 2 to King using gaps. Up to 3 reshuffles allowed. No download or sign-up." },
+      { name: "description", content: "Play free Addiction Solitaire at Solitaire Station — arrange cards in same-suit rows from 2 to King by sliding into gaps. Up to 3 reshuffles allowed. No download or sign-up." },
       { name: "robots", content: "index, follow" },
       { property: "og:site_name", content: "Solitaire Station" },
       { property: "og:locale", content: "en_US" },
