@@ -11,7 +11,7 @@ export const Route = createFileRoute("/guides/")({
       {
         name: "description",
         content:
-          "Free solitaire strategy guides at Solitaire Station — Klondike, Spider, FreeCell, Pyramid, TriPeaks, and Mahjong Solitaire. Learn rules, win rates, tips, and history.",
+          "Free solitaire strategy guides at Solitaire Station — Klondike, Spider, FreeCell, Pyramid, TriPeaks, Mahjong, Golf, Forty Thieves, Yukon, Scorpion, and more. Rules, win rates, tips, and history for all 16 games.",
       },
       { name: "robots", content: "index, follow" },
       { property: "og:type", content: "website" },
@@ -19,7 +19,7 @@ export const Route = createFileRoute("/guides/")({
       {
         property: "og:description",
         content:
-          "Solitaire Station — guides for all six solitaire games: rules, win-rate breakdowns, strategy tips, history, and glossary.",
+          "Solitaire Station — guides for all 16 solitaire games: rules, win-rate breakdowns, strategy tips, history, and glossary.",
       },
       { property: "og:url", content: `${SITE_URL}/guides` },
     ],
@@ -28,13 +28,23 @@ export const Route = createFileRoute("/guides/")({
 });
 
 const TAG_COLOR: Record<GameTag, string> = {
-  klondike: "#16a34a",
-  spider:   "#7c3aed",
-  freecell: "#0e7490",
-  pyramid:  "#b45309",
-  tripeaks: "#be185d",
-  mahjong:  "#dc2626",
-  general:  "#374151",
+  klondike:     "#16a34a",
+  spider:       "#7c3aed",
+  freecell:     "#0e7490",
+  pyramid:      "#b45309",
+  tripeaks:     "#be185d",
+  mahjong:      "#dc2626",
+  golf:         "#15803d",
+  fortythieves: "#92400e",
+  yukon:        "#1d4ed8",
+  scorpion:     "#b91c1c",
+  eightoff:     "#0f766e",
+  canfield:     "#7e22ce",
+  addiction:    "#c2410c",
+  bakersdozen:  "#a16207",
+  bakersgame:   "#1e3a5f",
+  clock:        "#374151",
+  general:      "#4b5563",
 };
 
 function GuidesPage() {
@@ -57,7 +67,7 @@ function GuidesPage() {
           Solitaire Strategy Guides
         </h1>
         <p className="mt-2 max-w-xl text-sm text-muted-foreground">
-          Rules, win-rate breakdowns, strategy tips, and history — for all six games.
+          Rules, win-rate breakdowns, strategy tips, and history — for all 16 games.
         </p>
       </div>
 

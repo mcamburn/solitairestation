@@ -5,6 +5,16 @@ export type GameTag =
   | "pyramid"
   | "tripeaks"
   | "mahjong"
+  | "golf"
+  | "fortythieves"
+  | "yukon"
+  | "scorpion"
+  | "eightoff"
+  | "canfield"
+  | "addiction"
+  | "bakersdozen"
+  | "bakersgame"
+  | "clock"
   | "general";
 
 export interface GuideSection {
@@ -1485,14 +1495,818 @@ export const GUIDES: Guide[] = [
       },
     ],
   },
+
+
+  // ─── Golf ──────────────────────────────────────────────────────────────────
+
+  {
+    slug: "golf-solitaire-rules-and-scoring",
+    game: "golf",
+    title: "Golf Solitaire Rules & How to Score",
+    description:
+      "A complete guide to Golf Solitaire — how the tableau, stock, and waste pile work, how strokes are counted, and what separates a good round from a bad one.",
+    intro:
+      "Golf Solitaire earns its name from its scoring: each unplayed card at the end of a round counts as a stroke, and the goal is to finish with as few strokes as possible across multiple rounds — just like real golf. It's one of the fastest-playing solitaire variants and rewards sharp sequencing decisions under pressure.",
+    sections: [
+      {
+        heading: "The Setup",
+        body: [
+          "Thirty-five cards are dealt face-up into seven columns of five cards each, forming the tableau. The remaining seventeen cards become the stock. The top card of the stock is flipped to start the waste pile.",
+          "All cards in the tableau are playable from the top of each column — there are no face-down cards, so the full state of the game is always visible.",
+        ],
+      },
+      {
+        heading: "How Play Works",
+        body: [
+          "You move cards from the tops of tableau columns onto the waste pile if they are exactly one rank higher or lower than the current top waste card, regardless of suit. Sequences can zigzag: 7–8–7–6–7–8 is perfectly legal. Aces and Kings do not wrap — a King cannot play onto an Ace, nor an Ace onto a King.",
+          "When no tableau card can be played, you must deal a new card from the stock to the waste pile. If the stock runs out and no moves remain, the round ends.",
+        ],
+      },
+      {
+        heading: "Scoring",
+        body: [
+          "Every card still in the tableau at the end of a round adds one stroke to your score. Clear the entire tableau and you score a hole-in-one — any remaining stock cards subtract one stroke each from your running total, letting you go below zero for a round.",
+          "Golf is typically played over nine rounds (deals). Your final score is the sum of all nine rounds. A scratch score is zero; elite players regularly finish negative across a full nine-round game.",
+        ],
+      },
+      {
+        heading: "What Makes a Deal Hard",
+        body: [
+          "Golf deals vary enormously in difficulty. A deal where the waste card values cluster — many 5s, 6s, and 7s near each other on the tableau — is generous because long sequential chains are easy to build. A deal where high and low cards are isolated with no neighbors creates dead ends that force stock draws and leave leftover cards.",
+          "Win rate for Golf is roughly 40–60% depending on the specific variant and whether Kings are blocking or terminal. The visible-card nature of the game means every loss is at least partially foreseeable, which makes planning ahead the central skill.",
+        ],
+      },
+    ],
+  },
+
+  {
+    slug: "golf-solitaire-strategy",
+    game: "golf",
+    title: "Golf Solitaire Strategy: Clearing the Tableau Fast",
+    description:
+      "Key Golf Solitaire strategies — how to build long chains, when to draw from the stock, and how to protect yourself against dead-end columns.",
+    intro:
+      "Golf Solitaire looks like pure luck, but card-sequence awareness can meaningfully reduce your average stroke count. The entire tableau is face-up from the start, which means every move is an informed choice.",
+    sections: [
+      {
+        heading: "Prioritize Long Chains Over Short Ones",
+        body: [
+          "Before making any move, scan the tableau for the longest sequential chain you can build from the current waste card. A chain of six moves is worth far more than two separate chains of three — not just because it clears more cards, but because it generates a new waste card position that may unlock further chains.",
+          "Think of the waste pile top as a pivot value. Ask: 'If I play this card, what value does it leave me on?' Then look ahead to see whether that new value has good options. A move that leaves you at a value with four reachable tableau tops is better than a move that clears a card but leaves you stranded.",
+        ],
+      },
+      {
+        heading: "Preserve Stock Cards as Long as Possible",
+        body: [
+          "The stock is your emergency resource. Every time you draw from it, you lose the chance to use that card as a value pivot later. Exhaust all possible tableau moves before drawing. Even a single extra tableau move before each draw can improve your score by two to three strokes over a full nine-hole round.",
+          "When you do have to draw, try to anticipate what new value you'll get if you know which cards remain in the stock — or at least be aware of the current waste top before drawing so you can plan which tableau tops to prioritize afterward.",
+        ],
+      },
+      {
+        heading: "Unblock Buried Columns Early",
+        body: [
+          "Columns with only one or two cards are easy to clear but not urgent. Columns with five cards that have their bottom cards entangled in critical sequences are the real problem. Identify which column tops can unlock the most cards beneath them and prioritize clearing those columns first.",
+          "Specifically: look for columns where the top card bridges two separate chains. Playing it in one direction may close off the other. If you can reach the same chain pivot by another route, take that route first and preserve the bridging card.",
+        ],
+      },
+      {
+        heading: "King and Ace Management",
+        body: [
+          "Kings and Aces are dead ends — no card can be played onto a King going up, and no card can be played onto an Ace going down (unless the variant allows wrapping, which the standard rules do not). A King or Ace buried mid-column forces you to either clear it via a descending or ascending chain that reaches it exactly, or leave it stranded.",
+          "When you see a King or Ace near the top of a long column, plan the chain specifically to land on it before moving past it. Landing on a King or Ace changes your waste pivot to an extreme value, which is often a blessing when the tableau has matching neighbors.",
+        ],
+      },
+    ],
+  },
+
+  // ─── Forty Thieves ─────────────────────────────────────────────────────────
+
+  {
+    slug: "forty-thieves-solitaire-rules",
+    game: "fortythieves",
+    title: "Forty Thieves Solitaire Rules & Setup",
+    description:
+      "Everything you need to know to play Forty Thieves Solitaire — the two-deck setup, tableau rules, foundation building, and why this is one of the most challenging patience games.",
+    intro:
+      "Forty Thieves — also called Napoleon at St. Helena, Big Forty, or Roosevelt at San Juan — is one of the classic two-deck solitaire games. Its austere rules give you very little room to maneuver, making it far harder than Klondike despite looking deceptively similar.",
+    sections: [
+      {
+        heading: "The Setup",
+        body: [
+          "Two standard 52-card decks (104 cards total) are shuffled together. Forty cards are dealt face-up into ten tableau columns of four cards each — hence 'Forty Thieves.' All cards are face-up; there are no hidden cards. The remaining 64 cards form the stock.",
+          "Eight foundation piles sit above the tableau, two per suit. Each foundation is built up from Ace to King in suit. The goal is to move all 104 cards onto the eight foundations.",
+        ],
+      },
+      {
+        heading: "Tableau and Stock Rules",
+        body: [
+          "Cards in the tableau are built in descending order and same suit — unlike Klondike's alternating-color rule. Only the top card of each column is playable; you cannot move sequences. This is the most restrictive rule in the game: you must move cards one at a time.",
+          "Click the stock to deal one card at a time to a single waste pile. Only the top waste card is playable. The stock can only be dealt through once — there is no redeal. When the stock is empty and no moves remain, the game is over.",
+        ],
+      },
+      {
+        heading: "Why Forty Thieves Is So Hard",
+        body: [
+          "The combination of same-suit-only stacking, one-card-at-a-time movement, and a no-redeal stock makes Forty Thieves brutally difficult. Human win rates hover between 5% and 10%. The two-deck structure means duplicates exist, but they often block each other — two black Aces of Spades may both be buried deep with no way to reach them in order.",
+          "Empty columns (created by clearing all four cards from a column) are the most valuable resource in the game. Each empty column allows temporary parking of a single card, enabling the one-at-a-time constraint to work around blockages. Protecting and timing the use of empty columns is the central skill.",
+        ],
+      },
+      {
+        heading: "Foundation Strategy",
+        body: [
+          "Unlike many solitaire games, you should generally move cards to the foundations as quickly as possible in Forty Thieves. Because you can only move one card at a time, keeping playable cards in the tableau doesn't create flexibility — it creates clutter. Get Aces to foundations immediately and push each suit upward whenever possible.",
+          "The exception: don't move a card to a foundation if doing so blocks the only path to a card you need in the immediate next moves. Think one or two moves ahead before committing.",
+        ],
+      },
+    ],
+  },
+
+  {
+    slug: "forty-thieves-strategy-guide",
+    game: "fortythieves",
+    title: "Forty Thieves Strategy: Mastering a Near-Impossible Game",
+    description:
+      "Advanced Forty Thieves Solitaire strategy — how to manage empty columns, survive a no-redeal stock, and maximize your win rate in one of solitaire's hardest variants.",
+    intro:
+      "Forty Thieves has a win rate so low that even strong players expect to lose most games. The goal isn't mastery in the traditional sense — it's learning to recognize winnable deals quickly and squeezing every possible move out of them.",
+    sections: [
+      {
+        heading: "Treat Empty Columns as Gold",
+        body: [
+          "An empty tableau column is the most powerful resource in Forty Thieves. It lets you temporarily park a card, which effectively gives you one extra 'hand' to reorganize a blocked area. Guard empty columns fiercely — only fill them when you have a specific plan for what the move unlocks.",
+          "Creating an empty column early requires clearing an entire four-card column from the start. This is only possible if those four cards are either playable to foundations or can be stacked elsewhere. When you see such an opportunity in the opening layout, prioritize it above almost anything else.",
+        ],
+      },
+      {
+        heading: "Plan the Stock Draw",
+        body: [
+          "Because the stock cannot be redealt, every card drawn is a one-time resource. Before drawing, make sure you've exhausted every tableau move. After drawing, don't immediately play the waste card to the tableau unless doing so unlocks further moves — parking it in the tableau just to get it off the waste often blocks a column position you'll need later.",
+          "If the waste card can go to a foundation, always do it. Foundations are permanent progress. If it can go to the tableau and reveal useful plays, do it. If it can only go to the tableau as dead weight, consider leaving it and drawing again — but remember the waste pile is only one card deep; drawing again buries the current card permanently.",
+        ],
+      },
+      {
+        heading: "Same-Suit Sequencing",
+        body: [
+          "The same-suit-only rule for tableau building is the game's most punishing constraint. To build a sequence, you need both the right rank and the right suit. With two decks, each suit has 26 cards, but they're interspersed — the card you need to continue a sequence may be at the bottom of another column.",
+          "Prioritize building sequences in the suits whose Aces appeared early. Once an Ace is on a foundation, every subsequent card in that suit becomes a potential foundation move, reducing tableau clutter. Suits with buried Aces may need to be nearly abandoned until the Ace surfaces.",
+        ],
+      },
+      {
+        heading: "Recognizing a Lost Position",
+        body: [
+          "Forty Thieves positions collapse slowly and then all at once. Warning signs of a lost game: all empty columns filled, stock half-exhausted with no foundation progress beyond two suits, and multiple columns where the needed card is buried three or four deep beneath unsuitable cards. When you see this pattern, most experienced players restart rather than grind through a statistically hopeless endgame.",
+        ],
+      },
+    ],
+  },
+
+  // ─── Yukon ─────────────────────────────────────────────────────────────────
+
+  {
+    slug: "yukon-solitaire-rules",
+    game: "yukon",
+    title: "Yukon Solitaire Rules Explained",
+    description:
+      "How to play Yukon Solitaire — the rules that make it unique from Klondike, including moving face-down cards and what that means for strategy.",
+    intro:
+      "Yukon Solitaire looks like Klondike at first glance, but its one key rule difference changes everything: you can move any face-up card and all cards on top of it as a group, regardless of whether they form a proper sequence. This single change transforms Yukon from a card game into a spatial puzzle.",
+    sections: [
+      {
+        heading: "The Setup",
+        body: [
+          "A standard 52-card deck is dealt into seven tableau columns. Column 1 has one card, column 2 has two cards, and so on. The twist: after the initial deal, all remaining cards (those beyond the first card in each column) are dealt face-up on top of the columns — five extra cards land on columns 2–6, four on column 7. There is no stock pile. All 52 cards are visible from the start.",
+          "Four foundation piles sit above the tableau. Build each foundation up by suit from Ace to King.",
+        ],
+      },
+      {
+        heading: "The Core Rule: Moving Groups",
+        body: [
+          "In Yukon, any face-up card in the tableau can be moved, along with all cards resting on top of it, regardless of order or color. So a pile of randomly-ordered face-up cards can be picked up and placed on any tableau card that accepts the bottom card of the group (descending rank, alternating color).",
+          "This rule means you can unbury needed cards without first dismantling what's above them — you just move the pile. The tradeoff is that you may create chaotic, hard-to-use piles in the process.",
+        ],
+      },
+      {
+        heading: "Face-Down Cards",
+        body: [
+          "The bottom card(s) of each column may be face-down from the initial deal. A face-down card is revealed and flipped face-up once all face-up cards on top of it have been moved away. The face-down cards are the hidden information in Yukon — and since there is no stock, uncovering them is the only way to gain new information during the game.",
+          "Empty columns in Yukon can be filled by any King (or group starting with a King), just as in Klondike.",
+        ],
+      },
+      {
+        heading: "Foundations and Winning",
+        body: [
+          "Move Aces to foundations as they are uncovered and build each suit upward. You win when all 52 cards are on the foundations. Because there is no stock or waste pile, every card in the game is accessible — but accessibility doesn't mean reachability. Cards buried under incompatible piles may require many preparatory moves to free.",
+        ],
+      },
+    ],
+  },
+
+  {
+    slug: "yukon-solitaire-strategy",
+    game: "yukon",
+    title: "Yukon Solitaire Strategy: Using Free Moves to Win",
+    description:
+      "Yukon Solitaire strategy guide — how to use the free group-move rule to unbury key cards, manage empty columns, and navigate the no-stock constraint.",
+    intro:
+      "Yukon is significantly more winnable than Klondike — win rates around 85% are achievable with strong play — because all cards are visible and group moves are unconstrained. The challenge is spatial: reorganizing piles without creating chaos that blocks your own progress.",
+    sections: [
+      {
+        heading: "Expose Face-Down Cards Systematically",
+        body: [
+          "With no stock to draw from, the only new cards you'll ever see are face-down cards in the tableau. Uncovering them is your top priority. Before any other plan, identify which columns have the most face-down cards and work to clear the face-up cards above them.",
+          "Because you can move groups freely, uncovering face-down cards is often just one or two moves — but those moves may create disordered piles elsewhere. Accept that trade willingly: one new face-down card revealed is almost always worth a messy pile in another column.",
+        ],
+      },
+      {
+        heading: "Use Group Moves to Sort, Not Just Relocate",
+        body: [
+          "The temptation in Yukon is to move groups quickly to expose face-down cards, then deal with the mess later. This works up to a point, but messy piles eventually lock up the game. When moving a group, try to place it on a card that at least partially sorts the group — even if it's not perfect. A group that moves onto a card of the right color and rough rank is easier to work with than one dropped wherever fits.",
+        ],
+      },
+      {
+        heading: "Empty Column Management",
+        body: [
+          "Empty columns in Yukon are more powerful than in Klondike because you can move large groups in and out. Use an empty column as a temporary parking space to 'rotate' a pile: move the top portion to the empty column, access the card beneath, then combine them again elsewhere.",
+          "Don't let empty columns stay filled with Kings that aren't going anywhere. A King with a well-sorted sequence beneath it is worth the column. A King with a mess on top of it that you can't sequence into the foundations is just blocking a valuable resource.",
+        ],
+      },
+      {
+        heading: "Foundation Timing",
+        body: [
+          "In Yukon, moving cards to foundations early is generally good because it reduces tableau clutter. However, a low card (2 or 3) that is sitting on top of a large useful group may be better left in place temporarily — the group is more valuable as a unit than the card is on a foundation. Once you've used the group to achieve something, then send the card up.",
+        ],
+      },
+    ],
+  },
+
+  // ─── Scorpion ──────────────────────────────────────────────────────────────
+
+  {
+    slug: "scorpion-solitaire-rules",
+    game: "scorpion",
+    title: "Scorpion Solitaire Rules & Setup",
+    description:
+      "Learn how to play Scorpion Solitaire — the tableau layout, the free group-move rule, the three reserve cards, and why building in suit matters from move one.",
+    intro:
+      "Scorpion Solitaire is a challenging single-deck game that combines Yukon's free group-move rule with Spider's in-suit building goal. The result is a game where spatial reasoning and suit discipline are both essential — and where a single misplaced King can lock up the entire board.",
+    sections: [
+      {
+        heading: "The Setup",
+        body: [
+          "A standard 52-card deck is dealt into seven tableau columns. The first four columns receive seven cards each; the last three receive six cards each. In each column, the bottom three cards are face-down and the rest are face-up. Three cards are set aside as a reserve (stock).",
+          "Unlike Klondike, there are no foundation piles at the start. You build foundations within the tableau itself by creating complete in-suit sequences from King down to Ace within a single column.",
+        ],
+      },
+      {
+        heading: "Moving Cards",
+        body: [
+          "Like Yukon, any face-up card can be moved along with all cards on top of it, as a group. The receiving card must be exactly one rank higher and the same suit as the card being moved. This in-suit restriction is what separates Scorpion from Yukon and makes it considerably harder.",
+          "Empty columns can be filled with any King (and its attached cards). When you're stuck, deal the three reserve cards — one face-up card goes to each of the first three columns. Once the reserve is used it cannot be replenished.",
+        ],
+      },
+      {
+        heading: "Winning",
+        body: [
+          "You win by building four complete in-suit sequences — King through Ace — within the tableau columns. When a full sequence is formed, it is removed from play. The game ends when all four sequences are completed or no more moves are possible.",
+        ],
+      },
+      {
+        heading: "Key Difficulty",
+        body: [
+          "Scorpion is harder than it looks because the in-suit rule means you're essentially trying to sort a shuffled deck by suit while only being able to pick up cards of the right suit. Out-of-suit cards in a column are almost impossible to move unless they happen to sit on top of a card you need elsewhere. Face-down cards at the column bases are the biggest obstacle — clearing them requires sustained in-suit sequences to move above them.",
+        ],
+      },
+    ],
+  },
+
+  {
+    slug: "scorpion-solitaire-strategy",
+    game: "scorpion",
+    title: "Scorpion Strategy: Building In-Suit From the Start",
+    description:
+      "Scorpion Solitaire strategy — why in-suit discipline from move one is the key to winning, and how to manage the reserve cards and Kings for maximum effect.",
+    intro:
+      "Scorpion's win rate sits around 20–30% for careful players. The game punishes reactive play — moving whatever fits — and rewards a clear suit-by-suit roadmap established in the first dozen moves.",
+    sections: [
+      {
+        heading: "Commit to Suits Early",
+        body: [
+          "The biggest mistake in Scorpion is making moves that mix suits on a column just to uncover face-down cards. A mixed-suit column may never be sorted and becomes dead weight. From the very first move, ask: 'Does this advance one of my four suits or does it just shuffle the mess?'",
+          "Pick one or two suits to prioritize based on what's visible in the opening layout — usually the suits with the most face-up high cards visible — and funnel moves toward building those sequences first.",
+        ],
+      },
+      {
+        heading: "Kings Are Pivots, Not Goals",
+        body: [
+          "Kings are the start of each complete sequence, but placing a King in an empty column only helps if you can immediately begin building the correct suit's sequence on top of it. An empty column filled with a King that attracts off-suit cards is worse than leaving the column empty.",
+          "The best use of an empty column is as a temporary parking space to free a face-down card or to extract a misplaced card from a column. Only fill it permanently with a King when you have a clear plan for building at least four or five of the right suit down from it.",
+        ],
+      },
+      {
+        heading: "Reserve Card Timing",
+        body: [
+          "The three reserve cards are dealt to the first three columns, which may disrupt half-built sequences. Use the reserve as a last resort when you're genuinely stuck — not just when progress slows. Before dealing, make sure you've exhausted every in-suit move available.",
+          "If possible, clear the top cards from the first three columns before dealing the reserve, so they land on something manageable rather than burying progress.",
+        ],
+      },
+      {
+        heading: "Face-Down Cards Are the Game",
+        body: [
+          "Scorpion is ultimately about uncovering the 12 face-down cards at the bottoms of the first four columns. Every strategy decision should be evaluated in terms of how it advances toward revealing those cards. A move that uncovers a face-down card while maintaining suit discipline is almost always the right move, even if it looks slow.",
+        ],
+      },
+    ],
+  },
+
+  // ─── Eight Off ─────────────────────────────────────────────────────────────
+
+  {
+    slug: "eight-off-solitaire-rules",
+    game: "eightoff",
+    title: "Eight Off Solitaire Rules & How It Differs from FreeCell",
+    description:
+      "A complete guide to Eight Off Solitaire — the setup, rules, and the key differences from FreeCell that make Eight Off both easier and harder depending on how you approach it.",
+    intro:
+      "Eight Off is FreeCell's older sibling — the game that FreeCell was directly based on. It looks nearly identical but plays differently in two important ways: columns are built by suit (not alternating color), and there are eight free cells instead of four. These changes create a very different strategic environment.",
+    sections: [
+      {
+        heading: "The Setup",
+        body: [
+          "A standard 52-card deck is dealt into eight tableau columns of six cards each (48 cards), with the remaining four cards placed one each in four of the eight free cells to start. All cards are face-up. Four foundation piles sit in the corners, built up by suit from Ace to King.",
+        ],
+      },
+      {
+        heading: "Movement Rules",
+        body: [
+          "Tableau columns are built in descending rank and same suit — a 7 of Hearts can only go on an 8 of Hearts. Only the top card of each column is movable (unlike Yukon or Scorpion's group moves). Any single card can be placed into one of the eight free cells for temporary storage. A card can move from a free cell to the tableau or directly to a foundation.",
+          "Empty tableau columns act as additional free cells — any single card can fill them. Unlike FreeCell, there are no rules about moving groups; since only individual cards are movable, the question of 'supermoves' doesn't arise.",
+        ],
+      },
+      {
+        heading: "Eight Off vs. FreeCell",
+        body: [
+          "FreeCell uses alternating-color tableau building; Eight Off uses same-suit building. Same-suit is more restrictive — each card has only one valid destination in the tableau (rather than two in FreeCell). This makes tableau sequencing harder.",
+          "However, Eight Off compensates with eight free cells versus FreeCell's four. More free cells mean more temporary storage, which gives you more flexibility to rearrange without being trapped. The net result is that Eight Off has a slightly higher practical win rate than FreeCell (roughly 99% of deals are theoretically solvable for both, but Eight Off is more forgiving of suboptimal play).",
+        ],
+      },
+      {
+        heading: "Foundation Strategy",
+        body: [
+          "Because same-suit building means tableau sequences are naturally aligned with foundations, moving cards to foundations in Eight Off is generally more fluid than in FreeCell. When a card can go to a foundation, it usually should — it frees the free cell or tableau slot and advances the game.",
+        ],
+      },
+    ],
+  },
+
+  {
+    slug: "eight-off-solitaire-strategy",
+    game: "eightoff",
+    title: "Eight Off Solitaire Strategy: Making the Most of Eight Free Cells",
+    description:
+      "How to use Eight Off's eight free cells and same-suit building rule to your advantage — sequencing strategy, free-cell conservation, and how to avoid the common trap of filling all eight cells.",
+    intro:
+      "Eight Off is more forgiving than FreeCell, but players who treat the eight free cells as an unlimited buffer quickly find themselves with all cells occupied and no moves left. Disciplined cell use is the game's central challenge.",
+    sections: [
+      {
+        heading: "Don't Fill All Eight Cells",
+        body: [
+          "Eight free cells sound like an enormous luxury, but filling all eight at once is a losing position in almost every case. With all cells occupied and a blocked tableau, the only moves left are foundations — and if foundations aren't available, the game is over.",
+          "Treat free cells the way a chess player treats tempo: use them to enable one or two key moves, then empty them as soon as possible. Aim to keep at least three cells free at any point in the middle game.",
+        ],
+      },
+      {
+        heading: "Same-Suit Sequencing",
+        body: [
+          "Because tableau moves require same-suit, you're essentially building four separate same-suit ladders across eight columns. Think of the game as four parallel sorting problems. For each suit, identify the highest face-up card and work backward — what needs to move for the next card in that suit's sequence to become accessible?",
+          "Off-suit cards blocking a suit's column are the main obstacle. Use free cells to temporarily park them, rearrange the column, then return them. This 'park-and-return' pattern is the core tactical loop of Eight Off.",
+        ],
+      },
+      {
+        heading: "Empty Columns as Wild Free Cells",
+        body: [
+          "An empty tableau column effectively acts as a ninth free cell — any single card can sit there temporarily. Creating empty columns early is therefore very valuable. When a column has only one or two cards left, prioritize clearing it completely rather than building on the remaining cards.",
+        ],
+      },
+      {
+        heading: "Foundations Over Tableau",
+        body: [
+          "Every card moved to a foundation is permanently out of the way. In same-suit building, foundation-ready cards are naturally at the tops of sorted sequences, so moving them up is usually low-cost. Make foundation moves aggressively — they reduce clutter and simplify the sorting problem.",
+        ],
+      },
+    ],
+  },
+
+  // ─── Canfield ──────────────────────────────────────────────────────────────
+
+  {
+    slug: "canfield-solitaire-rules-and-history",
+    game: "canfield",
+    title: "Canfield Solitaire Rules & History",
+    description:
+      "The rules of Canfield Solitaire — including its unusual random starting foundation, reserve pile, and stock rotation — plus the casino origins that gave the game its name.",
+    intro:
+      "Canfield is named after Richard A. Canfield, an American casino owner who sold the game to customers in the 1890s: you paid $52 for a deck, earned $5 per card played to the foundations, and averaged a loss of around $25 per session. The clever mechanism that drives both the game's appeal and its difficulty is its random starting foundation rank.",
+    sections: [
+      {
+        heading: "The Setup",
+        body: [
+          "Thirteen cards are dealt face-down into a reserve pile; the top card is turned face-up. Four tableau columns each receive one face-up card. One card is turned face-up to begin the first foundation — and critically, the rank of that card determines the base rank for all four foundations. If a 7 starts a foundation, all four foundations must begin with 7s.",
+          "The remaining cards form the stock. Foundations are built up by suit in a wrapping sequence — after King comes Ace, then 2, and so on until the foundation base rank minus one.",
+        ],
+      },
+      {
+        heading: "Tableau and Reserve Rules",
+        body: [
+          "The tableau is built in descending rank and alternating color, just like Klondike. Only the top card of each column is movable individually. The top card of the reserve is always available to play. Empty tableau columns are automatically filled from the reserve (not from your hand — you have no choice).",
+          "Stock cards are dealt three at a time to a waste pile (Draw 3). The waste cycles infinitely until no moves remain anywhere.",
+        ],
+      },
+      {
+        heading: "What Makes Canfield Hard",
+        body: [
+          "The wrapping foundation is disorienting at first — you must mentally track which ranks have been played and which wrap around zero. The automatic refill of empty columns from the reserve removes one of the most powerful tools in solitaire (the intentional empty column), because you can never voluntarily leave a column empty. Win rates for Canfield are among the lowest of any solitaire variant: roughly 3–5% of deals produce a full clear.",
+        ],
+      },
+      {
+        heading: "Scoring and Casino Mode",
+        body: [
+          "In casino scoring, you pay 52 units and earn 5 per foundation card. A perfect game returns 208 units for a net profit of 156. In practice, the expected return is strongly negative — historically around −$27 per game in Canfield's original casino, which is why it was so profitable for the house.",
+        ],
+      },
+    ],
+  },
+
+  {
+    slug: "how-to-win-canfield-solitaire",
+    game: "canfield",
+    title: "How to Win at Canfield Solitaire (and Why Most Games End Early)",
+    description:
+      "Canfield Solitaire strategy — working with the reserve pile, using waste cycling, and recognizing the deal conditions that give you a realistic chance of winning.",
+    intro:
+      "Canfield is one of solitaire's hardest variants, with a full-clear win rate under 5%. Playing it well is less about achieving perfection and more about maximizing cards played before the game locks — and recognizing the rare deal that's actually clearable.",
+    sections: [
+      {
+        heading: "Manage the Reserve as Your Primary Resource",
+        body: [
+          "The reserve's top card is always available. Before drawing from the stock, check whether the reserve top card can play to the tableau or foundations. Reserve cards are precious because empty columns refill from the reserve automatically — the faster you clear the reserve, the sooner you'll have real empty-column flexibility.",
+          "Aim to play reserve cards to foundations whenever possible, even if tableau moves are also available. Every reserve card on a foundation removes it from the mandatory refill rotation.",
+        ],
+      },
+      {
+        heading: "Foundation Rank Awareness",
+        body: [
+          "The wrapping foundation is the most cognitively demanding part of Canfield. Before moving a card, confirm its suit-sequence position relative to the base rank. A simple mental model: count up from the base rank, and if you pass King, wrap to Ace. If the base is 8, the sequence is 8–9–10–J–Q–K–A–2–3–4–5–6–7.",
+          "Focus on getting all four base-rank cards to foundations first. Until all four foundations are started, you can't build any suit further, and the tableau quickly becomes a storage problem.",
+        ],
+      },
+      {
+        heading: "Stock Cycling",
+        body: [
+          "The stock cycles infinitely, which sounds generous but is misleading — the same three-card grouping rotates every time, so a card that isn't reachable this pass isn't reachable next pass either unless something else changes first. Make a tableau or foundation move between stock cycles whenever possible to shift the cycling order.",
+        ],
+      },
+      {
+        heading: "Recognizing a Good Deal",
+        body: [
+          "A good Canfield deal has the base rank's cards distributed across different columns and not buried deep in the reserve. If two or three base-rank cards are visible immediately, the game is likely playable. If all three remaining base-rank cards are deep in the reserve, winning is nearly impossible regardless of play quality.",
+        ],
+      },
+    ],
+  },
+
+  // ─── Addiction ─────────────────────────────────────────────────────────────
+
+  {
+    slug: "addiction-solitaire-rules",
+    game: "addiction",
+    title: "Addiction Solitaire Rules Explained",
+    description:
+      "How Addiction Solitaire works — the four-row grid, moving cards next to matching suits, what the empty spaces do, and how reshuffles work.",
+    intro:
+      "Addiction Solitaire is unlike any other solitaire game. There are no foundations, no stock, and no tableau sequences. Instead, a 4×13 grid of cards must be sorted into four complete suit rows — purely by sliding cards into empty spaces. It's part solitaire, part sliding puzzle, and wholly addictive.",
+    sections: [
+      {
+        heading: "The Setup",
+        body: [
+          "A standard 52-card deck is dealt face-up into a 4×13 grid. The four Aces are then removed, creating four empty spaces. Each row should ultimately contain one complete suit from 2 through King, with the 2 at the far left of the row.",
+        ],
+      },
+      {
+        heading: "How Moves Work",
+        body: [
+          "A card can move into an empty space if the card immediately to the left of that space is the same suit and one rank lower. So a space to the right of the 6♠ can only receive the 7♠. If a space is at the far left of a row (no card to its left), only a 2 of any suit can move there — the row must start with a 2.",
+          "Kings can never move — a space to the right of a King is permanently blocked. This is why Kings are considered the hardest obstacle in the game.",
+        ],
+      },
+      {
+        heading: "Reshuffles",
+        body: [
+          "When no legal moves remain, you can reshuffle. All cards that are not correctly sequenced (i.e., not in the right position in a correct suit run starting from a 2) are gathered and reshuffled randomly back into the empty positions. The correctly-placed cards stay where they are. You typically get three reshuffles per game.",
+          "Win rate for Addiction with optimal play and three reshuffles is roughly 30–45%. The game's difficulty is highly variable depending on how reshuffles distribute problem cards.",
+        ],
+      },
+      {
+        heading: "Winning",
+        body: [
+          "You win when all four rows each contain a complete in-suit run from 2 to King. The order of rows (which suit is on which row) doesn't matter — only the internal ordering within each row counts.",
+        ],
+      },
+    ],
+  },
+
+  {
+    slug: "addiction-solitaire-strategy",
+    game: "addiction",
+    title: "Addiction Solitaire Strategy: Managing Reshuffles",
+    description:
+      "Addiction Solitaire strategy — how to sequence moves to lock in as many cards as possible before reshuffling, how to handle Kings, and how to read the board for optimal play.",
+    intro:
+      "Addiction rewards systematic play. Because moves are constrained — a card goes left of exactly the card one rank above it, same suit — there's rarely ambiguity about the best move. The real skill is sequencing moves to lock in runs and avoid King-block situations before reshuffles.",
+    sections: [
+      {
+        heading: "Build Complete Runs Before Moving On",
+        body: [
+          "Each correctly-placed card is safe across reshuffles. Your goal in each phase of play is to lock in as many consecutive cards as possible before you run out of moves. Don't move a 4 into position unless you can also immediately position the 5 and 6 behind it — partial runs can get broken up in a reshuffle if the rest of the row isn't set.",
+          "Start with whichever suit has its 2 most accessible and build that row as far as possible. Then repeat for the other suits.",
+        ],
+      },
+      {
+        heading: "King Awareness",
+        body: [
+          "Kings permanently block the space to their right. If a King appears in the middle or left of a row early in the game, it will likely eat up a space and force incomplete rows. Before placing a 2 in a row, check whether a King is positioned downstream — if so, that suit's row will eventually be blocked, and you may want to prioritize a different suit.",
+          "Cards to the left of a King can still be sequenced up to the King, which is partial progress. A row that ends ...J–Q–K with three spaces beyond the King is essentially dead beyond Q.",
+        ],
+      },
+      {
+        heading: "Choosing Which Cards to Move",
+        body: [
+          "When multiple moves are available, prefer moves that: (1) continue or extend an existing correct sequence, (2) open up a space that unblocks another sequence, or (3) place a 2 into an open left-edge space. Avoid moves that deposit a card in a position it will need to leave in the near future — remember, once a card is placed, only a reshuffle or another empty-space move can displace it.",
+        ],
+      },
+      {
+        heading: "Reshuffle Timing",
+        body: [
+          "Don't trigger a reshuffle the moment you run out of moves. Make sure every possible move has been made first — sometimes a chain of moves unlocks that isn't obvious until you've moved two or three pieces. Reshuffles are limited, and each one may undo progress if the cards you've locked in are few. Aim to have at least 8–10 cards correctly locked before triggering a reshuffle.",
+        ],
+      },
+    ],
+  },
+
+  // ─── Baker's Dozen ─────────────────────────────────────────────────────────
+
+  {
+    slug: "bakers-dozen-solitaire-rules",
+    game: "bakersdozen",
+    title: "Baker's Dozen Solitaire Rules & Setup",
+    description:
+      "How Baker's Dozen Solitaire works — the 13-column layout, the Kings-to-bottom rule, single-card moves, and why this fully visible game is still challenging.",
+    intro:
+      "Baker's Dozen is an unusually transparent solitaire variant: all 52 cards are dealt face-up at the start, and there is no stock or waste pile. Every card is visible, every move is knowable in advance — and yet the game is difficult because the one-card-at-a-time constraint and same-suit building create formidable organization problems.",
+    sections: [
+      {
+        heading: "The Setup",
+        body: [
+          "A 52-card deck is dealt face-up into 13 tableau columns of four cards each. Before play begins, any Kings are moved to the bottom of their column automatically — Kings cannot sit on top of other cards at the start. Four foundation piles are built up by suit from Ace to King.",
+        ],
+      },
+      {
+        heading: "Movement Rules",
+        body: [
+          "Only the top card of each column is movable, and only one card at a time. A card can move to a tableau column if it is exactly one rank lower than the current top card of that column — but there is no color or suit restriction for tableau building. Any 6 can sit on any 7.",
+          "Any card can move to an empty column. Cards move to foundations in the usual ascending-by-suit order.",
+        ],
+      },
+      {
+        heading: "Why Baker's Dozen Is Hard",
+        body: [
+          "With no suit restriction for tableau moves, Baker's Dozen sounds easy. The difficulty is entirely about Kings. Kings can only be moved to empty columns — they cannot be placed on any tableau card because no rank is higher than King. A King in the middle of a column can only be freed by clearing all cards above it, and once freed, it needs an empty column to go to.",
+          "Win rates are approximately 70–80% with good play. Most lost games come down to two or three Kings blocking critical paths with no empty columns available.",
+        ],
+      },
+      {
+        heading: "Foundation Strategy",
+        body: [
+          "With all cards visible, Baker's Dozen is almost a pure planning exercise. Before making your first move, scan for Aces and their paths to foundations. Cards that block Aces are the first priority. Work systematically by suit — clear one suit's path to foundation before cluttering other columns.",
+        ],
+      },
+    ],
+  },
+
+  {
+    slug: "bakers-dozen-strategy-guide",
+    game: "bakersdozen",
+    title: "Baker's Dozen Strategy: Planning Every Move in a Fully Visible Game",
+    description:
+      "Baker's Dozen Solitaire strategy — how to plan ahead in a fully visible game, manage Kings without empty columns, and find the move order that clears the most foundations.",
+    intro:
+      "Baker's Dozen is one of the most 'pure' solitaire puzzles: no luck after the deal, all information visible, single-card moves. The game is entirely about finding the correct sequence of moves, which makes it closer to a logic puzzle than a card game.",
+    sections: [
+      {
+        heading: "Read the Board Before Moving",
+        body: [
+          "Because all 52 cards are visible, there's no reason to make an uninformed move. Before touching a card, trace the path for each Ace to its foundation and note which cards are blocking each path. The game is essentially asking: what is the optimal order to free these paths?",
+          "A useful first scan: identify the four Aces and count how many cards are above each one. The Ace with the fewest blockers is your first priority. Then trace: what must move for each blocker to move?",
+        ],
+      },
+      {
+        heading: "King Management",
+        body: [
+          "Kings are immovable obstacles until an empty column appears. Proactively identify Kings that are buried mid-column and assess how many moves it would take to free them. If freeing a King requires emptying an entire column, ask whether you need that empty column for the King or for something more urgent.",
+          "When you do create an empty column, decide immediately what you're using it for before placing anything there — empty columns are rare and should never be filled without a specific plan.",
+        ],
+      },
+      {
+        heading: "Rank-Only Sequencing Traps",
+        body: [
+          "Since tableau building ignores suit, you might place a 6♣ on a 7♦ only to need that 7♦ for a 8♥–7♦–6♦ foundation sequence later. The lack of suit restriction is deceptive — it gives you more legal moves but can create situations where a card is in the right rank position but the wrong suit context.",
+          "When building tableau sequences, loosely prefer to keep same-suit cards together anyway. It's not required, but it reduces the chance of creating suit conflicts that are hard to untangle.",
+        ],
+      },
+      {
+        heading: "When to Create Empty Columns",
+        body: [
+          "An empty column in Baker's Dozen is only useful for housing a single card. Create one specifically when: (1) you need to park a King, (2) you need to temporarily extract a card from the middle of a sequence, or (3) you're two moves away from clearing a foundation Ace and one card is in the way. Don't create empty columns just to have flexibility — King management is the only legitimate reason to fight for one.",
+        ],
+      },
+    ],
+  },
+
+  // ─── Baker's Game ──────────────────────────────────────────────────────────
+
+  {
+    slug: "bakers-game-rules",
+    game: "bakersgame",
+    title: "Baker's Game Rules: FreeCell's Harder Older Cousin",
+    description:
+      "How Baker's Game differs from FreeCell, the same-suit building rule that makes it significantly harder, and the complete rules for play.",
+    intro:
+      "Baker's Game is the direct ancestor of FreeCell. It is played identically, except that tableau columns are built by same suit rather than alternating color. That one word — 'same' instead of 'alternating' — roughly doubles the difficulty and produces a game that rewards deep planning over intuition.",
+    sections: [
+      {
+        heading: "The Setup",
+        body: [
+          "A standard 52-card deck is dealt face-up into eight tableau columns. Columns 1–4 receive seven cards; columns 5–8 receive six cards. Four free cells sit above the tableau, each holding at most one card. Four foundation piles are built up by suit from Ace to King.",
+        ],
+      },
+      {
+        heading: "Movement Rules",
+        body: [
+          "Only the top card of each tableau column is movable. A card moves to the tableau if it is one rank lower and the same suit as the column's top card. Any card can be placed in an empty free cell. Any card can be placed in an empty column.",
+          "As in FreeCell, 'supermoves' — moving a group of sequenced cards — are technically a shorthand for a series of individual card moves via free cells and empty columns. The number of cards in a group you can effectively move equals (free cells + 1) × 2^(empty columns).",
+        ],
+      },
+      {
+        heading: "Baker's Game vs. FreeCell",
+        body: [
+          "FreeCell's alternating-color rule means each card has two possible tableau destinations (e.g., a 7 can go on either a black 8 or a red 8). Baker's Game's same-suit rule means each card has at most one tableau destination (a 7♥ can only go on the 8♥). This restriction dramatically reduces your options and means many deals require precise, non-obvious move sequences to solve.",
+          "Approximately 75–80% of Baker's Game deals are solvable (versus over 99% for FreeCell). Unsolvable deals are more common and less obvious — you may play a significant portion of the game before realizing the position is lost.",
+        ],
+      },
+      {
+        heading: "Foundation Approach",
+        body: [
+          "Because same-suit tableau building aligns with foundation-building, partially-built tableau sequences are essentially partial foundations. Moving cards to actual foundation piles frees space and simplifies the game. Be aggressive about foundation moves whenever a card is ready.",
+        ],
+      },
+    ],
+  },
+
+  {
+    slug: "bakers-game-strategy",
+    game: "bakersgame",
+    title: "Baker's Game Strategy: In-Suit Building and Free Cell Discipline",
+    description:
+      "Strategy guide for Baker's Game — how to build same-suit sequences, use free cells sparingly, and navigate a game that punishes FreeCell habits.",
+    intro:
+      "Players coming to Baker's Game from FreeCell often find their intuitions backfire. The same-suit restriction means many standard FreeCell patterns don't apply, and free cells that felt abundant in FreeCell become precious in Baker's Game.",
+    sections: [
+      {
+        heading: "Think in Suits, Not Colors",
+        body: [
+          "The core mental shift from FreeCell: instead of thinking 'I need a black 7', think 'I need the 7 of Hearts' (or whichever suit). Each card has exactly one legal destination in the tableau. Before any move, ask whether that destination exists and whether the destination card is reachable.",
+          "This makes Baker's Game more like solving four simultaneous same-suit sorting puzzles. Mentally track each suit's current state: what's on its foundation, what's accessible in the tableau, and what's buried.",
+        ],
+      },
+      {
+        heading: "Free Cells Are Scarce",
+        body: [
+          "With only four free cells and same-suit restrictions limiting tableau placements, free cells fill up fast. The 'park one, move one' pattern that works in FreeCell often leads to all four cells occupied in Baker's Game before you've made meaningful progress.",
+          "Apply a stricter rule: only place a card in a free cell if you know specifically how it returns to the tableau within the next three to four moves. Avoid using free cells as general-purpose parking — use them as part of explicit, planned sequences.",
+        ],
+      },
+      {
+        heading: "Empty Columns as Move Multipliers",
+        body: [
+          "Empty columns are more valuable in Baker's Game than in FreeCell because they compensate for the tighter same-suit restriction. Each empty column effectively doubles your ability to move sequences. Work to create empty columns early by focusing on short columns and funneling their cards toward foundations.",
+        ],
+      },
+      {
+        heading: "Recognizing Unsolvable Positions",
+        body: [
+          "Baker's Game has a meaningfully higher rate of unsolvable deals than FreeCell. Signs of an unsolvable position: two or more suits with their foundation-needed cards both buried beneath cards of the same suit with no free cells available. If you see this pattern early, restarting may be more productive than prolonged struggle with a deal the solver can't break.",
+        ],
+      },
+    ],
+  },
+
+  // ─── Clock ─────────────────────────────────────────────────────────────────
+
+  {
+    slug: "clock-solitaire-rules-and-odds",
+    game: "clock",
+    title: "Clock Solitaire Rules & Odds of Winning",
+    description:
+      "The complete rules of Clock Solitaire — how to set up the clock face, how cards are moved, and the exact mathematical probability of winning this purely luck-based game.",
+    intro:
+      "Clock Solitaire is the only major solitaire variant with no decisions whatsoever. Every move is forced, the outcome depends entirely on the initial shuffle, and the exact probability of winning is mathematically known. It is pure solitaire in the literal sense — you play alone, against nothing but the deck.",
+    sections: [
+      {
+        heading: "The Setup",
+        body: [
+          "Fifty-two cards are dealt face-down into 13 piles arranged like a clock face: 12 piles of four cards in a circle (representing 1 through Queen) and one pile of four cards in the center (representing King). The position of each pile corresponds to its rank — the 1 o'clock pile is Aces, the 2 o'clock pile is 2s, and so on, with Kings in the center.",
+        ],
+      },
+      {
+        heading: "How to Play",
+        body: [
+          "Turn over the top card of the King pile (center). Slide it face-up under the pile at its corresponding clock position — a 7 goes face-up under the 7 o'clock pile. Then turn over the top card of that pile and repeat. If a card arrives at the pile of its matching rank and turns up all four cards there, the pile is 'complete' and you move to the top of whatever pile you came from next.",
+          "Every move is automatic — you never make a choice. Just follow the card to its clock position, place it, and flip the next card.",
+        ],
+      },
+      {
+        heading: "Winning and Losing",
+        body: [
+          "You win if all 52 cards end up face-up in their correct piles before the fourth King is turned face-up. The fourth King is what ends the game — the moment it's revealed, play stops. If any card in any pile remains face-down, you lose.",
+          "The game is won when all 12 numbered piles complete before the fourth King surfaces. This requires the fourth King to be the very last card turned — i.e., the bottom card of the King pile at the center of the clock.",
+        ],
+      },
+      {
+        heading: "The Exact Probability",
+        body: [
+          "The probability of winning Clock Solitaire is exactly 1 in 13 — approximately 7.7%. This is a mathematically proven result, not an estimate. Since there are no choices to make, the win probability cannot be improved by any strategy. You win precisely when the fourth King happens to be the last card in the deck under the shuffle.",
+          "Clock is best understood as a ritual rather than a game: it's satisfying to play through, interesting to observe, and a clean illustration of how dramatically win rates vary across solitaire variants. Its complete lack of agency makes it a useful baseline for appreciating the skill components in every other variant.",
+        ],
+      },
+    ],
+  },
+
+  {
+    slug: "clock-solitaire-guide",
+    game: "clock",
+    title: "Clock Solitaire: The One Solitaire Game With No Strategy",
+    description:
+      "An exploration of Clock Solitaire — why it has no strategy, what makes it compelling despite that, and how it compares to every other solitaire variant in terms of player agency.",
+    intro:
+      "Clock Solitaire is worth understanding precisely because it eliminates the variable that defines every other solitaire: player skill. With no choices to make, Clock isolates the luck component of card games and makes it visible. Playing Clock is a reminder of how much agency other solitaire variants actually give you.",
+    sections: [
+      {
+        heading: "Why There Is No Strategy",
+        body: [
+          "Every move in Clock is entirely determined by the face-up card you just placed. There is no point at which you choose which card to move, where to move it, or whether to move it. The game plays itself — you are the mechanism, not the player.",
+          "This is unusual among solitaire variants. Even Canfield, which has a very low win rate, gives players dozens of meaningful decisions per game. Clock gives you zero. The outcome is fixed the moment the deck is shuffled.",
+        ],
+      },
+      {
+        heading: "What Clock Is Good For",
+        body: [
+          "Clock is excellent for younger players learning about card values and the structure of a deck — the clock face reinforces rank from Ace through King, and the mechanical gameplay keeps attention without overwhelming decision-making.",
+          "For experienced solitaire players, Clock is a palette cleanser and a probability demonstration. After a frustrating run of lost Canfield or Forty Thieves games, a few rounds of Clock reminds you that some solitaire losses really are entirely the deck's fault.",
+        ],
+      },
+      {
+        heading: "Comparing Agency Across Solitaire Variants",
+        body: [
+          "At one extreme is Clock: 0% player agency, 7.7% win rate, all luck. At the other extreme is FreeCell: over 99% of deals are solvable, and a knowledgeable player can win almost every game — the limiting factor is player skill, not luck.",
+          "Most variants fall between these poles. Klondike Draw 1 is roughly 43% with good human play versus 82% theoretical maximum — so roughly half the 'lost' games are skill deficits. Forty Thieves is so hard that even optimal play only wins 5–10% of games. Understanding where a game falls on the luck-skill spectrum helps set appropriate expectations for win rates.",
+        ],
+      },
+      {
+        heading: "Variants That Add Decisions",
+        body: [
+          "Some Clock variants add a small strategic element: instead of always going to the center King pile at the start, you may choose which pile to start from. This introduces one decision point per game, marginally improving win probability for informed choices. The improvement is modest — Clock's core mechanism is deterministic regardless — but it transforms the game from purely mechanical to 'almost a game.'",
+        ],
+      },
+    ],
+  },
+
 ];
 
 export const GUIDE_GAMES: { tag: GameTag; label: string; emoji: string; path: string }[] = [
-  { tag: "klondike",  label: "Klondike",  emoji: "🃏", path: "/klondike"  },
-  { tag: "spider",    label: "Spider",    emoji: "🕷️", path: "/spider"    },
-  { tag: "freecell",  label: "FreeCell",  emoji: "🔲", path: "/freecell"  },
-  { tag: "pyramid",   label: "Pyramid",   emoji: "🔺", path: "/pyramid"   },
-  { tag: "tripeaks",  label: "TriPeaks",  emoji: "⛰️", path: "/tripeaks"  },
-  { tag: "mahjong",   label: "Mahjong",   emoji: "🀄", path: "/mahjong"   },
-  { tag: "general",   label: "All Games", emoji: "🎴", path: "/"          },
+  { tag: "klondike",     label: "Klondike",      emoji: "🃏", path: "/klondike"      },
+  { tag: "spider",       label: "Spider",        emoji: "🕷️", path: "/spider"        },
+  { tag: "freecell",     label: "FreeCell",      emoji: "🔲", path: "/freecell"      },
+  { tag: "pyramid",      label: "Pyramid",       emoji: "🔺", path: "/pyramid"       },
+  { tag: "tripeaks",     label: "TriPeaks",      emoji: "⛰️", path: "/tripeaks"      },
+  { tag: "mahjong",      label: "Mahjong",       emoji: "🀄", path: "/mahjong"       },
+  { tag: "golf",         label: "Golf",          emoji: "⛳", path: "/golf"          },
+  { tag: "fortythieves", label: "Forty Thieves", emoji: "🎴", path: "/forty-thieves" },
+  { tag: "yukon",        label: "Yukon",         emoji: "🏔️", path: "/yukon"         },
+  { tag: "scorpion",     label: "Scorpion",      emoji: "🦂", path: "/scorpion"      },
+  { tag: "eightoff",     label: "Eight Off",     emoji: "8️⃣", path: "/eight-off"     },
+  { tag: "canfield",     label: "Canfield",      emoji: "🎰", path: "/canfield"      },
+  { tag: "addiction",    label: "Addiction",     emoji: "🧩", path: "/addiction"     },
+  { tag: "bakersdozen",  label: "Baker's Dozen", emoji: "🍞", path: "/bakers-dozen"  },
+  { tag: "bakersgame",   label: "Baker's Game",  emoji: "♠️", path: "/bakers-game"   },
+  { tag: "clock",        label: "Clock",         emoji: "🕐", path: "/clock"         },
+  { tag: "general",      label: "All Games",     emoji: "🎲", path: "/klondike"      },
 ];
