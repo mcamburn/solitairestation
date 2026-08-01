@@ -774,7 +774,7 @@ function TableauColumn({
         <div
           key={c.id}
           className={`absolute left-0 right-0 card-slot-container${isTopCard ? " ring-2 ring-[var(--neon)] ring-offset-1 ring-offset-background rounded-[var(--card-radius)]" : ""}`}
-          style={{ top: offsets[i], height: cardH, opacity: isDragging(i) ? 0.4 : 1, transition: "opacity 0.1s", ...(isTopCard ? { boxShadow: "0 0 20px -2px var(--neon)" } : {}) }}
+          style={{ top: offsets[i], height: cardH, opacity: isDragging(i) ? 0.4 : 1, transition: "opacity 0.1s", ...(isTopCard ? { boxShadow: "0 0 20px -2px var(--neon)" } : {}), ...(dragMode && c.faceUp ? { touchAction: "none" } : {}) }}
         >
           <PlayingCard
             card={c}

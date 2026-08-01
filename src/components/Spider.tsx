@@ -514,6 +514,7 @@ function SpiderColumn({
               opacity: isDraggingFrom(i) ? 0.4 : 1,
               transition: "opacity 0.1s",
               ...(isTopCard ? { boxShadow: "0 0 20px -2px var(--neon)" } : {}),
+              ...(dragMode && c.faceUp ? { touchAction: "none" } : {}),
             }}
           >
             <PlayingCard
