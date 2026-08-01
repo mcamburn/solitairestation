@@ -20,20 +20,25 @@ interface Props {
   children: React.ReactNode;
 }
 
+const VERT_DIVIDER = (
+  <div
+    className="self-stretch w-px shrink-0"
+    style={{ background: "color-mix(in oklab, white 10%, transparent)" }}
+  />
+);
+
 export function GamePageLayout({ gameKey, badge, title, tagline, rulesIntro, rules, children }: Props) {
   const navBarRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const el = navBarRef.current;
     if (!el) return;
-
     const observer = new ResizeObserver((entries) => {
       const height = entries[0]?.borderBoxSize?.[0]?.blockSize ?? entries[0]?.contentRect.height;
       if (height != null) {
         document.documentElement.style.setProperty("--sticky-nav-height", `${height}px`);
       }
     });
-
     observer.observe(el);
     return () => observer.disconnect();
   }, []);
@@ -41,7 +46,8 @@ export function GamePageLayout({ gameKey, badge, title, tagline, rulesIntro, rul
   return (
     <DailyChallengeProvider gameKey={gameKey}>
       <main className="game-page-main min-h-screen w-full py-6 sm:py-10 xl:py-14">
-        {/* Game switcher — sticky bar */}
+
+        {/* ── Sticky nav bar ─────────────────────────────────────────────── */}
         <div
           ref={navBarRef}
           className="game-nav-wrap sticky top-0 z-50 mb-4"
@@ -52,22 +58,30 @@ export function GamePageLayout({ gameKey, badge, title, tagline, rulesIntro, rul
           }}
         >
           <div className="relative mx-auto max-w-[900px] xl:max-w-[1200px] md:px-4 md:py-2">
-            {/* Desktop: logo left + switcher right */}
-            <div className="hidden md:flex items-center gap-4">
+
+            {/* Desktop: [Logo] | [GameSwitcher] | [stats inline] */}
+            <div className="hidden md:flex items-center gap-3">
               <SolitaireStationLogo variant="full" className="shrink-0" />
-              <div className="w-px self-stretch" style={{ background: "color-mix(in oklab, white 10%, transparent)" }} />
-              <div className="flex-1">
+              {VERT_DIVIDER}
+              <div className="flex-1 min-w-0">
                 <GameSwitcher />
               </div>
+              {VERT_DIVIDER}
+              <GameStatsBar gameKey={gameKey} variant="inline" />
             </div>
-            {/* Mobile: switcher only */}
-            <div className="md:hidden">
+
+            {/* Mobile: [GameSwitcher] then [stats row] */}
+            <div className="md:hidden flex flex-col gap-1 py-1">
               <GameSwitcher />
+              <div className="flex items-center gap-2 px-2 pb-1">
+                <GameStatsBar gameKey={gameKey} variant="inline" />
+              </div>
             </div>
+
           </div>
         </div>
 
-        {/* Hero */}
+        {/* ── Hero ───────────────────────────────────────────────────────── */}
         <header className="game-hero mx-auto mb-6 xl:mb-10 max-w-[900px] xl:max-w-[1200px] px-4 text-center">
           <div className="md:hidden flex justify-center mb-4">
             <SolitaireStationLogo variant="full" />
@@ -88,13 +102,16 @@ export function GamePageLayout({ gameKey, badge, title, tagline, rulesIntro, rul
           <p className="mx-auto mt-3 max-w-md text-sm text-muted-foreground">{tagline}</p>
         </header>
 
-        {/* Stats bar + game board */}
-        <section id="game-board" className="mx-auto max-w-[900px] xl:max-w-[1200px] px-4" style={{ scrollMarginTop: "var(--sticky-nav-height)" }}>
-          <GameStatsBar gameKey={gameKey} />
+        {/* ── Game board ─────────────────────────────────────────────────── */}
+        <section
+          id="game-board"
+          className="mx-auto max-w-[900px] xl:max-w-[1200px] px-4"
+          style={{ scrollMarginTop: "var(--sticky-nav-height)" }}
+        >
           {children}
         </section>
 
-        {/* Rules */}
+        {/* ── Rules ──────────────────────────────────────────────────────── */}
         <section
           id="how-to-play"
           className="mx-auto mt-12 max-w-[900px] xl:max-w-[1200px] px-4"
@@ -119,10 +136,11 @@ export function GamePageLayout({ gameKey, badge, title, tagline, rulesIntro, rul
           </div>
         </section>
 
-        {/* Footer */}
+        {/* ── Footer ─────────────────────────────────────────────────────── */}
         <div className="mx-auto max-w-[900px] xl:max-w-[1200px] px-4">
           <SiteFooter />
         </div>
+
       </main>
     </DailyChallengeProvider>
   );
