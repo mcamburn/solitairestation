@@ -852,9 +852,10 @@ function WinOverlay({ onNew, moves, time, mode, score }: {
   const modeLabel = MODE_LABELS.find(m => m.value === mode)?.label ?? "Klondike";
   const [celebrating, setCelebrating] = useState(true);
   const [copied, setCopied] = useState(false);
-  const { justWonDailyStreak, clearDailyWin } = useDailyChallenge();
+  const { justWonDailyStreak, clearDailyWin, activateDaily } = useDailyChallenge();
 
   const handleNew = () => { clearDailyWin(); onNew(); };
+  const handleReplayDaily = () => { activateDaily(); };
 
   const isDaily = justWonDailyStreak !== null;
   const today = new Date().toISOString().slice(0, 10);
@@ -896,13 +897,22 @@ function WinOverlay({ onNew, moves, time, mode, score }: {
         )}
         {isDaily && <p className="mt-2 text-xs text-muted-foreground">{modeLabel} · {time} · {moves} moves{mode === "vegas" ? ` · ${score}` : ""}</p>}
         {isDaily ? (
-          <div className="mt-5 flex flex-col gap-2 sm:flex-row sm:justify-center">
-            <button onClick={handleCopy} className="rounded-xl px-4 py-2.5 text-sm font-semibold transition hover:opacity-90"
-              style={{ background: copied ? "linear-gradient(135deg, var(--neon), var(--neon-2))" : "color-mix(in srgb, var(--neon-2) 20%, transparent)", border: "1px solid color-mix(in srgb, var(--neon-2) 50%, transparent)", color: copied ? "var(--primary-foreground)" : "var(--neon-2)" }}>
-              {copied ? "✓ Copied!" : "📋 Share Result"}
-            </button>
-            <button onClick={handleNew} className="rounded-xl px-4 py-2.5 text-sm font-semibold text-primary-foreground" style={{ background: "linear-gradient(135deg, var(--neon), var(--neon-2))" }}>Play again</button>
-          </div>
+          <>
+            <div className="mt-5 flex flex-col gap-2 sm:flex-row sm:justify-center">
+              <button onClick={handleCopy} className="rounded-xl px-4 py-2.5 text-sm font-semibold transition hover:opacity-90"
+                style={{ background: copied ? "linear-gradient(135deg, var(--neon), var(--neon-2))" : "color-mix(in srgb, var(--neon-2) 20%, transparent)", border: "1px solid color-mix(in srgb, var(--neon-2) 50%, transparent)", color: copied ? "var(--primary-foreground)" : "var(--neon-2)" }}>
+                {copied ? "✓ Copied!" : "📋 Share Result"}
+              </button>
+              <button onClick={handleNew} className="rounded-xl px-4 py-2.5 text-sm font-semibold text-primary-foreground" style={{ background: "linear-gradient(135deg, var(--neon), var(--neon-2))" }}>Play again</button>
+            </div>
+            <div className="mt-3">
+              <button onClick={handleReplayDaily} className="rounded-xl px-5 py-2 text-sm font-medium transition hover:opacity-80"
+                style={{ background: "color-mix(in srgb, var(--foreground) 8%, transparent)", border: "1px solid color-mix(in srgb, var(--foreground) 20%, transparent)", color: "var(--muted-foreground)" }}>
+                🔁 Replay Today's Deal
+              </button>
+              <p className="mt-1 text-xs text-muted-foreground opacity-70">Practice only — won't affect your streak</p>
+            </div>
+          </>
         ) : (
           <button onClick={handleNew} className="mt-6 w-full rounded-xl px-4 py-2.5 text-sm font-semibold text-primary-foreground" style={{ background: "linear-gradient(135deg, var(--neon), var(--neon-2))" }}>Play again</button>
         )}

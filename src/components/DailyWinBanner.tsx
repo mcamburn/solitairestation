@@ -19,13 +19,18 @@ interface DailyWinBannerProps {
  * standard WinBanner UI for regular wins and for stuck/no-moves states.
  */
 export function DailyWinBanner({ message, onNew, variant = "win", stats }: DailyWinBannerProps) {
-  const { justWonDailyStreak, clearDailyWin } = useDailyChallenge();
+  const { justWonDailyStreak, clearDailyWin, activateDaily } = useDailyChallenge();
   const [celebrating, setCelebrating] = useState(true);
   const [copied, setCopied] = useState(false);
 
   const handleNew = () => {
     clearDailyWin();
     onNew();
+  };
+
+  const handleReplayDaily = () => {
+    // Re-deal today's seed without affecting the streak
+    activateDaily();
   };
 
   const isStuck = variant === "stuck";
@@ -197,6 +202,24 @@ export function DailyWinBanner({ message, onNew, variant = "win", stats }: Daily
           >
             Play Again
           </button>
+        </div>
+
+        {/* Replay daily — practice only, no streak effect */}
+        <div className="mt-3">
+          <button
+            onClick={handleReplayDaily}
+            className="rounded-xl px-5 py-2 text-sm font-medium transition hover:opacity-80"
+            style={{
+              background: "color-mix(in srgb, var(--foreground) 8%, transparent)",
+              border: "1px solid color-mix(in srgb, var(--foreground) 20%, transparent)",
+              color: "var(--muted-foreground)",
+            }}
+          >
+            🔁 Replay Today's Deal
+          </button>
+          <p className="mt-1 text-xs text-muted-foreground opacity-70">
+            Practice only — won't affect your streak
+          </p>
         </div>
       </div>
     </>
