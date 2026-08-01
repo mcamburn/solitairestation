@@ -62,6 +62,7 @@ export function Spider({ initialDifficulty }: { initialDifficulty?: SpiderDiffic
   const statsRef = useRef(false);
   const [gameStats, setGameStats] = useState<GameStats | null>(null);
   const dailyModeRef = useRef(false);
+  const dailyResetRef = useRef<(() => void) | null>(null);
   const { dailySeed, dailyTrigger, onDailyWin } = useDailyChallenge();
 
   // ── Drag state ────────────────────────────────────────────────────────────
@@ -108,7 +109,7 @@ export function Spider({ initialDifficulty }: { initialDifficulty?: SpiderDiffic
     if (dailyTrigger === 0) return;
     dailyModeRef.current = true;
     statsRef.current = false;
-    reset(difficulty, dailySeed);
+    dailyResetRef.current?.();
   }, [dailyTrigger]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
@@ -228,6 +229,7 @@ export function Spider({ initialDifficulty }: { initialDifficulty?: SpiderDiffic
     setState(newSpiderGame(diff, seed));
     showToast();
   };
+  dailyResetRef.current = () => reset(difficulty, dailySeed);
 
   const showHint = () => {
     const h = findSpiderHint(game);

@@ -76,6 +76,7 @@ export function Solitaire({ initialMode }: { initialMode?: KlondikeMode } = {}) 
   const statsRef = useRef(false);
   const [gameStats, setGameStats] = useState<GameStats | null>(null);
   const dailyModeRef = useRef(false);
+  const dailyResetRef = useRef<(() => void) | null>(null);
   const { dailySeed, dailyTrigger, onDailyWin } = useDailyChallenge();
 
   // Shared drag-mode preference
@@ -154,7 +155,7 @@ export function Solitaire({ initialMode }: { initialMode?: KlondikeMode } = {}) 
     if (dailyTrigger === 0) return;
     dailyModeRef.current = true;
     statsRef.current = false;
-    resetWithSeed(mode, dailySeed);
+    dailyResetRef.current?.();
   }, [dailyTrigger]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
@@ -263,6 +264,8 @@ export function Solitaire({ initialMode }: { initialMode?: KlondikeMode } = {}) 
   };
 
   const reset = (m: KlondikeMode = mode) => resetWithSeed(m, undefined);
+  // Keep ref current so the dailyTrigger effect always calls the latest resetWithSeed
+  dailyResetRef.current = () => resetWithSeed(mode, dailySeed);
 
   const handleModeChange = (m: KlondikeMode) => {
     setMode(m);

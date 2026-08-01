@@ -12,7 +12,7 @@
  * automatically after each game without prop drilling.
  */
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { loadStats, getWinRate, type GameStats } from "@/lib/stats";
 import { useDailyChallenge } from "@/contexts/DailyChallengeContext";
 import { StatsModal } from "./StatsModal";
@@ -26,7 +26,20 @@ interface Props {
 export function GameStatsBar({ gameKey, variant = "bar" }: Props) {
   const [stats, setStats] = useState<GameStats>(() => loadStats(gameKey));
   const [modalOpen, setModalOpen] = useState(false);
+  const [justActivated, setJustActivated] = useState(false);
+  const activatedTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const { activateDaily, completedToday, dailyStreak } = useDailyChallenge();
+
+  const handleActivateDaily = () => {
+    activateDaily();
+    setJustActivated(true);
+    if (activatedTimerRef.current) clearTimeout(activatedTimerRef.current);
+    activatedTimerRef.current = setTimeout(() => setJustActivated(false), 2500);
+  };
+
+  useEffect(() => () => {
+    if (activatedTimerRef.current) clearTimeout(activatedTimerRef.current);
+  }, []);
 
   // Refresh stats whenever a game records a win/loss
   useEffect(() => {
@@ -93,10 +106,22 @@ export function GameStatsBar({ gameKey, variant = "bar" }: Props) {
             )}
           </span>
         </div>
+      ) : justActivated ? (
+        <div
+          className="flex items-center gap-1.5 rounded-lg px-2 py-1 text-xs font-semibold shrink-0"
+          style={{
+            background: "color-mix(in oklab, var(--neon) 18%, transparent)",
+            color: "var(--neon)",
+            border: "1px solid color-mix(in oklab, var(--neon) 40%, transparent)",
+          }}
+        >
+          <span>📅</span>
+          <span>Daily Challenge active!</span>
+        </div>
       ) : (
         <button
-          onClick={activateDaily}
-          className="flex items-center gap-1 rounded-lg px-2 py-1 text-xs font-semibold transition-all hover:opacity-90 active:scale-95 shrink-0"
+          onClick={handleActivateDaily}
+          className="flex items-center gap-1.5 rounded-lg px-2 py-1 text-xs font-semibold transition-all hover:opacity-90 active:scale-95 shrink-0"
           style={{
             background: "linear-gradient(135deg, var(--neon), var(--neon-2))",
             color: "oklch(0.14 0.04 155)",
@@ -104,7 +129,7 @@ export function GameStatsBar({ gameKey, variant = "bar" }: Props) {
           title="Play today's daily challenge — same deal for every player"
         >
           <span>📅</span>
-          <span className="hidden sm:inline">Daily</span>
+          <span>Daily Challenge</span>
         </button>
       )}
 

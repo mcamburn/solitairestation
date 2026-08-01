@@ -49,6 +49,7 @@ export function TriPeaks() {
   const [gameStats, setGameStats] = useState<GameStats | null>(null);
   const topBarStats = useGameTopBarStats("tripeaks");
   const dailyModeRef = useRef(false);
+  const dailyResetRef = useRef<(() => void) | null>(null);
   const { dailySeed, dailyTrigger, onDailyWin } = useDailyChallenge();
 
   useEffect(() => {
@@ -75,7 +76,7 @@ export function TriPeaks() {
     if (dailyTrigger === 0) return;
     dailyModeRef.current = true;
     statsRef.current = false;
-    reset(dailySeed);
+    dailyResetRef.current?.();
   }, [dailyTrigger]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
@@ -163,6 +164,7 @@ export function TriPeaks() {
     setState(newTriPeaksGame(seed));
     showToast();
   };
+  dailyResetRef.current = () => reset(dailySeed);
 
   const showHint = () => {
     const h = findTPHint(game);

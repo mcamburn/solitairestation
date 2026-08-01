@@ -69,6 +69,10 @@ export function DailyChallengeProvider({ gameKey, children }: ProviderProps) {
 
   const activateDaily = useCallback(() => {
     setDailyTrigger((t) => t + 1);
+    // Scroll to game board so the player sees the reset
+    if (typeof document !== "undefined") {
+      document.getElementById("game-board")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
   }, []);
 
   const onDailyWin = useCallback(() => {

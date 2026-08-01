@@ -61,6 +61,7 @@ export function FreeCell() {
   const statsRef = useRef(false);
   const [gameStats, setGameStats] = useState<GameStats | null>(null);
   const dailyModeRef = useRef(false);
+  const dailyResetRef = useRef<(() => void) | null>(null);
   const { dailySeed, dailyTrigger, onDailyWin } = useDailyChallenge();
 
   // ── Drag state ────────────────────────────────────────────────────────────
@@ -93,7 +94,7 @@ export function FreeCell() {
     if (dailyTrigger === 0) return;
     dailyModeRef.current = true;
     statsRef.current = false;
-    reset(dailySeed);
+    dailyResetRef.current?.();
   }, [dailyTrigger]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
@@ -208,6 +209,7 @@ export function FreeCell() {
     setState(newFreeCellGame(seed));
     showToast();
   };
+  dailyResetRef.current = () => reset(dailySeed);
 
   const showHint = () => {
     const h = findFreeCellHint(game);

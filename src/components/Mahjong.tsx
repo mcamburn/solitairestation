@@ -37,6 +37,7 @@ export function Mahjong() {
   const statsRef = useRef(false);
   const [gameStats, setGameStats] = useState<GameStats | null>(null);
   const dailyModeRef = useRef(false);
+  const dailyResetRef = useRef<(() => void) | null>(null);
   const { dailySeed, dailyTrigger, onDailyWin } = useDailyChallenge();
 
   useEffect(() => {
@@ -63,7 +64,7 @@ export function Mahjong() {
     if (dailyTrigger === 0) return;
     dailyModeRef.current = true;
     statsRef.current = false;
-    reset(dailySeed);
+    dailyResetRef.current?.();
   }, [dailyTrigger]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
@@ -143,6 +144,7 @@ export function Mahjong() {
     setStuck(false);
     setState(newMahjongGame(seed));
   };
+  dailyResetRef.current = () => reset(dailySeed);
 
   const showHint = () => {
     const h = findMahjongHint(game);
