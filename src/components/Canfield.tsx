@@ -325,12 +325,6 @@ export function Canfield() {
       )}
 
       <AppearanceBar skin={skin} face={face} onSkinChange={setSkin} onFaceChange={setFace} />
-      <DragModeToggle
-        dragMode={dragMode}
-        onToggle={toggleDragMode}
-        dragHint="Drag from waste, reserve, or tableau to a destination"
-        clickHint="Click to select, then click a destination to move. Double-click for foundation."
-      />
       <NewGameToast visible={toastVisible} skin={skin} face={face} />
 
       {/* Game board */}
@@ -507,6 +501,13 @@ export function Canfield() {
       {game.won && (
         <WinBanner message={`Canfield won in ${game.moves} moves!`} onNew={reset} />
       )}
+
+      <DragModeToggle
+        dragMode={dragMode}
+        onToggle={toggleDragMode}
+        dragHint="Drag from waste, reserve, or tableau to a destination"
+        clickHint="Click to select, then click a destination to move. Double-click for foundation."
+      />
 
       <p className="mt-3 text-center text-xs text-muted-foreground">
         {dragMode

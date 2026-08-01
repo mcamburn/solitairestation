@@ -235,12 +235,6 @@ export function BakersDozn() {
       )}
 
       <AppearanceBar skin={skin} face={face} onSkinChange={setSkin} onFaceChange={setFace} />
-      <DragModeToggle
-        dragMode={dragMode}
-        onToggle={toggleDragMode}
-        dragHint="Drag a column's top card to another column or foundation"
-        clickHint="Click a column to select its top card, then click a destination"
-      />
       <NewGameToast visible={toastVisible} skin={skin} face={face} />
 
       {/* Foundations */}
@@ -340,6 +334,13 @@ export function BakersDozn() {
       {game.won && (
         <WinBanner message={`Baker's Dozen solved in ${game.moves} moves!`} onNew={reset} />
       )}
+
+      <DragModeToggle
+        dragMode={dragMode}
+        onToggle={toggleDragMode}
+        dragHint="Drag a column's top card to another column or foundation"
+        clickHint="Click a column to select its top card, then click a destination"
+      />
 
       <p className="mt-3 text-center text-xs text-muted-foreground">
         {dragMode
