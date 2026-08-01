@@ -265,6 +265,46 @@ function StatsPage() {
           </table>
         </div>
 
+        {/* Mobile sort toolbar */}
+        <div className="sm:hidden flex items-center gap-2 mb-3">
+          <label className="sr-only" htmlFor="mobile-sort-select">Sort by</label>
+          <select
+            id="mobile-sort-select"
+            value={sortKey}
+            onChange={(e) => {
+              const key = e.target.value as SortKey;
+              if (key === sortKey) return;
+              setSortKey(key);
+              setSortDir(key === "title" ? "asc" : "desc");
+            }}
+            className="flex-1 rounded-lg px-3 py-2 text-sm font-medium appearance-none cursor-pointer transition"
+            style={{
+              background: "color-mix(in oklab, var(--neon) 6%, oklch(0.16 0.03 155))",
+              border: "1px solid color-mix(in oklab, var(--neon) 18%, transparent)",
+              color: "var(--foreground)",
+            }}
+          >
+            <option value="title">Game (A–Z)</option>
+            <option value="gamesPlayed">Most Played</option>
+            <option value="wins">Most Wins</option>
+            <option value="winRate">Win Rate</option>
+            <option value="bestTime">Best Time</option>
+            <option value="longestStreak">Longest Streak</option>
+          </select>
+          <button
+            aria-label={sortDir === "asc" ? "Sort descending" : "Sort ascending"}
+            onClick={() => setSortDir((d) => (d === "asc" ? "desc" : "asc"))}
+            className="rounded-lg px-3 py-2 text-sm font-semibold transition shrink-0"
+            style={{
+              background: "color-mix(in oklab, var(--neon) 6%, oklch(0.16 0.03 155))",
+              border: "1px solid color-mix(in oklab, var(--neon) 18%, transparent)",
+              color: "var(--neon)",
+            }}
+          >
+            {sortDir === "asc" ? "↑" : "↓"}
+          </button>
+        </div>
+
         {/* Mobile card list */}
         <div className="sm:hidden space-y-3">
           {sorted.map((row) => (
