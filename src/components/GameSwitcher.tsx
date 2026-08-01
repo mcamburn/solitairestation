@@ -70,10 +70,10 @@ export function GameSwitcher() {
         {/* Left: emoji + name + subtitle */}
         <span className="flex items-center gap-3 min-w-0">
           <span className="text-3xl leading-none shrink-0">{active.emoji}</span>
-          <span className="flex flex-col items-start leading-none min-w-0">
-            <span className="text-base font-bold tracking-tight truncate">{active.title}</span>
+          <span className="flex items-baseline gap-2.5 min-w-0">
+            <span className="text-lg font-bold tracking-tight truncate">{active.title}</span>
             <span
-              className="text-xs font-normal mt-1"
+              className="text-sm font-normal shrink-0"
               style={{ color: "color-mix(in oklab, var(--neon) 65%, white)" }}
             >
               {active.subtitle}
