@@ -158,9 +158,9 @@ export function GameSwitcher() {
                     {g.title}
                   </span>
 
-                  {/* Subtitle */}
+                  {/* Description */}
                   <span className="mt-0.5 text-[10px] leading-tight text-muted-foreground">
-                    {g.subtitle}
+                    {g.desc}
                   </span>
 
                   {/* In-progress badge */}
