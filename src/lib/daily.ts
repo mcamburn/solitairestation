@@ -19,16 +19,23 @@ function defaultDailyStats(): DailyStats {
   return { streak: 0, longestStreak: 0, lastCompletedDate: null };
 }
 
-/** Today's date as YYYY-MM-DD (UTC). */
+/** Today's date as YYYY-MM-DD in the player's local timezone. */
 export function getTodayKey(): string {
-  return new Date().toISOString().slice(0, 10);
+  const d = new Date();
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${y}-${m}-${day}`;
 }
 
-/** Yesterday's date as YYYY-MM-DD (UTC). */
+/** Yesterday's date as YYYY-MM-DD in the player's local timezone. */
 function getYesterdayKey(): string {
   const d = new Date();
-  d.setUTCDate(d.getUTCDate() - 1);
-  return d.toISOString().slice(0, 10);
+  d.setDate(d.getDate() - 1);
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${y}-${m}-${day}`;
 }
 
 /**
