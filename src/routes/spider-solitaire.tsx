@@ -54,6 +54,7 @@ function SpiderSolitairePage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: LD }} />
       <GamePageLayout
+        gameKey="spider"
         badge="Spider · 10 columns"
         title="Spider Solitaire"
         tagline="Build complete K–A sequences in your chosen suit count across 10 columns. Clear all eight to win."

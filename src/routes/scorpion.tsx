@@ -52,6 +52,7 @@ function ScorpionPage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: SCORPION_LD }} />
       <GamePageLayout
+        gameKey="scorpion"
         badge="Scorpion · Same-suit sequences"
         title="Scorpion Solitaire"
         tagline="Stack same-suit sequences and clear four complete King-to-Ace runs from the tableau — with a three-card stock for tight spots."

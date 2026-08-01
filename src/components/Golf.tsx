@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { saveGame, loadGame, clearGame } from "@/lib/persist";
 import { recordWin, recordLoss, type GameStats } from "@/lib/stats";
+import { useDailyChallenge } from "@/contexts/DailyChallengeContext";
 import {
   newGolfGame,
   playTableauCard,
@@ -52,17 +53,20 @@ export function Golf() {
 
   const statsRef = useRef(false);
   const [gameStats, setGameStats] = useState<GameStats | null>(null);
+  const dailyModeRef = useRef(false);
+  const { dailySeed, dailyTrigger, onDailyWin } = useDailyChallenge();
 
   useEffect(() => {
     if (statsRef.current) return;
     if (state?.won) {
       statsRef.current = true;
       const elapsed = Math.floor((Date.now() - state.startedAt) / 1000);
-      setGameStats(recordWin("golf", elapsed));
+      setGameStats(recordWin("golf", elapsed, state.moves, dailyModeRef.current));
+      if (dailyModeRef.current) { onDailyWin(); dailyModeRef.current = false; }
       setHistory([]);
     } else if (gameOver) {
       statsRef.current = true;
-      setGameStats(recordLoss("golf"));
+      setGameStats(recordLoss("golf", state?.moves ?? 0, dailyModeRef.current));
       setHistory([]);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -141,6 +145,28 @@ export function Golf() {
     };
   }, []);
 
+  const reset = (seed?: number) => {
+    if (state && state.moves > 0 && !state.won && !statsRef.current) {
+      setGameStats(recordLoss("golf", state.moves, dailyModeRef.current));
+    }
+    if (!seed) dailyModeRef.current = false;
+    clearGame("golf");
+    statsRef.current = false;
+    setGameStats(null);
+    setHistory([]);
+    setHint(null);
+    setGameOver(false);
+    setState(newGolfGame(seed));
+    showToast();
+  };
+
+  useEffect(() => {
+    if (dailyTrigger === 0) return;
+    dailyModeRef.current = true;
+    statsRef.current = false;
+    reset(dailySeed);
+  }, [dailyTrigger]); // eslint-disable-line react-hooks/exhaustive-deps
+
   if (!state) {
     return (
       <div className="game-board-wrap mx-auto w-full max-w-[900px] xl:max-w-[1200px] px-4 xl:px-6 pb-16">
@@ -176,17 +202,6 @@ export function Golf() {
       setGameOver(isGolfGameOver(prev));
       return h.slice(0, -1);
     });
-  };
-
-  const reset = () => {
-    clearGame("golf");
-    statsRef.current = false;
-    setGameStats(null);
-    setHistory([]);
-    setHint(null);
-    setGameOver(false);
-    setState(newGolfGame());
-    showToast();
   };
 
   const showHint = () => {
@@ -248,7 +263,7 @@ export function Golf() {
         <div className="flex items-center gap-2">
           <button onClick={showHint} className="rounded-lg border border-border px-2.5 py-1 transition hover:bg-secondary/70">Hint</button>
           <button onClick={undo} disabled={history.length === 0} className="rounded-lg border border-border px-2.5 py-1 transition hover:bg-secondary/70 disabled:opacity-40">Undo</button>
-          <button onClick={reset} className="rounded-lg px-2.5 py-1 text-primary-foreground transition hover:opacity-90" style={{ background: "linear-gradient(135deg, var(--neon), var(--neon-2))" }}>New Game</button>
+          <button onClick={() => reset()} className="rounded-lg px-2.5 py-1 text-primary-foreground transition hover:opacity-90" style={{ background: "linear-gradient(135deg, var(--neon), var(--neon-2))" }}>New Game</button>
         </div>
       </div>
 

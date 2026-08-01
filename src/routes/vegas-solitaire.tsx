@@ -54,6 +54,7 @@ function VegasPage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: LD }} />
       <GamePageLayout
+        gameKey="klondike"
         badge="Klondike · Vegas"
         title="Vegas Solitaire"
         tagline="The classic casino scoring variant — $52 wager, $5 per foundation card, three passes to beat the house."

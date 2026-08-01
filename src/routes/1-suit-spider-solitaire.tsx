@@ -54,6 +54,7 @@ function OneSuitSpiderPage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: LD }} />
       <GamePageLayout
+        gameKey="spider"
         badge="Spider · 1 Suit"
         title="1 Suit Spider Solitaire"
         tagline="All spades — the most accessible way to learn Spider Solitaire."

@@ -52,6 +52,7 @@ function GolfPage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: GOLF_LD }} />
       <GamePageLayout
+        gameKey="golf"
         badge="Golf · Chain-building solitaire"
         title="Golf Solitaire"
         tagline="Chain cards up or down to clear the fairway — keep the run going and finish under par."

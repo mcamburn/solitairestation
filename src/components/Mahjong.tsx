@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { saveGame, loadGame, clearGame } from "@/lib/persist";
+import { recordWin, recordLoss, type GameStats } from "@/lib/stats";
+import { useDailyChallenge } from "@/contexts/DailyChallengeContext";
 import {
   newMahjongGame,
   isTileFree,
@@ -31,6 +33,12 @@ export function Mahjong() {
   const [stuck, setStuck] = useState(false);
   const [, forceUpdate] = useState(0);
 
+  // Stats & daily challenge
+  const statsRef = useRef(false);
+  const [gameStats, setGameStats] = useState<GameStats | null>(null);
+  const dailyModeRef = useRef(false);
+  const { dailySeed, dailyTrigger, onDailyWin } = useDailyChallenge();
+
   useEffect(() => {
     const saved = loadGame<MahjongState>("mahjong");
     if (saved && saved.moves > 0) {
@@ -50,6 +58,27 @@ export function Mahjong() {
     const id = setInterval(() => forceUpdate(n => n + 1), 1000);
     return () => clearInterval(id);
   }, []);
+
+  useEffect(() => {
+    if (dailyTrigger === 0) return;
+    dailyModeRef.current = true;
+    statsRef.current = false;
+    reset(dailySeed);
+  }, [dailyTrigger]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    if (statsRef.current || !state) return;
+    if (state.won) {
+      statsRef.current = true;
+      const elapsed = Math.floor((Date.now() - state.startedAt) / 1000);
+      setGameStats(recordWin("mahjong", elapsed, state.moves, dailyModeRef.current));
+      if (dailyModeRef.current) { onDailyWin(); dailyModeRef.current = false; }
+    } else if (stuck) {
+      statsRef.current = true;
+      setGameStats(recordLoss("mahjong", state.moves, dailyModeRef.current));
+      if (dailyModeRef.current) dailyModeRef.current = false;
+    }
+  }, [state?.won, stuck]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Scale the board so the Mahjong layout fits the available width on mobile.
   const boardRef = useRef<HTMLDivElement>(null);
@@ -102,12 +131,17 @@ export function Mahjong() {
     });
   };
 
-  const reset = () => {
+  const reset = (seed?: number) => {
+    if (state?.moves > 0 && !state?.won && !statsRef.current) {
+      recordLoss("mahjong", state.moves, dailyModeRef.current);
+    }
+    if (!seed) dailyModeRef.current = false;
+    statsRef.current = false;
     clearGame("mahjong");
     setHistory([]);
     setHint(null);
     setStuck(false);
-    setState(newMahjongGame());
+    setState(newMahjongGame(seed));
   };
 
   const showHint = () => {
@@ -155,7 +189,7 @@ export function Mahjong() {
             Undo
           </button>
           <button
-            onClick={reset}
+            onClick={() => reset()}
             className="rounded-lg px-2.5 py-1 text-primary-foreground transition hover:opacity-90"
             style={{ background: "linear-gradient(135deg, var(--neon), var(--neon-2))" }}
           >
@@ -237,7 +271,7 @@ export function Mahjong() {
               Undo
             </button>
             <button
-              onClick={reset}
+              onClick={() => reset()}
               className="rounded-xl px-5 py-2 text-sm font-semibold text-primary-foreground transition hover:opacity-90"
               style={{ background: "linear-gradient(135deg, var(--neon), var(--neon-2))" }}
             >
@@ -251,6 +285,7 @@ export function Mahjong() {
         <WinBanner
           message={`All 144 tiles cleared in ${game.moves} moves!`}
           onNew={reset}
+          stats={gameStats}
         />
       )}
 

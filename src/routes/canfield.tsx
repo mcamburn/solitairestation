@@ -72,6 +72,7 @@ function CanfieldPage() {
         dangerouslySetInnerHTML={{ __html: CANFIELD_LD }}
       />
       <GamePageLayout
+        gameKey="canfield"
         badge="Canfield · Reserve & wrap"
         title="Canfield Solitaire"
         tagline="A reserve pile feeds your tableau, foundations start at a random rank and wrap — one of solitaire's great challenges."

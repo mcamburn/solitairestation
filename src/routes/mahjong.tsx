@@ -52,6 +52,7 @@ function MahjongPage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: MAHJONG_LD }} />
       <GamePageLayout
+      gameKey="mahjong"
       badge="Mahjong · Pair matching"
       title="Mahjong Solitaire"
       tagline="Uncover the pyramid by matching identical tiles from the top down."

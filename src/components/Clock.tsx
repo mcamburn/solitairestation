@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { saveGame, loadGame, clearGame } from "@/lib/persist";
 import { recordWin, recordLoss, type GameStats } from "@/lib/stats";
+import { useDailyChallenge } from "@/contexts/DailyChallengeContext";
 import {
   newClockGame,
   clockStep,
@@ -122,6 +123,8 @@ export function Clock() {
   const autoPlayRef = useRef(false);
   const statsRef = useRef(false);
   const [gameStats, setGameStats] = useState<GameStats | null>(null);
+  const dailyModeRef = useRef(false);
+  const { dailySeed, dailyTrigger, onDailyWin } = useDailyChallenge();
   const { skin, face, setSkin, setFace } = useCardAppearance();
   const { visible: toastVisible, show: showToast } = useNewGameToast();
   const [, forceUpdate] = useState(0);
@@ -144,10 +147,11 @@ export function Clock() {
     if (state?.won) {
       statsRef.current = true;
       const elapsed = Math.floor((Date.now() - state.startedAt) / 1000);
-      setGameStats(recordWin("clock", elapsed));
+      setGameStats(recordWin("clock", elapsed, state.moves, dailyModeRef.current));
+      if (dailyModeRef.current) { onDailyWin(); dailyModeRef.current = false; }
     } else if (state?.lost) {
       statsRef.current = true;
-      setGameStats(recordLoss("clock"));
+      setGameStats(recordLoss("clock", state.moves, dailyModeRef.current));
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state?.won, state?.lost]);
@@ -198,6 +202,23 @@ export function Clock() {
     return () => clearTimeout(id);
   }, [autoPlay, state]);
 
+  const reset = (seed?: number) => {
+    if (!seed) dailyModeRef.current = false;
+    clearGame("clock");
+    setAutoPlay(false);
+    statsRef.current = false;
+    setGameStats(null);
+    setState(newClockGame(seed));
+    showToast();
+  };
+
+  useEffect(() => {
+    if (dailyTrigger === 0) return;
+    dailyModeRef.current = true;
+    statsRef.current = false;
+    reset(dailySeed);
+  }, [dailyTrigger]); // eslint-disable-line react-hooks/exhaustive-deps
+
   if (!state) {
     return (
       <div className="game-board-wrap mx-auto w-full max-w-[900px] xl:max-w-[1200px] px-4 xl:px-6 pb-16">
@@ -211,15 +232,6 @@ export function Clock() {
   const step = () => {
     const next = clockStep(game);
     if (next) setState(next);
-  };
-
-  const reset = () => {
-    clearGame("clock");
-    setAutoPlay(false);
-    statsRef.current = false;
-    setGameStats(null);
-    setState(newClockGame());
-    showToast();
   };
 
   const time = formatTime(game.startedAt);
@@ -263,7 +275,7 @@ export function Clock() {
             {autoPlay ? "⏸ Pause" : "⏵ Auto"}
           </button>
           <button
-            onClick={reset}
+            onClick={() => reset()}
             className="rounded-lg px-2.5 py-1 text-primary-foreground transition hover:opacity-90"
             style={{ background: "linear-gradient(135deg, var(--neon), var(--neon-2))" }}
           >

@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { saveGame, loadGame, clearGame } from "@/lib/persist";
+import { recordWin, recordLoss, type GameStats } from "@/lib/stats";
+import { useDailyChallenge } from "@/contexts/DailyChallengeContext";
 import {
   autoMoveToFoundation,
   canDraw,
@@ -68,6 +70,12 @@ export function Solitaire({ initialMode }: { initialMode?: KlondikeMode } = {}) 
   const [mode, setMode] = useState<KlondikeMode>(() => initialMode ?? loadSavedMode());
   const modeRef = useRef(mode);
   modeRef.current = mode;
+
+  // Stats & daily challenge
+  const statsRef = useRef(false);
+  const [gameStats, setGameStats] = useState<GameStats | null>(null);
+  const dailyModeRef = useRef(false);
+  const { dailySeed, dailyTrigger, onDailyWin } = useDailyChallenge();
 
   // Shared drag-mode preference
   const { dragMode, toggleDragMode } = useDragMode();
@@ -140,6 +148,23 @@ export function Solitaire({ initialMode }: { initialMode?: KlondikeMode } = {}) 
     const id = setInterval(() => force((n) => n + 1), 1000);
     return () => clearInterval(id);
   }, []);
+
+  useEffect(() => {
+    if (dailyTrigger === 0) return;
+    dailyModeRef.current = true;
+    statsRef.current = false;
+    resetWithSeed(mode, dailySeed);
+  }, [dailyTrigger]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    if (statsRef.current || !state) return;
+    if (state.won) {
+      statsRef.current = true;
+      const elapsed = Math.floor((Date.now() - state.startedAt) / 1000);
+      setGameStats(recordWin("klondike", elapsed, state.moves, dailyModeRef.current));
+      if (dailyModeRef.current) { onDailyWin(); dailyModeRef.current = false; }
+    }
+  }, [state?.won]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // ── Global pointer handlers ────────────────────────────────────────────────
   useEffect(() => {
@@ -222,14 +247,21 @@ export function Solitaire({ initialMode }: { initialMode?: KlondikeMode } = {}) 
     });
   };
 
-  const reset = (m: KlondikeMode = mode) => {
+  const resetWithSeed = (m: KlondikeMode = mode, seed?: number) => {
+    if (state?.moves > 0 && !state?.won && !statsRef.current) {
+      recordLoss("klondike", state.moves, dailyModeRef.current);
+    }
+    if (!seed) dailyModeRef.current = false;
+    statsRef.current = false;
     clearGame("klondike");
     setHistory([]);
     setSel(null);
     setHint(null);
-    setState(newGame(m));
+    setState(newGame(m, seed));
     showToast();
   };
+
+  const reset = (m: KlondikeMode = mode) => resetWithSeed(m, undefined);
 
   const handleModeChange = (m: KlondikeMode) => {
     setMode(m);

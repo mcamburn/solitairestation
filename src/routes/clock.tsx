@@ -52,6 +52,7 @@ function ClockPage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: CLOCK_LD }} />
       <GamePageLayout
+        gameKey="clock"
         badge="Clock · Self-playing patience"
         title="Clock Patience"
         tagline="Watch the deck deal itself around the clock — can all the Kings wait till last?"

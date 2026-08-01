@@ -52,6 +52,7 @@ function YukonPage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: YUKON_LD }} />
       <GamePageLayout
+        gameKey="yukon"
         badge="Yukon · Strategy solitaire"
         title="Yukon Solitaire"
         tagline="Move any face-up card — and every card on top of it — to unbury hidden cards and build four foundations."

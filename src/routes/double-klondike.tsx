@@ -54,6 +54,7 @@ function DoubleKlondikePage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: LD }} />
       <GamePageLayout
+        gameKey="klondike"
         badge="Klondike · Double"
         title="Double Klondike Solitaire"
         tagline="Two full decks, 9 columns, and 8 foundation piles — a longer, deeper Klondike challenge."

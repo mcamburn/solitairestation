@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { saveGame, loadGame, clearGame } from "@/lib/persist";
-import { recordWin, type GameStats } from "@/lib/stats";
+import { recordWin, recordLoss, type GameStats } from "@/lib/stats";
+import { useDailyChallenge } from "@/contexts/DailyChallengeContext";
 import {
   newCanfieldGame,
   cloneCanfield,
@@ -65,12 +66,15 @@ export function Canfield() {
   const [scale, setScale] = useState(1);
   const statsRef = useRef(false);
   const [gameStats, setGameStats] = useState<GameStats | null>(null);
+  const dailyModeRef = useRef(false);
+  const { dailySeed, dailyTrigger, onDailyWin } = useDailyChallenge();
 
   useEffect(() => {
     if (!state?.won || statsRef.current) return;
     statsRef.current = true;
     const elapsed = Math.floor((Date.now() - state.startedAt) / 1000);
-    setGameStats(recordWin("canfield", elapsed));
+    setGameStats(recordWin("canfield", elapsed, state.moves, dailyModeRef.current));
+    if (dailyModeRef.current) { onDailyWin(); dailyModeRef.current = false; }
     setHistory([]);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state?.won]);
@@ -143,6 +147,28 @@ export function Canfield() {
     };
   }, []);
 
+  const reset = (seed?: number) => {
+    if (state && state.moves > 0 && !state.won && !statsRef.current) {
+      setGameStats(recordLoss("canfield", state.moves, dailyModeRef.current));
+    }
+    if (!seed) dailyModeRef.current = false;
+    clearGame("canfield");
+    statsRef.current = false;
+    setGameStats(null);
+    setHistory([]);
+    setSelection(null);
+    setHint(null);
+    setState(newCanfieldGame(seed));
+    showToast();
+  };
+
+  useEffect(() => {
+    if (dailyTrigger === 0) return;
+    dailyModeRef.current = true;
+    statsRef.current = false;
+    reset(dailySeed);
+  }, [dailyTrigger]); // eslint-disable-line react-hooks/exhaustive-deps
+
   if (!state) {
     return (
       <div className="game-board-wrap mx-auto w-full max-w-[900px] xl:max-w-[1200px] px-4 xl:px-6 pb-16">
@@ -188,17 +214,6 @@ export function Canfield() {
       setHint(null);
       return h.slice(0, -1);
     });
-  };
-
-  const reset = () => {
-    clearGame("canfield");
-    statsRef.current = false;
-    setGameStats(null);
-    setHistory([]);
-    setSelection(null);
-    setHint(null);
-    setState(newCanfieldGame());
-    showToast();
   };
 
   const showHint = () => {
@@ -325,7 +340,7 @@ export function Canfield() {
         <div className="flex items-center gap-2">
           <button onClick={showHint} className="rounded-lg border border-border px-2.5 py-1 transition hover:bg-secondary/70">Hint</button>
           <button onClick={undo} disabled={history.length === 0} className="rounded-lg border border-border px-2.5 py-1 transition hover:bg-secondary/70 disabled:opacity-40">Undo</button>
-          <button onClick={reset} className="rounded-xl px-2.5 py-1 text-primary-foreground transition hover:opacity-90" style={{ background: "linear-gradient(135deg, var(--neon), var(--neon-2))" }}>New Game</button>
+          <button onClick={() => reset()} className="rounded-xl px-2.5 py-1 text-primary-foreground transition hover:opacity-90" style={{ background: "linear-gradient(135deg, var(--neon), var(--neon-2))" }}>New Game</button>
         </div>
       </div>
 

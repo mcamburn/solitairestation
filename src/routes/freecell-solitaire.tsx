@@ -54,6 +54,7 @@ function FreeCellSolitairePage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: LD }} />
       <GamePageLayout
+        gameKey="freecell"
         badge="FreeCell · All 52 visible"
         title="FreeCell Solitaire"
         tagline="All 52 cards face-up from move one — nearly every deal is solvable with the right plan."

@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { saveGame, loadGame, clearGame } from "@/lib/persist";
+import { recordWin, recordLoss, type GameStats } from "@/lib/stats";
+import { useDailyChallenge } from "@/contexts/DailyChallengeContext";
 import {
   newSpiderGame,
   trySpiderMove,
@@ -56,6 +58,12 @@ export function Spider({ initialDifficulty }: { initialDifficulty?: SpiderDiffic
   const [, forceUpdate] = useState(0);
   const { dragMode, toggleDragMode } = useDragMode();
 
+  // Stats & daily challenge
+  const statsRef = useRef(false);
+  const [gameStats, setGameStats] = useState<GameStats | null>(null);
+  const dailyModeRef = useRef(false);
+  const { dailySeed, dailyTrigger, onDailyWin } = useDailyChallenge();
+
   // ── Drag state ────────────────────────────────────────────────────────────
   const dragRef = useRef<DragInfo | null>(null);
   const [ghostPos, setGhostPos] = useState<{ x: number; y: number } | null>(null);
@@ -95,6 +103,23 @@ export function Spider({ initialDifficulty }: { initialDifficulty?: SpiderDiffic
     const id = setInterval(() => forceUpdate((n) => n + 1), 1000);
     return () => clearInterval(id);
   }, []);
+
+  useEffect(() => {
+    if (dailyTrigger === 0) return;
+    dailyModeRef.current = true;
+    statsRef.current = false;
+    reset(difficulty, dailySeed);
+  }, [dailyTrigger]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    if (statsRef.current || !state) return;
+    if (state.won) {
+      statsRef.current = true;
+      const elapsed = Math.floor((Date.now() - state.startedAt) / 1000);
+      setGameStats(recordWin("spider", elapsed, state.moves, dailyModeRef.current));
+      if (dailyModeRef.current) { onDailyWin(); dailyModeRef.current = false; }
+    }
+  }, [state?.won]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // ── Grid measurement ───────────────────────────────────────────────────────
   const gridRef = useRef<HTMLDivElement>(null);
@@ -185,7 +210,12 @@ export function Spider({ initialDifficulty }: { initialDifficulty?: SpiderDiffic
     });
   };
 
-  const reset = (diff: SpiderDifficulty = difficulty) => {
+  const reset = (diff: SpiderDifficulty = difficulty, seed?: number) => {
+    if (state?.moves > 0 && !state?.won && !statsRef.current) {
+      recordLoss("spider", state.moves, dailyModeRef.current);
+    }
+    if (!seed) dailyModeRef.current = false;
+    statsRef.current = false;
     clearGame("spider");
     setHistory([]);
     setSel(null);
@@ -195,7 +225,7 @@ export function Spider({ initialDifficulty }: { initialDifficulty?: SpiderDiffic
     if (!initialDifficulty && typeof window !== "undefined") {
       localStorage.setItem("spider-difficulty", String(diff));
     }
-    setState(newSpiderGame(diff));
+    setState(newSpiderGame(diff, seed));
     showToast();
   };
 
@@ -352,7 +382,7 @@ export function Spider({ initialDifficulty }: { initialDifficulty?: SpiderDiffic
       </div>
 
       {game.won && (
-        <WinBanner message={`All 8 sequences cleared in ${game.moves} moves!`} onNew={() => reset()} />
+        <WinBanner message={`All 8 sequences cleared in ${game.moves} moves!`} onNew={() => reset()} stats={gameStats} />
       )}
 
       <DragModeToggle

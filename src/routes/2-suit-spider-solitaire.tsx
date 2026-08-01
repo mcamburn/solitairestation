@@ -54,6 +54,7 @@ function TwoSuitSpiderPage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: LD }} />
       <GamePageLayout
+        gameKey="spider"
         badge="Spider · 2 Suits"
         title="2 Suit Spider Solitaire"
         tagline="Two suits, twice the challenge — the sweet spot for Spider strategy."

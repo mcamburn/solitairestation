@@ -54,6 +54,7 @@ function Turn3Page() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: LD }} />
       <GamePageLayout
+        gameKey="klondike"
         badge="Klondike · Turn 3"
         title="Turn 3 Solitaire"
         tagline="Draw 3 cards at a time for a harder, more strategic Klondike experience."

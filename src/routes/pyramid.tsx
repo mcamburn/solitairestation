@@ -52,6 +52,7 @@ function PyramidPage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: PYRAMID_LD }} />
       <GamePageLayout
+      gameKey="pyramid"
       badge="Pyramid · Fast pair-matching"
       title="Pyramid Solitaire"
       tagline="Spot pairs that add to 13, clear them instantly — every match removes a card for good."

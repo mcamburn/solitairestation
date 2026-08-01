@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { saveGame, loadGame, clearGame } from "@/lib/persist";
+import { recordWin, recordLoss, type GameStats } from "@/lib/stats";
+import { useDailyChallenge } from "@/contexts/DailyChallengeContext";
 import {
   newFreeCellGame,
   isValidFCSequence,
@@ -55,6 +57,12 @@ export function FreeCell() {
   const [, forceUpdate] = useState(0);
   const { dragMode, toggleDragMode } = useDragMode();
 
+  // Stats & daily challenge
+  const statsRef = useRef(false);
+  const [gameStats, setGameStats] = useState<GameStats | null>(null);
+  const dailyModeRef = useRef(false);
+  const { dailySeed, dailyTrigger, onDailyWin } = useDailyChallenge();
+
   // ── Drag state ────────────────────────────────────────────────────────────
   const dragRef = useRef<DragInfo | null>(null);
   const [ghostPos, setGhostPos] = useState<{ x: number; y: number } | null>(null);
@@ -80,6 +88,23 @@ export function FreeCell() {
     const id = setInterval(() => forceUpdate((n) => n + 1), 1000);
     return () => clearInterval(id);
   }, []);
+
+  useEffect(() => {
+    if (dailyTrigger === 0) return;
+    dailyModeRef.current = true;
+    statsRef.current = false;
+    reset(dailySeed);
+  }, [dailyTrigger]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    if (statsRef.current || !state) return;
+    if (state.won) {
+      statsRef.current = true;
+      const elapsed = Math.floor((Date.now() - state.startedAt) / 1000);
+      setGameStats(recordWin("freecell", elapsed, state.moves, dailyModeRef.current));
+      if (dailyModeRef.current) { onDailyWin(); dailyModeRef.current = false; }
+    }
+  }, [state?.won]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // ── Grid measurement ───────────────────────────────────────────────────────
   const gridRef = useRef<HTMLDivElement>(null);
@@ -170,12 +195,17 @@ export function FreeCell() {
     });
   };
 
-  const reset = () => {
+  const reset = (seed?: number) => {
+    if (state?.moves > 0 && !state?.won && !statsRef.current) {
+      recordLoss("freecell", state.moves, dailyModeRef.current);
+    }
+    if (!seed) dailyModeRef.current = false;
+    statsRef.current = false;
     clearGame("freecell");
     setHistory([]);
     setSel(null);
     setHint(null);
-    setState(newFreeCellGame());
+    setState(newFreeCellGame(seed));
     showToast();
   };
 
@@ -278,7 +308,7 @@ export function FreeCell() {
         <div className="flex items-center gap-2">
           <button onClick={showHint} className="rounded-lg border border-border px-2.5 py-1 transition hover:bg-secondary/70">Hint</button>
           <button onClick={undo} disabled={history.length === 0} className="rounded-lg border border-border px-2.5 py-1 transition hover:bg-secondary/70 disabled:opacity-40">Undo</button>
-          <button onClick={reset} className="rounded-lg px-2.5 py-1 text-primary-foreground transition hover:opacity-90" style={{ background: "linear-gradient(135deg, var(--neon), var(--neon-2))" }}>New Game</button>
+          <button onClick={() => reset()} className="rounded-lg px-2.5 py-1 text-primary-foreground transition hover:opacity-90" style={{ background: "linear-gradient(135deg, var(--neon), var(--neon-2))" }}>New Game</button>
         </div>
       </div>
 
@@ -406,7 +436,7 @@ export function FreeCell() {
       </div>
 
       {game.won && (
-        <WinBanner message={`All 52 cards sorted in ${game.moves} moves!`} onNew={reset} />
+        <WinBanner message={`All 52 cards sorted in ${game.moves} moves!`} onNew={reset} stats={gameStats} />
       )}
 
       <DragModeToggle

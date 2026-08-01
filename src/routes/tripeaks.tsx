@@ -52,6 +52,7 @@ function TriPeaksPage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: TRIPEAKS_LD }} />
       <GamePageLayout
+      gameKey="tripeaks"
       badge="TriPeaks · Chain plays"
       title="TriPeaks Solitaire"
       tagline="Clear three peaks by chaining cards one rank apart. Build streaks for the high score."

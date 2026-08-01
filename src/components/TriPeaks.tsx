@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { saveGame, loadGame, clearGame } from "@/lib/persist";
+import { recordWin, recordLoss, type GameStats } from "@/lib/stats";
+import { useDailyChallenge } from "@/contexts/DailyChallengeContext";
 import {
   newTriPeaksGame,
   tryPlayTPCard,
@@ -41,6 +43,12 @@ export function TriPeaks() {
   const { visible: toastVisible, show: showToast } = useNewGameToast();
   const [, forceUpdate] = useState(0);
 
+  // Stats & daily challenge
+  const statsRef = useRef(false);
+  const [gameStats, setGameStats] = useState<GameStats | null>(null);
+  const dailyModeRef = useRef(false);
+  const { dailySeed, dailyTrigger, onDailyWin } = useDailyChallenge();
+
   useEffect(() => {
     const saved = loadGame<TriPeaksState>("tripeaks");
     if (saved && saved.moves > 0) {
@@ -60,6 +68,27 @@ export function TriPeaks() {
     const id = setInterval(() => forceUpdate((n) => n + 1), 1000);
     return () => clearInterval(id);
   }, []);
+
+  useEffect(() => {
+    if (dailyTrigger === 0) return;
+    dailyModeRef.current = true;
+    statsRef.current = false;
+    reset(dailySeed);
+  }, [dailyTrigger]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    if (statsRef.current || !state) return;
+    if (state.won) {
+      statsRef.current = true;
+      const elapsed = Math.floor((Date.now() - state.startedAt) / 1000);
+      setGameStats(recordWin("tripeaks", elapsed, state.moves, dailyModeRef.current));
+      if (dailyModeRef.current) { onDailyWin(); dailyModeRef.current = false; }
+    } else if (stuck) {
+      statsRef.current = true;
+      setGameStats(recordLoss("tripeaks", state.moves, dailyModeRef.current));
+      if (dailyModeRef.current) dailyModeRef.current = false;
+    }
+  }, [state?.won, stuck]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Scale the board so the layout fits the available width on mobile.
   // Minimum scale 0.55 keeps cards readable; board may still scroll below that.
@@ -119,12 +148,17 @@ export function TriPeaks() {
     });
   };
 
-  const reset = () => {
+  const reset = (seed?: number) => {
+    if (state?.moves > 0 && !state?.won && !statsRef.current) {
+      recordLoss("tripeaks", state.moves, dailyModeRef.current);
+    }
+    if (!seed) dailyModeRef.current = false;
+    statsRef.current = false;
     clearGame("tripeaks");
     setHistory([]);
     setHint(null);
     setStuck(false);
-    setState(newTriPeaksGame());
+    setState(newTriPeaksGame(seed));
     showToast();
   };
 
@@ -174,7 +208,7 @@ export function TriPeaks() {
             Undo
           </button>
           <button
-            onClick={reset}
+            onClick={() => reset()}
             className="rounded-lg px-2.5 py-1 text-primary-foreground transition hover:opacity-90"
             style={{ background: "linear-gradient(135deg, var(--neon), var(--neon-2))" }}
           >
@@ -314,7 +348,7 @@ export function TriPeaks() {
               Undo
             </button>
             <button
-              onClick={reset}
+              onClick={() => reset()}
               className="rounded-xl px-5 py-2 text-sm font-semibold text-primary-foreground transition hover:opacity-90"
               style={{ background: "linear-gradient(135deg, var(--neon), var(--neon-2))" }}
             >
@@ -328,6 +362,7 @@ export function TriPeaks() {
         <WinBanner
           message={`All peaks cleared in ${game.moves} moves!`}
           onNew={reset}
+          stats={gameStats}
         />
       )}
 

@@ -52,6 +52,7 @@ function EightOffPage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: EIGHTOFF_LD }} />
       <GamePageLayout
+        gameKey="eightoff"
         badge="Eight Off · FreeCell Variant"
         title="Eight Off Solitaire"
         tagline="Eight free cells give you maximum flexibility — but same-suit stacking demands careful planning."

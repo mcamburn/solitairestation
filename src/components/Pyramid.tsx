@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { saveGame, loadGame, clearGame } from "@/lib/persist";
+import { recordWin, recordLoss, type GameStats } from "@/lib/stats";
+import { useDailyChallenge } from "@/contexts/DailyChallengeContext";
 import {
   newPyramidGame,
   tryPyramidRemove,
@@ -35,6 +37,12 @@ export function Pyramid() {
   const { visible: toastVisible, show: showToast } = useNewGameToast();
   const [, forceUpdate] = useState(0);
 
+  // Stats & daily challenge
+  const statsRef = useRef(false);
+  const [gameStats, setGameStats] = useState<GameStats | null>(null);
+  const dailyModeRef = useRef(false);
+  const { dailySeed, dailyTrigger, onDailyWin } = useDailyChallenge();
+
   useEffect(() => {
     const saved = loadGame<PyramidState>("pyramid");
     if (saved && saved.moves > 0) {
@@ -54,6 +62,27 @@ export function Pyramid() {
     const id = setInterval(() => forceUpdate((n) => n + 1), 1000);
     return () => clearInterval(id);
   }, []);
+
+  useEffect(() => {
+    if (dailyTrigger === 0) return;
+    dailyModeRef.current = true;
+    statsRef.current = false;
+    reset(dailySeed);
+  }, [dailyTrigger]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    if (statsRef.current || !state) return;
+    if (state.won) {
+      statsRef.current = true;
+      const elapsed = Math.floor((Date.now() - state.startedAt) / 1000);
+      setGameStats(recordWin("pyramid", elapsed, state.moves, dailyModeRef.current));
+      if (dailyModeRef.current) { onDailyWin(); dailyModeRef.current = false; }
+    } else if (stuck) {
+      statsRef.current = true;
+      setGameStats(recordLoss("pyramid", state.moves, dailyModeRef.current));
+      if (dailyModeRef.current) dailyModeRef.current = false;
+    }
+  }, [state?.won, stuck]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Scale the board so the 7-card-wide pyramid fits the available width on mobile.
   // Design width: 7 × CARD_W + 6 × 6px gap = 7×74 + 36 = 554px.
@@ -110,13 +139,18 @@ export function Pyramid() {
     });
   };
 
-  const reset = () => {
+  const reset = (seed?: number) => {
+    if (state?.moves > 0 && !state?.won && !statsRef.current) {
+      recordLoss("pyramid", state.moves, dailyModeRef.current);
+    }
+    if (!seed) dailyModeRef.current = false;
+    statsRef.current = false;
     clearGame("pyramid");
     setHistory([]);
     setSel(null);
     setHint(null);
     setStuck(false);
-    setState(newPyramidGame());
+    setState(newPyramidGame(seed));
     showToast();
   };
 
@@ -195,7 +229,7 @@ export function Pyramid() {
             Undo
           </button>
           <button
-            onClick={reset}
+            onClick={() => reset()}
             className="rounded-lg px-2.5 py-1 text-primary-foreground transition hover:opacity-90"
             style={{ background: "linear-gradient(135deg, var(--neon), var(--neon-2))" }}
           >
@@ -337,7 +371,7 @@ export function Pyramid() {
               Undo
             </button>
             <button
-              onClick={reset}
+              onClick={() => reset()}
               className="rounded-xl px-5 py-2 text-sm font-semibold text-primary-foreground transition hover:opacity-90"
               style={{ background: "linear-gradient(135deg, var(--neon), var(--neon-2))" }}
             >
@@ -351,6 +385,7 @@ export function Pyramid() {
         <WinBanner
           message={`Pyramid cleared in ${game.moves} moves!`}
           onNew={reset}
+          stats={gameStats}
         />
       )}
 

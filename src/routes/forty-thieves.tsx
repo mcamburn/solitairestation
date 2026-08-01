@@ -52,6 +52,7 @@ function FortyThievesPage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: FORTY_THIEVES_LD }} />
       <GamePageLayout
+        gameKey="fortythieves"
         badge="Forty Thieves · Two-deck challenge"
         title="Forty Thieves Solitaire"
         tagline="Two decks, 10 columns, same-suit building — only the very top card moves. Strategy every step of the way."

@@ -52,6 +52,7 @@ function AddictionPage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: ADDICTION_LD }} />
       <GamePageLayout
+        gameKey="addiction"
         badge="Addiction · Gap-sliding puzzle"
         title="Addiction Solitaire"
         tagline="Slide cards into gaps to sort four rows from 2 to King, each in the same suit — surprisingly addictive."

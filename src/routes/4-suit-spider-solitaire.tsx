@@ -54,6 +54,7 @@ function FourSuitSpiderPage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: LD }} />
       <GamePageLayout
+        gameKey="spider"
         badge="Spider · 4 Suits"
         title="4 Suit Spider Solitaire"
         tagline="All four suits — the hardest and most rewarding Spider challenge."

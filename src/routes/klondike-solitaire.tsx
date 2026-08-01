@@ -54,6 +54,7 @@ function KlondikeSolitairePage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: LD }} />
       <GamePageLayout
+        gameKey="klondike"
         badge="Klondike · Classic"
         title="Klondike Solitaire"
         tagline="The world's most-played card game — free, instant, and endlessly replayable."

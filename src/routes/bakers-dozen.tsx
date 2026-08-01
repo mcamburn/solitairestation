@@ -72,6 +72,7 @@ function BakersDozenPage() {
         dangerouslySetInnerHTML={{ __html: BAKERS_DOZEN_LD }}
       />
       <GamePageLayout
+        gameKey="bakersdozen"
         badge="Baker's Dozen · Rank-only moves"
         title="Baker's Dozen Solitaire"
         tagline="All 52 cards dealt face-up — move cards by rank alone and build four foundations from Ace to King."

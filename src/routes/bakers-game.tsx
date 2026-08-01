@@ -52,6 +52,7 @@ function BakersGamePage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: BAKERSGAME_LD }} />
       <GamePageLayout
+        gameKey="bakersgame"
         badge="Baker's Game · FreeCell Variant"
         title="Baker's Game Solitaire"
         tagline="FreeCell's harder sibling — same rules, but you must stack cards in the same suit."

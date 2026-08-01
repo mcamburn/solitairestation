@@ -52,6 +52,7 @@ function FreeCellPage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: FREECELL_LD }} />
       <GamePageLayout
+      gameKey="freecell"
       badge="FreeCell · 99.9% winnable"
       title="FreeCell Solitaire"
       tagline="Almost every deal is winnable — FreeCell is pure strategy with virtually no luck involved."

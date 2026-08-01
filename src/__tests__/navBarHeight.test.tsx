@@ -31,6 +31,18 @@ vi.mock("../components/SiteFooter", () => ({
   SiteFooter: () => <div data-testid="site-footer" />,
 }));
 
+vi.mock("../components/GameStatsBar", () => ({
+  GameStatsBar: () => <div data-testid="game-stats-bar" />,
+}));
+
+vi.mock("../contexts/DailyChallengeContext", () => ({
+  DailyChallengeProvider: ({ children }: { children: React.ReactNode }) => <>{children}</>,
+  useDailyChallenge: () => ({
+    dailySeed: 0, completedToday: false, dailyStreak: 0,
+    longestDailyStreak: 0, dailyTrigger: 0, onDailyWin: () => {}, activateDaily: () => {},
+  }),
+}));
+
 // ---------------------------------------------------------------------------
 // ResizeObserver mock
 // ---------------------------------------------------------------------------
@@ -85,6 +97,7 @@ beforeEach(() => {
 // ---------------------------------------------------------------------------
 
 const defaultProps = {
+  gameKey: "klondike",
   badge: "Classic",
   title: "Klondike",
   tagline: "The original card game.",
