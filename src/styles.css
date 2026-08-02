@@ -380,18 +380,17 @@
   z-index: 5;
 }
 
-/* ─── Mobile portrait: strip the glass box so cards fill the full width ──── */
-/* Below Tailwind's sm breakpoint (639px) the game board container loses its  */
-/* glass background, border, rounded corners and padding so every pixel goes  */
-/* to the cards themselves.                                                    */
+/* ─── Mobile portrait: full-width glass board, top/bottom borders only ────── */
+/* Below Tailwind's sm breakpoint (639px) the game board keeps its glass       */
+/* background but stretches edge-to-edge with no side borders or rounding.     */
+/* A thin border on top and bottom separates it from the chrome above/below.   */
 @media (max-width: 639px) {
   .game-board-glass {
-    background: transparent !important;
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
-    border: none !important;
+    border-left: none !important;
+    border-right: none !important;
     border-radius: 0 !important;
-    padding: 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
     margin-top: 0.25rem !important;
   }
 }
