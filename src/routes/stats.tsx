@@ -927,6 +927,8 @@ function HistoryMobileRow({ entry }: { entry: HistoryEntry }) {
 function ExportImportControls({ onImported }: { onImported: () => void }) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [status, setStatus] = useState<{ kind: "success" | "error"; message: string } | null>(null);
+  // Pending import: hold parsed data until the player confirms
+  const [pendingImport, setPendingImport] = useState<{ data: unknown; count: number } | null>(null);
 
   function handleExport() {
     downloadStatsExport();
@@ -944,71 +946,161 @@ function ExportImportControls({ onImported }: { onImported: () => void }) {
     try {
       const text = await file.text();
       const data = JSON.parse(text) as unknown;
-      const count = importStatsFromExport(data);
-      onImported();
-      setStatus({ kind: "success", message: `Imported stats for ${count} game${count !== 1 ? "s" : ""}.` });
+      // Validate the file and count games without writing yet
+      const { games } = data as { games: Record<string, unknown> };
+      if (
+        typeof data !== "object" ||
+        data === null ||
+        (data as { version?: number }).version !== 1 ||
+        typeof games !== "object" ||
+        games === null
+      ) {
+        throw new Error("Invalid stats file — please use a file exported from Solitaire Station.");
+      }
+      const count = Object.keys(games).length;
+      setPendingImport({ data, count });
     } catch (err) {
       setStatus({
         kind: "error",
         message: err instanceof Error ? err.message : "Could not read the file.",
       });
+      setTimeout(() => setStatus(null), 5000);
     }
-    // Auto-clear after 5 s
+  }
+
+  function handleConfirmImport() {
+    if (!pendingImport) return;
+    setPendingImport(null);
+    try {
+      const count = importStatsFromExport(pendingImport.data);
+      onImported();
+      setStatus({ kind: "success", message: `Imported stats for ${count} game${count !== 1 ? "s" : ""}.` });
+    } catch (err) {
+      setStatus({
+        kind: "error",
+        message: err instanceof Error ? err.message : "Could not import the file.",
+      });
+    }
     setTimeout(() => setStatus(null), 5000);
   }
 
+  function handleCancelImport() {
+    setPendingImport(null);
+  }
+
   return (
-    <div className="mt-10 flex flex-col gap-3">
-      <h2
-        className="text-lg font-semibold tracking-tight"
-        style={{ fontFamily: "var(--font-display)" }}
-      >
-        Backup &amp; Restore
-      </h2>
-      <p className="text-xs text-muted-foreground">
-        Export your stats to a file you can keep as a backup or load on another device.
-      </p>
-      <div className="flex flex-wrap gap-3">
-        <button
-          onClick={handleExport}
-          className="flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold transition"
-          style={{
-            background: "color-mix(in oklab, var(--neon) 14%, oklch(0.16 0.03 155))",
-            border: "1px solid color-mix(in oklab, var(--neon) 35%, transparent)",
-            color: "var(--neon)",
-          }}
+    <>
+      {/* Confirmation modal */}
+      {pendingImport && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4"
+          style={{ background: "rgba(0,0,0,0.65)" }}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="import-confirm-title"
         >
-          ↓ Export stats
-        </button>
-        <button
-          onClick={handleImportClick}
-          className="flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold transition"
-          style={{
-            background: "color-mix(in oklab, var(--neon) 6%, oklch(0.16 0.03 155))",
-            border: "1px solid color-mix(in oklab, var(--neon) 18%, transparent)",
-            color: "var(--muted-foreground)",
-          }}
-        >
-          ↑ Import stats
-        </button>
-        <input
-          ref={fileInputRef}
-          type="file"
-          accept=".json,application/json"
-          className="hidden"
-          onChange={handleFileChange}
-        />
-      </div>
-      {status && (
-        <p
-          className="text-xs font-medium"
-          style={{ color: status.kind === "success" ? "var(--neon)" : "oklch(0.75 0.18 25)" }}
-        >
-          {status.kind === "success" ? "✓ " : "✗ "}
-          {status.message}
-        </p>
+          <div
+            className="w-full max-w-sm rounded-2xl p-6 flex flex-col gap-4"
+            style={{
+              background: "oklch(0.16 0.03 155)",
+              border: "1px solid color-mix(in oklab, var(--neon) 28%, transparent)",
+              boxShadow: "0 8px 40px rgba(0,0,0,0.55)",
+            }}
+          >
+            <h3
+              id="import-confirm-title"
+              className="text-base font-semibold tracking-tight"
+              style={{ fontFamily: "var(--font-display)" }}
+            >
+              Replace your stats?
+            </h3>
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              This will overwrite your existing stats for{" "}
+              <span className="font-semibold" style={{ color: "var(--foreground)" }}>
+                {pendingImport.count} game{pendingImport.count !== 1 ? "s" : ""}
+              </span>
+              . Any progress not in the imported file will be lost.
+            </p>
+            <div className="flex gap-3 justify-end mt-1">
+              <button
+                onClick={handleCancelImport}
+                className="rounded-lg px-4 py-2 text-sm font-semibold transition"
+                style={{
+                  background: "color-mix(in oklab, var(--neon) 6%, oklch(0.16 0.03 155))",
+                  border: "1px solid color-mix(in oklab, var(--neon) 18%, transparent)",
+                  color: "var(--muted-foreground)",
+                }}
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleConfirmImport}
+                className="rounded-lg px-4 py-2 text-sm font-semibold transition"
+                style={{
+                  background: "color-mix(in oklab, var(--neon) 18%, oklch(0.16 0.03 155))",
+                  border: "1px solid color-mix(in oklab, var(--neon) 40%, transparent)",
+                  color: "var(--neon)",
+                }}
+              >
+                Yes, import
+              </button>
+            </div>
+          </div>
+        </div>
       )}
-    </div>
+
+      <div className="mt-10 flex flex-col gap-3">
+        <h2
+          className="text-lg font-semibold tracking-tight"
+          style={{ fontFamily: "var(--font-display)" }}
+        >
+          Backup &amp; Restore
+        </h2>
+        <p className="text-xs text-muted-foreground">
+          Export your stats to a file you can keep as a backup or load on another device.
+        </p>
+        <div className="flex flex-wrap gap-3">
+          <button
+            onClick={handleExport}
+            className="flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold transition"
+            style={{
+              background: "color-mix(in oklab, var(--neon) 14%, oklch(0.16 0.03 155))",
+              border: "1px solid color-mix(in oklab, var(--neon) 35%, transparent)",
+              color: "var(--neon)",
+            }}
+          >
+            ↓ Export stats
+          </button>
+          <button
+            onClick={handleImportClick}
+            className="flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold transition"
+            style={{
+              background: "color-mix(in oklab, var(--neon) 6%, oklch(0.16 0.03 155))",
+              border: "1px solid color-mix(in oklab, var(--neon) 18%, transparent)",
+              color: "var(--muted-foreground)",
+            }}
+          >
+            ↑ Import stats
+          </button>
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept=".json,application/json"
+            className="hidden"
+            onChange={handleFileChange}
+          />
+        </div>
+        {status && (
+          <p
+            className="text-xs font-medium"
+            style={{ color: status.kind === "success" ? "var(--neon)" : "oklch(0.75 0.18 25)" }}
+          >
+            {status.kind === "success" ? "✓ " : "✗ "}
+            {status.message}
+          </p>
+        )}
+      </div>
+    </>
   );
 }
 
