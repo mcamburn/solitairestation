@@ -95,10 +95,40 @@ else
   FAILED=$((FAILED + 1))
 fi
 
-# ── 6. Report ─────────────────────────────────────────────────────────────────
+# ── 6. Social-crawler OG-tag check ───────────────────────────────────────────
+# Verifies the origin server returns correct og:title and og:image tags when
+# queried with a Facebook crawler user agent. This confirms that once the
+# Cloudflare WAF bypass rule (docs/cloudflare-setup.md) is applied, social
+# preview crawlers will receive the real SSR HTML rather than a challenge page.
+echo "==> Checking social-crawler OG tags…"
+CRAWLER_UA="facebookexternalhit/1.1 (+http://www.facebook.com/externalhit_uatext.php)"
+CRAWLER_ROUTE="/klondike"
+CRAWLER_BODY=$(curl -s -L --max-time 10 \
+  -A "${CRAWLER_UA}" \
+  "${BASE_URL}${CRAWLER_ROUTE}" 2>/dev/null)
+
+OG_TITLE=$(echo "${CRAWLER_BODY}" | grep -o 'property="og:title"[^>]*' | head -1)
+OG_IMAGE=$(echo "${CRAWLER_BODY}" | grep -o 'property="og:image"[^>]*' | head -1)
+
+if [[ -n "${OG_TITLE}" ]]; then
+  echo "  PASS  og:title present for crawler UA on ${CRAWLER_ROUTE}"
+else
+  echo "  FAIL  og:title missing for crawler UA on ${CRAWLER_ROUTE}" >&2
+  FAILED=$((FAILED + 1))
+fi
+
+if [[ -n "${OG_IMAGE}" ]]; then
+  echo "  PASS  og:image present for crawler UA on ${CRAWLER_ROUTE}"
+else
+  echo "  FAIL  og:image missing for crawler UA on ${CRAWLER_ROUTE}" >&2
+  FAILED=$((FAILED + 1))
+fi
+
+
+# ── 7. Report ─────────────────────────────────────────────────────────────────
 echo ""
 if [[ ${FAILED} -eq 0 ]]; then
-  echo "All ${#ROUTES[@]} routes returned 200. Smoke test passed."
+  echo "All checks passed. Smoke test passed."
   exit 0
 else
   echo "Smoke test FAILED: ${FAILED} check(s) did not pass." >&2

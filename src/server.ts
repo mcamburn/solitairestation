@@ -49,7 +49,8 @@ export default {
     try {
       const handler = await getServerEntry();
       const response = await handler.fetch(request, env, ctx);
-      return await normalizeCatastrophicSsrResponse(response);
+      const normalized = await normalizeCatastrophicSsrResponse(response);
+      return normalized;
     } catch (error) {
       console.error(error);
       return new Response(renderErrorPage(), {
