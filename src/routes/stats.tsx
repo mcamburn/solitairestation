@@ -172,6 +172,7 @@ function StatsPage() {
   const [sortKey, setSortKey] = useState<SortKey>("title");
   const [sortDir, setSortDir] = useState<SortDir>("asc");
   const [dailyOnly, setDailyOnly] = useState(false);
+  const [historyLimit, setHistoryLimit] = useState(25);
 
   // Load real stats from localStorage after first mount (client-only)
   useEffect(() => {
@@ -421,7 +422,7 @@ function StatsPage() {
                 Recent History
               </h2>
               <button
-                onClick={() => setDailyOnly((v) => !v)}
+                onClick={() => { setDailyOnly((v) => !v); setHistoryLimit(25); }}
                 className="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold transition"
                 style={{
                   background: dailyOnly
@@ -439,55 +440,79 @@ function StatsPage() {
 
             {filteredHistory.length === 0 ? (
               <p className="text-sm text-muted-foreground">No daily challenge games recorded yet.</p>
-            ) : (
-              <>
-                {/* Desktop history table */}
-                <div
-                  className="hidden sm:block overflow-x-auto rounded-2xl"
-                  style={{
-                    background: "color-mix(in oklab, var(--neon) 4%, oklch(0.16 0.03 155))",
-                    border: "1px solid color-mix(in oklab, var(--neon) 14%, transparent)",
-                  }}
-                >
-                  <table className="w-full text-sm">
-                    <thead>
-                      <tr
-                        className="text-left text-xs uppercase tracking-[0.18em]"
+            ) : (() => {
+              const visibleHistory = filteredHistory.slice(0, historyLimit);
+              const hasMore = filteredHistory.length > historyLimit;
+              return (
+                <>
+                  {/* Desktop history table */}
+                  <div
+                    className="hidden sm:block overflow-x-auto rounded-2xl"
+                    style={{
+                      background: "color-mix(in oklab, var(--neon) 4%, oklch(0.16 0.03 155))",
+                      border: "1px solid color-mix(in oklab, var(--neon) 14%, transparent)",
+                    }}
+                  >
+                    <table className="w-full text-sm">
+                      <thead>
+                        <tr
+                          className="text-left text-xs uppercase tracking-[0.18em]"
+                          style={{
+                            color: "color-mix(in oklab, var(--neon) 55%, white)",
+                            borderBottom: "1px solid color-mix(in oklab, var(--neon) 8%, transparent)",
+                          }}
+                        >
+                          <th className="px-5 py-3 font-semibold">Game</th>
+                          <th className="px-4 py-3 font-semibold">Result</th>
+                          <th className="px-4 py-3 font-semibold text-right">Time</th>
+                          <th className="px-4 py-3 font-semibold text-right">Moves</th>
+                          <th className="px-4 py-3 font-semibold text-right">Date</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {visibleHistory.map((entry, i) => (
+                          <HistoryTableRow
+                            key={`${entry.gameTo}-${entry.record.date}`}
+                            entry={entry}
+                            isLast={i === visibleHistory.length - 1}
+                          />
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+
+                  {/* Mobile history cards */}
+                  <div className="sm:hidden space-y-2">
+                    {visibleHistory.map((entry) => (
+                      <HistoryMobileRow
+                        key={`${entry.gameTo}-${entry.record.date}`}
+                        entry={entry}
+                      />
+                    ))}
+                  </div>
+
+                  {/* Show more */}
+                  {hasMore && (
+                    <div className="mt-4 flex items-center justify-center gap-3">
+                      <button
+                        onClick={() => setHistoryLimit((n) => n + 25)}
+                        className="rounded-lg px-4 py-2 text-sm font-semibold transition"
                         style={{
-                          color: "color-mix(in oklab, var(--neon) 55%, white)",
-                          borderBottom: "1px solid color-mix(in oklab, var(--neon) 8%, transparent)",
+                          background: "color-mix(in oklab, var(--neon) 6%, oklch(0.16 0.03 155))",
+                          border: "1px solid color-mix(in oklab, var(--neon) 18%, transparent)",
+                          color: "var(--neon)",
                         }}
                       >
-                        <th className="px-5 py-3 font-semibold">Game</th>
-                        <th className="px-4 py-3 font-semibold">Result</th>
-                        <th className="px-4 py-3 font-semibold text-right">Time</th>
-                        <th className="px-4 py-3 font-semibold text-right">Moves</th>
-                        <th className="px-4 py-3 font-semibold text-right">Date</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {filteredHistory.map((entry, i) => (
-                        <HistoryTableRow
-                          key={`${entry.gameTo}-${entry.record.date}`}
-                          entry={entry}
-                          isLast={i === filteredHistory.length - 1}
-                        />
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-
-                {/* Mobile history cards */}
-                <div className="sm:hidden space-y-2">
-                  {filteredHistory.map((entry) => (
-                    <HistoryMobileRow
-                      key={`${entry.gameTo}-${entry.record.date}`}
-                      entry={entry}
-                    />
-                  ))}
-                </div>
-              </>
-            )}
+                        Show more
+                        <span className="ml-1.5 text-xs font-normal opacity-70">
+                          ({filteredHistory.length - historyLimit} remaining)
+                        </span>
+                      </button>
+                    </div>
+                  )}
+                </>
+              );
+            })()}
           </div>
         );
       })()}
