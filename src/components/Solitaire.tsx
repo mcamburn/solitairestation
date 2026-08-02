@@ -901,7 +901,7 @@ function WinOverlay({ onNew, moves, time, mode, score }: {
         {isDaily && (
           <div className="mx-auto mb-3 inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-widest"
             style={{ background: "linear-gradient(135deg, var(--neon), var(--neon-2))", color: "var(--primary-foreground)" }}>
-            ☀️ Daily Complete
+            ☀️ Daily · {modeLabel}
           </div>
         )}
         {!isDaily && <div className="mx-auto mb-4 h-12 w-12 rounded-2xl" style={{ background: "linear-gradient(135deg, var(--neon), var(--neon-2))", boxShadow: "0 0 40px -4px var(--neon)" }} />}
