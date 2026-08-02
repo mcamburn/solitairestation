@@ -1071,9 +1071,23 @@ function HistoryMobileRow({ entry }: { entry: HistoryEntry }) {
 
 function ExportImportControls({ onImported }: { onImported: () => void }) {
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const importBtnRef = useRef<HTMLButtonElement>(null);
   const [status, setStatus] = useState<{ kind: "success" | "error"; message: string } | null>(null);
   // Pending import: hold parsed data until the player confirms
   const [pendingImport, setPendingImport] = useState<{ data: unknown; count: number } | null>(null);
+
+  // Close modal on Escape
+  useEffect(() => {
+    if (!pendingImport) return;
+    function onKeyDown(e: KeyboardEvent) {
+      if (e.key === "Escape") {
+        handleCancelImport();
+      }
+    }
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pendingImport]);
 
   function handleExport() {
     downloadStatsExport();
@@ -1131,6 +1145,8 @@ function ExportImportControls({ onImported }: { onImported: () => void }) {
 
   function handleCancelImport() {
     setPendingImport(null);
+    // Return focus to the trigger button
+    importBtnRef.current?.focus();
   }
 
   return (
@@ -1217,6 +1233,7 @@ function ExportImportControls({ onImported }: { onImported: () => void }) {
             ↓ Export stats
           </button>
           <button
+            ref={importBtnRef}
             onClick={handleImportClick}
             className="flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold transition"
             style={{
