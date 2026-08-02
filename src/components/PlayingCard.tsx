@@ -132,15 +132,15 @@ export function PlayingCard({
       {...faceUpKbProps}
     >
       <div
-        className={`flex items-start justify-between text-[13px] font-semibold leading-none ${textColorClass}`}
+        className={`flex items-start justify-between text-[17px] font-semibold leading-none ${textColorClass}`}
         style={{ fontFamily }}
       >
         <div className="flex flex-col items-center">
           <span className="card-rank">{label}</span>
-          <span className="card-rank-suit text-[11px]">{glyph}</span>
+          <span className="card-rank-suit text-[14px]">{glyph}</span>
         </div>
         {faceStyle !== "minimal" && (
-          <div className={`card-top-glyph text-[22px] leading-none ${isRed ? "text-red-suit" : textColorClass}`}>
+          <div className={`card-top-glyph text-[26px] leading-none ${isRed ? "text-red-suit" : textColorClass}`}>
             {glyph}
           </div>
         )}

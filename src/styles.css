@@ -378,6 +378,32 @@
   .playing-card [class*="text-2xl"] { font-size: 0.7rem  !important; }
 }
 
+/* Very cramped cards (≤40 px wide) — Eight Off / Spider on phones (~37 px).
+   Hide the top-right glyph entirely so rank + suit have the full width. */
+@container card-slot (max-width: 40px) {
+  .playing-card { padding: 3px; }
+  .card-rank       { font-size: 12px !important; line-height: 1; }
+  .card-rank-suit  { font-size: 10px !important; }
+  .card-top-glyph  { display: none !important; }
+  .playing-card [class*="text-5xl"] { font-size: 0.9rem  !important; }
+  .playing-card [class*="text-4xl"] { font-size: 0.8rem  !important; }
+  .playing-card [class*="text-3xl"] { font-size: 0.65rem !important; }
+  .playing-card [class*="text-2xl"] { font-size: 0.55rem !important; }
+}
+
+/* Tiny cards (≤28 px wide) — Baker's Dozen on phones (~25 px).
+   Show rank only; hide suit and top-right glyph. */
+@container card-slot (max-width: 28px) {
+  .playing-card { padding: 2px; }
+  .card-rank       { font-size: 9px !important; line-height: 1; }
+  .card-rank-suit  { display: none !important; }
+  .card-top-glyph  { display: none !important; }
+  .playing-card [class*="text-5xl"] { font-size: 0.65rem !important; }
+  .playing-card [class*="text-4xl"] { font-size: 0.55rem !important; }
+  .playing-card [class*="text-3xl"] { font-size: 0.45rem !important; }
+  .playing-card [class*="text-2xl"] { font-size: 0.4rem  !important; }
+}
+
 @utility hint-glow {
   animation: hint-pulse 1.1s ease-in-out infinite;
   z-index: 5;

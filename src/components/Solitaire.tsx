@@ -97,8 +97,14 @@ export function Solitaire({ initialMode }: { initialMode?: KlondikeMode } = {}) 
 
   // ── Mobile breakpoint (< 640px) — tighter column gaps ──────────────────────
   const [isMobile, setIsMobile] = useState(false);
+  // Ref so measureCols (called from ResizeObserver) always reads the latest value
+  const isMobileRef = useRef(false);
   useEffect(() => {
-    const check = () => setIsMobile(window.innerWidth < 640);
+    const check = () => {
+      const mobile = window.innerWidth < 640;
+      isMobileRef.current = mobile;
+      setIsMobile(mobile);
+    };
     check();
     window.addEventListener("resize", check);
     return () => window.removeEventListener("resize", check);
@@ -109,7 +115,9 @@ export function Solitaire({ initialMode }: { initialMode?: KlondikeMode } = {}) 
     if (!el) return;
     const w = el.getBoundingClientRect().width;
     const ncols = modeRef.current === "double" ? 9 : 7;
-    const gap = ncols === 9 ? 8 : 12;
+    // Use the actual rendered gap (mobile = 4/3 px, desktop = 12/8 px)
+    const mobile = isMobileRef.current;
+    const gap = mobile ? (ncols === 9 ? 3 : 4) : (ncols === 9 ? 8 : 12);
     setColW(Math.max(22, Math.round((w - (ncols - 1) * gap) / ncols)));
   };
 
@@ -123,8 +131,8 @@ export function Solitaire({ initialMode }: { initialMode?: KlondikeMode } = {}) 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stateLoaded]);
 
-  // Recalculate when mode changes (column count differs)
-  useEffect(measureCols, [mode]); // eslint-disable-line react-hooks/exhaustive-deps
+  // Recalculate when mode or mobile breakpoint changes (column count / gap differ)
+  useEffect(measureCols, [mode, isMobile]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const vh = typeof window !== "undefined" ? window.innerHeight : 900;
   const cardH   = Math.min(Math.round(isMobile ? colW * 1.5 : colW * 10 / 7), Math.round(vh * 0.30));
