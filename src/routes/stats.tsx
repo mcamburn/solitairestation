@@ -173,6 +173,16 @@ function StatsPage() {
   const [sortDir, setSortDir] = useState<SortDir>("asc");
   const [dailyOnly, setDailyOnly] = useState(false);
   const [historyLimit, setHistoryLimit] = useState(25);
+  const [expandedGames, setExpandedGames] = useState<Set<string>>(new Set());
+
+  function toggleGameExpanded(saveKey: string) {
+    setExpandedGames((prev) => {
+      const next = new Set(prev);
+      if (next.has(saveKey)) next.delete(saveKey);
+      else next.add(saveKey);
+      return next;
+    });
+  }
 
   // Load real stats from localStorage after first mount (client-only)
   useEffect(() => {
@@ -330,6 +340,8 @@ function StatsPage() {
                   row={row}
                   isLast={i === sorted.length - 1}
                   highlighted={highlightedKey === row.saveKey}
+                  expanded={expandedGames.has(row.saveKey)}
+                  onToggleExpand={() => toggleGameExpanded(row.saveKey)}
                   rowRef={(el) => {
                     if (el) tableRowRefs.current.set(row.saveKey, el);
                     else tableRowRefs.current.delete(row.saveKey);
@@ -393,6 +405,8 @@ function StatsPage() {
               key={row.saveKey}
               row={row}
               highlighted={highlightedKey === row.saveKey}
+              expanded={expandedGames.has(row.saveKey)}
+              onToggleExpand={() => toggleGameExpanded(row.saveKey)}
               rowRef={(el) => {
                 if (el) mobileCardRefs.current.set(row.saveKey, el);
                 else mobileCardRefs.current.delete(row.saveKey);
@@ -592,83 +606,196 @@ function TableRow({
   row,
   isLast,
   highlighted,
+  expanded,
+  onToggleExpand,
   rowRef,
 }: {
   row: GameRow;
   isLast: boolean;
   highlighted?: boolean;
+  expanded?: boolean;
+  onToggleExpand?: () => void;
   rowRef?: (el: HTMLTableRowElement | null) => void;
 }) {
   const { stats } = row;
   const hasPlayed = stats.gamesPlayed > 0;
+  const hasHistory = stats.history.length > 0;
   const winRate = getWinRate(stats);
+  const showBorder = !isLast || expanded;
 
   return (
-    <tr
-      ref={rowRef}
-      className={`transition-colors hover:bg-white/[0.03]${highlighted ? " stats-row-highlighted" : ""}`}
-      style={
-        !isLast
-          ? { borderBottom: "1px solid color-mix(in oklab, var(--neon) 8%, transparent)" }
-          : undefined
-      }
-    >
-      {/* Game name */}
-      <td className="px-5 py-3">
-        <Link
-          to={row.to as "/klondike"}
-          className="flex items-center gap-2 font-medium text-foreground hover:underline underline-offset-2 transition"
+    <>
+      <tr
+        ref={rowRef}
+        className={`transition-colors hover:bg-white/[0.03]${highlighted ? " stats-row-highlighted" : ""}`}
+        style={
+          showBorder
+            ? { borderBottom: "1px solid color-mix(in oklab, var(--neon) 8%, transparent)" }
+            : undefined
+        }
+      >
+        {/* Game name + expand toggle */}
+        <td className="px-5 py-3">
+          <div className="flex items-center gap-2">
+            <Link
+              to={row.to as "/klondike"}
+              className="flex items-center gap-2 font-medium text-foreground hover:underline underline-offset-2 transition"
+            >
+              <span>{row.emoji}</span>
+              <span>{row.title}</span>
+            </Link>
+            {hasHistory && (
+              <button
+                onClick={onToggleExpand}
+                aria-label={expanded ? `Collapse ${row.title} history` : `Expand ${row.title} history`}
+                aria-expanded={expanded}
+                className="ml-1 flex items-center justify-center rounded transition-opacity hover:opacity-80"
+                style={{ color: "var(--muted-foreground)", lineHeight: 1 }}
+              >
+                <span
+                  className="text-xs transition-transform duration-200 inline-block"
+                  style={{ transform: expanded ? "rotate(180deg)" : "rotate(0deg)" }}
+                >
+                  ▾
+                </span>
+              </button>
+            )}
+          </div>
+        </td>
+
+        {/* Played */}
+        <td
+          className="px-4 py-3 text-right tabular-nums"
+          style={{ color: hasPlayed ? "var(--foreground)" : "var(--muted-foreground)" }}
         >
-          <span>{row.emoji}</span>
-          <span>{row.title}</span>
-        </Link>
-      </td>
+          {hasPlayed ? stats.gamesPlayed : "—"}
+        </td>
 
-      {/* Played */}
-      <td
-        className="px-4 py-3 text-right tabular-nums"
-        style={{ color: hasPlayed ? "var(--foreground)" : "var(--muted-foreground)" }}
-      >
-        {hasPlayed ? stats.gamesPlayed : "—"}
-      </td>
+        {/* Wins */}
+        <td
+          className="px-4 py-3 text-right tabular-nums"
+          style={{ color: hasPlayed ? "var(--foreground)" : "var(--muted-foreground)" }}
+        >
+          {hasPlayed ? stats.wins : "—"}
+        </td>
 
-      {/* Wins */}
-      <td
-        className="px-4 py-3 text-right tabular-nums"
-        style={{ color: hasPlayed ? "var(--foreground)" : "var(--muted-foreground)" }}
-      >
-        {hasPlayed ? stats.wins : "—"}
-      </td>
+        {/* Win rate */}
+        <td
+          className="px-4 py-3 text-right tabular-nums font-semibold"
+          style={{ color: hasPlayed ? "var(--neon)" : "var(--muted-foreground)" }}
+        >
+          {hasPlayed ? `${winRate}%` : "—"}
+        </td>
 
-      {/* Win rate */}
-      <td
-        className="px-4 py-3 text-right tabular-nums font-semibold"
-        style={{ color: hasPlayed ? "var(--neon)" : "var(--muted-foreground)" }}
-      >
-        {hasPlayed ? `${winRate}%` : "—"}
-      </td>
-
-      {/* Best time */}
-      <td
-        className="px-4 py-3 text-right tabular-nums"
-        style={{
-          color: stats.bestTime != null ? "var(--foreground)" : "var(--muted-foreground)",
-        }}
-      >
-        {stats.bestTime != null ? formatStatTime(stats.bestTime) : "—"}
-      </td>
-
-      {/* Longest streak */}
-      <td className="px-4 py-3 text-right tabular-nums">
-        <span
+        {/* Best time */}
+        <td
+          className="px-4 py-3 text-right tabular-nums"
           style={{
-            color: stats.longestStreak > 0 ? "var(--neon)" : "var(--muted-foreground)",
+            color: stats.bestTime != null ? "var(--foreground)" : "var(--muted-foreground)",
           }}
         >
-          {stats.longestStreak > 0 ? `🔥 ${stats.longestStreak}` : "—"}
-        </span>
-      </td>
-    </tr>
+          {stats.bestTime != null ? formatStatTime(stats.bestTime) : "—"}
+        </td>
+
+        {/* Longest streak */}
+        <td className="px-4 py-3 text-right tabular-nums">
+          <span
+            style={{
+              color: stats.longestStreak > 0 ? "var(--neon)" : "var(--muted-foreground)",
+            }}
+          >
+            {stats.longestStreak > 0 ? `🔥 ${stats.longestStreak}` : "—"}
+          </span>
+        </td>
+      </tr>
+
+      {/* Expanded history — full-width colspan panel with its own labelled columns */}
+      {expanded && hasHistory && (
+        <tr
+          style={{
+            background: "color-mix(in oklab, var(--neon) 3%, oklch(0.14 0.03 155))",
+            borderBottom: !isLast
+              ? "1px solid color-mix(in oklab, var(--neon) 8%, transparent)"
+              : undefined,
+          }}
+        >
+          <td colSpan={6} className="px-6 py-3">
+            {/* Section label */}
+            <p
+              className="text-[10px] uppercase tracking-[0.18em] font-semibold mb-2"
+              style={{ color: "color-mix(in oklab, var(--neon) 55%, white)" }}
+            >
+              {row.title} — last {stats.history.length} game{stats.history.length !== 1 ? "s" : ""}
+            </p>
+
+            {/* Self-contained mini-table with its own column headers */}
+            <table className="w-full text-xs" data-testid={`history-table-${row.saveKey}`}>
+              <thead>
+                <tr
+                  style={{
+                    borderBottom: "1px solid color-mix(in oklab, var(--neon) 10%, transparent)",
+                    color: "var(--muted-foreground)",
+                  }}
+                >
+                  <th className="pb-1.5 pr-4 text-left font-semibold">Result</th>
+                  <th className="pb-1.5 px-4 text-right font-semibold">Time</th>
+                  <th className="pb-1.5 px-4 text-right font-semibold">Moves</th>
+                  <th className="pb-1.5 pl-4 text-right font-semibold">Date</th>
+                </tr>
+              </thead>
+              <tbody>
+                {stats.history.map((record, i) => {
+                  const isLastHistory = i === stats.history.length - 1;
+                  const dateStr = new Date(record.date).toLocaleDateString(undefined, {
+                    month: "short",
+                    day: "numeric",
+                    year: "numeric",
+                  });
+                  return (
+                    <tr
+                      key={record.date}
+                      className="transition-colors hover:bg-white/[0.02]"
+                      style={
+                        !isLastHistory
+                          ? { borderBottom: "1px solid color-mix(in oklab, var(--neon) 7%, transparent)" }
+                          : undefined
+                      }
+                    >
+                      {/* Result + daily badge */}
+                      <td className="py-2 pr-4">
+                        <div className="flex items-center gap-2">
+                          <span
+                            className="font-semibold"
+                            style={{ color: record.won ? "var(--neon)" : "var(--muted-foreground)" }}
+                          >
+                            {record.won ? "✓ Win" : "✗ Loss"}
+                          </span>
+                          {record.isDaily && <DailyBadge />}
+                        </div>
+                      </td>
+                      {/* Time */}
+                      <td className="py-2 px-4 text-right tabular-nums" style={{ color: "var(--foreground)" }}>
+                        {record.won && record.durationSeconds > 0
+                          ? formatStatTime(record.durationSeconds)
+                          : "—"}
+                      </td>
+                      {/* Moves */}
+                      <td className="py-2 px-4 text-right tabular-nums" style={{ color: "var(--foreground)" }}>
+                        {record.moves > 0 ? record.moves : "—"}
+                      </td>
+                      {/* Date */}
+                      <td className="py-2 pl-4 text-right" style={{ color: "var(--muted-foreground)" }}>
+                        {dateStr}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </td>
+        </tr>
+      )}
+    </>
   );
 }
 
@@ -890,14 +1017,19 @@ function ExportImportControls({ onImported }: { onImported: () => void }) {
 function MobileCard({
   row,
   highlighted,
+  expanded,
+  onToggleExpand,
   rowRef,
 }: {
   row: GameRow;
   highlighted?: boolean;
+  expanded?: boolean;
+  onToggleExpand?: () => void;
   rowRef?: (el: HTMLDivElement | null) => void;
 }) {
   const { stats } = row;
   const hasPlayed = stats.gamesPlayed > 0;
+  const hasHistory = stats.history.length > 0;
   const winRate = getWinRate(stats);
 
   return (
@@ -957,6 +1089,86 @@ function MobileCard({
         </div>
       ) : (
         <p className="text-xs text-muted-foreground">No games played yet</p>
+      )}
+
+      {/* Expand/collapse history toggle */}
+      {hasHistory && (
+        <button
+          onClick={onToggleExpand}
+          aria-expanded={expanded}
+          aria-label={expanded ? `Collapse ${row.title} history` : `Show ${row.title} history`}
+          className="mt-2.5 flex items-center gap-1 text-xs font-medium transition-opacity hover:opacity-80"
+          style={{ color: "var(--muted-foreground)" }}
+        >
+          <span
+            className="transition-transform duration-200 inline-block"
+            style={{ transform: expanded ? "rotate(180deg)" : "rotate(0deg)" }}
+          >
+            ▾
+          </span>
+          {expanded
+            ? "Hide history"
+            : `Show history (${stats.history.length})`}
+        </button>
+      )}
+
+      {/* Inline history entries */}
+      {expanded && hasHistory && (
+        <div
+          className="mt-2 -mx-4 px-4 pt-2 pb-1 space-y-2"
+          style={{
+            borderTop: "1px solid color-mix(in oklab, var(--neon) 10%, transparent)",
+            background: "color-mix(in oklab, var(--neon) 2%, oklch(0.14 0.03 155))",
+          }}
+        >
+          <p
+            className="text-[10px] uppercase tracking-[0.18em] font-semibold mb-2"
+            style={{ color: "color-mix(in oklab, var(--neon) 55%, white)" }}
+          >
+            Last {stats.history.length} game{stats.history.length !== 1 ? "s" : ""}
+          </p>
+          {stats.history.map((record) => {
+            const dateStr = new Date(record.date).toLocaleDateString(undefined, {
+              month: "short",
+              day: "numeric",
+              year: "numeric",
+            });
+            return (
+              <div
+                key={record.date}
+                className="flex items-center justify-between gap-2 py-1.5"
+                style={{
+                  borderBottom: "1px solid color-mix(in oklab, var(--neon) 7%, transparent)",
+                }}
+              >
+                {/* Left: result + daily badge */}
+                <div className="flex items-center gap-2 flex-wrap min-w-0">
+                  <span
+                    className="text-xs font-semibold shrink-0"
+                    style={{ color: record.won ? "var(--neon)" : "var(--muted-foreground)" }}
+                  >
+                    {record.won ? "✓ Win" : "✗ Loss"}
+                  </span>
+                  {record.isDaily && <DailyBadge />}
+                </div>
+                {/* Right: time/moves + date */}
+                <div className="flex items-center gap-3 shrink-0 text-xs" style={{ color: "var(--muted-foreground)" }}>
+                  {record.won && record.durationSeconds > 0 && (
+                    <span className="tabular-nums" style={{ color: "var(--foreground)" }}>
+                      {formatStatTime(record.durationSeconds)}
+                    </span>
+                  )}
+                  {record.moves > 0 && (
+                    <span className="tabular-nums" style={{ color: "var(--foreground)" }}>
+                      {record.moves}m
+                    </span>
+                  )}
+                  <span>{dateStr}</span>
+                </div>
+              </div>
+            );
+          })}
+        </div>
       )}
     </div>
   );
