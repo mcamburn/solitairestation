@@ -140,8 +140,9 @@ export function Spider({ initialDifficulty }: { initialDifficulty?: SpiderDiffic
   }, [stateLoaded]);
   const vh = typeof window !== "undefined" ? window.innerHeight : 900;
   const cardH   = Math.min(Math.round(colW * 10 / 7), Math.round(vh * 0.30));
-  const fanUp   = Math.max(6, Math.round(FAN_UP   * cardH / CARD_H));
-  const fanDown = Math.max(3, Math.round(FAN_DOWN * cardH / CARD_H));
+  const fanMultiplier = Math.min(1.3, Math.max(1.0, 80 / Math.max(colW, 40)));
+  const fanUp   = Math.max(6, Math.round(FAN_UP   * cardH / CARD_H * fanMultiplier));
+  const fanDown = Math.max(3, Math.round(FAN_DOWN * cardH / CARD_H * fanMultiplier));
 
   // ── Global pointer handlers ────────────────────────────────────────────────
   useEffect(() => {

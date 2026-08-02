@@ -128,8 +128,11 @@ export function Solitaire({ initialMode }: { initialMode?: KlondikeMode } = {}) 
 
   const vh = typeof window !== "undefined" ? window.innerHeight : 900;
   const cardH   = Math.min(Math.round(colW * 10 / 7), Math.round(vh * 0.30));
-  const fanUp   = Math.max(10, Math.round(FAN_UP   * cardH / CARD_H));
-  const fanDown = Math.max(5,  Math.round(FAN_DOWN * cardH / CARD_H));
+  // Boost fan spacing on narrow screens (colW < 80px) so each card's peeking
+  // strip is proportional to the card's own dimensions (caps at 1.3×).
+  const fanMultiplier = Math.min(1.3, Math.max(1.0, 80 / Math.max(colW, 40)));
+  const fanUp   = Math.max(10, Math.round(FAN_UP   * cardH / CARD_H * fanMultiplier));
+  const fanDown = Math.max(5,  Math.round(FAN_DOWN * cardH / CARD_H * fanMultiplier));
 
   // ── Init / persist ─────────────────────────────────────────────────────────
   useEffect(() => {

@@ -114,7 +114,8 @@ export function BakersGame() {
   }, [stateLoaded]);
   const vh = typeof window !== "undefined" ? window.innerHeight : 900;
   const cardH = Math.min(Math.round(colW * 10 / 7), Math.round(vh * 0.30));
-  const fan = Math.max(10, Math.round(FAN * cardH / CARD_H));
+  const fanMultiplier = Math.min(1.3, Math.max(1.0, 80 / Math.max(colW, 40)));
+  const fan = Math.max(10, Math.round(FAN * cardH / CARD_H * fanMultiplier));
 
   useEffect(() => {
     const onMove = (e: PointerEvent) => {
