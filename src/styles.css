@@ -365,17 +365,17 @@
   .playing-card [class*="text-2xl"] { font-size: 0.85rem !important; }
 }
 
-/* Very narrow cards (≤50 px wide) — 10-col Spider on phones (~37 px),
-   or zoomed-out views. Drop only slightly from the 65 px values above. */
+/* Very narrow cards (≤50 px wide) — Canfield (~41 px), Eight Off free cells
+   (~42 px), Spider (~35 px), Forty Thieves (~35 px).  At these widths the
+   2:3 card is short enough that the centred body overlaps the top corner, so
+   hide it entirely and rely on the corner rank + suit alone. */
 @container card-slot (max-width: 50px) {
   .playing-card { padding: 3px; }
   .card-rank       { font-size: 15px !important; line-height: 1; }
   .card-rank-suit  { font-size: 13px !important; }
   .card-top-glyph  { font-size: 16px !important; }
-  .playing-card [class*="text-5xl"] { font-size: 1.1rem  !important; }
-  .playing-card [class*="text-4xl"] { font-size: 0.95rem !important; }
-  .playing-card [class*="text-3xl"] { font-size: 0.8rem  !important; }
-  .playing-card [class*="text-2xl"] { font-size: 0.7rem  !important; }
+  /* Centre body overlaps the top corner at this card height — hide it. */
+  .card-body       { display: none !important; }
 }
 
 /* Very cramped cards (≤40 px wide) — Eight Off / Spider on phones (~37 px).

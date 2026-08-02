@@ -148,13 +148,13 @@ export function PlayingCard({
 
       {faceStyle === "minimal" ? (
         <div
-          className={`absolute inset-x-0 bottom-2 flex justify-center text-2xl opacity-80 ${textColorClass}`}
+          className={`card-body absolute inset-x-0 bottom-2 flex justify-center text-2xl opacity-80 ${textColorClass}`}
         >
           {glyph}
         </div>
       ) : faceStyle === "bold" ? (
         <div
-          className={`absolute inset-0 flex flex-col items-center justify-center leading-none ${textColorClass}`}
+          className={`card-body absolute inset-0 flex flex-col items-center justify-center leading-none ${textColorClass}`}
           style={{ fontFamily }}
         >
           <span className="text-5xl font-black tracking-tighter">{label}</span>
@@ -162,7 +162,7 @@ export function PlayingCard({
         </div>
       ) : faceStyle === "pixel" ? (
         <div
-          className={`absolute inset-0 flex items-center justify-center ${textColorClass}`}
+          className={`card-body absolute inset-0 flex items-center justify-center ${textColorClass}`}
           style={{ fontFamily }}
         >
           <span className="text-4xl font-bold" style={{ letterSpacing: "-0.05em" }}>
@@ -171,7 +171,7 @@ export function PlayingCard({
         </div>
       ) : faceStyle === "script" ? (
         <div
-          className={`absolute inset-0 flex items-center justify-center ${textColorClass}`}
+          className={`card-body absolute inset-0 flex items-center justify-center ${textColorClass}`}
           style={{ fontFamily }}
         >
           <span className="text-5xl italic" style={{ transform: "rotate(-6deg)" }}>
@@ -180,7 +180,7 @@ export function PlayingCard({
         </div>
       ) : faceStyle === "outline" ? (
         <div
-          className="absolute inset-0 flex items-center justify-center"
+          className="card-body absolute inset-0 flex items-center justify-center"
           style={{ fontFamily }}
         >
           <span
@@ -195,7 +195,7 @@ export function PlayingCard({
         </div>
       ) : faceStyle === "retro" ? (
         <div
-          className="absolute inset-0 flex items-center justify-center"
+          className="card-body absolute inset-0 flex items-center justify-center"
           style={{ fontFamily }}
         >
           <span
@@ -211,7 +211,7 @@ export function PlayingCard({
         </div>
       ) : faceStyle === "stencil" ? (
         <div
-          className={`absolute inset-0 flex items-center justify-center ${textColorClass}`}
+          className={`card-body absolute inset-0 flex items-center justify-center ${textColorClass}`}
           style={{ fontFamily }}
         >
           <span className="text-5xl font-black uppercase" style={{ letterSpacing: "0.02em" }}>
@@ -220,7 +220,7 @@ export function PlayingCard({
         </div>
       ) : (
         <div
-          className={`absolute inset-0 flex items-center justify-center text-4xl opacity-90 ${textColorClass}`}
+          className={`card-body absolute inset-0 flex items-center justify-center text-4xl opacity-90 ${textColorClass}`}
           style={{ fontFamily }}
         >
           {["J", "Q", "K"].includes(label) ? (
