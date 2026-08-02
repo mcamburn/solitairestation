@@ -159,7 +159,7 @@ export function GameSwitcher() {
                   </span>
 
                   {/* Description */}
-                  <span className="mt-0.5 text-[10px] leading-tight text-muted-foreground max-w-full truncate">
+                  <span className="mt-0.5 text-[10px] leading-tight text-muted-foreground w-full truncate">
                     {g.desc}
                   </span>
 
