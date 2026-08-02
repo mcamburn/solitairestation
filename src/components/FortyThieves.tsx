@@ -105,8 +105,9 @@ export function FortyThieves() {
     if (!el) return;
     const measure = () => {
       const w = el.getBoundingClientRect().width - 32;
-      const computed = Math.floor((w - cardGap * 9) / 10);
-      setCardW(Math.max(36, Math.min(computed, 80)));
+      // Use minimum gap (2px) for the fit calculation to avoid circular dependency
+      const computed = Math.floor((w - 2 * 9) / 10);
+      setCardW(Math.max(28, Math.min(computed, 80)));
     };
     measure();
     const ro = new ResizeObserver(measure);

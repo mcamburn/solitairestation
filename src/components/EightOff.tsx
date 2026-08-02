@@ -326,10 +326,11 @@ export function EightOff() {
 
       {/* Board */}
       <div className="game-board-glass glass mt-4 rounded-2xl p-4 sm:p-5">
-        {/* Free cells (8) + foundations (4) — 12 slots in one row */}
-        <div className="mb-4 grid gap-1.5" style={{ gridTemplateColumns: "repeat(12, minmax(0, 1fr))" }}>
-          {/* Free cells */}
-          {game.freeCells.map((card, i) => {
+        {/* Free cells (8) + foundations (4).
+            Desktop: one 12-col row.
+            Mobile (colW < 50): two rows — 8 free cells on top, 4 foundations below. */}
+        {(() => {
+          const freeCellSlots = game.freeCells.map((card, i) => {
             const { ring, shadow } = dropHighlight(`freecell-${i}`);
             const selected = !dragMode && sel?.kind === "freecell" && sel.cell === i;
             const hinted = hint?.src.kind === "freecell" && hint.src.cell === i;
@@ -369,10 +370,9 @@ export function EightOff() {
                 )}
               </div>
             );
-          })}
+          });
 
-          {/* Foundations (right-aligned, 4 slots) */}
-          {game.foundations.map((pile, i) => {
+          const foundationSlots = game.foundations.map((pile, i) => {
             const top = pile[pile.length - 1];
             const { ring, shadow } = dropHighlight(`foundation-${i}`);
             return (
@@ -396,8 +396,30 @@ export function EightOff() {
                 )}
               </div>
             );
-          })}
-        </div>
+          });
+
+          if (colW < 50) {
+            // Mobile: two separate rows so each card gets a full 1/8 column width
+            return (
+              <>
+                <div className="mb-2 grid gap-1.5" style={{ gridTemplateColumns: "repeat(8, minmax(0, 1fr))" }}>
+                  {freeCellSlots}
+                </div>
+                <div className="mb-4 grid gap-1.5" style={{ gridTemplateColumns: "repeat(4, minmax(0, 1fr))" }}>
+                  {foundationSlots}
+                </div>
+              </>
+            );
+          }
+
+          // Desktop: single 12-col row
+          return (
+            <div className="mb-4 grid gap-1.5" style={{ gridTemplateColumns: "repeat(12, minmax(0, 1fr))" }}>
+              {freeCellSlots}
+              {foundationSlots}
+            </div>
+          );
+        })()}
 
         {/* Tableau */}
         <div ref={gridRef} className="grid gap-1.5" style={{ gridTemplateColumns: "repeat(8, minmax(0, 1fr))" }}>

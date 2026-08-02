@@ -180,8 +180,8 @@ export function Canfield() {
   }
 
   const game = state;
-  const cardW = Math.max(36, Math.round(CARD_W * scale));
-  const cardH = Math.round(cardW * 10 / 7);
+  const cardW = Math.max(28, Math.round(CARD_W * scale));
+  const cardH = Math.round(cardW < 70 ? cardW * 1.5 : cardW * 10 / 7);
   const overlap = Math.max(14, Math.round(CARD_OVERLAP * scale));
   const colGap = Math.max(3, Math.round(8 * scale));
 

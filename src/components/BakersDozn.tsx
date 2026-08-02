@@ -48,7 +48,7 @@ export function BakersDozn() {
   const { visible: toastVisible, show: showToast } = useNewGameToast();
   const [, forceUpdate] = useState(0);
   const boardRef = useRef<HTMLDivElement>(null);
-  const [scale, setScale] = useState(1);
+  const [boardW, setBoardW] = useState(880);
   const statsRef = useRef(false);
   const [gameStats, setGameStats] = useState<GameStats | null>(null);
   const topBarStats = useGameTopBarStats("bakersdozen");
@@ -95,7 +95,7 @@ export function BakersDozn() {
     if (!el) return;
     const measure = () => {
       const w = el.getBoundingClientRect().width;
-      setScale(Math.min(1, w / 880));
+      setBoardW(w);
     };
     measure();
     const ro = new ResizeObserver(measure);
@@ -164,10 +164,12 @@ export function BakersDozn() {
   }
 
   const game = state;
-  const cardW = Math.max(28, Math.round(CARD_W * scale));
-  const cardH = Math.round(cardW * 10 / 7);
-  const overlap = Math.max(12, Math.round(CARD_OVERLAP * scale));
-  const colGap = Math.max(2, Math.round(4 * scale));
+  // Compute cardW to guarantee all 13 columns fit inside the measured board width
+  const rawScale = Math.min(1, boardW / 880);
+  const colGap = Math.max(2, Math.round(4 * rawScale));
+  const cardW = Math.max(16, Math.min(Math.round(CARD_W * rawScale), Math.floor((boardW - colGap * 12) / 13)));
+  const cardH = Math.round(cardW < 70 ? cardW * 1.5 : cardW * 10 / 7);
+  const overlap = Math.max(12, Math.round(CARD_OVERLAP * (cardW / CARD_W)));
 
   const commit = (next: BakersDozenState | null) => {
     if (!next) return false;
