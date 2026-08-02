@@ -12,6 +12,8 @@
  * 6. Daily-challenge records show the DailyBadge.
  * 7. Clicking the toggle a second time collapses the history.
  * 8. Mobile cards: toggle shows/hides inline history with correct labels.
+ * 9. History drilldown works correctly after stats are imported via importStatsFromExport.
+ * 10. Empty history (all entries dropped during import) shows no expand toggle — no crash.
  */
 
 import { render, screen, waitFor, within } from "@testing-library/react";
@@ -52,6 +54,7 @@ vi.mock("@/components/SiteFooter", () => ({
 // ---------------------------------------------------------------------------
 
 import { Route } from "../routes/stats";
+import { importStatsFromExport } from "../lib/stats";
 
 // ---------------------------------------------------------------------------
 // Test data helpers
@@ -304,5 +307,191 @@ describe("Stats page — per-game history drilldown (mobile card)", () => {
 
     // Both views should be collapsed — mini-table gone
     expect(screen.queryByTestId("history-table-klondike")).toBeNull();
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Imported stats — history drilldown after importStatsFromExport
+// ---------------------------------------------------------------------------
+
+describe("Stats page — history drilldown after importStatsFromExport", () => {
+  it("renders the expand button for a game whose history was imported via importStatsFromExport", async () => {
+    // Simulate importing a valid stats export that contains one win record.
+    importStatsFromExport({
+      version: 1,
+      exportedAt: Date.now(),
+      games: {
+        klondike: {
+          gamesPlayed: 1,
+          wins: 1,
+          losses: 0,
+          currentStreak: 1,
+          longestStreak: 1,
+          bestTime: 125,
+          bestMoves: 45,
+          avgTime: 125,
+          avgMoves: 45,
+          lastPlayedAt: 1700000000000,
+          history: [WIN_RECORD],
+        },
+      },
+    });
+
+    render(<StatsPage />);
+
+    await waitFor(() =>
+      expect(
+        screen.queryByRole("button", { name: /expand klondike history/i }),
+      ).not.toBeNull(),
+    );
+
+    expect(
+      screen.getByRole("button", { name: /expand klondike history/i }),
+    ).toBeInTheDocument();
+  });
+
+  it("renders imported history rows correctly when the mini-table is expanded", async () => {
+    importStatsFromExport({
+      version: 1,
+      exportedAt: Date.now(),
+      games: {
+        klondike: {
+          gamesPlayed: 1,
+          wins: 1,
+          losses: 0,
+          currentStreak: 1,
+          longestStreak: 1,
+          bestTime: 125,
+          bestMoves: 45,
+          avgTime: 125,
+          avgMoves: 45,
+          lastPlayedAt: 1700000000000,
+          history: [WIN_RECORD],
+        },
+      },
+    });
+
+    const user = userEvent.setup();
+    render(<StatsPage />);
+
+    const miniTable = await expandDesktopHistory(user, "klondike");
+
+    // History row must render the win result, time, and move count.
+    expect(within(miniTable).getByText("✓ Win")).toBeInTheDocument();
+    expect(within(miniTable).getByText("2:05")).toBeInTheDocument(); // 125s = 2:05
+    expect(within(miniTable).getByText("45")).toBeInTheDocument();
+  });
+
+  it("handles a mix of valid and malformed history entries — only valid rows appear", async () => {
+    // importStatsFromExport silently drops malformed history records.
+    importStatsFromExport({
+      version: 1,
+      exportedAt: Date.now(),
+      games: {
+        klondike: {
+          gamesPlayed: 2,
+          wins: 1,
+          losses: 1,
+          currentStreak: 0,
+          longestStreak: 1,
+          bestTime: 125,
+          bestMoves: 45,
+          avgTime: 125,
+          avgMoves: null,
+          lastPlayedAt: 1700000000000,
+          history: [
+            WIN_RECORD,
+            // Malformed: missing required fields — should be silently dropped.
+            { won: "yes", moves: "a lot" },
+          ],
+        },
+      },
+    });
+
+    const user = userEvent.setup();
+    render(<StatsPage />);
+
+    // The expand button should still appear because one valid entry survived.
+    const miniTable = await expandDesktopHistory(user, "klondike");
+
+    // Only the valid win record should be rendered.
+    const winRows = within(miniTable).getAllByText("✓ Win");
+    expect(winRows).toHaveLength(1);
+  });
+
+  it("shows no expand toggle when all history entries are dropped during import (empty history)", async () => {
+    // Every history entry is malformed, so after import the history array is [].
+    importStatsFromExport({
+      version: 1,
+      exportedAt: Date.now(),
+      games: {
+        klondike: {
+          gamesPlayed: 1,
+          wins: 1,
+          losses: 0,
+          currentStreak: 1,
+          longestStreak: 1,
+          bestTime: 125,
+          bestMoves: null,
+          avgTime: 125,
+          avgMoves: null,
+          lastPlayedAt: 1700000000000,
+          // All entries malformed — every one will be dropped.
+          history: [
+            { date: "not-a-number", won: true, moves: 0, durationSeconds: 0, isDaily: false },
+            { won: 1, moves: 0, durationSeconds: 0, isDaily: false },
+          ],
+        },
+      },
+    });
+
+    render(<StatsPage />);
+
+    // Wait for any async state to settle.
+    await waitFor(() =>
+      expect(screen.queryByRole("button", { name: /expand klondike history/i })).toBeNull(),
+    );
+
+    // No expand button — graceful empty state, no crash.
+    expect(
+      screen.queryByRole("button", { name: /expand klondike history/i }),
+    ).toBeNull();
+    // The page itself must still render (e.g. footer is present).
+    expect(screen.getByTestId("site-footer")).toBeInTheDocument();
+  });
+
+  it("shows no expand toggle when a game with gamesPlayed > 0 is imported with an explicitly empty history", async () => {
+    importStatsFromExport({
+      version: 1,
+      exportedAt: Date.now(),
+      games: {
+        klondike: {
+          gamesPlayed: 3,
+          wins: 2,
+          losses: 1,
+          currentStreak: 1,
+          longestStreak: 2,
+          bestTime: 90,
+          bestMoves: 30,
+          avgTime: 100,
+          avgMoves: 35,
+          lastPlayedAt: 1700000000000,
+          history: [], // intentionally empty
+        },
+      },
+    });
+
+    render(<StatsPage />);
+
+    await waitFor(() =>
+      // Wait for stats to hydrate (gamesPlayed > 0 means the row is rendered)
+      expect(screen.queryByRole("button", { name: /expand klondike history/i })).toBeNull(),
+    );
+
+    // No crash, no expand toggle — graceful empty state.
+    expect(
+      screen.queryByRole("button", { name: /expand klondike history/i }),
+    ).toBeNull();
+    expect(screen.getByTestId("site-footer")).toBeInTheDocument();
   });
 });
