@@ -355,9 +355,9 @@
    readable size; only scale down the decorative centre body. */
 @container card-slot (max-width: 65px) {
   .playing-card { padding: 4px; }
-  .card-rank       { font-size: 14px !important; line-height: 1; }
-  .card-rank-suit  { font-size: 12px !important; }
-  .card-top-glyph  { font-size: 17px !important; }
+  .card-rank       { font-size: 16px !important; line-height: 1; }
+  .card-rank-suit  { font-size: 14px !important; }
+  .card-top-glyph  { font-size: 19px !important; }
   /* Scale large decorative centre labels so they don't overflow the card */
   .playing-card [class*="text-5xl"] { font-size: 1.5rem  !important; }
   .playing-card [class*="text-4xl"] { font-size: 1.25rem !important; }
@@ -369,9 +369,9 @@
    or zoomed-out views. Drop only slightly from the 65 px values above. */
 @container card-slot (max-width: 50px) {
   .playing-card { padding: 3px; }
-  .card-rank       { font-size: 13px !important; line-height: 1; }
-  .card-rank-suit  { font-size: 11px !important; }
-  .card-top-glyph  { font-size: 14px !important; }
+  .card-rank       { font-size: 15px !important; line-height: 1; }
+  .card-rank-suit  { font-size: 13px !important; }
+  .card-top-glyph  { font-size: 16px !important; }
   .playing-card [class*="text-5xl"] { font-size: 1.1rem  !important; }
   .playing-card [class*="text-4xl"] { font-size: 0.95rem !important; }
   .playing-card [class*="text-3xl"] { font-size: 0.8rem  !important; }
