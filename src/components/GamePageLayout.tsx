@@ -111,7 +111,7 @@ export function GamePageLayout({ gameKey, badge, title, tagline, rulesIntro, rul
         {/* ── Game board ─────────────────────────────────────────────────── */}
         <section
           id="game-board"
-          className="mx-auto max-w-[900px] xl:max-w-[1200px] px-4"
+          className="sm:mx-auto sm:max-w-[900px] xl:max-w-[1200px]"
           style={{ scrollMarginTop: "var(--sticky-nav-height)" }}
         >
           {children}

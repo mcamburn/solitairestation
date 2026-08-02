@@ -221,7 +221,7 @@ export function Clock() {
 
   if (!state) {
     return (
-      <div className="game-board-wrap mx-auto w-full max-w-[900px] xl:max-w-[1200px] px-4 xl:px-6 pb-16">
+      <div className="game-board-wrap mx-auto w-full sm:max-w-[900px] xl:max-w-[1200px] sm:px-4 xl:px-6 pb-16">
         <div className="glass mt-4 h-[520px] animate-pulse rounded-2xl" />
       </div>
     );
@@ -253,7 +253,7 @@ export function Clock() {
   const clockLabels = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q"];
 
   return (
-    <div className="game-board-wrap mx-auto w-full max-w-[900px] xl:max-w-[1200px] px-4 xl:px-6 pb-16">
+    <div className="game-board-wrap mx-auto w-full sm:max-w-[900px] xl:max-w-[1200px] sm:px-4 xl:px-6 pb-16">
       {/* Top bar */}
       <div className="glass mt-3 flex flex-wrap items-center justify-between gap-3 rounded-2xl px-4 py-2.5 text-xs">
         <div className="flex items-center gap-4">

@@ -174,7 +174,7 @@ export function Scorpion() {
 
   if (!state) {
     return (
-      <div className="game-board-wrap mx-auto w-full max-w-[900px] xl:max-w-[1200px] px-4 xl:px-6 pb-16">
+      <div className="game-board-wrap mx-auto w-full sm:max-w-[900px] xl:max-w-[1200px] sm:px-4 xl:px-6 pb-16">
         <div className="glass mt-4 h-[520px] animate-pulse rounded-2xl" />
       </div>
     );
@@ -261,7 +261,7 @@ export function Scorpion() {
 
   return (
     <div
-      className="game-board-wrap mx-auto w-full max-w-[900px] xl:max-w-[1200px] px-4 xl:px-6 pb-16"
+      className="game-board-wrap mx-auto w-full sm:max-w-[900px] xl:max-w-[1200px] sm:px-4 xl:px-6 pb-16"
       style={isDragging ? { userSelect: "none", touchAction: "none" } : undefined}
     >
       {/* Top bar */}
