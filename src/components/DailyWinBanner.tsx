@@ -104,7 +104,7 @@ export function DailyWinBanner({ message, onNew, variant = "win", stats }: Daily
   const gameLabel = getGameLabel(gameKey);
   const shareText = [
     `🃏 Solitaire Station – Daily ${gameLabel}`,
-    `📅 ${dateLabel}`,
+    `📅 ${dateLabel} (local time)`,
     `🔥 ${streakLabel}`,
     ``,
     `16 free card games at ${siteHost}`,
