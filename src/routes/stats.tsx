@@ -503,6 +503,11 @@ function StatsPage() {
                 style={{ fontFamily: "var(--font-display)" }}
               >
                 Recent History
+                {filteredHistory.length > 25 && (
+                  <span className="ml-2 text-sm font-normal text-muted-foreground">
+                    · {filteredHistory.length.toLocaleString()} games
+                  </span>
+                )}
               </h2>
               <button
                 onClick={() => {
