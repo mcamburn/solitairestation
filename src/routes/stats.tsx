@@ -59,6 +59,7 @@ interface HistoryEntry {
 }
 
 type SortKey = "title" | "gamesPlayed" | "wins" | "winRate" | "bestTime" | "longestStreak";
+type HistorySortKey = "game" | "result" | "time" | "moves" | "date";
 type SortDir = "asc" | "desc";
 
 /* ── Default rows (no localStorage access — safe for SSR) ────────────────── */
@@ -123,6 +124,42 @@ function sortRows(rows: GameRow[], key: SortKey, dir: SortDir): GameRow[] {
   });
 }
 
+/* ── History sort ─────────────────────────────────────────────────────────── */
+
+function historySortValue(entry: HistoryEntry, key: HistorySortKey): number | string {
+  const r = entry.record;
+  switch (key) {
+    case "game":   return entry.gameTitle.toLowerCase();
+    case "result": return r.won ? 0 : 1;
+    case "time":   return r.won && r.durationSeconds > 0 ? r.durationSeconds : Infinity;
+    case "moves":  return r.moves > 0 ? r.moves : Infinity;
+    case "date":   return r.date;
+  }
+}
+
+function sortHistory(entries: HistoryEntry[], key: HistorySortKey, dir: SortDir): HistoryEntry[] {
+  return [...entries].sort((a, b) => {
+    const av = historySortValue(a, key);
+    const bv = historySortValue(b, key);
+
+    // Unavailable numeric values (Infinity) always sort to the bottom,
+    // regardless of the chosen direction.
+    const aInf = av === Infinity;
+    const bInf = bv === Infinity;
+    if (aInf && bInf) return 0;
+    if (aInf) return 1;
+    if (bInf) return -1;
+
+    let cmp = 0;
+    if (typeof av === "string" && typeof bv === "string") {
+      cmp = av.localeCompare(bv);
+    } else {
+      cmp = (av as number) - (bv as number);
+    }
+    return dir === "asc" ? cmp : -cmp;
+  });
+}
+
 /* ── Combined history builder ─────────────────────────────────────────────── */
 
 function buildCombinedHistory(rows: GameRow[]): HistoryEntry[] {
@@ -173,6 +210,8 @@ function StatsPage() {
   const [sortDir, setSortDir] = useState<SortDir>("asc");
   const [dailyOnly, setDailyOnly] = useState(false);
   const [historyLimit, setHistoryLimit] = useState(25);
+  const [historySortKey, setHistorySortKey] = useState<HistorySortKey>("date");
+  const [historySortDir, setHistorySortDir] = useState<SortDir>("desc");
   const [expandedGames, setExpandedGames] = useState<Set<string>>(new Set());
 
   function toggleGameExpanded(saveKey: string) {
@@ -196,6 +235,11 @@ function StatsPage() {
       if (savedDir === "asc" || savedDir === "desc") setSortDir(savedDir);
       const savedDailyOnly = localStorage.getItem("stats-daily-only");
       if (savedDailyOnly === "true") setDailyOnly(true);
+      const savedHistKey = localStorage.getItem("stats-history-sort-key") as HistorySortKey | null;
+      const savedHistDir = localStorage.getItem("stats-history-sort-dir") as SortDir | null;
+      const validHistKeys: HistorySortKey[] = ["game", "result", "time", "moves", "date"];
+      if (savedHistKey && validHistKeys.includes(savedHistKey)) setHistorySortKey(savedHistKey);
+      if (savedHistDir === "asc" || savedHistDir === "desc") setHistorySortDir(savedHistDir);
     } catch {
       // localStorage unavailable — keep defaults
     }
@@ -257,6 +301,29 @@ function StatsPage() {
       setSortKey(key);
       setSortDir(newDir);
       persistSort(key, newDir);
+    }
+  }
+
+  function persistHistorySort(key: HistorySortKey, dir: SortDir) {
+    try {
+      localStorage.setItem("stats-history-sort-key", key);
+      localStorage.setItem("stats-history-sort-dir", dir);
+    } catch {
+      // ignore
+    }
+  }
+
+  function handleHistorySort(key: HistorySortKey) {
+    if (key === historySortKey) {
+      const newDir: SortDir = historySortDir === "asc" ? "desc" : "asc";
+      setHistorySortDir(newDir);
+      persistHistorySort(key, newDir);
+    } else {
+      // date → desc (newest first); time/moves/game/result → asc (fastest / fewest / A-Z / wins first)
+      const newDir: SortDir = key === "date" ? "desc" : "asc";
+      setHistorySortKey(key);
+      setHistorySortDir(newDir);
+      persistHistorySort(key, newDir);
     }
   }
 
@@ -327,12 +394,12 @@ function StatsPage() {
                   borderBottom: "1px solid color-mix(in oklab, var(--neon) 14%, transparent)",
                 }}
               >
-                <SortTh col="title" label="Game" align="left" sortKey={sortKey} sortDir={sortDir} onSort={handleSort} />
-                <SortTh col="gamesPlayed" label="Played" align="right" sortKey={sortKey} sortDir={sortDir} onSort={handleSort} />
-                <SortTh col="wins" label="Wins" align="right" sortKey={sortKey} sortDir={sortDir} onSort={handleSort} />
-                <SortTh col="winRate" label="Win Rate" align="right" sortKey={sortKey} sortDir={sortDir} onSort={handleSort} />
-                <SortTh col="bestTime" label="Best Time" align="right" sortKey={sortKey} sortDir={sortDir} onSort={handleSort} />
-                <SortTh col="longestStreak" label="Longest Streak" align="right" sortKey={sortKey} sortDir={sortDir} onSort={handleSort} />
+                <SortTh col="title" label="Game" align="left" sortKey={sortKey} sortDir={sortDir} onSort={(k) => handleSort(k as SortKey)} />
+                <SortTh col="gamesPlayed" label="Played" align="right" sortKey={sortKey} sortDir={sortDir} onSort={(k) => handleSort(k as SortKey)} />
+                <SortTh col="wins" label="Wins" align="right" sortKey={sortKey} sortDir={sortDir} onSort={(k) => handleSort(k as SortKey)} />
+                <SortTh col="winRate" label="Win Rate" align="right" sortKey={sortKey} sortDir={sortDir} onSort={(k) => handleSort(k as SortKey)} />
+                <SortTh col="bestTime" label="Best Time" align="right" sortKey={sortKey} sortDir={sortDir} onSort={(k) => handleSort(k as SortKey)} />
+                <SortTh col="longestStreak" label="Longest Streak" align="right" sortKey={sortKey} sortDir={sortDir} onSort={(k) => handleSort(k as SortKey)} />
               </tr>
             </thead>
             <tbody>
@@ -464,7 +531,8 @@ function StatsPage() {
             {filteredHistory.length === 0 ? (
               <p className="text-sm text-muted-foreground">No daily challenge games recorded yet.</p>
             ) : (() => {
-              const visibleHistory = filteredHistory.slice(0, historyLimit);
+              const sortedHistory = sortHistory(filteredHistory, historySortKey, historySortDir);
+              const visibleHistory = sortedHistory.slice(0, historyLimit);
               const hasMore = filteredHistory.length > historyLimit;
               return (
                 <>
@@ -485,11 +553,11 @@ function StatsPage() {
                             borderBottom: "1px solid color-mix(in oklab, var(--neon) 8%, transparent)",
                           }}
                         >
-                          <th className="px-5 py-3 font-semibold">Game</th>
-                          <th className="px-4 py-3 font-semibold">Result</th>
-                          <th className="px-4 py-3 font-semibold text-right">Time</th>
-                          <th className="px-4 py-3 font-semibold text-right">Moves</th>
-                          <th className="px-4 py-3 font-semibold text-right">Date</th>
+                          <SortTh col="game" label="Game" align="left" sortKey={historySortKey} sortDir={historySortDir} onSort={(k) => handleHistorySort(k as HistorySortKey)} />
+                          <SortTh col="result" label="Result" align="left" sortKey={historySortKey} sortDir={historySortDir} onSort={(k) => handleHistorySort(k as HistorySortKey)} />
+                          <SortTh col="time" label="Time" align="right" sortKey={historySortKey} sortDir={historySortDir} onSort={(k) => handleHistorySort(k as HistorySortKey)} />
+                          <SortTh col="moves" label="Moves" align="right" sortKey={historySortKey} sortDir={historySortDir} onSort={(k) => handleHistorySort(k as HistorySortKey)} />
+                          <SortTh col="date" label="Date" align="right" sortKey={historySortKey} sortDir={historySortDir} onSort={(k) => handleHistorySort(k as HistorySortKey)} />
                         </tr>
                       </thead>
                       <tbody>
@@ -502,6 +570,52 @@ function StatsPage() {
                         ))}
                       </tbody>
                     </table>
+                  </div>
+
+                  {/* Mobile history sort toolbar */}
+                  <div className="sm:hidden flex items-center gap-2 mb-3">
+                    <label className="sr-only" htmlFor="mobile-history-sort-select">Sort history by</label>
+                    <select
+                      id="mobile-history-sort-select"
+                      value={historySortKey}
+                      onChange={(e) => {
+                        const key = e.target.value as HistorySortKey;
+                        if (key === historySortKey) return;
+                        // date → desc (newest first); everything else → asc
+                        const newDir: SortDir = key === "date" ? "desc" : "asc";
+                        setHistorySortKey(key);
+                        setHistorySortDir(newDir);
+                        persistHistorySort(key, newDir);
+                      }}
+                      className="flex-1 rounded-lg px-3 py-2 text-sm font-medium appearance-none cursor-pointer transition"
+                      style={{
+                        background: "color-mix(in oklab, var(--neon) 6%, oklch(0.16 0.03 155))",
+                        border: "1px solid color-mix(in oklab, var(--neon) 18%, transparent)",
+                        color: "var(--foreground)",
+                      }}
+                    >
+                      <option value="date">Date</option>
+                      <option value="game">Game (A–Z)</option>
+                      <option value="result">Result</option>
+                      <option value="time">Time</option>
+                      <option value="moves">Moves</option>
+                    </select>
+                    <button
+                      aria-label={historySortDir === "asc" ? "Sort descending" : "Sort ascending"}
+                      onClick={() => {
+                        const newDir: SortDir = historySortDir === "asc" ? "desc" : "asc";
+                        setHistorySortDir(newDir);
+                        persistHistorySort(historySortKey, newDir);
+                      }}
+                      className="rounded-lg px-3 py-2 text-sm font-semibold transition shrink-0"
+                      style={{
+                        background: "color-mix(in oklab, var(--neon) 6%, oklch(0.16 0.03 155))",
+                        border: "1px solid color-mix(in oklab, var(--neon) 18%, transparent)",
+                        color: "var(--neon)",
+                      }}
+                    >
+                      {historySortDir === "asc" ? "↑" : "↓"}
+                    </button>
                   </div>
 
                   {/* Mobile history cards */}
@@ -554,6 +668,7 @@ function StatsPage() {
 
 /* ── Sortable column header ───────────────────────────────────────────────── */
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function SortTh({
   col,
   label,
@@ -562,12 +677,12 @@ function SortTh({
   sortDir,
   onSort,
 }: {
-  col: SortKey;
+  col: string;
   label: string;
   align: "left" | "right";
-  sortKey: SortKey;
+  sortKey: string;
   sortDir: SortDir;
-  onSort: (key: SortKey) => void;
+  onSort: (key: string) => void;
 }) {
   const active = col === sortKey;
   const arrow = active ? (sortDir === "asc" ? " ↑" : " ↓") : "";
@@ -899,33 +1014,49 @@ function HistoryMobileRow({ entry }: { entry: HistoryEntry }) {
 
   return (
     <div
-      className="rounded-xl px-4 py-3 flex items-center justify-between gap-3"
+      className="rounded-xl px-4 py-3"
       style={{
         background: "color-mix(in oklab, var(--neon) 4%, oklch(0.16 0.03 155))",
         border: "1px solid color-mix(in oklab, var(--neon) 14%, transparent)",
       }}
     >
-      {/* Left: game + badges */}
-      <div className="flex items-center gap-2 flex-wrap min-w-0">
-        <Link
-          to={gameTo as "/klondike"}
-          className="flex items-center gap-1.5 font-medium text-foreground hover:underline underline-offset-2 text-sm truncate"
-        >
-          <span>{gameEmoji}</span>
-          <span>{gameTitle}</span>
-        </Link>
-        {record.isDaily && <DailyBadge />}
-      </div>
-
-      {/* Right: result + date */}
-      <div className="flex items-center gap-3 shrink-0 text-xs">
+      {/* Top row: game name + daily badge + result */}
+      <div className="flex items-center justify-between gap-3">
+        <div className="flex items-center gap-2 flex-wrap min-w-0">
+          <Link
+            to={gameTo as "/klondike"}
+            className="flex items-center gap-1.5 font-medium text-foreground hover:underline underline-offset-2 text-sm truncate"
+          >
+            <span>{gameEmoji}</span>
+            <span>{gameTitle}</span>
+          </Link>
+          {record.isDaily && <DailyBadge />}
+        </div>
         <span
-          className="font-semibold"
+          className="text-xs font-semibold shrink-0"
           style={{ color: record.won ? "var(--neon)" : "var(--muted-foreground)" }}
         >
           {record.won ? "Win" : "Loss"}
         </span>
-        <span style={{ color: "var(--muted-foreground)" }}>{dateStr}</span>
+      </div>
+
+      {/* Bottom row: time + moves + date */}
+      <div className="mt-1 flex items-center gap-3 text-xs" style={{ color: "var(--muted-foreground)" }}>
+        {record.won && record.durationSeconds > 0 ? (
+          <span className="tabular-nums" style={{ color: "var(--foreground)" }}>
+            {formatStatTime(record.durationSeconds)}
+          </span>
+        ) : (
+          <span>—</span>
+        )}
+        {record.moves > 0 ? (
+          <span className="tabular-nums" style={{ color: "var(--foreground)" }}>
+            {record.moves} moves
+          </span>
+        ) : (
+          <span>— moves</span>
+        )}
+        <span className="ml-auto">{dateStr}</span>
       </div>
     </div>
   );
