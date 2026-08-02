@@ -215,27 +215,126 @@ export function downloadStatsExport(): void {
   URL.revokeObjectURL(url);
 }
 
+// ── Validation helpers ────────────────────────────────────────────────────
+
+/**
+ * Returns true if the value is a finite, non-negative integer (or zero).
+ */
+function isNonNegativeInt(v: unknown): v is number {
+  return typeof v === "number" && Number.isInteger(v) && v >= 0;
+}
+
+/**
+ * Returns true if the value is either null or a finite, non-negative number.
+ */
+function isNullOrNonNegativeNumber(v: unknown): v is number | null {
+  return v === null || (typeof v === "number" && Number.isFinite(v) && v >= 0);
+}
+
+/**
+ * Validate a single GameRecord entry. Returns true if the entry is well-formed.
+ */
+function isValidGameRecord(r: unknown): r is GameRecord {
+  if (typeof r !== "object" || r === null) return false;
+  const rec = r as Record<string, unknown>;
+  return (
+    typeof rec.date === "number" &&
+    Number.isFinite(rec.date) &&
+    typeof rec.won === "boolean" &&
+    isNonNegativeInt(rec.moves) &&
+    isNonNegativeInt(rec.durationSeconds) &&
+    typeof rec.isDaily === "boolean"
+  );
+}
+
+/**
+ * Validate a GameStats object.
+ * Returns null if valid (after coercing history to only valid entries),
+ * or a string describing the first problem found.
+ */
+function validateGameStats(raw: unknown): { stats: GameStats } | { error: string } {
+  if (typeof raw !== "object" || raw === null) {
+    return { error: "stats entry is not an object" };
+  }
+  const s = raw as Record<string, unknown>;
+
+  if (!isNonNegativeInt(s.gamesPlayed)) {
+    return { error: "gamesPlayed must be a non-negative integer" };
+  }
+  if (!isNonNegativeInt(s.wins)) {
+    return { error: "wins must be a non-negative integer" };
+  }
+  if (!isNonNegativeInt(s.losses)) {
+    return { error: "losses must be a non-negative integer" };
+  }
+  if (!isNonNegativeInt(s.currentStreak)) {
+    return { error: "currentStreak must be a non-negative integer" };
+  }
+  if (!isNonNegativeInt(s.longestStreak)) {
+    return { error: "longestStreak must be a non-negative integer" };
+  }
+  if (!isNullOrNonNegativeNumber(s.bestTime)) {
+    return { error: "bestTime must be null or a non-negative number" };
+  }
+  if (!isNullOrNonNegativeNumber(s.bestMoves)) {
+    return { error: "bestMoves must be null or a non-negative number" };
+  }
+  if (!isNullOrNonNegativeNumber(s.avgTime)) {
+    return { error: "avgTime must be null or a non-negative number" };
+  }
+  if (!isNullOrNonNegativeNumber(s.avgMoves)) {
+    return { error: "avgMoves must be null or a non-negative number" };
+  }
+  if (!isNullOrNonNegativeNumber(s.lastPlayedAt) || typeof s.lastPlayedAt !== "number") {
+    return { error: "lastPlayedAt must be a non-negative finite number" };
+  }
+  if ((s.wins as number) > (s.gamesPlayed as number)) {
+    return { error: "wins cannot exceed gamesPlayed" };
+  }
+  if ((s.losses as number) > (s.gamesPlayed as number)) {
+    return { error: "losses cannot exceed gamesPlayed" };
+  }
+  if ((s.wins as number) + (s.losses as number) > (s.gamesPlayed as number)) {
+    return { error: "wins + losses cannot exceed gamesPlayed" };
+  }
+
+  // History: keep only well-formed entries; drop malformed ones silently
+  const rawHistory = Array.isArray(s.history) ? s.history : [];
+  const history: GameRecord[] = rawHistory.filter(isValidGameRecord);
+
+  const merged: GameStats = {
+    ...defaultStats(),
+    ...(s as Partial<GameStats>),
+    history,
+  };
+  return { stats: merged };
+}
+
 /**
  * Import a StatsExport object, writing each game's stats to localStorage.
  * Existing stats for each game are replaced entirely.
- * Returns the number of games imported, or throws on invalid data.
+ * Throws on structurally invalid files; silently skips corrupted per-game entries.
+ * Returns the number of games successfully imported.
  */
 export function importStatsFromExport(data: unknown): number {
   if (
     typeof data !== "object" ||
     data === null ||
+    Array.isArray(data) ||
     (data as StatsExport).version !== 1 ||
-    typeof (data as StatsExport).games !== "object"
+    typeof (data as StatsExport).games !== "object" ||
+    (data as StatsExport).games === null ||
+    Array.isArray((data as StatsExport).games)
   ) {
     throw new Error("Invalid stats file — please use a file exported from Solitaire Station.");
   }
   const { games } = data as StatsExport;
   let count = 0;
   for (const [gameKey, stats] of Object.entries(games)) {
-    if (typeof gameKey !== "string" || typeof stats !== "object" || stats === null) continue;
-    // Merge with defaults so forward-compat fields don't disappear
-    const merged: GameStats = { ...defaultStats(), ...(stats as Partial<GameStats>) };
-    saveStats(gameKey, merged);
+    if (typeof gameKey !== "string") continue;
+    const result = validateGameStats(stats);
+    if ("error" in result) continue; // skip corrupted entry
+    saveStats(gameKey, result.stats);
     count++;
   }
   return count;
