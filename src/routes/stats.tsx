@@ -194,6 +194,8 @@ function StatsPage() {
       const validKeys: SortKey[] = ["title", "gamesPlayed", "wins", "winRate", "bestTime", "longestStreak"];
       if (savedKey && validKeys.includes(savedKey)) setSortKey(savedKey);
       if (savedDir === "asc" || savedDir === "desc") setSortDir(savedDir);
+      const savedDailyOnly = localStorage.getItem("stats-daily-only");
+      if (savedDailyOnly === "true") setDailyOnly(true);
     } catch {
       // localStorage unavailable — keep defaults
     }
@@ -436,7 +438,14 @@ function StatsPage() {
                 Recent History
               </h2>
               <button
-                onClick={() => { setDailyOnly((v) => !v); setHistoryLimit(25); }}
+                onClick={() => {
+                  setDailyOnly((v) => {
+                    const next = !v;
+                    try { localStorage.setItem("stats-daily-only", String(next)); } catch { /* ignore */ }
+                    return next;
+                  });
+                  setHistoryLimit(25);
+                }}
                 className="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold transition"
                 style={{
                   background: dailyOnly
