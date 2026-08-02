@@ -1,13 +1,5 @@
 /**
- * Unit tests for Pyramid run (streak) counter reset behaviour.
- *
- * Pyramid does not currently have a streak field.  These tests are written as
- * a forward-compatible specification: the "initial value" tests pass today
- * (treating an absent field as 0 via `?? 0`), and the increment / reset
- * assertions use guards so they activate automatically once `PyramidState`
- * gains a `streak` field and the move functions start updating it.
- *
- * Reference implementation: src/lib/tripeaks.test.ts
+ * Unit tests for Pyramid run (streak) counter behaviour.
  *
  * Expected contract (mirrors TriPeaks):
  *  - newPyramidGame() always starts with streak === 0
@@ -15,6 +7,7 @@
  *  - drawPyramidStock resets streak to 0
  *  - a new game created after plays always starts with streak === 0
  *  - a new game seeded with the daily seed also starts with streak === 0
+ *  - a legacy save without a streak field is normalised to 0 before play
  */
 
 import { describe, it, expect } from "vitest";
@@ -34,9 +27,9 @@ const DAILY_SEED = 20240801;
 // Helpers
 // ---------------------------------------------------------------------------
 
-/** Streak value, treating an absent field as 0 (forward-compatible). */
+/** Return the streak value from a PyramidState. */
 function streak(state: PyramidState): number {
-  return (state as unknown as { streak?: number }).streak ?? 0;
+  return state.streak;
 }
 
 /** Collect all currently available pyramid selections. */
@@ -152,11 +145,7 @@ describe("run counter increments on removals and resets on stock draw", () => {
     const next = tryPyramidRemove(state, selA, selB);
     if (!next) return; // Guard: removal rejected (shouldn't happen)
 
-    // When streak field exists this will assert 1; until then streak() returns 0.
-    // The test becomes meaningful once tryPyramidRemove increments streak.
-    if (streak(next) > 0) {
-      expect(streak(next)).toBe(1);
-    }
+    expect(streak(next)).toBe(1);
   });
 
   it("streak accumulates across consecutive removals without a draw", () => {
@@ -171,10 +160,7 @@ describe("run counter increments on removals and resets on stock draw", () => {
       const next = tryPyramidRemove(state, selA, selB);
       if (!next) break;
       removals++;
-      // Only assert streak ordering once the field is present
-      if (streak(next) > 0) {
-        expect(streak(next)).toBe(removals);
-      }
+      expect(streak(next)).toBe(removals);
       state = next;
     }
     // At least one removal must be possible for this test to be meaningful
@@ -189,7 +175,8 @@ describe("run counter increments on removals and resets on stock draw", () => {
     if (pair) {
       const [selA, selB] = pair;
       const afterRemoval = tryPyramidRemove(state, selA, selB);
-      if (afterRemoval && streak(afterRemoval) > 0) {
+      if (afterRemoval) {
+        expect(streak(afterRemoval)).toBeGreaterThan(0);
         const afterDraw = drawPyramidStock(afterRemoval);
         if (afterDraw) {
           expect(streak(afterDraw)).toBe(0);
@@ -234,5 +221,34 @@ describe("reset() — new game always starts with streak === 0", () => {
     const g2 = newPyramidGame(SEED + 1);
     expect(streak(g1)).toBe(0);
     expect(streak(g2)).toBe(0);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Legacy save migration — streak field absent in pre-feature saves
+// ---------------------------------------------------------------------------
+
+describe("legacy save without streak field is normalised to 0 before play", () => {
+  it("removing a pair after normalising a legacy save yields streak === 1 (not NaN)", () => {
+    // Simulate a save that was written before the streak field existed
+    const base = newPyramidGame(SEED);
+    const legacySave = { ...base } as Partial<PyramidState> & Omit<PyramidState, "streak">;
+    delete (legacySave as Record<string, unknown>).streak;
+
+    // Apply the same normalisation the component does on load
+    const loaded: PyramidState = { ...(legacySave as PyramidState), streak: (legacySave as PyramidState).streak ?? 0 };
+    expect(streak(loaded)).toBe(0);
+
+    // Advance to a removable position
+    const ready = drawUntilRemovable(loaded);
+    const pair = findRemovablePair(ready);
+    if (!pair) return; // seed produces no early removal — skip gracefully
+
+    const [selA, selB] = pair;
+    const next = tryPyramidRemove(ready, selA, selB);
+    if (!next) return;
+
+    expect(Number.isFinite(streak(next))).toBe(true);
+    expect(streak(next)).toBe(1);
   });
 });

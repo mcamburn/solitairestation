@@ -10,6 +10,7 @@ export interface PyramidState {
   moves: number;
   won: boolean;
   startedAt: number;
+  streak: number; // consecutive pair removals without drawing from stock
 }
 
 export type PyramidSel =
@@ -54,6 +55,7 @@ export function newPyramidGame(seed?: number): PyramidState {
     moves: 0,
     won: false,
     startedAt: Date.now(),
+    streak: 0,
   };
   return updateFaceUp(state);
 }
@@ -142,12 +144,14 @@ export function drawPyramidStock(state: PyramidState): PyramidState | null {
     s.stock = [...s.waste].reverse().map(c => ({ ...c, faceUp: false }));
     s.waste = [];
     s.moves++;
+    s.streak = 0;
     return s;
   }
   const s = clonePyramid(state);
   const card = s.stock.pop()!;
   s.waste.push({ ...card, faceUp: true });
   s.moves++;
+  s.streak = 0;
   return s;
 }
 
@@ -212,6 +216,7 @@ export function tryPyramidRemove(
     if (selA.kind === "pyramid") s.pyramid[selA.row][selA.col] = null;
     else s.waste.pop();
     s.moves++;
+    s.streak++;
     s.won = s.pyramid.every(row => row.every(c => c === null));
     return updateFaceUp(s);
   }
@@ -227,6 +232,7 @@ export function tryPyramidRemove(
   if (selB.kind === "pyramid") s.pyramid[selB.row][selB.col] = null;
   else s.waste.pop();
   s.moves++;
+  s.streak++;
   s.won = s.pyramid.every(row => row.every(c => c === null));
   return updateFaceUp(s);
 }

@@ -49,8 +49,10 @@ export function Pyramid() {
   useEffect(() => {
     const saved = loadGame<PyramidState>("pyramid");
     if (saved && saved.moves > 0) {
-      setState(saved);
-      if (!saved.won) setStuck(!hasAnyPyramidMove(saved));
+      // Normalise legacy saves that pre-date the streak field
+      const normalised: PyramidState = { ...saved, streak: saved.streak ?? 0 };
+      setState(normalised);
+      if (!normalised.won) setStuck(!hasAnyPyramidMove(normalised));
     } else {
       if (saved) clearGame("pyramid"); // discard stale zero-move save
       setState(newPyramidGame());
@@ -217,6 +219,9 @@ export function Pyramid() {
           <span className="text-muted-foreground">
             Stock <span className="font-semibold text-foreground">{game.stock.length}</span>
           </span>
+          {game.streak > 0 && (
+            <span className="text-muted-foreground">Run <span className="font-semibold tabular-nums" style={{ color: "var(--neon)" }}>{game.streak}</span></span>
+          )}
           {topBarStats.hasPlayed && (
             <span className="text-muted-foreground">Streak <span className="font-semibold tabular-nums" style={{ color: "var(--neon)" }}>{topBarStats.streak}</span></span>
           )}
