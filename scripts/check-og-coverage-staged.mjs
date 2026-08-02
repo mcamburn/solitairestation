@@ -7,12 +7,12 @@
  * reads ONLY from the git staged index so it validates exactly what will be
  * committed — not what happens to be on disk.
  *
- *   • src/lib/games.ts          — read via `git show :src/lib/games.ts`
- *   • scripts/og-game-registry.mjs — read via `git show :scripts/og-game-registry.mjs`
- *   • public/og/<slug>.png      — existence checked via `git ls-files --cached`
+ *   • src/lib/games.ts              — read via `git show :src/lib/games.ts`
+ *   • scripts/og-game-registry.mjs  — read via `git show :scripts/og-game-registry.mjs`
+ *   • public/og/<slug>.png          — existence checked via `git ls-files --cached`
  *
  * This prevents the false-pass scenario where a developer:
- *   1. Stages a new game entry in games.ts / og-game-registry.mjs
+ *   1. Stages a new game entry in games.ts and og-game-registry.mjs
  *   2. Runs the generator (PNG appears in the working tree)
  *   3. Forgets to `git add` the PNG
  *   → the hook must block the commit because the PNG is not staged
@@ -31,7 +31,7 @@ import { execSync } from "child_process";
 // ── helpers ──────────────────────────────────────────────────────────────────
 
 /**
- * Read a file from the git staged index (the post-commit snapshot).
+ * Read a file from the git staged index.
  * If the file hasn't been modified in this commit, git returns the HEAD version,
  * which is still correct — we want the state the file will be in after the commit.
  * Returns null if the path is not tracked at all.
@@ -69,19 +69,21 @@ if (!gamesTs) {
 const slugMatches = [...gamesTs.matchAll(/\bto:\s*["'`](\/[\w-]+)["'`]/g)];
 const registryIds = new Set(slugMatches.map(([, to]) => to.slice(1))); // strip leading /
 
-// ── 2. Parse OG registry from staged scripts/og-game-registry.mjs ────────────
+// ── 2. Parse OG metadata keys from staged scripts/og-game-registry.mjs ───────
+// The registry stores OG-specific metadata in an OG_META object whose keys
+// are route slugs, e.g.  "forty-thieves": { label: ..., suits: ..., accent: ... }
 const ogRegistryText = readFromIndex("scripts/og-game-registry.mjs");
 if (!ogRegistryText) {
   console.error("ERROR: scripts/og-game-registry.mjs not found in the git index.");
   process.exit(1);
 }
-// Extract every  id: "slug"  value from the OG_GAMES array literal
-const ogIdMatches = [...ogRegistryText.matchAll(/\bid:\s*["'`]([\w-]+)["'`]/g)];
-const ogIds = new Set(ogIdMatches.map(([, id]) => id));
+// Match quoted object keys in the OG_META literal: "slug": {
+const ogMetaMatches = [...ogRegistryText.matchAll(/^\s+"([\w-]+)"\s*:\s*\{/gm)];
+const ogIds = new Set(ogMetaMatches.map(([, id]) => id));
 
 let failures = 0;
 
-// ── 3. Every canonical game should be in the staged OG registry ──────────────
+// ── 3. Every canonical game should have OG metadata in the staged registry ───
 console.log("\n-- Games registry vs OG registry (staged index) --");
 for (const id of registryIds) {
   if (ogIds.has(id)) {
@@ -92,9 +94,9 @@ for (const id of registryIds) {
   }
 }
 
-// ── 4. Every OG registry entry should have a PNG in the staged index ─────────
-console.log("\n-- OG registry vs staged public/og/ files --");
-for (const id of ogIds) {
+// ── 4. Every registered game should have a PNG in the staged index ────────────
+console.log("\n-- Games registry vs staged public/og/ files --");
+for (const id of registryIds) {
   const path = `public/og/${id}.png`;
   if (existsInIndex(path)) {
     console.log(`  PASS  ${path}`);
@@ -111,7 +113,7 @@ for (const id of ogIds) {
 if (failures > 0) {
   console.error(
     `\nERROR: ${failures} OG coverage check(s) failed.\n` +
-      "  1. Add missing games to scripts/og-game-registry.mjs\n" +
+      "  1. Add OG metadata to OG_META in scripts/og-game-registry.mjs\n" +
       "  2. Regenerate images:  node scripts/generate-og-images.mjs\n" +
       "  3. Stage the PNGs:     git add public/og/<slug>.png"
   );

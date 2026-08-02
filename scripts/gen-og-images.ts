@@ -1,140 +1,56 @@
 /**
  * Generates 1200×630 PNG Open Graph images for each game.
  * Run with:  bun scripts/gen-og-images.ts
+ *
+ * The game list is derived from src/lib/games.ts so new games are covered
+ * automatically. Add an OG_META entry for each new saveKey or the script
+ * will throw an explicit error rather than silently skipping the game.
  */
 import { Resvg } from "@resvg/resvg-js";
 import { mkdir } from "node:fs/promises";
+import { GAMES as APP_GAMES } from "../src/lib/games.ts";
 
-const GAMES = [
-  {
-    key: "klondike",
-    route: "/",
-    title: "Klondike Solitaire",
-    subtitle: "The classic you know and love",
-    emojiCode: "1f0cf",
-    color: "#00ff87",
-  },
-  {
-    key: "spider",
-    route: "/spider",
-    title: "Spider Solitaire",
-    subtitle: "Build eight suit sequences to win",
-    emojiCode: "1f577",
-    color: "#a855f7",
-  },
-  {
-    key: "freecell",
-    route: "/freecell",
-    title: "FreeCell Solitaire",
-    subtitle: "Nearly every deal is solvable",
-    emojiCode: "1f532",
-    color: "#3b82f6",
-  },
-  {
-    key: "pyramid",
-    route: "/pyramid",
-    title: "Pyramid Solitaire",
-    subtitle: "Pair cards that sum to 13",
-    emojiCode: "1f53a",
-    color: "#f59e0b",
-  },
-  {
-    key: "tripeaks",
-    route: "/tripeaks",
-    title: "TriPeaks Solitaire",
-    subtitle: "Chain plays for a streak bonus",
-    emojiCode: "26f0",
-    color: "#ef4444",
-  },
-  {
-    key: "mahjong",
-    route: "/mahjong",
-    title: "Mahjong Solitaire",
-    subtitle: "Match free tiles to clear the board",
-    emojiCode: "1f004",
-    color: "#ec4899",
-  },
-  {
-    key: "golf",
-    route: "/golf",
-    title: "Golf Solitaire",
-    subtitle: "Chain cards ±1 to beat par",
-    emojiCode: "26f3",
-    color: "#22c55e",
-  },
-  {
-    key: "forty-thieves",
-    route: "/forty-thieves",
-    title: "Forty Thieves",
-    subtitle: "Two decks, same-suit builds",
-    emojiCode: "1f3b4",
-    color: "#f97316",
-  },
-  {
-    key: "yukon",
-    route: "/yukon",
-    title: "Yukon Solitaire",
-    subtitle: "All cards face-up from the start",
-    emojiCode: "1f43b",
-    color: "#84cc16",
-  },
-  {
-    key: "scorpion",
-    route: "/scorpion",
-    title: "Scorpion Solitaire",
-    subtitle: "Same-suit sequences, 7 columns",
-    emojiCode: "1f982",
-    color: "#eab308",
-  },
-  {
-    key: "eight-off",
-    route: "/eight-off",
-    title: "Eight Off",
-    subtitle: "Eight free cells, suit-only build",
-    emojiCode: "1f3af",
-    color: "#06b6d4",
-  },
-  {
-    key: "canfield",
-    route: "/canfield",
-    title: "Canfield Solitaire",
-    subtitle: "Draw 3, tough from the first card",
-    emojiCode: "1f3b0",
-    color: "#f43f5e",
-  },
-  {
-    key: "addiction",
-    route: "/addiction",
-    title: "Addiction Solitaire",
-    subtitle: "Slide cards left to sort by suit",
-    emojiCode: "1f504",
-    color: "#8b5cf6",
-  },
-  {
-    key: "bakers-dozen",
-    route: "/bakers-dozen",
-    title: "Baker's Dozen",
-    subtitle: "Only the top card of each pile moves",
-    emojiCode: "1f0cf",
-    color: "#0ea5e9",
-  },
-  {
-    key: "bakers-game",
-    route: "/bakers-game",
-    title: "Baker's Game",
-    subtitle: "FreeCell but suit-only builds",
-    emojiCode: "1f3ae",
-    color: "#10b981",
-  },
-  {
-    key: "clock",
-    route: "/clock",
-    title: "Clock Solitaire",
-    subtitle: "Flip cards to fill the clock face",
-    emojiCode: "1f550",
-    color: "#64748b",
-  },
-];
+// OG-image-specific metadata keyed by saveKey from src/lib/games.ts.
+// These fields (marketing tagline, accent color, emoji code point) live here
+// because they are OG-image concerns, not app-navigation concerns.
+const OG_META: Record<string, { color: string; emojiCode: string; subtitle: string }> = {
+  klondike:     { color: "#00ff87", emojiCode: "1f0cf", subtitle: "The classic you know and love" },
+  spider:       { color: "#a855f7", emojiCode: "1f577", subtitle: "Build eight suit sequences to win" },
+  freecell:     { color: "#3b82f6", emojiCode: "1f532", subtitle: "Nearly every deal is solvable" },
+  pyramid:      { color: "#f59e0b", emojiCode: "1f53a", subtitle: "Pair cards that sum to 13" },
+  tripeaks:     { color: "#ef4444", emojiCode: "26f0",  subtitle: "Chain plays for a streak bonus" },
+  mahjong:      { color: "#ec4899", emojiCode: "1f004", subtitle: "Match free tiles to clear the board" },
+  golf:         { color: "#22c55e", emojiCode: "26f3",  subtitle: "Chain cards ±1 to beat par" },
+  fortythieves: { color: "#f97316", emojiCode: "1f3b4", subtitle: "Two decks, same-suit builds" },
+  yukon:        { color: "#84cc16", emojiCode: "1f43b", subtitle: "All cards face-up from the start" },
+  scorpion:     { color: "#eab308", emojiCode: "1f982", subtitle: "Same-suit sequences, 7 columns" },
+  eightoff:     { color: "#06b6d4", emojiCode: "1f3af", subtitle: "Eight free cells, suit-only build" },
+  canfield:     { color: "#f43f5e", emojiCode: "1f3b0", subtitle: "Draw 3, tough from the first card" },
+  addiction:    { color: "#8b5cf6", emojiCode: "1f504", subtitle: "Slide cards left to sort by suit" },
+  bakersdozen:  { color: "#0ea5e9", emojiCode: "1f0cf", subtitle: "Only the top card of each pile moves" },
+  bakersgame:   { color: "#10b981", emojiCode: "1f3ae", subtitle: "FreeCell but suit-only builds" },
+  clock:        { color: "#64748b", emojiCode: "1f550", subtitle: "Flip cards to fill the clock face" },
+};
+
+// Derive the runtime list from the canonical app registry.
+// Throws if a game is missing OG metadata so the gap is immediately visible.
+const GAMES = APP_GAMES.map((g) => {
+  const meta = OG_META[g.saveKey];
+  if (!meta) {
+    throw new Error(
+      `Missing OG metadata for game "${g.title}" (saveKey: "${g.saveKey}"). ` +
+      `Add an entry to OG_META in scripts/gen-og-images.ts.`
+    );
+  }
+  return {
+    key: g.to.slice(1), // "/forty-thieves" → "forty-thieves" (used as filename)
+    route: g.to,
+    title: g.title,
+    subtitle: meta.subtitle,
+    emojiCode: meta.emojiCode,
+    color: meta.color,
+  };
+});
 
 async function fetchEmojiBase64(code: string): Promise<string> {
   // Try with and without variation selector suffix
