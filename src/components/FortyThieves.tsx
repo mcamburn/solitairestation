@@ -104,7 +104,13 @@ export function FortyThieves() {
     const el = boardRef.current;
     if (!el) return;
     const measure = () => {
-      const w = el.getBoundingClientRect().width - 32;
+      // Read actual computed padding so this works whether CSS has stripped it (mobile)
+      // or kept it (desktop p-4 = 32px total). Hardcoding 32 broke the mobile layout
+      // after the edge-to-edge board change removed left/right padding at <640px.
+      const style = getComputedStyle(el);
+      const padL = parseFloat(style.paddingLeft) || 0;
+      const padR = parseFloat(style.paddingRight) || 0;
+      const w = el.getBoundingClientRect().width - padL - padR;
       // Use minimum gap (2px) for the fit calculation to avoid circular dependency
       const computed = Math.floor((w - 2 * 9) / 10);
       setCardW(Math.max(28, Math.min(computed, 80)));
