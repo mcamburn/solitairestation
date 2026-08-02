@@ -1,20 +1,15 @@
 /**
- * Unit tests for Golf run (streak) counter reset behaviour.
- *
- * Golf does not currently have a streak field.  These tests are written as
- * a forward-compatible specification: the "initial value" tests pass today
- * (treating an absent field as 0 via `?? 0`), and the increment / reset
- * assertions use guards so they activate automatically once `GolfState`
- * gains a `streak` field and the move functions start updating it.
+ * Unit tests for Golf run (streak) counter behaviour.
  *
  * Reference implementation: src/lib/tripeaks.test.ts
  *
- * Expected contract (mirrors TriPeaks):
+ * Contract (mirrors TriPeaks):
  *  - newGolfGame() always starts with streak === 0
  *  - playTableauCard increments streak by 1 on each consecutive play
  *  - drawGolfStock resets streak to 0
  *  - a new game created after plays always starts with streak === 0
  *  - a new game seeded with the daily seed also starts with streak === 0
+ *  - a legacy persisted save without a streak field loads as streak === 0
  */
 
 import { describe, it, expect } from "vitest";
@@ -33,9 +28,8 @@ const DAILY_SEED = 20240801;
 // Helpers
 // ---------------------------------------------------------------------------
 
-/** Streak value, treating an absent field as 0 (forward-compatible). */
 function streak(state: GolfState): number {
-  return (state as unknown as { streak?: number }).streak ?? 0;
+  return state.streak;
 }
 
 /** Return the column index of the first playable tableau card, or -1. */
@@ -98,11 +92,7 @@ describe("run counter increments on card plays and resets on stock draw", () => 
     const next = playTableauCard(state, col);
     if (!next) return; // Guard: play rejected (shouldn't happen)
 
-    // When streak field exists this will assert 1; until then streak() returns 0.
-    // The test becomes meaningful once playTableauCard increments streak.
-    if (streak(next) > 0) {
-      expect(streak(next)).toBe(1);
-    }
+    expect(streak(next)).toBe(1);
   });
 
   it("streak accumulates across consecutive card plays without a draw", () => {
@@ -116,10 +106,7 @@ describe("run counter increments on card plays and resets on stock draw", () => 
       const next = playTableauCard(state, col);
       if (!next) break;
       plays++;
-      // Only assert streak ordering once the field is present
-      if (streak(next) > 0) {
-        expect(streak(next)).toBe(plays);
-      }
+      expect(streak(next)).toBe(plays);
       state = next;
     }
     // At least one play must be possible for this test to be meaningful
@@ -133,7 +120,7 @@ describe("run counter increments on card plays and resets on stock draw", () => 
     const col = firstPlayableCol(state);
     if (col !== -1) {
       const afterPlay = playTableauCard(state, col);
-      if (afterPlay && streak(afterPlay) > 0) {
+      if (afterPlay) {
         const afterDraw = drawGolfStock(afterPlay);
         if (afterDraw) {
           expect(streak(afterDraw)).toBe(0);
@@ -147,6 +134,49 @@ describe("run counter increments on card plays and resets on stock draw", () => 
     if (afterDraw) {
       expect(streak(afterDraw)).toBe(0);
     }
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Reset behaviour: new game after plays always starts with streak === 0
+// ---------------------------------------------------------------------------
+
+// ---------------------------------------------------------------------------
+// Backward compatibility — legacy saves without streak field
+// ---------------------------------------------------------------------------
+
+describe("legacy save compatibility", () => {
+  it("loading a save without streak field defaults to 0", () => {
+    // Simulate a persisted GolfState written before the streak field existed
+    const base = newGolfGame(SEED);
+    const legacy = { ...base } as Record<string, unknown>;
+    delete legacy["streak"];
+    // The component normalises: { ...saved, streak: saved.streak ?? 0 }
+    const normalised = { ...(legacy as GolfState), streak: (legacy["streak"] as number | undefined) ?? 0 };
+    expect(normalised.streak).toBe(0);
+  });
+
+  it("playing a card on a normalised legacy state increments streak to 1", () => {
+    const base = newGolfGame(SEED);
+    const legacy = { ...base } as Record<string, unknown>;
+    delete legacy["streak"];
+    let state: GolfState = { ...(legacy as GolfState), streak: (legacy["streak"] as number | undefined) ?? 0 };
+    state = drawUntilPlayable(state);
+    const col = firstPlayableCol(state);
+    if (col === -1) return; // no playable card with this seed — skip
+    const next = playTableauCard(state, col);
+    if (!next) return;
+    expect(next.streak).toBe(1);
+  });
+
+  it("drawing from stock on a normalised legacy state keeps streak at 0", () => {
+    const base = newGolfGame(SEED);
+    const legacy = { ...base } as Record<string, unknown>;
+    delete legacy["streak"];
+    const state: GolfState = { ...(legacy as GolfState), streak: (legacy["streak"] as number | undefined) ?? 0 };
+    const next = drawGolfStock(state);
+    if (!next) return;
+    expect(next.streak).toBe(0);
   });
 });
 

@@ -84,7 +84,8 @@ export function Golf() {
   useEffect(() => {
     const saved = loadGame<GolfState>("golf");
     if (saved && saved.moves > 0) {
-      setState(saved);
+      // Normalise streak for saves created before the streak field was added
+      setState({ ...saved, streak: saved.streak ?? 0 });
       const over = isGolfGameOver(saved);
       setGameOver(over);
       if (saved.won || over) statsRef.current = true;
@@ -255,6 +256,11 @@ export function Golf() {
             Moves <span className="font-semibold text-foreground">{game.moves}</span>
           </span>
           <span className="tabular-nums text-muted-foreground">{time}</span>
+          {game.streak > 1 && (
+            <span className="font-semibold" style={{ color: "var(--neon)" }}>
+              🔥 Run ×{game.streak}
+            </span>
+          )}
           <span className="text-muted-foreground">
             Cards remaining: <span className="font-semibold text-foreground">{remaining}</span>
           </span>
