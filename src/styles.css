@@ -393,6 +393,10 @@
     padding-right: 0 !important;
     margin-top: 0.25rem !important;
   }
+  /* Tighten inter-column gap on mobile so cards get more horizontal space.   */
+  /* Covers Spider, Scorpion, Yukon, FreeCell, Eight Off, Baker's Game which  */
+  /* all use Tailwind gap-1.5 on their grid containers.                       */
+  .game-board-glass .grid { gap: 2px !important; }
 }
 
 /* ─── Phone landscape: compact chrome so the game board gets the screen ─── */

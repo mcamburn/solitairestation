@@ -95,6 +95,15 @@ export function Solitaire({ initialMode }: { initialMode?: KlondikeMode } = {}) 
   const [colW, setColW] = useState(CARD_W);
   const stateLoaded = state !== null;
 
+  // ── Mobile breakpoint (< 640px) — tighter column gaps ──────────────────────
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 640);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+
   const measureCols = () => {
     const el = gridRef.current;
     if (!el) return;
@@ -212,7 +221,7 @@ export function Solitaire({ initialMode }: { initialMode?: KlondikeMode } = {}) 
   const game: GameState = state;
   const isDouble = game.mode === "double";
   const ncols = isDouble ? 9 : 7;
-  const colGap = isDouble ? 8 : 12;
+  const colGap = isMobile ? (isDouble ? 3 : 4) : (isDouble ? 8 : 12);
 
   // ── Game logic ─────────────────────────────────────────────────────────────
   const commit = (next: GameState | null) => {
