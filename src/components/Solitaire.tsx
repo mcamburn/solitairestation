@@ -879,7 +879,7 @@ function WinOverlay({ onNew, moves, time, mode, score }: {
 
   const handleCopy = () => {
     const gameLabel = getGameLabel(gameKey || "klondike");
-    const shareText = [`🃏 Solitaire Station – Daily ${gameLabel}`, `📅 ${dateLabel}`, `🔥 ${streakLabel}`, ``, `Play free at solitairestation.com`].join("\n");
+    const shareText = [`🃏 Solitaire Station – Daily ${gameLabel} (${modeLabel})`, `📅 ${dateLabel}`, `🔥 ${streakLabel}`, ``, `Play free at solitairestation.com`].join("\n");
     navigator.clipboard.writeText(shareText).then(() => { setCopied(true); setTimeout(() => setCopied(false), 2500); }).catch(() => window.prompt("Copy this result:", shareText));
   };
 
