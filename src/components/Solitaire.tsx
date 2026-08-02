@@ -127,7 +127,7 @@ export function Solitaire({ initialMode }: { initialMode?: KlondikeMode } = {}) 
   useEffect(measureCols, [mode]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const vh = typeof window !== "undefined" ? window.innerHeight : 900;
-  const cardH   = Math.min(Math.round(colW * 10 / 7), Math.round(vh * 0.30));
+  const cardH   = Math.min(Math.round(isMobile ? colW * 1.5 : colW * 10 / 7), Math.round(vh * 0.30));
   // Boost fan spacing on narrow screens (colW < 80px) so each card's peeking
   // strip is proportional to the card's own dimensions (caps at 1.3×).
   const fanMultiplier = Math.min(1.3, Math.max(1.0, 80 / Math.max(colW, 40)));
