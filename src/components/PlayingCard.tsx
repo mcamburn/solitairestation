@@ -132,15 +132,15 @@ export function PlayingCard({
       {...faceUpKbProps}
     >
       <div
-        className={`flex items-start justify-between text-[13px] font-semibold leading-none ${textColorClass}`}
+        className={`flex items-start justify-between text-[15px] font-semibold leading-none ${textColorClass}`}
         style={{ fontFamily }}
       >
         <div className="flex flex-col items-center">
           <span className="card-rank">{label}</span>
-          <span className="card-rank-suit text-[11px]">{glyph}</span>
+          <span className="card-rank-suit text-[13px]">{glyph}</span>
         </div>
         {faceStyle !== "minimal" && (
-          <div className={`card-top-glyph text-[22px] leading-none ${isRed ? "text-red-suit" : textColorClass}`}>
+          <div className={`card-top-glyph text-[26px] leading-none ${isRed ? "text-red-suit" : textColorClass}`}>
             {glyph}
           </div>
         )}
@@ -148,7 +148,7 @@ export function PlayingCard({
 
       {faceStyle === "minimal" ? (
         <div
-          className={`absolute inset-x-0 bottom-2 flex justify-center text-2xl opacity-80 ${textColorClass}`}
+          className={`absolute inset-x-0 bottom-2 flex justify-center text-3xl opacity-80 ${textColorClass}`}
         >
           {glyph}
         </div>
@@ -157,15 +157,15 @@ export function PlayingCard({
           className={`absolute inset-0 flex flex-col items-center justify-center leading-none ${textColorClass}`}
           style={{ fontFamily }}
         >
-          <span className="text-5xl font-black tracking-tighter">{label}</span>
-          <span className={`mt-1 text-2xl ${isRed ? "text-red-suit" : ""}`}>{glyph}</span>
+          <span className="text-6xl font-black tracking-tighter">{label}</span>
+          <span className={`mt-1 text-3xl ${isRed ? "text-red-suit" : ""}`}>{glyph}</span>
         </div>
       ) : faceStyle === "pixel" ? (
         <div
           className={`absolute inset-0 flex items-center justify-center ${textColorClass}`}
           style={{ fontFamily }}
         >
-          <span className="text-4xl font-bold" style={{ letterSpacing: "-0.05em" }}>
+          <span className="text-5xl font-bold" style={{ letterSpacing: "-0.05em" }}>
             {label}
           </span>
         </div>
@@ -174,7 +174,7 @@ export function PlayingCard({
           className={`absolute inset-0 flex items-center justify-center ${textColorClass}`}
           style={{ fontFamily }}
         >
-          <span className="text-5xl italic" style={{ transform: "rotate(-6deg)" }}>
+          <span className="text-6xl italic" style={{ transform: "rotate(-6deg)" }}>
             {label}
           </span>
         </div>
@@ -184,7 +184,7 @@ export function PlayingCard({
           style={{ fontFamily }}
         >
           <span
-            className="text-5xl font-black"
+            className="text-6xl font-black"
             style={{
               color: "transparent",
               WebkitTextStroke: `2px ${isRed ? "var(--red-suit)" : "var(--card-foreground)"}`,
@@ -199,7 +199,7 @@ export function PlayingCard({
           style={{ fontFamily }}
         >
           <span
-            className="text-4xl font-bold"
+            className="text-5xl font-bold"
             style={{
               color: isRed ? "var(--red-suit)" : "var(--neon)",
               textShadow: `0 0 6px ${isRed ? "var(--red-suit)" : "var(--neon)"}, 0 0 14px ${isRed ? "var(--red-suit)" : "var(--neon)"}`,
@@ -214,24 +214,24 @@ export function PlayingCard({
           className={`absolute inset-0 flex items-center justify-center ${textColorClass}`}
           style={{ fontFamily }}
         >
-          <span className="text-5xl font-black uppercase" style={{ letterSpacing: "0.02em" }}>
+          <span className="text-6xl font-black uppercase" style={{ letterSpacing: "0.02em" }}>
             {label}
           </span>
         </div>
       ) : (
         <div
-          className={`absolute inset-0 flex items-center justify-center text-4xl opacity-90 ${textColorClass}`}
+          className={`absolute inset-0 flex items-center justify-center text-5xl opacity-90 ${textColorClass}`}
           style={{ fontFamily }}
         >
           {["J", "Q", "K"].includes(label) ? (
-            <span className={`${faceStyle === "classic" ? "text-4xl italic" : "text-3xl"} font-bold`}>
+            <span className={`${faceStyle === "classic" ? "text-5xl italic" : "text-4xl"} font-bold`}>
               {label}
               <span className="ml-1">{glyph}</span>
             </span>
           ) : card.rank === 1 ? (
-            <span className="text-5xl">{glyph}</span>
+            <span className="text-6xl">{glyph}</span>
           ) : (
-            <span className={faceStyle === "classic" ? "text-4xl" : "text-3xl"}>{glyph}</span>
+            <span className={faceStyle === "classic" ? "text-5xl" : "text-4xl"}>{glyph}</span>
           )}
         </div>
       )}

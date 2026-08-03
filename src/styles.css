@@ -315,10 +315,11 @@
 /* Narrow cards (≤65 px wide) — typical on phone portrait */
 @container card-slot (max-width: 65px) {
   .playing-card { padding: 4px; }
-  .card-rank       { font-size: 10px !important; line-height: 1; }
-  .card-rank-suit  { font-size: 9px  !important; }
-  .card-top-glyph  { font-size: 14px !important; }
+  .card-rank       { font-size: 12px !important; line-height: 1; }
+  .card-rank-suit  { font-size: 11px !important; }
+  .card-top-glyph  { font-size: 16px !important; }
   /* Scale large center labels / glyphs */
+  .playing-card [class*="text-6xl"] { font-size: 1.75rem !important; }
   .playing-card [class*="text-5xl"] { font-size: 1.5rem  !important; }
   .playing-card [class*="text-4xl"] { font-size: 1.25rem !important; }
   .playing-card [class*="text-3xl"] { font-size: 1rem    !important; }
@@ -328,9 +329,10 @@
 /* Very narrow cards (≤50 px wide) — small phones or zoomed-out */
 @container card-slot (max-width: 50px) {
   .playing-card { padding: 3px; }
-  .card-rank       { font-size: 9px !important; line-height: 1; }
-  .card-rank-suit  { font-size: 8px !important; }
-  .card-top-glyph  { font-size: 11px !important; }
+  .card-rank       { font-size: 11px !important; line-height: 1; }
+  .card-rank-suit  { font-size: 10px !important; }
+  .card-top-glyph  { font-size: 13px !important; }
+  .playing-card [class*="text-6xl"] { font-size: 1.3rem  !important; }
   .playing-card [class*="text-5xl"] { font-size: 1.1rem  !important; }
   .playing-card [class*="text-4xl"] { font-size: 0.95rem !important; }
   .playing-card [class*="text-3xl"] { font-size: 0.8rem  !important; }
