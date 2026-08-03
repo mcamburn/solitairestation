@@ -314,6 +314,12 @@ export function BakersGame() {
       )}
 
       <AppearanceBar skin={skin} face={face} onSkinChange={setSkin} onFaceChange={setFace} />
+      <DragModeToggle
+        dragMode={dragMode}
+        onToggle={toggleDragMode}
+        dragHint="Drag cards to free cells, foundations, or tableau columns · Double-click to auto-move"
+        clickHint="Click a card to select, then click a destination · Double-click to auto-move to foundation"
+      />
       <NewGameToast visible={toastVisible} skin={skin} face={face} />
 
       {/* Board */}
@@ -428,13 +434,6 @@ export function BakersGame() {
       {game.won && (
         <DailyWinBanner message={`All 52 cards sorted in ${game.moves} moves!`} onNew={reset} stats={gameStats} />
       )}
-
-      <DragModeToggle
-        dragMode={dragMode}
-        onToggle={toggleDragMode}
-        dragHint="Drag cards to free cells, foundations, or tableau columns · Double-click to auto-move"
-        clickHint="Click a card to select, then click a destination · Double-click to auto-move to foundation"
-      />
 
       {isDragging && dragRef.current && (
         <BGGhost dragInfo={dragRef.current} ghostPos={ghostPos!} skin={skin} face={face} />

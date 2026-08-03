@@ -412,6 +412,12 @@ export function Solitaire({ initialMode }: { initialMode?: KlondikeMode } = {}) 
           locked: !!initialMode,
         }}
       />
+      <DragModeToggle
+        dragMode={dragMode}
+        onToggle={toggleDragMode}
+        dragHint="Drag cards to move them · Double-click to send to foundation"
+        clickHint="Click a card to select, then click a destination · Double-click to send to foundation"
+      />
 
       {hint && (
         <div
@@ -545,13 +551,6 @@ export function Solitaire({ initialMode }: { initialMode?: KlondikeMode } = {}) 
       </div>
 
       {game.won && <WinOverlay onNew={() => reset()} moves={game.moves} time={time} mode={game.mode} score={scoreValue} />}
-
-      <DragModeToggle
-        dragMode={dragMode}
-        onToggle={toggleDragMode}
-        dragHint="Drag cards to move them · Double-click to send to foundation"
-        clickHint="Click a card to select, then click a destination · Double-click to send to foundation"
-      />
 
       <NewGameToast visible={toastVisible} skin={skin} face={face} />
 

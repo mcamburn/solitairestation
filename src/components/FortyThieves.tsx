@@ -314,6 +314,12 @@ export function FortyThieves() {
       )}
 
       <AppearanceBar skin={skin} face={face} onSkinChange={setSkin} onFaceChange={setFace} />
+      <DragModeToggle
+        dragMode={dragMode}
+        onToggle={toggleDragMode}
+        dragHint="Drag cards to a tableau column or foundation"
+        clickHint="Click a card to select, then click a destination"
+      />
       <NewGameToast visible={toastVisible} skin={skin} face={face} />
 
       <div className="game-board-glass glass mt-4 overflow-x-auto rounded-2xl p-4" ref={boardRef} style={{ touchAction: "pan-x" }}>
@@ -447,13 +453,6 @@ export function FortyThieves() {
       <p className="mt-3 text-center text-xs text-muted-foreground">
         Click stock to draw. Build tableau down in same suit. Move Aces to foundations first.
       </p>
-
-      <DragModeToggle
-        dragMode={dragMode}
-        onToggle={toggleDragMode}
-        dragHint="Drag cards to a tableau column or foundation"
-        clickHint="Click a card to select, then click a destination"
-      />
 
       {/* Drag ghost */}
       {isDragging && dragRef.current && (

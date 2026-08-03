@@ -343,6 +343,12 @@ export function Spider({ initialDifficulty }: { initialDifficulty?: SpiderDiffic
           locked: !!initialDifficulty,
         }}
       />
+      <DragModeToggle
+        dragMode={dragMode}
+        onToggle={toggleDragMode}
+        dragHint="Drag a run to an empty column or one topped by the next rank up"
+        clickHint="Select a run, then click a destination column · Fill empty columns before dealing"
+      />
 
       {hint && (
         <div className="game-controls glass mt-3 flex items-center justify-between gap-3 rounded-2xl px-4 py-2.5 text-xs" style={{ borderColor: "var(--neon)" }}>
@@ -399,13 +405,6 @@ export function Spider({ initialDifficulty }: { initialDifficulty?: SpiderDiffic
           modeLabel={wonDailyModeLabel}
         />
       )}
-
-      <DragModeToggle
-        dragMode={dragMode}
-        onToggle={toggleDragMode}
-        dragHint="Drag a run to an empty column or one topped by the next rank up"
-        clickHint="Select a run, then click a destination column · Fill empty columns before dealing"
-      />
 
       {/* Drag ghost */}
       {isDragging && dragRef.current && (
