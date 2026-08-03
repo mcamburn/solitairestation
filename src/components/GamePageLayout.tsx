@@ -118,7 +118,7 @@ export function GamePageLayout({ gameKey, badge, title, tagline, rulesIntro, rul
         {/* ── Rules ──────────────────────────────────────────────────────── */}
         <section
           id="how-to-play"
-          className="mx-auto mt-12 max-w-[900px] xl:max-w-[1200px] px-4"
+          className="mx-auto mt-[100vh] sm:mt-12 max-w-[900px] xl:max-w-[1200px] px-4"
           style={{ scrollMarginTop: "var(--sticky-nav-height)" }}
         >
           <div className="glass rounded-2xl p-6 sm:p-8">
