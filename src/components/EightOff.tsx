@@ -107,7 +107,7 @@ export function EightOff() {
     if (!el) return;
     const measure = () => {
       const w = el.getBoundingClientRect().width;
-      setColW(Math.max(24, Math.round((w - 7 * 6) / 8)));
+      setColW(Math.max(24, Math.round((w - 7 * 7) / 8)));
     };
     measure();
     const ro = new ResizeObserver(measure);
@@ -399,13 +399,15 @@ export function EightOff() {
           });
 
           if (colW < 50) {
-            // Mobile: two separate rows so each card gets a full 1/8 column width
+            // Mobile: two rows on the same 8-col grid so all cells match tableau width.
+            // Foundations (4 slots) sit right-aligned in cols 5-8.
             return (
               <>
-                <div className="mb-2 grid gap-1.5" style={{ gridTemplateColumns: "repeat(8, minmax(0, 1fr))" }}>
+                <div className="mb-[7px] grid gap-[7px]" style={{ gridTemplateColumns: "repeat(8, minmax(0, 1fr))" }}>
                   {freeCellSlots}
                 </div>
-                <div className="mb-4 grid gap-1.5" style={{ gridTemplateColumns: "repeat(4, minmax(0, 1fr))" }}>
+                <div className="mb-4 grid gap-[7px]" style={{ gridTemplateColumns: "repeat(8, minmax(0, 1fr))" }}>
+                  <div /><div /><div /><div />
                   {foundationSlots}
                 </div>
               </>
