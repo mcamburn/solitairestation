@@ -34,7 +34,7 @@
   --color-neon: var(--neon);
   --color-neon-2: var(--neon-2);
   --color-red-suit: var(--red-suit);
-  --font-display: "Playfair Display", Georgia, ui-serif, serif;
+  --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, monospace;
 }
@@ -44,36 +44,30 @@
   --radius: 0.875rem;
   /* Card corner radius — kept small on mobile so narrow cards don't look like pills */
   --card-radius: 0.25rem;
-
-  /* ── Solitaire Station palette ── deep casino felt + warm gold + crimson ── */
-  --background: oklch(0.14 0.025 155);
-  --foreground: oklch(0.97 0.015 80);
-  --surface: oklch(0.18 0.030 155);
-  --surface-2: oklch(0.22 0.035 155);
-  --card: oklch(0.99 0.004 90);
-  --card-foreground: oklch(0.12 0.020 155);
-  --popover: oklch(0.18 0.030 155);
-  --popover-foreground: oklch(0.97 0.015 80);
-  /* Gold primary */
-  --primary: oklch(0.80 0.14 86);
-  --primary-foreground: oklch(0.12 0.020 155);
-  --secondary: oklch(0.26 0.040 155);
-  --secondary-foreground: oklch(0.97 0.015 80);
-  --muted: oklch(0.22 0.030 155);
-  --muted-foreground: oklch(0.65 0.020 155);
-  /* Crimson accent */
-  --accent: oklch(0.55 0.190 22);
-  --accent-foreground: oklch(0.97 0.015 80);
-  --destructive: oklch(0.62 0.240 25);
-  --destructive-foreground: oklch(0.97 0.015 80);
+  --background: oklch(0.16 0.02 265);
+  --foreground: oklch(0.98 0.005 250);
+  --surface: oklch(0.20 0.025 265);
+  --surface-2: oklch(0.24 0.03 265);
+  --card: oklch(0.99 0.003 250);
+  --card-foreground: oklch(0.15 0.02 265);
+  --popover: oklch(0.20 0.025 265);
+  --popover-foreground: oklch(0.98 0.005 250);
+  --primary: oklch(0.78 0.19 155);
+  --primary-foreground: oklch(0.15 0.02 265);
+  --secondary: oklch(0.28 0.03 265);
+  --secondary-foreground: oklch(0.98 0.005 250);
+  --muted: oklch(0.24 0.03 265);
+  --muted-foreground: oklch(0.68 0.02 260);
+  --accent: oklch(0.72 0.20 305);
+  --accent-foreground: oklch(0.15 0.02 265);
+  --destructive: oklch(0.65 0.25 25);
+  --destructive-foreground: oklch(0.98 0.005 250);
   --border: oklch(1 0 0 / 8%);
   --input: oklch(1 0 0 / 12%);
-  --ring: oklch(0.80 0.14 86);
-  /* Gold glow */
-  --neon: oklch(0.84 0.14 86);
-  /* Crimson glow */
-  --neon-2: oklch(0.62 0.18 22);
-  --red-suit: oklch(0.65 0.22 20);
+  --ring: oklch(0.78 0.19 155);
+  --neon: oklch(0.85 0.18 165);
+  --neon-2: oklch(0.72 0.22 305);
+  --red-suit: oklch(0.68 0.22 20);
 }
 
 @layer base {
@@ -91,9 +85,9 @@
     color: var(--color-foreground);
     font-family: var(--font-sans);
     background-image:
-      radial-gradient(ellipse 80% 60% at 20% 0%, color-mix(in oklab, var(--neon) 14%, transparent), transparent 60%),
-      radial-gradient(ellipse 60% 50% at 85% 100%, color-mix(in oklab, var(--neon-2) 12%, transparent), transparent 60%),
-      linear-gradient(180deg, var(--background), oklch(0.10 0.020 155));
+      radial-gradient(ellipse 80% 60% at 20% 0%, color-mix(in oklab, var(--neon) 18%, transparent), transparent 60%),
+      radial-gradient(ellipse 60% 50% at 85% 100%, color-mix(in oklab, var(--neon-2) 20%, transparent), transparent 60%),
+      linear-gradient(180deg, var(--background), oklch(0.13 0.02 265));
     background-attachment: fixed;
   }
 }
@@ -105,7 +99,7 @@
 }
 
 @utility playing-card {
-  background: linear-gradient(160deg, oklch(0.995 0.004 90), oklch(0.94 0.010 85));
+  background: linear-gradient(160deg, oklch(0.995 0.003 250), oklch(0.94 0.01 250));
   color: var(--card-foreground);
   border: 1px solid oklch(0 0 0 / 8%);
   box-shadow:
@@ -116,7 +110,7 @@
 
 @utility card-back {
   background:
-    linear-gradient(135deg, oklch(0.30 0.09 155) 0%, oklch(0.20 0.06 155) 100%);
+    linear-gradient(135deg, var(--neon) 0%, var(--neon-2) 100%);
   background-size: 200% 200%;
   border: 1px solid oklch(1 0 0 / 15%);
   box-shadow:
@@ -133,248 +127,163 @@
   border: 1px solid oklch(1 0 0 / 20%);
 }
 
-/* Skin: Felt — casino green felt with gold diamond lattice */
-.skin-neon.card-back {
-  background: linear-gradient(145deg, oklch(0.28 0.09 155) 0%, oklch(0.17 0.06 155) 100%);
-  border-color: oklch(0.80 0.14 86 / 30%);
-}
+/* Skin: Neon (default checker) */
 .skin-neon .card-back-pattern {
   background-image:
-    linear-gradient(45deg,  color-mix(in oklab, var(--neon) 28%, transparent) 25%, transparent 25%),
-    linear-gradient(-45deg, color-mix(in oklab, var(--neon) 28%, transparent) 25%, transparent 25%);
+    linear-gradient(45deg, oklch(1 0 0 / 12%) 25%, transparent 25%),
+    linear-gradient(-45deg, oklch(1 0 0 / 12%) 25%, transparent 25%);
   background-size: 10px 10px;
-  border-color: color-mix(in oklab, var(--neon) 30%, transparent);
 }
 
-/* Skin: Damask — deep green with repeating gold radial medallions */
+/* Skin: Aurora — soft flowing gradient */
 .skin-aurora.card-back {
   background:
-    radial-gradient(ellipse at 35% 30%, oklch(0.30 0.09 148) 0%, transparent 55%),
-    radial-gradient(ellipse at 70% 72%, oklch(0.22 0.07 158) 0%, transparent 55%),
-    linear-gradient(145deg, oklch(0.26 0.08 152), oklch(0.15 0.06 155));
-  border-color: oklch(0.80 0.14 86 / 35%);
+    radial-gradient(ellipse at 20% 20%, oklch(0.85 0.18 200) 0%, transparent 55%),
+    radial-gradient(ellipse at 80% 80%, oklch(0.75 0.22 320) 0%, transparent 55%),
+    linear-gradient(135deg, oklch(0.35 0.15 270), oklch(0.25 0.12 220));
 }
 .skin-aurora .card-back-pattern {
-  background-image:
-    radial-gradient(circle, color-mix(in oklab, var(--neon) 30%, transparent) 1.5px, transparent 1.5px),
-    radial-gradient(circle, color-mix(in oklab, var(--neon) 12%, transparent) 5px,   transparent 5px);
-  background-size: 16px 16px, 16px 16px;
-  border-color: color-mix(in oklab, var(--neon) 35%, transparent);
+  background-image: radial-gradient(oklch(1 0 0 / 18%) 1px, transparent 1px);
+  background-size: 8px 8px;
 }
 
-/* Skin: Velvet — deep crimson velvet with subtle diagonal weave */
+/* Skin: Circuit — grid + node dots */
 .skin-circuit.card-back {
-  background:
-    radial-gradient(ellipse at 40% 28%, oklch(0.38 0.13 22) 0%, transparent 58%),
-    linear-gradient(155deg, oklch(0.30 0.15 22), oklch(0.18 0.10 18));
-  border-color: oklch(0.62 0.18 22 / 40%);
+  background: linear-gradient(160deg, oklch(0.22 0.04 260), oklch(0.14 0.03 260));
+  border-color: color-mix(in oklab, var(--neon) 40%, transparent);
 }
 .skin-circuit .card-back-pattern {
   background-image:
-    repeating-linear-gradient( 45deg, oklch(1 0 0 / 7%) 0 3px, transparent 3px 9px),
-    repeating-linear-gradient(-45deg, oklch(1 0 0 / 7%) 0 3px, transparent 3px 9px);
-  border-color: oklch(1 0 0 / 14%);
+    linear-gradient(to right, color-mix(in oklab, var(--neon) 30%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in oklab, var(--neon) 30%, transparent) 1px, transparent 1px);
+  background-size: 12px 12px;
+  box-shadow: 0 0 20px -4px color-mix(in oklab, var(--neon) 40%, transparent) inset;
 }
 
-/* Skin: Gold — warm gold gradient with diagonal shadow stripes */
+/* Skin: Wave — diagonal ribbons */
 .skin-wave.card-back {
-  background:
-    radial-gradient(ellipse at 28% 28%, oklch(0.90 0.13 90) 0%, transparent 55%),
-    linear-gradient(135deg, oklch(0.74 0.16 84), oklch(0.52 0.13 78));
-  border-color: oklch(0.88 0.12 88 / 50%);
+  background: linear-gradient(135deg, oklch(0.72 0.20 305), oklch(0.55 0.22 260));
 }
 .skin-wave .card-back-pattern {
   background-image: repeating-linear-gradient(
     45deg,
-    oklch(0 0 0 / 12%) 0 5px,
-    transparent 5px 14px
+    oklch(1 0 0 / 14%) 0 6px,
+    transparent 6px 14px
   );
-  border-color: oklch(1 0 0 / 22%);
 }
 
-/* Skin: Ember — mahogany amber with horizontal grain lines */
+/* Skin: Ember — warm plasma */
 .skin-ember.card-back {
   background:
-    radial-gradient(ellipse at 32% 25%, oklch(0.68 0.16 52) 0%, transparent 55%),
-    linear-gradient(140deg, oklch(0.44 0.16 36), oklch(0.26 0.11 22));
-  border-color: oklch(0.68 0.14 50 / 40%);
+    radial-gradient(ellipse at 30% 30%, oklch(0.82 0.19 55) 0%, transparent 60%),
+    linear-gradient(135deg, oklch(0.55 0.22 25), oklch(0.32 0.15 15));
+  border-color: oklch(0.75 0.18 45 / 40%);
 }
 .skin-ember .card-back-pattern {
   background-image:
-    repeating-linear-gradient(0deg, oklch(1 0 0 / 9%) 0 1.5px, transparent 1.5px 7px);
-  border-color: oklch(0.72 0.12 55 / 28%);
+    repeating-linear-gradient(0deg, oklch(1 0 0 / 8%) 0 2px, transparent 2px 6px);
 }
 
-/* Skin: Royal — midnight-to-forest sweep with gold pinstripes */
+/* (Mono skin removed) */
+
+/* Skin: Prism — chromatic bands */
 .skin-prism.card-back {
   background: linear-gradient(
-    155deg,
-    oklch(0.20 0.06 265) 0%,
-    oklch(0.16 0.04 210) 45%,
-    oklch(0.20 0.06 155) 100%
+    135deg,
+    oklch(0.78 0.19 30) 0%,
+    oklch(0.82 0.18 90) 25%,
+    oklch(0.80 0.20 165) 50%,
+    oklch(0.72 0.22 240) 75%,
+    oklch(0.70 0.22 320) 100%
   );
-  border-color: oklch(0.80 0.14 86 / 30%);
 }
 .skin-prism .card-back-pattern {
   background-image: repeating-linear-gradient(
     90deg,
-    color-mix(in oklab, var(--neon) 28%, transparent) 0 1px,
-    transparent 1px 16px
+    oklch(1 0 0 / 18%) 0 1px,
+    transparent 1px 8px
   );
-  border-color: color-mix(in oklab, var(--neon) 38%, transparent);
+  border-color: oklch(1 0 0 / 28%);
 }
 
-/* Skin: Jade — emerald conic shimmer */
+/* Skin: Holo — iridescent foil */
 .skin-holo.card-back {
   background:
-    conic-gradient(from 180deg at 50% 50%,
-      oklch(0.55 0.18 158),
-      oklch(0.40 0.14 145),
-      oklch(0.58 0.20 168),
-      oklch(0.44 0.16 152),
-      oklch(0.55 0.18 158));
-  border-color: oklch(0.70 0.16 158 / 45%);
+    conic-gradient(from 210deg at 50% 50%,
+      oklch(0.82 0.15 190),
+      oklch(0.78 0.18 260),
+      oklch(0.80 0.20 320),
+      oklch(0.82 0.18 40),
+      oklch(0.82 0.15 190));
 }
 .skin-holo .card-back-pattern {
   background-image:
-    repeating-linear-gradient( 60deg, oklch(1 0 0 / 14%) 0 2px, transparent 2px 10px),
-    repeating-linear-gradient(-60deg, oklch(0 0 0 / 10%) 0 2px, transparent 2px 10px);
-  border-color: oklch(1 0 0 / 20%);
+    repeating-linear-gradient(60deg, oklch(1 0 0 / 12%) 0 2px, transparent 2px 8px),
+    repeating-linear-gradient(-60deg, oklch(0 0 0 / 10%) 0 2px, transparent 2px 8px);
 }
 
-/* Skin: Crosshatch — warm dark leather with gold grid lines */
+/* Skin: Grid — architect blueprint */
 .skin-grid.card-back {
-  background: linear-gradient(155deg, oklch(0.28 0.055 55), oklch(0.18 0.040 50));
-  border-color: oklch(0.80 0.14 86 / 30%);
+  background: linear-gradient(160deg, oklch(0.30 0.10 240), oklch(0.20 0.09 240));
+  border-color: oklch(0.85 0.10 220 / 40%);
 }
 .skin-grid .card-back-pattern {
   background-image:
-    linear-gradient(to right,  color-mix(in oklab, var(--neon) 22%, transparent) 1px, transparent 1px),
-    linear-gradient(to bottom, color-mix(in oklab, var(--neon) 22%, transparent) 1px, transparent 1px),
-    linear-gradient(to right,  oklch(1 0 0 / 7%) 1px, transparent 1px),
-    linear-gradient(to bottom, oklch(1 0 0 / 7%) 1px, transparent 1px);
-  background-size: 16px 16px, 16px 16px, 4px 4px, 4px 4px;
-  border-color: color-mix(in oklab, var(--neon) 30%, transparent);
+    linear-gradient(to right, oklch(1 0 0 / 18%) 1px, transparent 1px),
+    linear-gradient(to bottom, oklch(1 0 0 / 18%) 1px, transparent 1px),
+    linear-gradient(to right, oklch(1 0 0 / 8%) 1px, transparent 1px),
+    linear-gradient(to bottom, oklch(1 0 0 / 8%) 1px, transparent 1px);
+  background-size: 20px 20px, 20px 20px, 4px 4px, 4px 4px;
 }
 
-/* Skin: Marble — warm ivory with green-gold veining */
+/* Skin: Marble — soft veined stone */
 .skin-marble.card-back {
   background:
-    radial-gradient(ellipse at 30% 20%, oklch(0.96 0.02 82) 0%, transparent 52%),
-    radial-gradient(ellipse at 72% 80%, oklch(0.91 0.03 88) 0%, transparent 55%),
-    linear-gradient(135deg, oklch(0.89 0.025 84), oklch(0.80 0.020 80));
-  border-color: oklch(0 0 0 / 14%);
+    radial-gradient(ellipse at 30% 20%, oklch(0.96 0.01 260) 0%, transparent 50%),
+    radial-gradient(ellipse at 70% 80%, oklch(0.90 0.02 280) 0%, transparent 55%),
+    linear-gradient(135deg, oklch(0.88 0.01 260), oklch(0.78 0.02 260));
+  border-color: oklch(0 0 0 / 15%);
 }
 .skin-marble .card-back-pattern {
   background-image:
-    repeating-linear-gradient(115deg, color-mix(in oklab, var(--neon) 16%, transparent) 0 1px, transparent 1px 22px),
-    repeating-linear-gradient( 65deg, oklch(0 0 0 / 5%) 0 1px, transparent 1px 34px);
-  border-color: oklch(0 0 0 / 10%);
+    repeating-linear-gradient(115deg, oklch(0 0 0 / 6%) 0 1px, transparent 1px 22px),
+    repeating-linear-gradient(65deg, oklch(0 0 0 / 4%) 0 1px, transparent 1px 34px);
+  border-color: oklch(0 0 0 / 12%);
 }
 
 /* ===== Face styles ===== */
-
-/* Classic — warm serif ivory, like aged card stock */
 .face-classic {
   font-family: "Georgia", "Times New Roman", serif !important;
-  background: linear-gradient(160deg, oklch(0.99 0.012 88), oklch(0.93 0.022 78)) !important;
+  background: linear-gradient(160deg, oklch(0.99 0.01 90), oklch(0.94 0.02 80)) !important;
 }
-
-/* Ivory — clean warm white, barely tinted */
 .face-minimal {
-  background: linear-gradient(160deg, oklch(0.995 0.004 85), oklch(0.96 0.005 82)) !important;
+  background: linear-gradient(160deg, oklch(0.995 0.003 250), oklch(0.96 0.005 250)) !important;
 }
-
-/* Onyx — deep casino-green face with warm cream text + faint gold border */
 .face-bold {
-  background: linear-gradient(160deg, oklch(0.16 0.030 155), oklch(0.10 0.022 155)) !important;
-  color: oklch(0.97 0.015 80) !important;
-  border-color: color-mix(in oklab, var(--neon) 22%, oklch(0 0 0 / 10%)) !important;
+  background: linear-gradient(160deg, oklch(0.15 0.02 265), oklch(0.10 0.02 265)) !important;
+  color: oklch(0.98 0.005 250) !important;
+  border-color: oklch(1 0 0 / 12%) !important;
 }
-
-/* Pixel — warm off-white for monospace */
 .face-pixel {
   font-family: "JetBrains Mono", ui-monospace, monospace !important;
-  background: linear-gradient(160deg, oklch(0.99 0.004 85), oklch(0.92 0.008 82)) !important;
+  background: linear-gradient(160deg, oklch(0.99 0.005 250), oklch(0.92 0.01 250)) !important;
 }
-
-/* Antique — rich warm parchment, like old casino cards */
 .face-script {
-  background: linear-gradient(160deg, oklch(0.97 0.030 74), oklch(0.90 0.045 68)) !important;
+  background: linear-gradient(160deg, oklch(0.98 0.02 60), oklch(0.92 0.04 55)) !important;
 }
-
-/* Outline — warm near-white for thin-stroke suits */
 .face-outline {
-  background: linear-gradient(160deg, oklch(0.995 0.004 85), oklch(0.95 0.006 82)) !important;
+  background: linear-gradient(160deg, oklch(0.99 0.003 250), oklch(0.95 0.005 250)) !important;
 }
-
-/* Verdant — deep casino green with gold glow + warm cream text */
 .face-retro {
-  background: linear-gradient(160deg, oklch(0.15 0.030 155), oklch(0.08 0.022 155)) !important;
-  color: oklch(0.97 0.015 80) !important;
-  border-color: color-mix(in oklab, var(--neon) 45%, transparent) !important;
+  background: linear-gradient(160deg, oklch(0.14 0.02 265), oklch(0.08 0.02 265)) !important;
+  border-color: color-mix(in oklab, var(--neon) 40%, transparent) !important;
   box-shadow:
-    0 0 0 1px color-mix(in oklab, var(--neon) 28%, transparent) inset,
+    0 0 0 1px color-mix(in oklab, var(--neon) 25%, transparent) inset,
     0 8px 20px -8px oklch(0 0 0 / 55%) !important;
 }
-
-/* Parchment — warm tan like casino-table felt lining */
 .face-stencil {
-  background: linear-gradient(160deg, oklch(0.93 0.030 78), oklch(0.84 0.040 72)) !important;
-  border-color: oklch(0 0 0 / 18%) !important;
-}
-
-/* ── Inner border accent — one per face style ──────────────────────────── */
-.card-inner-border {
-  pointer-events: none;
-  position: absolute;
-  inset: 4px;
-  border-radius: calc(var(--card-radius, 8px) - 2px);
-}
-
-/* Classic: thin hairline inside the card edge */
-.face-classic .card-inner-border {
-  border: 1px solid currentColor;
-  opacity: 0.13;
-}
-
-/* Minimal: subtle dotted rule */
-.face-minimal .card-inner-border {
-  border: 1px dotted currentColor;
-  opacity: 0.18;
-}
-
-/* Bold (Onyx): faint casino-green inner glow frame */
-.face-bold .card-inner-border {
-  box-shadow: inset 0 0 0 2px color-mix(in oklab, var(--neon) 22%, transparent);
-}
-
-/* Pixel: 1 px dashed, squared off */
-.face-pixel .card-inner-border {
-  border: 1px dashed currentColor;
-  border-radius: 2px;
-  opacity: 0.22;
-}
-
-/* Script (Antique): warm parchment-tone hairline */
-.face-script .card-inner-border {
-  border: 1px solid oklch(0.55 0.10 65);
-  opacity: 0.28;
-}
-
-/* Outline: matching inset stroke */
-.face-outline .card-inner-border {
-  box-shadow: inset 0 0 0 1.5px currentColor;
-  opacity: 0.16;
-}
-
-/* Retro (Verdant): neon inner glow — colour set via JS inline style */
-/* (handled by inline style in PlayingCard.tsx to react to suit colour) */
-
-/* Stencil (Parchment): earthy double-rule frame */
-.face-stencil .card-inner-border {
-  border: 1.5px solid oklch(0 0 0 / 14%);
-  box-shadow: inset 0 0 0 3px oklch(0 0 0 / 5%);
+  background: linear-gradient(160deg, oklch(0.96 0.01 90), oklch(0.88 0.02 85)) !important;
+  border-color: oklch(0 0 0 / 20%) !important;
 }
 
 @utility slot-empty {
@@ -403,78 +312,34 @@
   container-name: card-slot;
 }
 
-/* Narrow cards (≤65 px wide) — typical on phone portrait (~50 px for
-   Klondike, ~37 px for Spider). Keep corner rank/suit at their default
-   readable size; only scale down the decorative centre body. */
+/* Narrow cards (≤65 px wide) — typical on phone portrait */
 @container card-slot (max-width: 65px) {
   .playing-card { padding: 4px; }
-  .card-rank       { font-size: 16px !important; line-height: 1; }
-  .card-rank-suit  { font-size: 14px !important; }
-  .card-top-glyph  { font-size: 19px !important; }
-  /* Scale large decorative centre labels so they don't overflow the card */
+  .card-rank       { font-size: 10px !important; line-height: 1; }
+  .card-rank-suit  { font-size: 9px  !important; }
+  .card-top-glyph  { font-size: 14px !important; }
+  /* Scale large center labels / glyphs */
   .playing-card [class*="text-5xl"] { font-size: 1.5rem  !important; }
   .playing-card [class*="text-4xl"] { font-size: 1.25rem !important; }
   .playing-card [class*="text-3xl"] { font-size: 1rem    !important; }
   .playing-card [class*="text-2xl"] { font-size: 0.85rem !important; }
 }
 
-/* Narrow cards (≤50 px wide) — FreeCell / Canfield / Eight Off free cells
-   (~42 px), Spider / Forty Thieves (~35 px), Baker's Dozen (~27 px).
-   Replace corner + body with a single centred rank + suit pip so the card
-   identity is readable at a glance without any overlap. */
+/* Very narrow cards (≤50 px wide) — small phones or zoomed-out */
 @container card-slot (max-width: 50px) {
-  .playing-card     { padding: 3px; }
-  /* Hide corner bar and decorative centre body */
-  .card-corner      { display: none !important; }
-  .card-top-glyph   { display: none !important; }
-  .card-body        { display: none !important; }
-  /* Activate centred pip */
-  .card-center-pip  { display: flex !important; }
-  .card-center-rank { font-size: 22px !important; font-weight: 600; line-height: 1; }
-  .card-center-suit { font-size: 19px !important; line-height: 1; }
-}
-
-/* Very cramped cards (≤40 px wide) — Spider / Forty Thieves (~35 px).
-   Inherit corner-hidden + pip-shown from ≤50 px; just scale the pip down. */
-@container card-slot (max-width: 40px) {
-  .playing-card     { padding: 3px; }
-  .card-center-rank { font-size: 16px !important; }
-  .card-center-suit { font-size: 14px !important; }
-}
-
-/* Tiny cards (≤28 px wide) — Baker's Dozen (~27 px).
-   Inherit pip from ≤40 px; scale further to fit. */
-@container card-slot (max-width: 28px) {
-  .playing-card     { padding: 2px; }
-  .card-center-rank { font-size: 11px !important; }
-  .card-center-suit { font-size: 9px !important; }
+  .playing-card { padding: 3px; }
+  .card-rank       { font-size: 9px !important; line-height: 1; }
+  .card-rank-suit  { font-size: 8px !important; }
+  .card-top-glyph  { font-size: 11px !important; }
+  .playing-card [class*="text-5xl"] { font-size: 1.1rem  !important; }
+  .playing-card [class*="text-4xl"] { font-size: 0.95rem !important; }
+  .playing-card [class*="text-3xl"] { font-size: 0.8rem  !important; }
+  .playing-card [class*="text-2xl"] { font-size: 0.7rem  !important; }
 }
 
 @utility hint-glow {
   animation: hint-pulse 1.1s ease-in-out infinite;
   z-index: 5;
-}
-
-/* ─── Mobile portrait: full-width glass board, top/bottom borders only ────── */
-/* Below Tailwind's sm breakpoint (639px) the game board keeps its glass       */
-/* background but stretches edge-to-edge with no side borders or rounding.     */
-/* A thin border on top and bottom separates it from the chrome above/below.   */
-@media (max-width: 639px) {
-  .game-board-glass {
-    border-left: none !important;
-    border-right: none !important;
-    border-radius: 0 !important;
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-    margin-top: 0.75rem !important;
-  }
-  /* Tighten inter-column gap on mobile so cards get more horizontal space.   */
-  /* Covers Spider, Scorpion, Yukon, FreeCell, Eight Off, Baker's Game which  */
-  /* all use Tailwind gap-1.5 on their grid containers.                       */
-  .game-board-glass .grid { gap: 2px !important; }
-  /* Taller card proportion on phones: 2:3 instead of 7:10.                  */
-  /* JS cardH formula mirrors this with ×1.5 when colW < 70 px.              */
-  .slot-empty { aspect-ratio: 2 / 3 !important; }
 }
 
 /* ─── Phone landscape: compact chrome so the game board gets the screen ─── */
