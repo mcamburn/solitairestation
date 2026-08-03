@@ -395,7 +395,7 @@ export function BakersGame() {
         </div>
 
         {/* Tableau */}
-        <div ref={gridRef} className="grid gap-1.5" style={{ gridTemplateColumns: "repeat(8, minmax(0, 1fr))" }}>
+        <div ref={gridRef} className="grid gap-2 sm:gap-1.5" style={{ gridTemplateColumns: "repeat(8, minmax(0, 1fr))" }}>
           {game.tableau.map((pile, col) => (
             <BGColumn
               key={col}

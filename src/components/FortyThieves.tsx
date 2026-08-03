@@ -98,7 +98,7 @@ export function FortyThieves() {
   const boardRef = useRef<HTMLDivElement>(null);
   const [cardW, setCardW] = useState(64);
   const cardH = Math.round(cardW < 70 ? cardW * 1.5 : cardW * 10 / 7);
-  const cardGap = Math.max(2, Math.round(cardW * 0.07));
+  const cardGap = Math.max(4, Math.round(cardW * 0.07));
 
   useEffect(() => {
     const el = boardRef.current;

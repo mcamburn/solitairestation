@@ -183,7 +183,7 @@ export function Canfield() {
   const cardW = Math.max(28, Math.round(CARD_W * scale));
   const cardH = Math.round(cardW < 70 ? cardW * 1.5 : cardW * 10 / 7);
   const overlap = Math.max(14, Math.round(CARD_OVERLAP * scale));
-  const colGap = Math.max(3, Math.round(8 * scale));
+  const colGap = Math.max(5, Math.round(8 * scale));
 
   const commit = (next: CanfieldState | null): boolean => {
     if (!next) return false;
