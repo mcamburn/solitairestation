@@ -124,11 +124,24 @@ for crawlers vs regular browsers without dropping existing `Vary` values such as
 
 ## Cache purging
 
-After the rule is live, purge the Cloudflare cache so crawlers receive fresh HTML
-rather than a cached challenge page:
+Cache purging now happens **automatically** at the end of every successful push to
+`main` via the `Purge Cloudflare cache` step in `.github/workflows/smoke.yml`.
+Two repository secrets must be set for it to work:
+
+| Secret name    | Where to find it |
+|----------------|-----------------|
+| `CF_ZONE_ID`   | Cloudflare dashboard → your zone → Overview → Zone ID (right sidebar) |
+| `CF_API_TOKEN` | Cloudflare dashboard → My Profile → API Tokens → Create Token (use the "Cache Purge" template) |
+
+Add both under **Settings → Secrets and variables → Actions** in the GitHub
+repository.
+
+### Manual purge (one-off)
+
+If you need to purge outside of a deploy, run:
 
 ```bash
-# Via Cloudflare API (replace ZONE_ID and CF_API_TOKEN)
+# Replace ZONE_ID and CF_API_TOKEN with the values from GitHub secrets
 curl -X POST "https://api.cloudflare.com/client/v4/zones/${ZONE_ID}/purge_cache" \
   -H "Authorization: Bearer ${CF_API_TOKEN}" \
   -H "Content-Type: application/json" \
