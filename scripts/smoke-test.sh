@@ -109,6 +109,7 @@ CRAWLER_BODY=$(curl -s -L --max-time 10 \
 
 OG_TITLE=$(echo "${CRAWLER_BODY}" | grep -o 'property="og:title"[^>]*' | head -1)
 OG_IMAGE=$(echo "${CRAWLER_BODY}" | grep -o 'property="og:image"[^>]*' | head -1)
+CANONICAL=$(echo "${CRAWLER_BODY}" | grep -o '<link[^>]*rel="canonical"[^>]*>' | head -1)
 
 if [[ -n "${OG_TITLE}" ]]; then
   echo "  PASS  og:title present for crawler UA on ${CRAWLER_ROUTE}"
@@ -121,6 +122,27 @@ if [[ -n "${OG_IMAGE}" ]]; then
   echo "  PASS  og:image present for crawler UA on ${CRAWLER_ROUTE}"
 else
   echo "  FAIL  og:image missing for crawler UA on ${CRAWLER_ROUTE}" >&2
+  FAILED=$((FAILED + 1))
+fi
+
+if echo "${OG_IMAGE}" | grep -q "https://www\.solitairestation\.com"; then
+  echo "  PASS  og:image URL uses https://www.solitairestation.com origin"
+else
+  echo "  FAIL  og:image URL does not use https://www.solitairestation.com origin (got: ${OG_IMAGE})" >&2
+  FAILED=$((FAILED + 1))
+fi
+
+if [[ -n "${CANONICAL}" ]]; then
+  echo "  PASS  canonical link present for crawler UA on ${CRAWLER_ROUTE}"
+else
+  echo "  FAIL  canonical link missing for crawler UA on ${CRAWLER_ROUTE}" >&2
+  FAILED=$((FAILED + 1))
+fi
+
+if echo "${CANONICAL}" | grep -q "https://www\.solitairestation\.com"; then
+  echo "  PASS  canonical link uses https://www.solitairestation.com origin"
+else
+  echo "  FAIL  canonical link does not use https://www.solitairestation.com origin (got: ${CANONICAL})" >&2
   FAILED=$((FAILED + 1))
 fi
 
