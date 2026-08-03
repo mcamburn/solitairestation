@@ -398,6 +398,11 @@
 
 /* ─── Phone portrait: compact toolbars so the board fits without scrolling ── */
 @media (max-width: 639px) {
+  /* Ensure the game board section fills at least the viewport so the
+     How-to-play section always starts just below the fold on first load. */
+  #game-board {
+    min-height: calc(100dvh - var(--sticky-nav-height, 60px));
+  }
   /* Controls bar (time / moves / score / hint) */
   .game-controls { padding-top: 0.25rem !important; padding-bottom: 0.25rem !important; justify-content: center !important; }
   /* Card picker rows */
