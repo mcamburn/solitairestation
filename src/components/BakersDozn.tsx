@@ -166,7 +166,7 @@ export function BakersDozn() {
   const game = state;
   // Compute cardW to guarantee all 13 columns fit inside the measured board width
   const rawScale = Math.min(1, boardW / 880);
-  const colGap = Math.max(4, Math.round(6 * rawScale));
+  const colGap = Math.max(3, Math.round(6 * rawScale));
   const cardW = Math.max(16, Math.min(Math.round(CARD_W * rawScale), Math.floor((boardW - colGap * 12) / 13)));
   const cardH = Math.round(cardW < 70 ? cardW * 1.5 : cardW * 10 / 7);
   const overlap = Math.max(12, Math.round(CARD_OVERLAP * (cardW / CARD_W)));

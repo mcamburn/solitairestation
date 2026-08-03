@@ -111,7 +111,7 @@ export function Pyramid() {
   const maxCardH = Math.round(vh * 0.14); // 7 rows visible at once
   const cardW   = Math.max(32, Math.min(Math.round(CARD_W * scale), Math.round(maxCardH * 7 / 10)));
   const cardH   = Math.round(cardW * 10 / 7);
-  const cardGap = Math.max(4, Math.round(6 * scale));
+  const cardGap = Math.max(3, Math.round(6 * scale));
 
   if (!state) {
     return (

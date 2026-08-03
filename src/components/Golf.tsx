@@ -181,7 +181,7 @@ export function Golf() {
   const game = state;
   const cardW = Math.max(32, Math.round(CARD_W * scale));
   const cardH = Math.round(cardW * 10 / 7);
-  const cardGap = Math.max(4, Math.round(8 * scale));
+  const cardGap = Math.max(3, Math.round(8 * scale));
 
   commitDragRef.current = (dr: DragInfo, zone: string) => {
     if (zone === "waste") commit(playTableauCard(game, dr.srcCol));

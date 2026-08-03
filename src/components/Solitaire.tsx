@@ -117,7 +117,7 @@ export function Solitaire({ initialMode }: { initialMode?: KlondikeMode } = {}) 
     const ncols = modeRef.current === "double" ? 9 : 7;
     // Use the actual rendered gap (mobile = 4/3 px, desktop = 12/8 px)
     const mobile = isMobileRef.current;
-    const gap = mobile ? (ncols === 9 ? 5 : 6) : (ncols === 9 ? 8 : 12);
+    const gap = mobile ? (ncols === 9 ? 4 : 5) : (ncols === 9 ? 8 : 12);
     setColW(Math.max(22, Math.round((w - (ncols - 1) * gap) / ncols)));
   };
 
@@ -232,7 +232,7 @@ export function Solitaire({ initialMode }: { initialMode?: KlondikeMode } = {}) 
   const game: GameState = state;
   const isDouble = game.mode === "double";
   const ncols = isDouble ? 9 : 7;
-  const colGap = isMobile ? (isDouble ? 5 : 6) : (isDouble ? 8 : 12);
+  const colGap = isMobile ? (isDouble ? 4 : 5) : (isDouble ? 8 : 12);
 
   // ── Game logic ─────────────────────────────────────────────────────────────
   const commit = (next: GameState | null) => {

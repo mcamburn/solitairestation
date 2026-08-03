@@ -319,7 +319,7 @@ export function Scorpion() {
       <div className="game-board-glass glass mt-4 rounded-2xl p-3 sm:p-4">
         <div
           ref={gridRef}
-          className="grid gap-2 sm:gap-1.5"
+          className="grid gap-[7px] sm:gap-1.5"
           style={{ gridTemplateColumns: "repeat(7, minmax(0, 1fr))" }}
         >
           {game.tableau.map((pile, col) => (

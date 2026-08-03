@@ -232,7 +232,7 @@ export function Addiction() {
 
       <div className="game-board-glass glass mt-4 rounded-2xl p-3 sm:p-4">
         {/* 4×13 grid */}
-        <div className="flex flex-col gap-2 sm:gap-1.5">
+        <div className="flex flex-col gap-[7px] sm:gap-1.5">
           {state.grid.map((row, rowIdx) => (
             <div key={rowIdx} className="flex gap-1">
               {row.map((card, colIdx) => {
