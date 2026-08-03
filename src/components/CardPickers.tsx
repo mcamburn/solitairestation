@@ -627,6 +627,7 @@ export function AppearanceBar({
       {/* Card Back chips — horizontal scroll row showing each skin's gradient/texture */}
       {open === "back" && (
         <div
+          id="appearance-panel"
           className="block sm:hidden glass mt-1.5 rounded-2xl px-3 py-2.5"
           role="listbox"
           aria-label="Card back"
@@ -662,6 +663,7 @@ export function AppearanceBar({
       {/* Card Face chips — horizontal scroll row showing each face style's "A" glyph */}
       {open === "face" && (
         <div
+          id="appearance-panel"
           className="block sm:hidden glass mt-1.5 rounded-2xl px-3 py-2.5"
           role="listbox"
           aria-label="Card face"
