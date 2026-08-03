@@ -399,7 +399,7 @@
 /* ─── Phone portrait: compact toolbars so the board fits without scrolling ── */
 @media (max-width: 639px) {
   /* Controls bar (time / moves / score / hint) */
-  .game-controls { padding-top: 0.25rem !important; padding-bottom: 0.25rem !important; }
+  .game-controls { padding-top: 0.25rem !important; padding-bottom: 0.25rem !important; justify-content: center !important; }
   /* Card picker rows */
   .picker-wrap   { margin-top: 0.25rem !important; padding-top: 0.25rem !important; padding-bottom: 0.25rem !important; }
 }
