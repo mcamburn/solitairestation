@@ -1,3 +1,4 @@
 - [Git remote config](git-remote-config.md) — origin now correctly points to solitairestation.git; use gitPush({branch:"main"}) or token push if shell auth fails.
 - [SSR hydration fix](ssr-hydration-fix.md) — add suppressHydrationWarning to <head> in __root.tsx to prevent Replit devtools script injection from crashing React hydration.
 - [Daily challenge TDZ fix](daily-challenge-tdz.md) — dailyTrigger useEffect must not reference reset/resetWithSeed directly; use a dailyResetRef updated after reset is defined.
+- [styles.css revert risk](styles-css-revert-risk.md) — git checkout origin/main -- src/styles.css destroys mobile-critical rules that live only in local commits ahead of origin.
