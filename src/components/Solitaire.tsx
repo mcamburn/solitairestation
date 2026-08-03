@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { saveGame, loadGame, clearGame } from "@/lib/persist";
 import { recordWin, recordLoss, type GameStats } from "@/lib/stats";
+import { useGameTimer } from "@/hooks/useGameTimer";
 import { useDailyChallenge } from "@/contexts/DailyChallengeContext";
 import { getGameLabel } from "@/lib/gameLabels";
 import {
@@ -66,7 +67,6 @@ export function Solitaire({ initialMode }: { initialMode?: KlondikeMode } = {}) 
   const { skin, face, setSkin, setFace } = useCardAppearance();
   const { visible: toastVisible, show: showToast } = useNewGameToast();
   const [hint, setHint] = useState<Hint | null>(null);
-  const [, force] = useState(0);
 
   // Mode: controlled by prop on sub-pages, else persisted in localStorage
   const [mode, setMode] = useState<KlondikeMode>(() => initialMode ?? loadSavedMode());
@@ -167,10 +167,6 @@ export function Solitaire({ initialMode }: { initialMode?: KlondikeMode } = {}) 
     if (state && state.moves > 0) saveGame("klondike", state);
   }, [state]);
 
-  useEffect(() => {
-    const id = setInterval(() => force((n) => n + 1), 1000);
-    return () => clearInterval(id);
-  }, []);
 
   useEffect(() => {
     if (dailyTrigger === 0) return;
@@ -183,7 +179,7 @@ export function Solitaire({ initialMode }: { initialMode?: KlondikeMode } = {}) 
     if (statsRef.current || !state) return;
     if (state.won) {
       statsRef.current = true;
-      const elapsed = Math.floor((Date.now() - state.startedAt) / 1000);
+      const elapsed = getElapsedSeconds();
       setGameStats(recordWin("klondike", elapsed, state.moves, dailyModeRef.current));
       if (dailyModeRef.current) { onDailyWin(); dailyModeRef.current = false; }
     }
@@ -222,6 +218,8 @@ export function Solitaire({ initialMode }: { initialMode?: KlondikeMode } = {}) 
   }, []);
 
   // ── Loading skeleton ───────────────────────────────────────────────────────
+  const { time, getElapsedSeconds, isPaused, pause } = useGameTimer(state?.startedAt ?? 0, state);
+
   if (!state) {
     return (
       <div className="mx-auto w-full sm:max-w-[900px] xl:max-w-[1200px] sm:px-4 xl:px-6 pb-16">
@@ -369,7 +367,6 @@ export function Solitaire({ initialMode }: { initialMode?: KlondikeMode } = {}) 
   const isDraggingFromFoundation = (i: number) =>
     draggingSource?.kind === "foundation" && draggingSource.pile === i;
 
-  const time = elapsed(game);
   const isDragging = ghostPos !== null;
 
   // Score display
@@ -394,6 +391,8 @@ export function Solitaire({ initialMode }: { initialMode?: KlondikeMode } = {}) 
         scoreLabel={scoreLabel}
         scoreValue={scoreValue}
         time={time}
+        isPaused={isPaused}
+        onPause={pause}
         onUndo={undo}
         onNew={() => reset()}
         onHint={showHint}
@@ -823,12 +822,14 @@ function TableauColumn({
 // ─── TopBar ───────────────────────────────────────────────────────────────────
 
 function TopBar({
-  moves, scoreLabel, scoreValue, time, onUndo, onNew, onHint, canUndo, vegasPasses,
+  moves, scoreLabel, scoreValue, time, isPaused, onPause, onUndo, onNew, onHint, canUndo, vegasPasses,
 }: {
   moves: number;
   scoreLabel: string;
   scoreValue: string;
   time: string;
+  isPaused: boolean;
+  onPause: () => void;
   onUndo: () => void;
   onNew: () => void;
   onHint: () => void;
@@ -842,7 +843,13 @@ function TopBar({
         <div className="text-sm font-semibold tracking-tight" style={{ fontFamily: "var(--font-display)" }}>Klondike</div>
       </div>
       <div className="flex items-center gap-3 sm:gap-5" style={{ fontFamily: "var(--font-mono)" }}>
-        <Stat label="TIME" value={time} />
+        <div className="text-right leading-tight">
+          <div className="flex items-center justify-end gap-1 text-[9px] uppercase tracking-[0.22em] text-muted-foreground">
+            <button onClick={onPause} title={isPaused ? "Resume timer" : "Pause timer"} aria-label={isPaused ? "Resume timer" : "Pause timer"} className="opacity-50 hover:opacity-100 transition-opacity leading-none select-none">{isPaused ? "▶" : "⏸"}</button>
+            TIME
+          </div>
+          <div className="text-sm font-semibold" style={isPaused ? { opacity: 0.5 } : undefined}>{time}</div>
+        </div>
         <Stat label="MOVES" value={String(moves)} />
         {vegasPasses && <Stat label="PASS" value={`${vegasPasses.current}/${vegasPasses.max}`} />}
         <Stat label={scoreLabel} value={scoreValue} />

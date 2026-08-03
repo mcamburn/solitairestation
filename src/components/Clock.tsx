@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { saveGame, loadGame, clearGame } from "@/lib/persist";
 import { recordWin, recordLoss, type GameStats } from "@/lib/stats";
+import { useGameTimer } from "@/hooks/useGameTimer";
 import { useDailyChallenge } from "@/contexts/DailyChallengeContext";
 import {
   newClockGame,
@@ -16,12 +17,6 @@ import { DailyWinBanner } from "./DailyWinBanner";
 const CARD_W = 56;
 const CARD_H = 80;
 
-function formatTime(startedAt: number): string {
-  const secs = Math.floor((Date.now() - startedAt) / 1000);
-  const m = Math.floor(secs / 60).toString().padStart(2, "0");
-  const s = (secs % 60).toString().padStart(2, "0");
-  return `${m}:${s}`;
-}
 
 // Clock positions: index 0-11 = 1 o'clock through 12 o'clock
 // Standard clock: 12 at top, 3 at right, 6 at bottom, 9 at left
@@ -127,7 +122,6 @@ export function Clock() {
   const { dailySeed, dailyTrigger, onDailyWin } = useDailyChallenge();
   const { skin, face, setSkin, setFace } = useCardAppearance();
   const { visible: toastVisible, show: showToast } = useNewGameToast();
-  const [, forceUpdate] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
   const [boardSize, setBoardSize] = useState(480);
 
@@ -146,7 +140,7 @@ export function Clock() {
     if (statsRef.current) return;
     if (state?.won) {
       statsRef.current = true;
-      const elapsed = Math.floor((Date.now() - state.startedAt) / 1000);
+      const elapsed = getElapsedSeconds();
       setGameStats(recordWin("clock", elapsed, state.moves, dailyModeRef.current));
       if (dailyModeRef.current) { onDailyWin(); dailyModeRef.current = false; }
     } else if (state?.lost) {
@@ -160,10 +154,6 @@ export function Clock() {
     if (state && state.moves > 0) saveGame("clock", state);
   }, [state]);
 
-  useEffect(() => {
-    const id = setInterval(() => forceUpdate(n => n + 1), 1000);
-    return () => clearInterval(id);
-  }, []);
 
   // Measure container for responsive sizing
   const stateLoaded = state !== null;
@@ -219,6 +209,8 @@ export function Clock() {
     reset(dailySeed);
   }, [dailyTrigger]); // eslint-disable-line react-hooks/exhaustive-deps
 
+  const { time, getElapsedSeconds, isPaused, pause } = useGameTimer(state?.startedAt ?? 0, state);
+
   if (!state) {
     return (
       <div className="game-board-wrap mx-auto w-full sm:max-w-[900px] xl:max-w-[1200px] sm:px-4 xl:px-6 pb-16">
@@ -234,7 +226,6 @@ export function Clock() {
     if (next) setState(next);
   };
 
-  const time = formatTime(game.startedAt);
   const remaining = clockFaceDownCount(game);
   const hasNext = clockHasNextCard(game);
   const gameEnded = game.won || game.lost;
@@ -260,7 +251,10 @@ export function Clock() {
           <span className="text-muted-foreground">
             Moves <span className="font-semibold text-foreground">{game.moves}</span>
           </span>
-          <span className="tabular-nums text-muted-foreground">{time}</span>
+          <span className="flex items-center gap-1.5 tabular-nums text-muted-foreground">
+            <button onClick={pause} title={isPaused ? "Resume timer" : "Pause timer"} aria-label={isPaused ? "Resume timer" : "Pause timer"} className="opacity-50 hover:opacity-100 transition-opacity text-[10px] leading-none select-none">{isPaused ? "▶" : "⏸"}</button>
+            <span className={isPaused ? "opacity-50" : ""}>{time}</span>
+          </span>
           <span className="text-muted-foreground">
             Face-down <span className="font-semibold text-foreground">{remaining}</span>
           </span>

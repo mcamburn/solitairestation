@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { saveGame, loadGame, clearGame } from "@/lib/persist";
 import { recordWin, recordLoss, type GameStats } from "@/lib/stats";
+import { useGameTimer } from "@/hooks/useGameTimer";
 import { useGameTopBarStats } from "@/hooks/useGameTopBarStats";
 import { useDailyChallenge } from "@/contexts/DailyChallengeContext";
 import {
@@ -21,12 +22,6 @@ import { DailyWinBanner } from "./DailyWinBanner";
 const CARD_W = 74;
 const CARD_H = 106;
 
-function formatTime(startedAt: number): string {
-  const secs = Math.floor((Date.now() - startedAt) / 1000);
-  const m = Math.floor(secs / 60).toString().padStart(2, "0");
-  const s = (secs % 60).toString().padStart(2, "0");
-  return `${m}:${s}`;
-}
 
 export function Pyramid() {
   const [state, setState] = useState<PyramidState | null>(null);
@@ -36,7 +31,6 @@ export function Pyramid() {
   const [stuck, setStuck] = useState(false);
   const { skin, face, setSkin, setFace } = useCardAppearance();
   const { visible: toastVisible, show: showToast } = useNewGameToast();
-  const [, forceUpdate] = useState(0);
 
   // Stats & daily challenge
   const statsRef = useRef(false);
@@ -67,10 +61,6 @@ export function Pyramid() {
     if (state && state.moves > 0) saveGame("pyramid", state);
   }, [state]);
 
-  useEffect(() => {
-    const id = setInterval(() => forceUpdate((n) => n + 1), 1000);
-    return () => clearInterval(id);
-  }, []);
 
   useEffect(() => {
     if (dailyTrigger === 0) return;
@@ -83,7 +73,7 @@ export function Pyramid() {
     if (statsRef.current || !state) return;
     if (state.won) {
       statsRef.current = true;
-      const elapsed = Math.floor((Date.now() - state.startedAt) / 1000);
+      const elapsed = getElapsedSeconds();
       setGameStats(recordWin("pyramid", elapsed, state.moves, dailyModeRef.current, state.peakStreak));
       if (dailyModeRef.current) { onDailyWin(); dailyModeRef.current = false; }
     } else if (stuck) {
@@ -116,6 +106,8 @@ export function Pyramid() {
   const cardW   = Math.max(32, Math.min(Math.round(CARD_W * scale), Math.round(maxCardH * 7 / 10)));
   const cardH   = Math.round(cardW * 10 / 7);
   const cardGap = Math.max(3, Math.round(6 * scale));
+
+  const { time, getElapsedSeconds, isPaused, pause } = useGameTimer(state?.startedAt ?? 0, state);
 
   if (!state) {
     return (
@@ -209,7 +201,6 @@ export function Pyramid() {
     commit(drawPyramidStock(game));
   };
 
-  const time = formatTime(game.startedAt);
   const wasteTop = game.waste[game.waste.length - 1];
   const isSel = (row: number, col: number) =>
     sel?.kind === "pyramid" && sel.row === row && sel.col === col;
@@ -223,7 +214,10 @@ export function Pyramid() {
           <span className="text-muted-foreground">
             Moves <span className="font-semibold text-foreground">{game.moves}</span>
           </span>
-          <span className="tabular-nums text-muted-foreground">{time}</span>
+          <span className="flex items-center gap-1.5 tabular-nums text-muted-foreground">
+            <button onClick={pause} title={isPaused ? "Resume timer" : "Pause timer"} aria-label={isPaused ? "Resume timer" : "Pause timer"} className="opacity-50 hover:opacity-100 transition-opacity text-[10px] leading-none select-none">{isPaused ? "▶" : "⏸"}</button>
+            <span className={isPaused ? "opacity-50" : ""}>{time}</span>
+          </span>
           <span className="text-muted-foreground">
             Stock <span className="font-semibold text-foreground">{game.stock.length}</span>
           </span>

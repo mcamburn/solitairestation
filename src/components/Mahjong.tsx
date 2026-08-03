@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { saveGame, loadGame, clearGame } from "@/lib/persist";
 import { recordWin, recordLoss, type GameStats } from "@/lib/stats";
+import { useGameTimer } from "@/hooks/useGameTimer";
 import { useDailyChallenge } from "@/contexts/DailyChallengeContext";
 import {
   newMahjongGame,
@@ -19,19 +20,12 @@ import {
 } from "./MahjongTile";
 import { DailyWinBanner } from "./DailyWinBanner";
 
-function formatTime(startedAt: number): string {
-  const secs = Math.floor((Date.now() - startedAt) / 1000);
-  const m = Math.floor(secs / 60).toString().padStart(2, "0");
-  const s = (secs % 60).toString().padStart(2, "0");
-  return `${m}:${s}`;
-}
 
 export function Mahjong() {
   const [state, setState] = useState<MahjongState | null>(null);
   const [history, setHistory] = useState<MahjongState[]>([]);
   const [hint, setHint] = useState<MahjongHint | null>(null);
   const [stuck, setStuck] = useState(false);
-  const [, forceUpdate] = useState(0);
 
   // Stats & daily challenge
   const statsRef = useRef(false);
@@ -55,10 +49,6 @@ export function Mahjong() {
     if (state && state.moves > 0) saveGame("mahjong", state);
   }, [state]);
 
-  useEffect(() => {
-    const id = setInterval(() => forceUpdate(n => n + 1), 1000);
-    return () => clearInterval(id);
-  }, []);
 
   useEffect(() => {
     if (dailyTrigger === 0) return;
@@ -71,7 +61,7 @@ export function Mahjong() {
     if (statsRef.current || !state) return;
     if (state.won) {
       statsRef.current = true;
-      const elapsed = Math.floor((Date.now() - state.startedAt) / 1000);
+      const elapsed = getElapsedSeconds();
       setGameStats(recordWin("mahjong", elapsed, state.moves, dailyModeRef.current));
       if (dailyModeRef.current) { onDailyWin(); dailyModeRef.current = false; }
     } else if (stuck) {
@@ -97,6 +87,8 @@ export function Mahjong() {
     ro.observe(el);
     return () => ro.disconnect();
   }, [stateLoaded]);
+
+  const { time, getElapsedSeconds, isPaused, pause } = useGameTimer(state?.startedAt ?? 0, state);
 
   if (!state) {
     return (
@@ -155,7 +147,6 @@ export function Mahjong() {
     commit(tryMahjongClick(game, idx));
   };
 
-  const time = formatTime(game.startedAt);
 
   return (
     <div className="mx-auto w-full sm:max-w-[900px] xl:max-w-[1200px] sm:px-4 xl:px-6 pb-16">
@@ -165,7 +156,10 @@ export function Mahjong() {
           <span className="text-muted-foreground">
             Moves <span className="font-semibold text-foreground">{game.moves}</span>
           </span>
-          <span className="tabular-nums text-muted-foreground">{time}</span>
+          <span className="flex items-center gap-1.5 tabular-nums text-muted-foreground">
+            <button onClick={pause} title={isPaused ? "Resume timer" : "Pause timer"} aria-label={isPaused ? "Resume timer" : "Pause timer"} className="opacity-50 hover:opacity-100 transition-opacity text-[10px] leading-none select-none">{isPaused ? "▶" : "⏸"}</button>
+            <span className={isPaused ? "opacity-50" : ""}>{time}</span>
+          </span>
           <span className="text-muted-foreground">
             Remaining{" "}
             <span

@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { saveGame, loadGame, clearGame } from "@/lib/persist";
 import { recordWin, recordLoss, type GameStats } from "@/lib/stats";
+import { useGameTimer } from "@/hooks/useGameTimer";
 import { useGameTopBarStats } from "@/hooks/useGameTopBarStats";
 import { useDailyChallenge } from "@/contexts/DailyChallengeContext";
 import {
@@ -28,12 +29,6 @@ const CARD_H = 106;
 const CARD_OVERLAP = 26;
 const DRAG_THRESHOLD = 6;
 
-function formatTime(startedAt: number): string {
-  const secs = Math.floor((Date.now() - startedAt) / 1000);
-  const m = Math.floor(secs / 60).toString().padStart(2, "0");
-  const s = (secs % 60).toString().padStart(2, "0");
-  return `${m}:${s}`;
-}
 
 type SelectionSource =
   | { kind: "waste" }
@@ -62,7 +57,6 @@ export function Canfield() {
   const [hint, setHint] = useState<CanfieldHint | null>(null);
   const { skin, face, setSkin, setFace } = useCardAppearance();
   const { visible: toastVisible, show: showToast } = useNewGameToast();
-  const [, forceUpdate] = useState(0);
   const boardRef = useRef<HTMLDivElement>(null);
   const [scale, setScale] = useState(1);
   const statsRef = useRef(false);
@@ -74,7 +68,7 @@ export function Canfield() {
   useEffect(() => {
     if (!state?.won || statsRef.current) return;
     statsRef.current = true;
-    const elapsed = Math.floor((Date.now() - state.startedAt) / 1000);
+    const elapsed = getElapsedSeconds();
     setGameStats(recordWin("canfield", elapsed, state.moves, dailyModeRef.current));
     if (dailyModeRef.current) { onDailyWin(); dailyModeRef.current = false; }
     setHistory([]);
@@ -100,10 +94,6 @@ export function Canfield() {
     if (state && state.moves > 0) saveGame("canfield", state);
   }, [state]);
 
-  useEffect(() => {
-    const id = setInterval(() => forceUpdate(n => n + 1), 1000);
-    return () => clearInterval(id);
-  }, []);
 
   const stateLoaded = state !== null;
   useEffect(() => {
@@ -170,6 +160,8 @@ export function Canfield() {
     statsRef.current = false;
     reset(dailySeed);
   }, [dailyTrigger]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const { time, getElapsedSeconds, isPaused, pause } = useGameTimer(state?.startedAt ?? 0, state);
 
   if (!state) {
     return (
@@ -336,7 +328,10 @@ export function Canfield() {
       <div className="game-controls glass mt-3 flex flex-wrap items-center justify-between gap-3 rounded-2xl px-4 py-2.5 text-xs">
         <div className="flex items-center gap-4">
           <span className="text-muted-foreground">Moves <span className="font-semibold text-foreground">{game.moves}</span></span>
-          <span className="tabular-nums text-muted-foreground">{formatTime(game.startedAt)}</span>
+          <span className="flex items-center gap-1.5 tabular-nums text-muted-foreground">
+            <button onClick={pause} title={isPaused ? "Resume timer" : "Pause timer"} aria-label={isPaused ? "Resume timer" : "Pause timer"} className="opacity-50 hover:opacity-100 transition-opacity text-[10px] leading-none select-none">{isPaused ? "▶" : "⏸"}</button>
+            <span className={isPaused ? "opacity-50" : ""}>{time}</span>
+          </span>
           <span className="text-muted-foreground">Foundation <span className="font-semibold text-foreground">{totalFoundationCards}/52</span></span>
           {topBarStats.hasPlayed && (
             <span className="hidden sm:inline text-muted-foreground">Streak <span className="font-semibold tabular-nums" style={{ color: "var(--neon)" }}>{topBarStats.streak}</span></span>

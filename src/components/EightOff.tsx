@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { saveGame, loadGame, clearGame } from "@/lib/persist";
 import { recordWin, recordLoss, type GameStats } from "@/lib/stats";
+import { useGameTimer } from "@/hooks/useGameTimer";
 import { useGameTopBarStats } from "@/hooks/useGameTopBarStats";
 import { useDailyChallenge } from "@/contexts/DailyChallengeContext";
 import {
@@ -41,12 +42,6 @@ type DragInfo = {
   onTap: () => void;
 };
 
-function formatTime(startedAt: number): string {
-  const secs = Math.floor((Date.now() - startedAt) / 1000);
-  const m = Math.floor(secs / 60).toString().padStart(2, "0");
-  const s = (secs % 60).toString().padStart(2, "0");
-  return `${m}:${s}`;
-}
 
 export function EightOff() {
   const [state, setState] = useState<EightOffState | null>(null);
@@ -55,7 +50,6 @@ export function EightOff() {
   const [hint, setHint] = useState<EightOffHint | null>(null);
   const { skin, face, setSkin, setFace } = useCardAppearance();
   const { visible: toastVisible, show: showToast } = useNewGameToast();
-  const [, forceUpdate] = useState(0);
   const { dragMode, toggleDragMode } = useDragMode();
   const statsRef = useRef(false);
   const [gameStats, setGameStats] = useState<GameStats | null>(null);
@@ -66,7 +60,7 @@ export function EightOff() {
   useEffect(() => {
     if (!state?.won || statsRef.current) return;
     statsRef.current = true;
-    const elapsed = Math.floor((Date.now() - state.startedAt) / 1000);
+    const elapsed = getElapsedSeconds();
     setGameStats(recordWin("eightoff", elapsed, state.moves, dailyModeRef.current));
     if (dailyModeRef.current) { onDailyWin(); dailyModeRef.current = false; }
     setHistory([]);
@@ -94,10 +88,6 @@ export function EightOff() {
     if (state && state.moves > 0) saveGame("eightoff", state);
   }, [state]);
 
-  useEffect(() => {
-    const id = setInterval(() => forceUpdate((n) => n + 1), 1000);
-    return () => clearInterval(id);
-  }, []);
 
   const gridRef = useRef<HTMLDivElement>(null);
   const [colW, setColW] = useState(CARD_W_BASE);
@@ -171,6 +161,8 @@ export function EightOff() {
     statsRef.current = false;
     reset(dailySeed);
   }, [dailyTrigger]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const { time, getElapsedSeconds, isPaused, pause } = useGameTimer(state?.startedAt ?? 0, state);
 
   if (!state) {
     return (
@@ -276,7 +268,6 @@ export function EightOff() {
   const isDraggingFromFC = (cell: number) =>
     draggingSrc?.kind === "freecell" && draggingSrc.cell === cell;
 
-  const time = formatTime(game.startedAt);
   const isDragging = ghostPos !== null;
 
   const dropHighlight = (zone: string) =>
@@ -295,7 +286,10 @@ export function EightOff() {
           <span className="text-muted-foreground">
             Moves <span className="font-semibold text-foreground">{game.moves}</span>
           </span>
-          <span className="tabular-nums text-muted-foreground">{time}</span>
+          <span className="flex items-center gap-1.5 tabular-nums text-muted-foreground">
+            <button onClick={pause} title={isPaused ? "Resume timer" : "Pause timer"} aria-label={isPaused ? "Resume timer" : "Pause timer"} className="opacity-50 hover:opacity-100 transition-opacity text-[10px] leading-none select-none">{isPaused ? "▶" : "⏸"}</button>
+            <span className={isPaused ? "opacity-50" : ""}>{time}</span>
+          </span>
           {topBarStats.hasPlayed && (
             <span className="hidden sm:inline text-muted-foreground">Streak <span className="font-semibold tabular-nums" style={{ color: "var(--neon)" }}>{topBarStats.streak}</span></span>
           )}

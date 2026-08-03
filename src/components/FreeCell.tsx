@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { saveGame, loadGame, clearGame } from "@/lib/persist";
 import { recordWin, recordLoss, type GameStats } from "@/lib/stats";
+import { useGameTimer } from "@/hooks/useGameTimer";
 import { useDailyChallenge } from "@/contexts/DailyChallengeContext";
 import {
   newFreeCellGame,
@@ -40,12 +41,6 @@ type DragInfo = {
   onTap: () => void;
 };
 
-function formatTime(startedAt: number): string {
-  const secs = Math.floor((Date.now() - startedAt) / 1000);
-  const m = Math.floor(secs / 60).toString().padStart(2, "0");
-  const s = (secs % 60).toString().padStart(2, "0");
-  return `${m}:${s}`;
-}
 
 export function FreeCell() {
   const [state, setState] = useState<FreeCellState | null>(null);
@@ -54,7 +49,6 @@ export function FreeCell() {
   const [hint, setHint] = useState<FreeCellHint | null>(null);
   const { skin, face, setSkin, setFace } = useCardAppearance();
   const { visible: toastVisible, show: showToast } = useNewGameToast();
-  const [, forceUpdate] = useState(0);
   const { dragMode, toggleDragMode } = useDragMode();
 
   // Stats & daily challenge
@@ -85,10 +79,6 @@ export function FreeCell() {
     if (state && state.moves > 0) saveGame("freecell", state);
   }, [state]);
 
-  useEffect(() => {
-    const id = setInterval(() => forceUpdate((n) => n + 1), 1000);
-    return () => clearInterval(id);
-  }, []);
 
   useEffect(() => {
     if (dailyTrigger === 0) return;
@@ -101,7 +91,7 @@ export function FreeCell() {
     if (statsRef.current || !state) return;
     if (state.won) {
       statsRef.current = true;
-      const elapsed = Math.floor((Date.now() - state.startedAt) / 1000);
+      const elapsed = getElapsedSeconds();
       setGameStats(recordWin("freecell", elapsed, state.moves, dailyModeRef.current));
       if (dailyModeRef.current) { onDailyWin(); dailyModeRef.current = false; }
     }
@@ -159,6 +149,8 @@ export function FreeCell() {
       window.removeEventListener("pointerup", onUp);
     };
   }, []);
+
+  const { time, getElapsedSeconds, isPaused, pause } = useGameTimer(state?.startedAt ?? 0, state);
 
   if (!state) {
     return (
@@ -287,7 +279,6 @@ export function FreeCell() {
     return draggingSrc.col === col && i >= draggingSrc.index;
   };
 
-  const time = formatTime(game.startedAt);
   const isDragging = ghostPos !== null;
 
   const dropHighlight = (zone: string) =>
@@ -306,7 +297,10 @@ export function FreeCell() {
           <span className="text-muted-foreground">
             Moves <span className="font-semibold text-foreground">{game.moves}</span>
           </span>
-          <span className="tabular-nums text-muted-foreground">{time}</span>
+          <span className="flex items-center gap-1.5 tabular-nums text-muted-foreground">
+            <button onClick={pause} title={isPaused ? "Resume timer" : "Pause timer"} aria-label={isPaused ? "Resume timer" : "Pause timer"} className="opacity-50 hover:opacity-100 transition-opacity text-[10px] leading-none select-none">{isPaused ? "▶" : "⏸"}</button>
+            <span className={isPaused ? "opacity-50" : ""}>{time}</span>
+          </span>
         </div>
         <div className="flex items-center gap-2">
           <button onClick={showHint} className="rounded-lg border border-border px-2.5 py-1 transition hover:bg-secondary/70">Hint</button>

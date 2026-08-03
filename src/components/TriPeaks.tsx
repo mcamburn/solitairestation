@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { saveGame, loadGame, clearGame } from "@/lib/persist";
 import { recordWin, recordLoss, type GameStats } from "@/lib/stats";
+import { useGameTimer } from "@/hooks/useGameTimer";
 import { useGameTopBarStats } from "@/hooks/useGameTopBarStats";
 import { useDailyChallenge } from "@/contexts/DailyChallengeContext";
 import {
@@ -28,12 +29,6 @@ const ROW_H = 114; // px per row
 const TOTAL_W = 9 * UNIT + CARD_W; // 702 + 70 = 772px
 const TOTAL_H = 3 * ROW_H + CARD_H; // 342 + 100 = 442px
 
-function formatTime(startedAt: number): string {
-  const secs = Math.floor((Date.now() - startedAt) / 1000);
-  const m = Math.floor(secs / 60).toString().padStart(2, "0");
-  const s = (secs % 60).toString().padStart(2, "0");
-  return `${m}:${s}`;
-}
 
 export function TriPeaks() {
   const [state, setState] = useState<TriPeaksState | null>(null);
@@ -42,7 +37,6 @@ export function TriPeaks() {
   const [stuck, setStuck] = useState(false);
   const { skin, face, setSkin, setFace } = useCardAppearance();
   const { visible: toastVisible, show: showToast } = useNewGameToast();
-  const [, forceUpdate] = useState(0);
 
   // Stats & daily challenge
   const statsRef = useRef(false);
@@ -67,10 +61,6 @@ export function TriPeaks() {
     if (state && state.moves > 0) saveGame("tripeaks", state);
   }, [state]);
 
-  useEffect(() => {
-    const id = setInterval(() => forceUpdate((n) => n + 1), 1000);
-    return () => clearInterval(id);
-  }, []);
 
   useEffect(() => {
     if (dailyTrigger === 0) return;
@@ -83,7 +73,7 @@ export function TriPeaks() {
     if (statsRef.current || !state) return;
     if (state.won) {
       statsRef.current = true;
-      const elapsed = Math.floor((Date.now() - state.startedAt) / 1000);
+      const elapsed = getElapsedSeconds();
       setGameStats(recordWin("tripeaks", elapsed, state.moves, dailyModeRef.current));
       if (dailyModeRef.current) { onDailyWin(); dailyModeRef.current = false; }
     } else if (stuck) {
@@ -121,6 +111,8 @@ export function TriPeaks() {
   const rowH   = Math.round(ROW_H  * effectiveScale);
   const totalW = Math.round(TOTAL_W * effectiveScale);
   const totalH = Math.round(TOTAL_H * effectiveScale);
+
+  const { time, getElapsedSeconds, isPaused, pause } = useGameTimer(state?.startedAt ?? 0, state);
 
   if (!state) {
     return (
@@ -180,7 +172,6 @@ export function TriPeaks() {
   };
 
   const wasteTop = game.waste[game.waste.length - 1];
-  const time = formatTime(game.startedAt);
 
   return (
     <div className="game-board-wrap mx-auto w-full sm:max-w-[900px] xl:max-w-[1200px] sm:px-4 xl:px-6 pb-16">
@@ -190,7 +181,10 @@ export function TriPeaks() {
           <span className="text-muted-foreground">
             Moves <span className="font-semibold text-foreground">{game.moves}</span>
           </span>
-          <span className="tabular-nums text-muted-foreground">{time}</span>
+          <span className="flex items-center gap-1.5 tabular-nums text-muted-foreground">
+            <button onClick={pause} title={isPaused ? "Resume timer" : "Pause timer"} aria-label={isPaused ? "Resume timer" : "Pause timer"} className="opacity-50 hover:opacity-100 transition-opacity text-[10px] leading-none select-none">{isPaused ? "▶" : "⏸"}</button>
+            <span className={isPaused ? "opacity-50" : ""}>{time}</span>
+          </span>
           {game.streak > 1 && (
             <span className="font-semibold" style={{ color: "var(--neon)" }}>
               🔥 Run ×{game.streak}
