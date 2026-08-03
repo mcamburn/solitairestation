@@ -338,8 +338,8 @@ export function EightOff() {
               <div
                 key={i}
                 data-drop-zone={`freecell-${i}`}
-                className={`card-slot-container aspect-[7/10] cursor-pointer rounded-[var(--card-radius)] outline-none transition-all ${ring}`}
-                style={shadow ? { boxShadow: shadow } : undefined}
+                className={`card-slot-container cursor-pointer rounded-[var(--card-radius)] outline-none transition-all ${ring}`}
+                style={{ height: cardH, ...(shadow ? { boxShadow: shadow } : {}) }}
                 onClick={dragMode ? undefined : () => handleFreeCellClick(i)}
                 onKeyDown={(e) => { if (!card && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); handleFreeCellClick(i); } }}
                 tabIndex={card ? undefined : 0}
@@ -347,7 +347,7 @@ export function EightOff() {
                 aria-label={card ? undefined : `Free cell ${i + 1}, empty`}
               >
                 {card ? (
-                  <div style={{ opacity: isDraggingFromFC(i) ? 0.4 : 1, transition: "opacity 0.1s", touchAction: dragMode ? "none" : undefined }}>
+                  <div style={{ height: "100%", opacity: isDraggingFromFC(i) ? 0.4 : 1, transition: "opacity 0.1s", touchAction: dragMode ? "none" : undefined }}>
                     <PlayingCard
                       card={card}
                       selected={selected}
@@ -379,8 +379,8 @@ export function EightOff() {
               <div
                 key={i}
                 data-drop-zone={`foundation-${i}`}
-                className={`card-slot-container aspect-[7/10] cursor-pointer rounded-[var(--card-radius)] transition-all ${ring}`}
-                style={shadow ? { boxShadow: shadow } : undefined}
+                className={`card-slot-container cursor-pointer rounded-[var(--card-radius)] transition-all ${ring}`}
+                style={{ height: cardH, ...(shadow ? { boxShadow: shadow } : {}) }}
                 onClick={dragMode ? undefined : () => handleFoundationClick(i)}
                 onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); handleFoundationClick(i); } }}
                 tabIndex={0}
