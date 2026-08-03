@@ -236,43 +236,6 @@ export function PlayingCard({
           )}
         </div>
       )}
-      {/* ── Suit watermark — large ghost glyph clipped at card bottom ── */}
-      {/* Skipped for minimal (suit already shown prominently at bottom) */}
-      {faceStyle !== "minimal" && (() => {
-        const rc = isRed ? "var(--red-suit)" : isBoldFace ? "var(--foreground)" : "var(--card-foreground)";
-        const wStyle: React.CSSProperties =
-          faceStyle === "retro"
-            ? { fontSize: "5rem", lineHeight: 1, opacity: 0.5,
-                color: isRed ? "var(--red-suit)" : "var(--neon)",
-                textShadow: `0 0 14px ${isRed ? "var(--red-suit)" : "var(--neon)"}`,
-                fontFamily }
-            : faceStyle === "outline"
-            ? { fontSize: "5rem", lineHeight: 1, opacity: 0.22,
-                color: "transparent",
-                WebkitTextStroke: `1.5px ${rc}` }
-            : faceStyle === "bold"
-            ? { fontSize: "5rem", lineHeight: 1, opacity: 0.2, color: rc }
-            : faceStyle === "script"
-            ? { fontSize: "5rem", lineHeight: 1, opacity: 0.1, color: rc,
-                fontFamily, transform: "rotate(-8deg)" }
-            : faceStyle === "stencil"
-            ? { fontSize: "5rem", lineHeight: 1, opacity: 0.1, color: rc, fontFamily }
-            : faceStyle === "pixel"
-            ? { fontSize: "5rem", lineHeight: 1, opacity: 0.12, color: rc, fontFamily }
-            : faceStyle === "classic"
-            ? { fontSize: "5rem", lineHeight: 1, opacity: 0.09, color: rc,
-                fontStyle: "italic", fontFamily }
-            : /* modern */ { fontSize: "5rem", lineHeight: 1, opacity: 0.08, color: rc };
-        return (
-          <div
-            className="card-suit-watermark absolute inset-x-0 bottom-0 overflow-hidden flex justify-center items-start pointer-events-none select-none"
-            style={{ height: "2.2rem" }}
-            aria-hidden="true"
-          >
-            <span style={wStyle}>{glyph}</span>
-          </div>
-        );
-      })()}
     </div>
   );
 }
