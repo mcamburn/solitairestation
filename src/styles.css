@@ -324,6 +324,59 @@
   border-color: oklch(0 0 0 / 18%) !important;
 }
 
+/* ── Inner border accent — one per face style ──────────────────────────── */
+.card-inner-border {
+  pointer-events: none;
+  position: absolute;
+  inset: 4px;
+  border-radius: calc(var(--card-radius, 8px) - 2px);
+}
+
+/* Classic: thin hairline inside the card edge */
+.face-classic .card-inner-border {
+  border: 1px solid currentColor;
+  opacity: 0.13;
+}
+
+/* Minimal: subtle dotted rule */
+.face-minimal .card-inner-border {
+  border: 1px dotted currentColor;
+  opacity: 0.18;
+}
+
+/* Bold (Onyx): faint casino-green inner glow frame */
+.face-bold .card-inner-border {
+  box-shadow: inset 0 0 0 2px color-mix(in oklab, var(--neon) 22%, transparent);
+}
+
+/* Pixel: 1 px dashed, squared off */
+.face-pixel .card-inner-border {
+  border: 1px dashed currentColor;
+  border-radius: 2px;
+  opacity: 0.22;
+}
+
+/* Script (Antique): warm parchment-tone hairline */
+.face-script .card-inner-border {
+  border: 1px solid oklch(0.55 0.10 65);
+  opacity: 0.28;
+}
+
+/* Outline: matching inset stroke */
+.face-outline .card-inner-border {
+  box-shadow: inset 0 0 0 1.5px currentColor;
+  opacity: 0.16;
+}
+
+/* Retro (Verdant): neon inner glow — colour set via JS inline style */
+/* (handled by inline style in PlayingCard.tsx to react to suit colour) */
+
+/* Stencil (Parchment): earthy double-rule frame */
+.face-stencil .card-inner-border {
+  border: 1.5px solid oklch(0 0 0 / 14%);
+  box-shadow: inset 0 0 0 3px oklch(0 0 0 / 5%);
+}
+
 @utility slot-empty {
   background: color-mix(in oklab, var(--surface) 40%, transparent);
   border: 1.5px dashed color-mix(in oklab, white 14%, transparent);
