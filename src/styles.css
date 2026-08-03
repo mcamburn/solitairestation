@@ -403,8 +403,19 @@
   #game-board {
     min-height: calc(100dvh - var(--sticky-nav-height, 60px));
   }
-  /* Controls bar (time / moves / score / hint) */
-  .game-controls { padding-top: 0.25rem !important; padding-bottom: 0.25rem !important; justify-content: center !important; }
+  /* Controls bar: compact padding + tighter gaps so stats + buttons fit one row */
+  .game-controls {
+    padding: 0.25rem 0.5rem !important;
+    gap: 0.5rem !important;
+    justify-content: space-between !important;
+  }
+  /* Tighten the inner stats / button flex groups (stats normally use gap-4) */
+  .game-controls > div { gap: 0.5rem !important; }
+  /* Shrink button horizontal padding so labels don't crowd */
+  .game-controls button {
+    padding-left: 0.375rem !important;
+    padding-right: 0.375rem !important;
+  }
   /* Card picker rows */
   .picker-wrap   { margin-top: 0.25rem !important; padding-top: 0.25rem !important; padding-bottom: 0.25rem !important; }
 }

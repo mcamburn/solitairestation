@@ -268,10 +268,10 @@ export function Golf() {
             Stock <span className="font-semibold text-foreground">{game.stock.length}</span>
           </span>
           {topBarStats.hasPlayed && (
-            <span className="text-muted-foreground">Streak <span className="font-semibold tabular-nums" style={{ color: "var(--neon)" }}>{topBarStats.streak}</span></span>
+            <span className="hidden sm:inline text-muted-foreground">Streak <span className="font-semibold tabular-nums" style={{ color: "var(--neon)" }}>{topBarStats.streak}</span></span>
           )}
           {topBarStats.hasPlayed && (
-            <span className="text-muted-foreground"><span className="font-semibold tabular-nums" style={{ color: "var(--neon)" }}>{topBarStats.winRate}%</span> wins</span>
+            <span className="hidden sm:inline text-muted-foreground"><span className="font-semibold tabular-nums" style={{ color: "var(--neon)" }}>{topBarStats.winRate}%</span> wins</span>
           )}
         </div>
         <div className="flex items-center gap-2">
