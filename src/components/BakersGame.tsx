@@ -276,7 +276,7 @@ export function BakersGame() {
   return (
     <div
       className="game-board-wrap mx-auto w-full sm:max-w-[900px] xl:max-w-[1200px] sm:px-4 xl:px-6 pb-16"
-      style={dragMode ? { userSelect: "none", touchAction: "none" } : undefined}
+      style={dragMode ? { userSelect: "none" } : undefined}
     >
       {/* Top bar */}
       <div className="game-controls glass mt-3 flex flex-wrap items-center justify-between gap-3 rounded-2xl px-4 py-2.5 text-xs">
@@ -312,7 +312,7 @@ export function BakersGame() {
       <NewGameToast visible={toastVisible} skin={skin} face={face} />
 
       {/* Board */}
-      <div className="game-board-glass glass mt-4 rounded-2xl p-4 sm:p-5">
+      <div className="game-board-glass glass mt-4 rounded-2xl p-4 sm:p-5" style={dragMode ? { touchAction: "none" } : undefined}>
         {/* Free cells + foundations */}
         <div className="mb-4 grid gap-1.5" style={{ gridTemplateColumns: "repeat(9, minmax(0, 1fr))" }}>
           {/* Free cells */}

@@ -271,7 +271,7 @@ export function FortyThieves() {
   return (
     <div
       className="game-board-wrap mx-auto w-full sm:max-w-[900px] xl:max-w-[1200px] sm:px-4 xl:px-6 pb-16"
-      style={dragMode ? { userSelect: "none", touchAction: "none" } : undefined}
+      style={dragMode ? { userSelect: "none" } : undefined}
     >
       {/* Top bar */}
       <div className="game-controls glass mt-3 flex flex-wrap items-center justify-between gap-3 rounded-2xl px-4 py-2.5 text-xs">
@@ -311,7 +311,7 @@ export function FortyThieves() {
       <AppearanceBar skin={skin} face={face} onSkinChange={setSkin} onFaceChange={setFace} />
       <NewGameToast visible={toastVisible} skin={skin} face={face} />
 
-      <div className="game-board-glass glass mt-4 overflow-x-auto rounded-2xl p-4" ref={boardRef} style={{ touchAction: "pan-x" }}>
+      <div className="game-board-glass glass mt-4 overflow-x-auto rounded-2xl p-4" ref={boardRef} style={{ touchAction: dragMode ? "none" : "pan-x" }}>
         {/* Foundations row */}
         <div className="mb-3 flex justify-between">
           {/* Left: stock + waste */}

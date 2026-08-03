@@ -384,7 +384,7 @@ export function Solitaire({ initialMode }: { initialMode?: KlondikeMode } = {}) 
   return (
     <div
       className="game-board-wrap mx-auto w-full sm:max-w-[900px] xl:max-w-[1200px] sm:px-4 xl:px-6 pb-16"
-      style={dragMode ? { userSelect: "none", touchAction: "none" } : undefined}
+      style={dragMode ? { userSelect: "none" } : undefined}
     >
       <TopBar
         moves={game.moves}
@@ -427,7 +427,7 @@ export function Solitaire({ initialMode }: { initialMode?: KlondikeMode } = {}) 
         </div>
       )}
 
-      <div className="game-board-glass glass mt-4 rounded-2xl p-4 sm:p-6">
+      <div className="game-board-glass glass mt-4 rounded-2xl p-4 sm:p-6" style={dragMode ? { touchAction: "none" } : undefined}>
         {/* Top row: stock · waste · [spacer(s)] · foundations */}
         <div
           ref={gridRef}

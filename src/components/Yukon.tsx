@@ -277,7 +277,7 @@ export function Yukon() {
   return (
     <div
       className="game-board-wrap mx-auto w-full sm:max-w-[900px] xl:max-w-[1200px] sm:px-4 xl:px-6 pb-16"
-      style={dragMode ? { userSelect: "none", touchAction: "none" } : undefined}
+      style={dragMode ? { userSelect: "none" } : undefined}
     >
       {/* Top bar */}
       <div className="game-controls glass mt-3 flex flex-wrap items-center justify-between gap-3 rounded-2xl px-4 py-2.5 text-xs">
@@ -325,7 +325,7 @@ export function Yukon() {
       <NewGameToast visible={toastVisible} skin={skin} face={face} />
 
       {/* Board */}
-      <div className="game-board-glass glass mt-4 rounded-2xl p-3 sm:p-4">
+      <div className="game-board-glass glass mt-4 rounded-2xl p-3 sm:p-4" style={dragMode ? { touchAction: "none" } : undefined}>
         {/* Foundations */}
         <div className="mb-3 flex gap-2 justify-end">
           {game.foundations.map((pile, fi) => {

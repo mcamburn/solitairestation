@@ -234,7 +234,7 @@ export function BakersDozn() {
   return (
     <div
       className="game-board-wrap mx-auto w-full sm:max-w-[900px] xl:max-w-[1200px] sm:px-4 xl:px-6 pb-16"
-      style={dragMode ? { userSelect: "none", touchAction: "none" } : undefined}
+      style={dragMode ? { userSelect: "none" } : undefined}
     >
       {/* Top bar */}
       <div className="game-controls glass mt-3 flex flex-wrap items-center justify-between gap-3 rounded-2xl px-4 py-2.5 text-xs">
@@ -313,7 +313,7 @@ export function BakersDozn() {
       </div>
 
       {/* Tableau */}
-      <div className="game-board-glass glass mt-3 overflow-x-auto rounded-2xl p-3 sm:p-4" style={{ touchAction: "pan-x" }}>
+      <div className="game-board-glass glass mt-3 overflow-x-auto rounded-2xl p-3 sm:p-4" style={{ touchAction: dragMode ? "none" : "pan-x" }}>
         <div ref={boardRef}>
           <div className="flex" style={{ gap: colGap }}>
             {game.tableau.map((col, colIdx) => {
