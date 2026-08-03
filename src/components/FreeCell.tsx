@@ -17,7 +17,7 @@ import {
 import { PlayingCard, type CardBackSkin, type CardFaceStyle } from "./PlayingCard";
 import { AppearanceBar, useCardAppearance, useNewGameToast, NewGameToast } from "./CardPickers";
 import { DailyWinBanner } from "./DailyWinBanner";
-import { useDragMode, DragModeToggle } from "./DragModeToggle";
+import { useDragMode, DragModeToggle, findDropZone } from "./DragModeToggle";
 import type { Card } from "@/lib/solitaire";
 
 const CARD_H = 110;
@@ -125,9 +125,7 @@ export function FreeCell() {
       if (!dr) return;
       if (Math.hypot(e.clientX - dr.startX, e.clientY - dr.startY) > DRAG_THRESHOLD) dr.moved = true;
       setGhostPos({ x: e.clientX, y: e.clientY });
-      const els = document.elementsFromPoint(e.clientX, e.clientY) as Element[];
-      const zoneEl = els.find((el) => el.hasAttribute?.("data-drop-zone"));
-      setDropZone(zoneEl?.getAttribute("data-drop-zone") ?? null);
+      setDropZone(findDropZone(e.clientX, e.clientY, 16));
     };
     const onUp = (e: PointerEvent) => {
       const dr = dragRef.current;
@@ -137,9 +135,7 @@ export function FreeCell() {
       setDropZone(null);
       setDraggingSrc(null);
       if (!dr.moved) { dr.onTap(); return; }
-      const els = document.elementsFromPoint(e.clientX, e.clientY) as Element[];
-      const zoneEl = els.find((el) => el.hasAttribute?.("data-drop-zone"));
-      const zone = zoneEl?.getAttribute("data-drop-zone") ?? null;
+      const zone = findDropZone(e.clientX, e.clientY, 32);
       if (zone) commitRef.current(dr, zone);
     };
     window.addEventListener("pointermove", onMove, { passive: true });

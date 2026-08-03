@@ -19,7 +19,7 @@ import { type Card } from "@/lib/solitaire";
 import { PlayingCard } from "./PlayingCard";
 import { AppearanceBar, useCardAppearance, useNewGameToast, NewGameToast } from "./CardPickers";
 import { DailyWinBanner } from "./DailyWinBanner";
-import { useDragMode, DragModeToggle } from "./DragModeToggle";
+import { useDragMode, DragModeToggle, findDropZone } from "./DragModeToggle";
 
 const SAVE_KEY = "fortythieves";
 const DRAG_THRESHOLD = 6;
@@ -118,8 +118,7 @@ export function FortyThieves() {
       if (!dr) return;
       if (Math.hypot(e.clientX - dr.startX, e.clientY - dr.startY) > DRAG_THRESHOLD) dr.moved = true;
       setGhostPos({ x: e.clientX, y: e.clientY });
-      const els = document.elementsFromPoint(e.clientX, e.clientY) as Element[];
-      setDropZone(els.find(el => el.hasAttribute?.("data-drop-zone"))?.getAttribute("data-drop-zone") ?? null);
+      setDropZone(findDropZone(e.clientX, e.clientY, 16));
     };
     const onUp = (e: PointerEvent) => {
       const dr = dragRef.current;
@@ -129,8 +128,7 @@ export function FortyThieves() {
       setDropZone(null);
       setDraggingSrc(null);
       if (!dr.moved) { dr.onTap(); return; }
-      const els = document.elementsFromPoint(e.clientX, e.clientY) as Element[];
-      const zone = els.find(el => el.hasAttribute?.("data-drop-zone"))?.getAttribute("data-drop-zone") ?? null;
+      const zone = findDropZone(e.clientX, e.clientY, 32);
       if (zone) commitDragRef.current(dr, zone);
     };
     window.addEventListener("pointermove", onMove, { passive: true });
