@@ -82,6 +82,10 @@ function FortyThievesPage() {
             title: "Winning",
             body: "Move all 104 cards to the foundations. With only single-card moves and no recycling, careful management of the stock and empty columns is essential.",
           },
+          {
+            title: "Strategy tips",
+            body: "Empty columns are your most powerful resource — create one early, then guard it carefully. Never fill an empty column unless doing so solves an immediate critical problem; an empty slot held in reserve is worth more than any card placed in it. Before drawing from the stock, scan every tableau column top — a card that has nowhere to go immediately blocks whatever was beneath it, potentially for the rest of the game. When you have a partial same-suit run (e.g. 8♦–7♦–6♦ spread across different columns), consolidating it onto one column is a high-priority goal even if it costs you an empty column temporarily.",
+          },
         ]}
       >
         <FortyThieves />

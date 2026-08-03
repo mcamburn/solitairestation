@@ -75,12 +75,16 @@ function TriPeaksPage() {
           body: "When no available card can be played, click the stock to flip a new card to the waste. The stock has no recycle — use it wisely.",
         },
         {
-          title: "Streaks",
-          body: "Every consecutive card played without drawing from stock adds to your streak, shown in the top bar. Chains of 5+ feel very satisfying.",
+          title: "Building streaks",
+          body: "Every consecutive card played without drawing from stock extends your streak. A long streak means you're chaining cards efficiently — 6, 7, 8, 7, 6, 7, 8, 9, 10 is a valid run since each step is ±1. Look ahead: an available 5 is more valuable right now if your waste top is a 4 or 6 than if it's a 10.",
         },
         {
           title: "Winning",
-          body: "Clear all 28 pyramid cards to win. The stock doesn't need to be empty. Plan card removal order carefully to open up chained plays.",
+          body: "Clear all 28 pyramid cards to win — the stock doesn't need to be empty. Because the stock has no recycle, plan which tableau cards to play first: prioritise moves that open up two or more cards in the rows above. Drawing from stock too early wastes the flexibility of having a varied waste-top.",
+        },
+        {
+          title: "Strategy tips",
+          body: "Scan all three peaks before each move to find the chain with the longest potential run from the current waste top. When two available cards are both valid plays, pick the one that uncovers a card you'll need sooner. Middle-column cards in each peak tend to unblock the most cards — clear them early. Save stock draws for when you're genuinely stuck, not just when the obvious play isn't immediately visible.",
         },
       ]}
     >

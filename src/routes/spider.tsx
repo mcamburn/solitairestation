@@ -84,7 +84,15 @@ function SpiderPage() {
         },
         {
           title: "Difficulty",
-          body: "1 Suit uses only spades — the easiest. 2 Suits uses spades and hearts. 4 Suits uses all four suits and requires careful planning.",
+          body: "1 Suit uses only spades — the easiest, since every descending stack is automatically same-suit and movable. 2 Suits uses spades and hearts — mixed stacks are now a real liability. 4 Suits adds diamonds and clubs — the canonical expert challenge where every mixed move can cost you the game.",
+        },
+        {
+          title: "Empty columns",
+          body: "An empty tableau column is extremely valuable — it's the only place you can temporarily hold a card or sequence without any suit restriction. Create empty columns intentionally and resist the urge to immediately fill them; a free column held in reserve gives you a critical pivot point when sequences get tangled.",
+        },
+        {
+          title: "Strategy tips",
+          body: "On 2- and 4-suit games, always prefer a same-suit move over a mixed-suit move even when the mixed move looks immediately useful — mixed stacks become invisible walls that block progress for many turns. Aim to concentrate cards of the same suit onto as few columns as possible. In 4-suit games, it helps to mentally assign columns to specific suits from the first few moves and resist letting them mix.",
         },
       ]}
     >

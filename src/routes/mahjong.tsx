@@ -71,16 +71,20 @@ function MahjongPage() {
           body: "Click a free tile to select it, then click another free tile of the same type to remove the pair. Clicking a different free tile moves the selection to that tile.",
         },
         {
-          title: "Suits",
-          body: "Bamboo (1–9), Circles (1–9), and Characters (1–9) match only when rank and suit are identical. Wind tiles match East–East, South–South, etc. Dragons match only Red–Red, Green–Green, or White–White.",
+          title: "Tile types and matching",
+          body: "Bamboo (1–9), Circles (1–9), and Characters (1–9) match only an identical tile — same suit, same number. Wind tiles match East–East, South–South, West–West, North–North. Dragons match Red–Red, Green–Green, or White–White only.",
         },
         {
           title: "Flowers & Seasons",
-          body: "The four Flower tiles (梅蘭菊荷) match any other Flower tile. The four Season tiles (春夏秋冬) match any other Season tile. Only one of each exists.",
+          body: "The four Flower tiles (梅蘭菊荷) each match any other Flower — you don't need the same flower, just any two from the group. The four Season tiles (春夏秋冬) work the same way. Match them the moment two are free; they're easy points.",
         },
         {
-          title: "Strategy",
-          body: "Start from the top of the pyramid and work outward to uncover blocked tiles. Avoid matching pairs that would bury identical tiles you'll need later.",
+          title: "Strategy — think before you match",
+          body: "Before matching a pair, check whether both remaining copies of that tile are still accessible. Matching the only two reachable copies of a tile while two more copies are buried beneath them can make the layout unwinnable. When you can see four of the same tile and two are free, match those two immediately — it protects your access to the other two.",
+        },
+        {
+          title: "Strategy — prioritise top layers",
+          body: "Clearing tiles from the top of the stack and the exposed ends of rows unlocks the most tiles underneath. A tile buried under three others might block an entire section of the board. If you have a choice between two valid pairs, pick the one that frees more tiles in the upper layers or breaks a logjam on a congested row.",
         },
       ]}
     >

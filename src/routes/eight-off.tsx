@@ -79,8 +79,8 @@ function EightOffPage() {
             body: "Move a multi-card sequence in one action as long as you have enough free cells and empty columns available. The limit is (freeCells + 1) × 2^(emptyColumns).",
           },
           {
-            title: "Strategy tip",
-            body: "Same-suit stacking means Kings of one suit won't help you unbury cards of another suit. Try to keep free cells available and plan your suit sequences carefully from the start.",
+            title: "Strategy tips",
+            body: "Build same-suit sequences as long as possible on the tableau — a run like 9♠→8♠→7♠→6♠ clears four foundation cards in a smooth chain with no repositioning. With 8 free cells you have a generous buffer, but they fill surprisingly fast on complex boards; try to keep at least 3 open at all times. When stuck, look first at cards sitting in free cells that could form same-suit stacks on the tableau — clearing free cells often unlocks a cascade of new moves. Avoid parking a King in a free cell unless you have no other option; it will sit there all game.",
           },
         ]}
       >

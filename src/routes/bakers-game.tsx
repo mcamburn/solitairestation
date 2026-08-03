@@ -82,6 +82,10 @@ function BakersGamePage() {
             title: "Why it's harder than FreeCell",
             body: "In FreeCell, a red 7 accepts black 6s of either black suit. In Baker's Game, a 7♥ only accepts a 6♥. This cuts your tableau-building options in half, making it much harder to create long sequences and clear columns. Many deals are not solvable — use Undo liberally.",
           },
+          {
+            title: "Strategy tips",
+            body: "Think twice before using a free cell — with same-suit restrictions, you'll need them more often than in FreeCell. Focus on one or two suits at a time rather than spreading attention across all four; a complete single-suit column sequence can be sent to the foundation in one uninterrupted chain. When two cards of the same suit are only one rank apart and within reach of each other, move them together immediately before anything else blocks them.",
+          },
         ]}
       >
         <BakersGame />

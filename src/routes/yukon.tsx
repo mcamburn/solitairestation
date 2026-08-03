@@ -82,6 +82,10 @@ function YukonPage() {
             title: "Winning",
             body: "Move all 52 cards onto the four foundations (Ace through King per suit) to win. Unlike Klondike, there is no stock — every card is visible from the start, making Yukon highly strategic.",
           },
+          {
+            title: "Strategy tips",
+            body: "Because you can move any face-up card plus everything on top of it regardless of order, focus first on uncovering face-down cards — each flip opens new possibilities. When moving a disorganised group, ask whether the bottom card of the group actually extends anything useful at the destination; moving chaos onto chaos just shuffles the problem. Prioritise building alternating-color tableau sequences rather than long same-suit ones — Yukon's freedom comes from flexible group moves, not same-suit discipline. Empty columns are extremely powerful: use them as swap space to reorganise groups before sending cards to foundations.",
+          },
         ]}
       >
         <Yukon />

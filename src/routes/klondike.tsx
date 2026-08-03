@@ -76,15 +76,19 @@ function KlondikePage() {
           },
           {
             title: "Stock and waste",
-            body: "Click the stock pile to flip a card to the waste. The top waste card is always playable. When the stock is empty, click it to recycle the waste.",
+            body: "Click the stock pile to flip a card (or three, in Turn 3 mode) to the waste. Only the top waste card is playable. When the stock is empty, click it to recycle the entire waste pile.",
+          },
+          {
+            title: "Turn 1 vs Turn 3",
+            body: "Turn 1 flips one card at a time — every stock card is always reachable, making the game more forgiving and roughly 80% of deals solvable. Turn 3 flips three cards at once and only the top of those three is playable; cards deeper in the group stay buried until the top cards are played, making it significantly harder.",
+          },
+          {
+            title: "Strategy tips",
+            body: "Prioritise uncovering face-down tableau cards over sending cards to foundations early — more face-up cards means more moves. Try to advance all four suits at roughly the same pace on the foundations; racing one suit far ahead can strand cards of the others. Save empty columns for a King with a long, useful sequence underneath — an empty column filled by a lone King with no run gains you almost nothing.",
           },
           {
             title: "Winning",
-            body: "You win when all 52 cards are on the foundations. Fewer moves and less time mean a better game.",
-          },
-          {
-            title: "Stuck?",
-            body: "Tap Hint for a suggested move, Undo to take back the last action, or New Game to shuffle a fresh deal. Not every deal is solvable — that's part of the fun.",
+            body: "You win when all 52 cards are on the foundations. Not every deal is solvable — use Hint for a suggested move or Undo to backtrack when you get stuck.",
           },
         ]}
       >

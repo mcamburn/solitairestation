@@ -80,7 +80,11 @@ function PyramidPage() {
         },
         {
           title: "Winning",
-          body: "Clear every card from the pyramid — the stock and waste may still contain cards when you win. Not every deal is beatable, but careful sequencing (saving the right pairs for the right moment) dramatically improves your odds.",
+          body: "Clear every card from the pyramid — the stock and waste may still contain cards when you win. Not every deal is beatable, but careful sequencing dramatically improves your odds.",
+        },
+        {
+          title: "Strategy tips",
+          body: "Before pairing a card, check whether removing it uncovers a card you'll need soon — a card that completes another pair is more valuable than one that does nothing. The stock recycles once, so if a needed card is buried in the waste, you can draw through the stock to bring it back. Kings are easiest to forget: click a lone King immediately when it becomes available rather than leaving it to clutter the pyramid. Cards in the lower rows of the pyramid block the most cards above them — prioritise clearing those first when you have a choice.",
         },
       ]}
     >
