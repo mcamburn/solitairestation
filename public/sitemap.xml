@@ -571,12 +571,6 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.solitairestation.com/stats</loc>
-    <lastmod>2026-08-03</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
     <loc>https://www.solitairestation.com/privacy</loc>
     <lastmod>2026-08-03</lastmod>
     <changefreq>yearly</changefreq>
