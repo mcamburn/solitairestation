@@ -209,6 +209,7 @@ function StatsPage() {
   const [sortKey, setSortKey] = useState<SortKey>("title");
   const [sortDir, setSortDir] = useState<SortDir>("asc");
   const [dailyOnly, setDailyOnly] = useState(false);
+  const [drilldownDailyOnly, setDrilldownDailyOnly] = useState(false);
   const [historyLimit, setHistoryLimit] = useState(25);
   const [historySortKey, setHistorySortKey] = useState<HistorySortKey>("date");
   const [historySortDir, setHistorySortDir] = useState<SortDir>("desc");
@@ -235,6 +236,8 @@ function StatsPage() {
       if (savedDir === "asc" || savedDir === "desc") setSortDir(savedDir);
       const savedDailyOnly = localStorage.getItem("stats-daily-only");
       if (savedDailyOnly === "true") setDailyOnly(true);
+      const savedDrilldownDailyOnly = localStorage.getItem("stats-drilldown-daily-only");
+      if (savedDrilldownDailyOnly === "true") setDrilldownDailyOnly(true);
       const savedHistKey = localStorage.getItem("stats-history-sort-key") as HistorySortKey | null;
       const savedHistDir = localStorage.getItem("stats-history-sort-dir") as SortDir | null;
       const validHistKeys: HistorySortKey[] = ["game", "result", "time", "moves", "date"];
@@ -311,6 +314,22 @@ function StatsPage() {
     } catch {
       // ignore
     }
+  }
+
+  function persistDrilldownDailyOnly(value: boolean) {
+    try {
+      localStorage.setItem("stats-drilldown-daily-only", String(value));
+    } catch {
+      // ignore
+    }
+  }
+
+  function handleToggleDrilldownDailyOnly() {
+    setDrilldownDailyOnly((v) => {
+      const next = !v;
+      persistDrilldownDailyOnly(next);
+      return next;
+    });
   }
 
   function handleHistorySort(key: HistorySortKey) {
@@ -411,6 +430,8 @@ function StatsPage() {
                   highlighted={highlightedKey === row.saveKey}
                   expanded={expandedGames.has(row.saveKey)}
                   onToggleExpand={() => toggleGameExpanded(row.saveKey)}
+                  drilldownDailyOnly={drilldownDailyOnly}
+                  onToggleDrilldownDailyOnly={handleToggleDrilldownDailyOnly}
                   rowRef={(el) => {
                     if (el) tableRowRefs.current.set(row.saveKey, el);
                     else tableRowRefs.current.delete(row.saveKey);
@@ -476,6 +497,8 @@ function StatsPage() {
               highlighted={highlightedKey === row.saveKey}
               expanded={expandedGames.has(row.saveKey)}
               onToggleExpand={() => toggleGameExpanded(row.saveKey)}
+              drilldownDailyOnly={drilldownDailyOnly}
+              onToggleDrilldownDailyOnly={handleToggleDrilldownDailyOnly}
               rowRef={(el) => {
                 if (el) mobileCardRefs.current.set(row.saveKey, el);
                 else mobileCardRefs.current.delete(row.saveKey);
@@ -737,6 +760,8 @@ function TableRow({
   highlighted,
   expanded,
   onToggleExpand,
+  drilldownDailyOnly,
+  onToggleDrilldownDailyOnly,
   rowRef,
 }: {
   row: GameRow;
@@ -744,11 +769,17 @@ function TableRow({
   highlighted?: boolean;
   expanded?: boolean;
   onToggleExpand?: () => void;
+  drilldownDailyOnly?: boolean;
+  onToggleDrilldownDailyOnly?: () => void;
   rowRef?: (el: HTMLTableRowElement | null) => void;
 }) {
   const { stats } = row;
   const hasPlayed = stats.gamesPlayed > 0;
   const hasHistory = stats.history.length > 0;
+  const hasDailyGames = stats.history.some((r) => r.isDaily);
+  const drilldownHistory = drilldownDailyOnly
+    ? stats.history.filter((r) => r.isDaily)
+    : stats.history;
   const winRate = getWinRate(stats);
   const showBorder = !isLast || expanded;
 
@@ -849,78 +880,101 @@ function TableRow({
           }}
         >
           <td colSpan={6} className="px-6 py-3">
-            {/* Section label */}
-            <p
-              className="text-[10px] uppercase tracking-[0.18em] font-semibold mb-2"
-              style={{ color: "color-mix(in oklab, var(--neon) 55%, white)" }}
-            >
-              {row.title} — last {stats.history.length} game{stats.history.length !== 1 ? "s" : ""}
-            </p>
+            {/* Section label + Daily only toggle */}
+            <div className="flex items-center justify-between mb-2">
+              <p
+                className="text-[10px] uppercase tracking-[0.18em] font-semibold"
+                style={{ color: "color-mix(in oklab, var(--neon) 55%, white)" }}
+              >
+                {row.title} — last {stats.history.length} game{stats.history.length !== 1 ? "s" : ""}
+              </p>
+              {(hasDailyGames || drilldownDailyOnly) && (
+                <button
+                  onClick={onToggleDrilldownDailyOnly}
+                  className="flex items-center gap-1 rounded px-2 py-0.5 text-[10px] font-semibold transition"
+                  style={{
+                    background: drilldownDailyOnly
+                      ? "color-mix(in oklab, var(--neon) 22%, oklch(0.16 0.03 155))"
+                      : "color-mix(in oklab, var(--neon) 6%, oklch(0.16 0.03 155))",
+                    border: `1px solid color-mix(in oklab, var(--neon) ${drilldownDailyOnly ? "40%" : "16%"}, transparent)`,
+                    color: drilldownDailyOnly ? "var(--neon)" : "var(--muted-foreground)",
+                  }}
+                  aria-pressed={drilldownDailyOnly}
+                >
+                  <span>📅</span>
+                  <span>Daily only</span>
+                </button>
+              )}
+            </div>
 
             {/* Self-contained mini-table with its own column headers */}
-            <table className="w-full text-xs" data-testid={`history-table-${row.saveKey}`}>
-              <thead>
-                <tr
-                  style={{
-                    borderBottom: "1px solid color-mix(in oklab, var(--neon) 10%, transparent)",
-                    color: "var(--muted-foreground)",
-                  }}
-                >
-                  <th className="pb-1.5 pr-4 text-left font-semibold">Result</th>
-                  <th className="pb-1.5 px-4 text-right font-semibold">Time</th>
-                  <th className="pb-1.5 px-4 text-right font-semibold">Moves</th>
-                  <th className="pb-1.5 pl-4 text-right font-semibold">Date</th>
-                </tr>
-              </thead>
-              <tbody>
-                {stats.history.map((record, i) => {
-                  const isLastHistory = i === stats.history.length - 1;
-                  const dateStr = new Date(record.date).toLocaleDateString(undefined, {
-                    month: "short",
-                    day: "numeric",
-                    year: "numeric",
-                  });
-                  return (
-                    <tr
-                      key={record.date}
-                      className="transition-colors hover:bg-white/[0.02]"
-                      style={
-                        !isLastHistory
-                          ? { borderBottom: "1px solid color-mix(in oklab, var(--neon) 7%, transparent)" }
-                          : undefined
-                      }
-                    >
-                      {/* Result + daily badge */}
-                      <td className="py-2 pr-4">
-                        <div className="flex items-center gap-2">
-                          <span
-                            className="font-semibold"
-                            style={{ color: record.won ? "var(--neon)" : "var(--muted-foreground)" }}
-                          >
-                            {record.won ? "✓ Win" : "✗ Loss"}
-                          </span>
-                          {record.isDaily && <DailyBadge />}
-                        </div>
-                      </td>
-                      {/* Time */}
-                      <td className="py-2 px-4 text-right tabular-nums" style={{ color: "var(--foreground)" }}>
-                        {record.won && record.durationSeconds > 0
-                          ? formatStatTime(record.durationSeconds)
-                          : "—"}
-                      </td>
-                      {/* Moves */}
-                      <td className="py-2 px-4 text-right tabular-nums" style={{ color: "var(--foreground)" }}>
-                        {record.moves > 0 ? record.moves : "—"}
-                      </td>
-                      {/* Date */}
-                      <td className="py-2 pl-4 text-right" style={{ color: "var(--muted-foreground)" }}>
-                        {dateStr}
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+            {drilldownHistory.length === 0 ? (
+              <p className="text-xs text-muted-foreground py-1">No daily challenge games recorded yet.</p>
+            ) : (
+              <table className="w-full text-xs" data-testid={`history-table-${row.saveKey}`}>
+                <thead>
+                  <tr
+                    style={{
+                      borderBottom: "1px solid color-mix(in oklab, var(--neon) 10%, transparent)",
+                      color: "var(--muted-foreground)",
+                    }}
+                  >
+                    <th className="pb-1.5 pr-4 text-left font-semibold">Result</th>
+                    <th className="pb-1.5 px-4 text-right font-semibold">Time</th>
+                    <th className="pb-1.5 px-4 text-right font-semibold">Moves</th>
+                    <th className="pb-1.5 pl-4 text-right font-semibold">Date</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {drilldownHistory.map((record, i) => {
+                    const isLastHistory = i === drilldownHistory.length - 1;
+                    const dateStr = new Date(record.date).toLocaleDateString(undefined, {
+                      month: "short",
+                      day: "numeric",
+                      year: "numeric",
+                    });
+                    return (
+                      <tr
+                        key={record.date}
+                        className="transition-colors hover:bg-white/[0.02]"
+                        style={
+                          !isLastHistory
+                            ? { borderBottom: "1px solid color-mix(in oklab, var(--neon) 7%, transparent)" }
+                            : undefined
+                        }
+                      >
+                        {/* Result + daily badge */}
+                        <td className="py-2 pr-4">
+                          <div className="flex items-center gap-2">
+                            <span
+                              className="font-semibold"
+                              style={{ color: record.won ? "var(--neon)" : "var(--muted-foreground)" }}
+                            >
+                              {record.won ? "✓ Win" : "✗ Loss"}
+                            </span>
+                            {record.isDaily && <DailyBadge />}
+                          </div>
+                        </td>
+                        {/* Time */}
+                        <td className="py-2 px-4 text-right tabular-nums" style={{ color: "var(--foreground)" }}>
+                          {record.won && record.durationSeconds > 0
+                            ? formatStatTime(record.durationSeconds)
+                            : "—"}
+                        </td>
+                        {/* Moves */}
+                        <td className="py-2 px-4 text-right tabular-nums" style={{ color: "var(--foreground)" }}>
+                          {record.moves > 0 ? record.moves : "—"}
+                        </td>
+                        {/* Date */}
+                        <td className="py-2 pl-4 text-right" style={{ color: "var(--muted-foreground)" }}>
+                          {dateStr}
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            )}
           </td>
         </tr>
       )}
@@ -1273,17 +1327,25 @@ function MobileCard({
   highlighted,
   expanded,
   onToggleExpand,
+  drilldownDailyOnly,
+  onToggleDrilldownDailyOnly,
   rowRef,
 }: {
   row: GameRow;
   highlighted?: boolean;
   expanded?: boolean;
   onToggleExpand?: () => void;
+  drilldownDailyOnly?: boolean;
+  onToggleDrilldownDailyOnly?: () => void;
   rowRef?: (el: HTMLDivElement | null) => void;
 }) {
   const { stats } = row;
   const hasPlayed = stats.gamesPlayed > 0;
   const hasHistory = stats.history.length > 0;
+  const hasDailyGames = stats.history.some((r) => r.isDaily);
+  const drilldownHistory = drilldownDailyOnly
+    ? stats.history.filter((r) => r.isDaily)
+    : stats.history;
   const winRate = getWinRate(stats);
 
   return (
@@ -1375,13 +1437,34 @@ function MobileCard({
             background: "color-mix(in oklab, var(--neon) 2%, oklch(0.14 0.03 155))",
           }}
         >
-          <p
-            className="text-[10px] uppercase tracking-[0.18em] font-semibold mb-2"
-            style={{ color: "color-mix(in oklab, var(--neon) 55%, white)" }}
-          >
-            Last {stats.history.length} game{stats.history.length !== 1 ? "s" : ""}
-          </p>
-          {stats.history.map((record) => {
+          <div className="flex items-center justify-between mb-2">
+            <p
+              className="text-[10px] uppercase tracking-[0.18em] font-semibold"
+              style={{ color: "color-mix(in oklab, var(--neon) 55%, white)" }}
+            >
+              Last {stats.history.length} game{stats.history.length !== 1 ? "s" : ""}
+            </p>
+            {(hasDailyGames || drilldownDailyOnly) && (
+              <button
+                onClick={onToggleDrilldownDailyOnly}
+                className="flex items-center gap-1 rounded px-2 py-0.5 text-[10px] font-semibold transition"
+                style={{
+                  background: drilldownDailyOnly
+                    ? "color-mix(in oklab, var(--neon) 22%, oklch(0.16 0.03 155))"
+                    : "color-mix(in oklab, var(--neon) 6%, oklch(0.16 0.03 155))",
+                  border: `1px solid color-mix(in oklab, var(--neon) ${drilldownDailyOnly ? "40%" : "16%"}, transparent)`,
+                  color: drilldownDailyOnly ? "var(--neon)" : "var(--muted-foreground)",
+                }}
+                aria-pressed={drilldownDailyOnly}
+              >
+                <span>📅</span>
+                <span>Daily only</span>
+              </button>
+            )}
+          </div>
+          {drilldownHistory.length === 0 ? (
+            <p className="text-xs text-muted-foreground py-1">No daily challenge games recorded yet.</p>
+          ) : drilldownHistory.map((record) => {
             const dateStr = new Date(record.date).toLocaleDateString(undefined, {
               month: "short",
               day: "numeric",
