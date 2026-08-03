@@ -1197,16 +1197,40 @@ function HistoryMobileRow({ entry }: { entry: HistoryEntry }) {
 function ExportImportControls({ onImported }: { onImported: () => void }) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const importBtnRef = useRef<HTMLButtonElement>(null);
+  const cancelBtnRef = useRef<HTMLButtonElement>(null);
+  const confirmBtnRef = useRef<HTMLButtonElement>(null);
   const [status, setStatus] = useState<{ kind: "success" | "error"; message: string } | null>(null);
   // Pending import: hold parsed data until the player confirms
   const [pendingImport, setPendingImport] = useState<{ data: unknown; count: number } | null>(null);
 
-  // Close modal on Escape
+  // Focus trap + Escape handler while modal is open
   useEffect(() => {
     if (!pendingImport) return;
+
+    // Place focus on Cancel (safe default — destructive action not focused first)
+    cancelBtnRef.current?.focus();
+
     function onKeyDown(e: KeyboardEvent) {
       if (e.key === "Escape") {
         handleCancelImport();
+        return;
+      }
+      // Trap Tab / Shift+Tab between Cancel and Yes, import
+      if (e.key === "Tab") {
+        const cancel = cancelBtnRef.current;
+        const confirm = confirmBtnRef.current;
+        if (!cancel || !confirm) return;
+        if (e.shiftKey) {
+          if (document.activeElement === cancel) {
+            e.preventDefault();
+            confirm.focus();
+          }
+        } else {
+          if (document.activeElement === confirm) {
+            e.preventDefault();
+            cancel.focus();
+          }
+        }
       }
     }
     document.addEventListener("keydown", onKeyDown);
@@ -1255,6 +1279,8 @@ function ExportImportControls({ onImported }: { onImported: () => void }) {
   function handleConfirmImport() {
     if (!pendingImport) return;
     setPendingImport(null);
+    // Return focus to the trigger button (mirrors handleCancelImport)
+    importBtnRef.current?.focus();
     try {
       const count = importStatsFromExport(pendingImport.data);
       onImported();
@@ -1309,6 +1335,7 @@ function ExportImportControls({ onImported }: { onImported: () => void }) {
             </p>
             <div className="flex gap-3 justify-end mt-1">
               <button
+                ref={cancelBtnRef}
                 onClick={handleCancelImport}
                 className="rounded-lg px-4 py-2 text-sm font-semibold transition"
                 style={{
@@ -1320,6 +1347,7 @@ function ExportImportControls({ onImported }: { onImported: () => void }) {
                 Cancel
               </button>
               <button
+                ref={confirmBtnRef}
                 onClick={handleConfirmImport}
                 className="rounded-lg px-4 py-2 text-sm font-semibold transition"
                 style={{
