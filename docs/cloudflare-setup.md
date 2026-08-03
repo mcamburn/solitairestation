@@ -136,6 +136,21 @@ Two repository secrets must be set for it to work:
 Add both under **Settings → Secrets and variables → Actions** in the GitHub
 repository.
 
+### Verifying the purge step in GitHub Actions
+
+After a push to `main`, open the **Actions** tab in the GitHub repository, select the latest
+**Smoke Test** run, and expand the **Purge Cloudflare cache** step. A successful run prints:
+
+```
+Cloudflare API response (HTTP 200):
+{"result":{},"success":true,"errors":[],"messages":[]}
+Cache purge succeeded
+```
+
+If the step shows `HTTP 401` the API token is wrong or missing. If it shows `HTTP 400` the
+zone ID is wrong or the secret is empty. Both cases cause the step to exit non-zero and fail
+the workflow run.
+
 ### Manual purge (one-off)
 
 If you need to purge outside of a deploy, run:
