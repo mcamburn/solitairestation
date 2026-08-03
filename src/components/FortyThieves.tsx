@@ -356,7 +356,7 @@ export function FortyThieves() {
           </div>
 
           {/* Right: 8 foundation piles */}
-          <div className="flex gap-1 items-end flex-wrap justify-end" style={{ maxWidth: cardW * 8 + 7 * 4 }}>
+          <div className="flex items-end justify-end" style={{ gap: cardGap }}>
             {state.foundations.map((pile, i) => {
               const top = pile[pile.length - 1];
               const zone = `foundation-${i}`;

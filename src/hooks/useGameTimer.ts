@@ -52,8 +52,13 @@ export function useGameTimer(startedAt: number, activitySignal: unknown) {
   }, [activitySignal]);
 
   const pause = useCallback((): void => {
-    if (ref.current.pausedAt !== null) return; // already paused
-    ref.current.pausedAt = Date.now();
+    if (ref.current.pausedAt !== null) {
+      // Already paused — resume manually
+      ref.current.offset += Date.now() - ref.current.pausedAt;
+      ref.current.pausedAt = null;
+    } else {
+      ref.current.pausedAt = Date.now();
+    }
     setTick((n) => n + 1);
   }, []);
 
