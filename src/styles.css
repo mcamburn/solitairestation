@@ -407,7 +407,7 @@
   .game-controls {
     padding: 0.25rem 0.5rem !important;
     gap: 0.5rem !important;
-    justify-content: space-between !important;
+    justify-content: center !important;
   }
   /* Tighten the inner stats / button flex groups (stats normally use gap-4) */
   .game-controls > div { gap: 0.5rem !important; }
