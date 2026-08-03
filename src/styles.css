@@ -378,30 +378,27 @@
   .card-body       { display: none !important; }
 }
 
-/* Very cramped cards (≤40 px wide) — Eight Off / Spider on phones (~37 px).
-   Hide the top-right glyph entirely so rank + suit have the full width. */
+/* Very cramped cards (≤40 px wide) — Spider / Forty Thieves on phones (~35 px).
+   Replace the top-corner layout with a single centred rank + suit pip so the
+   card identity is readable without any corner-vs-body overlap. */
 @container card-slot (max-width: 40px) {
-  .playing-card { padding: 3px; }
-  .card-rank       { font-size: 12px !important; line-height: 1; }
-  .card-rank-suit  { font-size: 10px !important; }
-  .card-top-glyph  { display: none !important; }
-  .playing-card [class*="text-5xl"] { font-size: 0.9rem  !important; }
-  .playing-card [class*="text-4xl"] { font-size: 0.8rem  !important; }
-  .playing-card [class*="text-3xl"] { font-size: 0.65rem !important; }
-  .playing-card [class*="text-2xl"] { font-size: 0.55rem !important; }
+  .playing-card     { padding: 3px; }
+  /* Hide the corner bar (rank, suit label, top-right glyph) entirely */
+  .card-corner      { display: none !important; }
+  .card-top-glyph   { display: none !important; }
+  /* card-body is already hidden by the ≤50 px rule above */
+  /* Activate the centred pip */
+  .card-center-pip  { display: flex !important; }
+  .card-center-rank { font-size: 12px !important; font-weight: 600; line-height: 1; }
+  .card-center-suit { font-size: 10px !important; line-height: 1; }
 }
 
 /* Tiny cards (≤28 px wide) — Baker's Dozen on phones (~25 px).
-   Show rank only; hide suit and top-right glyph. */
+   Inherit the centred pip from ≤40 px; scale it down to fit. */
 @container card-slot (max-width: 28px) {
-  .playing-card { padding: 2px; }
-  .card-rank       { font-size: 9px !important; line-height: 1; }
-  .card-rank-suit  { display: none !important; }
-  .card-top-glyph  { display: none !important; }
-  .playing-card [class*="text-5xl"] { font-size: 0.65rem !important; }
-  .playing-card [class*="text-4xl"] { font-size: 0.55rem !important; }
-  .playing-card [class*="text-3xl"] { font-size: 0.45rem !important; }
-  .playing-card [class*="text-2xl"] { font-size: 0.4rem  !important; }
+  .playing-card     { padding: 2px; }
+  .card-center-rank { font-size: 9px !important; }
+  .card-center-suit { font-size: 7px !important; }
 }
 
 @utility hint-glow {
