@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { GameSwitcher } from "./GameSwitcher";
 import { SiteFooter } from "./SiteFooter";
 import { SolitaireStationLogo } from "./SolitaireStationLogo";
@@ -29,6 +29,18 @@ const VERT_DIVIDER = (
 
 export function GamePageLayout({ gameKey, badge, title, tagline, rulesIntro, rules, children }: Props) {
   const navBarRef = useRef<HTMLDivElement>(null);
+
+  // Mobile-only: hide the in-game control bars (timer + appearance) to maximise board space
+  const [toolbarsHidden, setToolbarsHidden] = useState(() => {
+    try { return localStorage.getItem("toolbars-hidden") === "1"; } catch { return false; }
+  });
+  const toggleToolbars = () => {
+    setToolbarsHidden(h => {
+      const next = !h;
+      try { localStorage.setItem("toolbars-hidden", next ? "1" : "0"); } catch {}
+      return next;
+    });
+  };
 
   useEffect(() => {
     const el = navBarRef.current;
@@ -76,13 +88,26 @@ export function GamePageLayout({ gameKey, badge, title, tagline, rulesIntro, rul
               </div>
             </div>
 
-            {/* Mobile: [logo left | stats right] then [GameSwitcher] */}
+            {/* Mobile: [logo left | stats right] then [GameSwitcher] then [hide controls toggle] */}
             <div className="md:hidden flex flex-col gap-1 py-1">
               <div className="flex items-center justify-between gap-2 px-2 pt-1">
                 <SolitaireStationLogo variant="full" className="shrink-0" />
                 <GameStatsBar gameKey={gameKey} variant="inline" />
               </div>
-              <GameSwitcher />
+              <div className="flex items-center gap-2">
+                <div className="flex-1">
+                  <GameSwitcher />
+                </div>
+                <button
+                  onClick={toggleToolbars}
+                  aria-label={toolbarsHidden ? "Show controls" : "Hide controls"}
+                  className="sm:hidden shrink-0 flex items-center gap-1 rounded-full border border-border/50 px-2.5 py-1 text-[10px] font-medium text-muted-foreground transition-colors hover:text-foreground mr-2"
+                  style={{ background: "color-mix(in oklab, white 5%, transparent)" }}
+                >
+                  <span>{toolbarsHidden ? "▾" : "▴"}</span>
+                  <span className="whitespace-nowrap">{toolbarsHidden ? "show bars" : "hide bars"}</span>
+                </button>
+              </div>
             </div>
 
           </div>
@@ -109,7 +134,7 @@ export function GamePageLayout({ gameKey, badge, title, tagline, rulesIntro, rul
         {/* ── Game board ─────────────────────────────────────────────────── */}
         <section
           id="game-board"
-          className="sm:mx-auto sm:max-w-[900px] xl:max-w-[1200px]"
+          className={`sm:mx-auto sm:max-w-[900px] xl:max-w-[1200px]${toolbarsHidden ? " toolbars-collapsed" : ""}`}
           style={{ scrollMarginTop: "var(--sticky-nav-height)" }}
         >
           {children}

@@ -418,6 +418,10 @@
   }
   /* Card picker rows */
   .picker-wrap   { margin-top: 0.25rem !important; padding-top: 0.25rem !important; padding-bottom: 0.25rem !important; }
+  /* Hide timer + appearance bars when the player taps "hide bars" */
+  .toolbars-collapsed .game-controls { display: none !important; }
+  /* Tighten the board top-margin once bars are gone */
+  .toolbars-collapsed .game-board-glass { margin-top: 0.5rem !important; }
 }
 
 /* ─── Phone landscape: compact chrome so the game board gets the screen ─── */
