@@ -325,7 +325,7 @@ export function FortyThieves() {
             <div
               style={{ width: cardW, height: cardH, flexShrink: 0 }}
               onClick={() => commit(ftDrawFromStock(state))}
-              className="cursor-pointer"
+              className="card-slot-container cursor-pointer"
             >
               {state.stock.length > 0 ? (
                 <PlayingCard
@@ -342,7 +342,7 @@ export function FortyThieves() {
             <div
               style={{ width: cardW, height: cardH, flexShrink: 0, touchAction: wasteTop && dragMode ? "none" : undefined }}
               onClick={() => !dragMode && handleSourceClick({ kind: "waste" })}
-              className={wasteTop ? "cursor-pointer" : ""}
+              className={`card-slot-container${wasteTop ? " cursor-pointer" : ""}`}
             >
               {wasteTop ? (
                 <PlayingCard
@@ -371,7 +371,7 @@ export function FortyThieves() {
                   data-drop-zone={zone}
                   style={{ width: cardW, height: cardH }}
                   onClick={() => handleFoundationClick(i)}
-                  className={`cursor-pointer rounded-[var(--card-radius)] ${dropHighlight(zone)}`}
+                  className={`card-slot-container cursor-pointer rounded-[var(--card-radius)] ${dropHighlight(zone)}`}
                 >
                   {top ? (
                     <PlayingCard card={top} backSkin={skin} faceStyle={face} interactive={false} />
@@ -412,6 +412,7 @@ export function FortyThieves() {
                       return (
                         <div
                           key={card.id}
+                          className={`card-slot-container${isTop ? " cursor-pointer" : ""}`}
                           style={{
                             position: "absolute", top: offset,
                             width: cardW, height: cardH,
@@ -419,7 +420,6 @@ export function FortyThieves() {
                             touchAction: isTop && dragMode ? "none" : undefined,
                           }}
                           onClick={isTop && !dragMode ? () => handleSourceClick({ kind: "tableau", col: colIdx }) : undefined}
-                          className={isTop ? "cursor-pointer" : ""}
                         >
                           <PlayingCard
                             card={card}

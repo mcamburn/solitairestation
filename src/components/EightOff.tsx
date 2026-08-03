@@ -338,7 +338,7 @@ export function EightOff() {
               <div
                 key={i}
                 data-drop-zone={`freecell-${i}`}
-                className={`aspect-[7/10] cursor-pointer rounded-[var(--card-radius)] outline-none transition-all ${ring}`}
+                className={`card-slot-container aspect-[7/10] cursor-pointer rounded-[var(--card-radius)] outline-none transition-all ${ring}`}
                 style={shadow ? { boxShadow: shadow } : undefined}
                 onClick={dragMode ? undefined : () => handleFreeCellClick(i)}
                 onKeyDown={(e) => { if (!card && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); handleFreeCellClick(i); } }}
@@ -379,7 +379,7 @@ export function EightOff() {
               <div
                 key={i}
                 data-drop-zone={`foundation-${i}`}
-                className={`aspect-[7/10] cursor-pointer rounded-[var(--card-radius)] transition-all ${ring}`}
+                className={`card-slot-container aspect-[7/10] cursor-pointer rounded-[var(--card-radius)] transition-all ${ring}`}
                 style={shadow ? { boxShadow: shadow } : undefined}
                 onClick={dragMode ? undefined : () => handleFoundationClick(i)}
                 onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); handleFoundationClick(i); } }}
