@@ -61,6 +61,7 @@ export function Spider({ initialDifficulty }: { initialDifficulty?: SpiderDiffic
   // Stats & daily challenge
   const statsRef = useRef(false);
   const [gameStats, setGameStats] = useState<GameStats | null>(null);
+  const [wonDailyModeLabel, setWonDailyModeLabel] = useState<string | undefined>(undefined);
   const dailyModeRef = useRef(false);
   const dailyResetRef = useRef<(() => void) | null>(null);
   const { dailySeed, dailyTrigger, onDailyWin } = useDailyChallenge();
@@ -118,7 +119,13 @@ export function Spider({ initialDifficulty }: { initialDifficulty?: SpiderDiffic
       statsRef.current = true;
       const elapsed = Math.floor((Date.now() - state.startedAt) / 1000);
       setGameStats(recordWin("spider", elapsed, state.moves, dailyModeRef.current));
-      if (dailyModeRef.current) { onDailyWin(); dailyModeRef.current = false; }
+      if (dailyModeRef.current) {
+        setWonDailyModeLabel(`${state.difficulty} Suit${state.difficulty !== 1 ? "s" : ""}`);
+        onDailyWin();
+        dailyModeRef.current = false;
+      } else {
+        setWonDailyModeLabel(undefined);
+      }
     }
   }, [state?.won]); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -385,7 +392,12 @@ export function Spider({ initialDifficulty }: { initialDifficulty?: SpiderDiffic
       </div>
 
       {game.won && (
-        <DailyWinBanner message={`All 8 sequences cleared in ${game.moves} moves!`} onNew={() => reset()} stats={gameStats} />
+        <DailyWinBanner
+          message={`All 8 sequences cleared in ${game.moves} moves!`}
+          onNew={() => reset()}
+          stats={gameStats}
+          modeLabel={wonDailyModeLabel}
+        />
       )}
 
       <DragModeToggle

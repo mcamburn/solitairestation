@@ -12,6 +12,7 @@ interface DailyWinBannerProps {
   onNew: () => void;
   variant?: "win" | "stuck";
   stats?: GameStats | null;
+  modeLabel?: string;
 }
 
 /**
@@ -19,7 +20,7 @@ interface DailyWinBannerProps {
  * celebration when the game was won in daily mode. Falls back to the
  * standard WinBanner UI for regular wins and for stuck/no-moves states.
  */
-export function DailyWinBanner({ message, onNew, variant = "win", stats }: DailyWinBannerProps) {
+export function DailyWinBanner({ message, onNew, variant = "win", stats, modeLabel }: DailyWinBannerProps) {
   const { justWonDailyStreak, clearDailyWin, activateDaily, gameKey } = useDailyChallenge();
   const [celebrating, setCelebrating] = useState(true);
   const [copied, setCopied] = useState(false);
@@ -145,7 +146,7 @@ export function DailyWinBanner({ message, onNew, variant = "win", stats }: Daily
             color: "var(--primary-foreground)",
           }}
         >
-          ☀️ Daily Complete
+          ☀️ Daily{modeLabel ? ` · ${modeLabel}` : " Complete"}
         </div>
 
         <div className="text-5xl">🎉</div>
