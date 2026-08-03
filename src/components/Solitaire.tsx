@@ -384,7 +384,7 @@ export function Solitaire({ initialMode }: { initialMode?: KlondikeMode } = {}) 
   return (
     <div
       className="game-board-wrap mx-auto w-full sm:max-w-[900px] xl:max-w-[1200px] sm:px-4 xl:px-6 pb-16"
-      style={isDragging ? { userSelect: "none", touchAction: "none" } : undefined}
+      style={dragMode ? { userSelect: "none", touchAction: "none" } : undefined}
     >
       <TopBar
         moves={game.moves}
