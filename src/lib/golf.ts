@@ -9,7 +9,8 @@ export interface GolfState {
   moves: number;
   won: boolean;
   startedAt: number;
-  streak: number;      // consecutive tableau plays without drawing from stock
+  streak: number;         // consecutive tableau plays without drawing from stock
+  longestStreak: number;  // highest streak reached in this game
 }
 
 function shuffle<T>(arr: T[], seed = Date.now()): T[] {
@@ -49,6 +50,7 @@ export function newGolfGame(seed?: number): GolfState {
     won: false,
     startedAt: Date.now(),
     streak: 0,
+    longestStreak: 0,
   };
 }
 
@@ -80,6 +82,7 @@ export function playTableauCard(state: GolfState, col: number): GolfState | null
   s.waste.push({ ...card, faceUp: true });
   s.moves++;
   s.streak++;
+  s.longestStreak = Math.max(s.longestStreak, s.streak);
   // Win: all tableau columns empty
   s.won = s.tableau.every(c => c.length === 0);
   return s;

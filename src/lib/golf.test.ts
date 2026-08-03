@@ -32,6 +32,10 @@ function streak(state: GolfState): number {
   return state.streak;
 }
 
+function longestStreak(state: GolfState): number {
+  return state.longestStreak;
+}
+
 /** Return the column index of the first playable tableau card, or -1. */
 function firstPlayableCol(state: GolfState): number {
   const wasteTop = state.waste[state.waste.length - 1];
@@ -208,5 +212,109 @@ describe("reset() — new game always starts with streak === 0", () => {
     const g2 = newGolfGame(SEED + 1);
     expect(streak(g1)).toBe(0);
     expect(streak(g2)).toBe(0);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// longestStreak — tracks the highest streak reached in a game
+// ---------------------------------------------------------------------------
+
+describe("longestStreak tracking", () => {
+  it("newGolfGame() starts with longestStreak === 0", () => {
+    const state = newGolfGame(SEED);
+    expect(longestStreak(state)).toBe(0);
+  });
+
+  it("longestStreak equals streak after first play", () => {
+    let state = newGolfGame(SEED);
+    state = drawUntilPlayable(state);
+    const col = firstPlayableCol(state);
+    if (col === -1) return;
+    const next = playTableauCard(state, col);
+    if (!next) return;
+    expect(longestStreak(next)).toBe(1);
+    expect(longestStreak(next)).toBe(streak(next));
+  });
+
+  it("longestStreak accumulates to the highest streak reached", () => {
+    let state = newGolfGame(SEED);
+    state = drawUntilPlayable(state);
+
+    let plays = 0;
+    for (let attempts = 0; attempts < 100 && plays < 3; attempts++) {
+      const col = firstPlayableCol(state);
+      if (col === -1) break;
+      const next = playTableauCard(state, col);
+      if (!next) break;
+      plays++;
+      expect(longestStreak(next)).toBe(plays);
+      state = next;
+    }
+    expect(plays).toBeGreaterThanOrEqual(1);
+  });
+
+  it("longestStreak is preserved after drawGolfStock resets streak", () => {
+    let state = newGolfGame(SEED);
+    state = drawUntilPlayable(state);
+
+    // Build up a streak
+    let plays = 0;
+    for (let attempts = 0; attempts < 100 && plays < 2; attempts++) {
+      const col = firstPlayableCol(state);
+      if (col === -1) break;
+      const next = playTableauCard(state, col);
+      if (!next) break;
+      plays++;
+      state = next;
+    }
+    if (plays === 0) return; // skip if no plays possible
+    const streakBeforeDraw = state.streak;
+
+    // Draw from stock to reset streak
+    const afterDraw = drawGolfStock(state);
+    if (!afterDraw) return;
+
+    expect(streak(afterDraw)).toBe(0);
+    expect(longestStreak(afterDraw)).toBe(streakBeforeDraw);
+  });
+
+  it("longestStreak does not decrease when a new streak is shorter than the previous best", () => {
+    let state = newGolfGame(SEED);
+    state = drawUntilPlayable(state);
+
+    // Build a streak of at least 1
+    const col1 = firstPlayableCol(state);
+    if (col1 === -1) return;
+    const afterPlay = playTableauCard(state, col1);
+    if (!afterPlay) return;
+    const best = afterPlay.longestStreak;
+    expect(best).toBeGreaterThanOrEqual(1);
+
+    // Draw to reset streak
+    const afterDraw = drawGolfStock(afterPlay);
+    if (!afterDraw) return;
+    expect(longestStreak(afterDraw)).toBe(best);
+
+    // Draw again until playable, then make one play (streak === 1, which equals best or could be less)
+    let s = drawUntilPlayable(afterDraw);
+    const col2 = firstPlayableCol(s);
+    if (col2 === -1) return;
+    const afterSecondPlay = playTableauCard(s, col2);
+    if (!afterSecondPlay) return;
+
+    // longestStreak should be at least the previous best
+    expect(longestStreak(afterSecondPlay)).toBeGreaterThanOrEqual(best);
+  });
+
+  it("legacy save without longestStreak field normalises to 0", () => {
+    const base = newGolfGame(SEED);
+    // Simulate a persisted save written before the longestStreak field existed
+    const { longestStreak: _removed, ...legacyShape } = base;
+    void _removed;
+    const normalised: GolfState = {
+      ...legacyShape,
+      longestStreak: (legacyShape as unknown as { longestStreak?: number }).longestStreak ?? 0,
+    };
+    expect(normalised.longestStreak).toBe(0);
   });
 });

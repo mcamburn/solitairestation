@@ -85,7 +85,7 @@ export function Golf() {
     const saved = loadGame<GolfState>("golf");
     if (saved && saved.moves > 0) {
       // Normalise streak for saves created before the streak field was added
-      setState({ ...saved, streak: saved.streak ?? 0 });
+      setState({ ...saved, streak: saved.streak ?? 0, longestStreak: saved.longestStreak ?? 0 });
       const over = isGolfGameOver(saved);
       setGameOver(over);
       if (saved.won || over) statsRef.current = true;
@@ -403,13 +403,13 @@ export function Golf() {
       {gameOver && !game.won && (
         <DailyWinBanner
           variant="stuck"
-          message={`Game over — ${remaining} card${remaining !== 1 ? "s" : ""} remaining in tableau.`}
+          message={`Game over — ${remaining} card${remaining !== 1 ? "s" : ""} remaining in tableau.${game.longestStreak > 0 ? ` Longest run: ${game.longestStreak}.` : ""}`}
           onNew={reset}
           stats={gameStats}
         />
       )}
       {game.won && (
-        <DailyWinBanner message={`Golf cleared in ${game.moves} moves! All tableau cards played.`} onNew={reset} stats={gameStats} />
+        <DailyWinBanner message={`Golf cleared in ${game.moves} moves! All tableau cards played.${game.longestStreak > 0 ? ` Longest run: ${game.longestStreak}.` : ""}`} onNew={reset} stats={gameStats} />
       )}
 
       <p className="mt-3 text-center text-xs text-muted-foreground">
