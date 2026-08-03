@@ -427,7 +427,7 @@ export function Canfield() {
                 }} />
               )}
               {reserveTop ? (
-                <div style={{ position: "relative", zIndex: 1, width: cardW, height: cardH, touchAction: dragMode ? "none" : undefined }}>
+                <div className="card-slot-container" style={{ position: "relative", zIndex: 1, width: cardW, height: cardH, touchAction: dragMode ? "none" : undefined }}>
                   <PlayingCard
                     card={reserveTop}
                     selected={isSelReserve}
@@ -503,6 +503,7 @@ export function Canfield() {
                       return (
                         <div
                           key={card.id}
+                          className="card-slot-container"
                           style={{
                             position: "absolute", top: cardIdx * overlap,
                             width: cardW, height: cardH, zIndex: cardIdx,
