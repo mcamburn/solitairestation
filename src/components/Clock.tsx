@@ -76,7 +76,7 @@ function PileDisplay({ pile, label, isActive, cardW, cardH, skin, face }: PileDi
         )}
         {/* Show top face-up card on top if any */}
         {faceUpCards.length > 0 && (
-          <div className="absolute inset-0">
+          <div className="absolute inset-0 card-slot-container">
             <PlayingCard
               card={faceUpCards[faceUpCards.length - 1]}
               backSkin={skin}
