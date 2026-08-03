@@ -70,7 +70,7 @@ export function GamePageLayout({ gameKey, badge, title, tagline, rulesIntro, rul
               </div>
               <div className="flex items-center gap-3 pl-3">
                 {VERT_DIVIDER}
-                <div className="w-52 shrink-0">
+                <div className="w-72 shrink-0">
                   <GameSwitcher />
                 </div>
               </div>
