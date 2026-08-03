@@ -365,36 +365,32 @@
   .playing-card [class*="text-2xl"] { font-size: 0.85rem !important; }
 }
 
-/* Very narrow cards (≤50 px wide) — Canfield (~41 px), Eight Off free cells
-   (~42 px), Spider (~35 px), Forty Thieves (~35 px).  At these widths the
-   2:3 card is short enough that the centred body overlaps the top corner, so
-   hide it entirely and rely on the corner rank + suit alone. */
+/* Narrow cards (≤50 px wide) — FreeCell / Canfield / Eight Off free cells
+   (~42 px), Spider / Forty Thieves (~35 px), Baker's Dozen (~27 px).
+   Replace corner + body with a single centred rank + suit pip so the card
+   identity is readable at a glance without any overlap. */
 @container card-slot (max-width: 50px) {
-  .playing-card { padding: 3px; }
-  .card-rank       { font-size: 15px !important; line-height: 1; }
-  .card-rank-suit  { font-size: 13px !important; }
-  .card-top-glyph  { font-size: 16px !important; }
-  /* Centre body overlaps the top corner at this card height — hide it. */
-  .card-body       { display: none !important; }
-}
-
-/* Very cramped cards (≤40 px wide) — Spider / Forty Thieves on phones (~35 px).
-   Replace the top-corner layout with a single centred rank + suit pip so the
-   card identity is readable without any corner-vs-body overlap. */
-@container card-slot (max-width: 40px) {
   .playing-card     { padding: 3px; }
-  /* Hide the corner bar (rank, suit label, top-right glyph) entirely */
+  /* Hide corner bar and decorative centre body */
   .card-corner      { display: none !important; }
   .card-top-glyph   { display: none !important; }
-  /* card-body is already hidden by the ≤50 px rule above */
-  /* Activate the centred pip */
+  .card-body        { display: none !important; }
+  /* Activate centred pip */
   .card-center-pip  { display: flex !important; }
-  .card-center-rank { font-size: 12px !important; font-weight: 600; line-height: 1; }
-  .card-center-suit { font-size: 10px !important; line-height: 1; }
+  .card-center-rank { font-size: 15px !important; font-weight: 600; line-height: 1; }
+  .card-center-suit { font-size: 13px !important; line-height: 1; }
 }
 
-/* Tiny cards (≤28 px wide) — Baker's Dozen on phones (~25 px).
-   Inherit the centred pip from ≤40 px; scale it down to fit. */
+/* Very cramped cards (≤40 px wide) — Spider / Forty Thieves (~35 px).
+   Inherit corner-hidden + pip-shown from ≤50 px; just scale the pip down. */
+@container card-slot (max-width: 40px) {
+  .playing-card     { padding: 3px; }
+  .card-center-rank { font-size: 12px !important; }
+  .card-center-suit { font-size: 10px !important; }
+}
+
+/* Tiny cards (≤28 px wide) — Baker's Dozen (~27 px).
+   Inherit pip from ≤40 px; scale further to fit. */
 @container card-slot (max-width: 28px) {
   .playing-card     { padding: 2px; }
   .card-center-rank { font-size: 9px !important; }
