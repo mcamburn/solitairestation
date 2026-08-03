@@ -108,26 +108,6 @@ export function PlayingCard({
               ? "var(--font-mono)"
               : "var(--font-display)";
 
-  // Bottom accent line style — unique per face style
-  const bottomAccentStyle: React.CSSProperties =
-    faceStyle === "retro"
-      ? { height: 1, background: isRed ? "var(--red-suit)" : "var(--neon)", boxShadow: `0 0 5px ${isRed ? "var(--red-suit)" : "var(--neon)"}`, opacity: 0.75 }
-      : faceStyle === "bold"
-      ? { height: 2, background: "color-mix(in oklab, var(--neon) 30%, transparent)", borderRadius: 1 }
-      : faceStyle === "classic"
-      ? { height: 0, borderTop: "1px solid var(--card-foreground)", boxShadow: "0 3px 0 var(--card-foreground)", opacity: 0.12 }
-      : faceStyle === "pixel"
-      ? { height: 0, borderTop: "2px dashed var(--card-foreground)", opacity: 0.22 }
-      : faceStyle === "script"
-      ? { height: 0, borderTop: "1px solid oklch(0.5 0.09 65)", opacity: 0.32 }
-      : faceStyle === "stencil"
-      ? { height: 2, background: "var(--card-foreground)", opacity: 0.11, borderRadius: 0 }
-      : faceStyle === "outline"
-      ? { height: 0, borderTop: "1.5px solid var(--card-foreground)", opacity: 0.15 }
-      : faceStyle === "minimal"
-      ? { height: 0, borderTop: "1px dotted var(--card-foreground)", opacity: 0.18 }
-      : /* modern */ { height: 0, borderTop: "1px solid var(--card-foreground)", opacity: 0.08 };
-
   const ariaLabel = `${label} of ${card.suit}${selected ? ", selected" : ""}`;
   const faceUpKbProps = interactive
     ? {
@@ -255,24 +235,6 @@ export function PlayingCard({
           )}
         </div>
       )}
-      {/* ── Bottom: accent line + rotated corner ─────────────────── */}
-      <div
-        className="card-bottom-section absolute bottom-1 inset-x-1 flex flex-col items-stretch"
-        aria-hidden="true"
-      >
-        {/* Style-specific accent line */}
-        <div className="card-bottom-accent w-full" style={bottomAccentStyle} />
-        {/* Rotated rank+suit — mirrors the top-left corner at 180° */}
-        <div className="flex justify-end mt-0.5">
-          <div
-            className={`card-bottom-corner flex flex-col items-center text-[18px] font-semibold leading-none ${textColorClass}`}
-            style={{ fontFamily, transform: "rotate(180deg)" }}
-          >
-            <span className="card-rank">{label}</span>
-            <span className="card-rank-suit text-[15px]">{glyph}</span>
-          </div>
-        </div>
-      </div>
     </div>
   );
 }
