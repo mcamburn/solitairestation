@@ -327,6 +327,7 @@ export function Golf() {
                       return (
                         <div
                           key={card.id}
+                          className="card-slot-container"
                           style={{
                             position: cardIdx === 0 ? "relative" : "absolute",
                             top: cardIdx === 0 ? undefined : cardIdx * overlap,
