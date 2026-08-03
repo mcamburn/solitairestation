@@ -133,6 +133,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://www.solitairestation.com/turn-1-solitaire</loc>
+    <lastmod>2026-08-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://www.solitairestation.com/turn-3-solitaire</loc>
     <lastmod>2026-08-03</lastmod>
     <changefreq>weekly</changefreq>
