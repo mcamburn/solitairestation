@@ -377,24 +377,24 @@
   .card-body        { display: none !important; }
   /* Activate centred pip */
   .card-center-pip  { display: flex !important; }
-  .card-center-rank { font-size: 15px !important; font-weight: 600; line-height: 1; }
-  .card-center-suit { font-size: 13px !important; line-height: 1; }
+  .card-center-rank { font-size: 22px !important; font-weight: 600; line-height: 1; }
+  .card-center-suit { font-size: 19px !important; line-height: 1; }
 }
 
 /* Very cramped cards (≤40 px wide) — Spider / Forty Thieves (~35 px).
    Inherit corner-hidden + pip-shown from ≤50 px; just scale the pip down. */
 @container card-slot (max-width: 40px) {
   .playing-card     { padding: 3px; }
-  .card-center-rank { font-size: 12px !important; }
-  .card-center-suit { font-size: 10px !important; }
+  .card-center-rank { font-size: 16px !important; }
+  .card-center-suit { font-size: 14px !important; }
 }
 
 /* Tiny cards (≤28 px wide) — Baker's Dozen (~27 px).
    Inherit pip from ≤40 px; scale further to fit. */
 @container card-slot (max-width: 28px) {
   .playing-card     { padding: 2px; }
-  .card-center-rank { font-size: 9px !important; }
-  .card-center-suit { font-size: 7px !important; }
+  .card-center-rank { font-size: 11px !important; }
+  .card-center-suit { font-size: 9px !important; }
 }
 
 @utility hint-glow {
