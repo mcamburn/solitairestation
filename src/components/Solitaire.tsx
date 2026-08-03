@@ -837,11 +837,11 @@ function TopBar({
 }) {
   return (
     <div className="game-controls glass flex items-center justify-between gap-3 rounded-2xl px-4 py-3">
-      <div className="flex items-center gap-2">
+      <div className="hidden sm:flex items-center gap-2">
         <div className="h-8 w-8 rounded-lg" style={{ background: "linear-gradient(135deg, var(--neon), var(--neon-2))", boxShadow: "0 0 20px -4px var(--neon)" }} />
         <div className="text-sm font-semibold tracking-tight" style={{ fontFamily: "var(--font-display)" }}>Klondike</div>
       </div>
-      <div className="hidden items-center gap-3 sm:gap-5 sm:flex" style={{ fontFamily: "var(--font-mono)" }}>
+      <div className="flex items-center gap-3 sm:gap-5" style={{ fontFamily: "var(--font-mono)" }}>
         <Stat label="TIME" value={time} />
         <Stat label="MOVES" value={String(moves)} />
         {vegasPasses && <Stat label="PASS" value={`${vegasPasses.current}/${vegasPasses.max}`} />}

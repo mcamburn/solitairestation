@@ -443,7 +443,7 @@ export function AppearanceBar({
   const modeOpt = mode?.options.find((o) => o.value === mode.current);
 
   const triggerBase =
-    "w-full h-full flex items-center gap-2 px-3 py-2 sm:px-4 sm:py-3.5 text-left transition-colors hover:bg-secondary/40 rounded-none focus-visible:outline-none focus-visible:bg-secondary/40";
+    "w-full h-full flex items-center gap-2 px-3 py-1.5 sm:px-4 sm:py-3.5 text-left transition-colors hover:bg-secondary/40 rounded-none focus-visible:outline-none focus-visible:bg-secondary/40";
   const nameCls  = "text-sm font-semibold text-foreground truncate";
   const chevronCls = "ml-auto shrink-0 text-muted-foreground transition-transform duration-150";
 
