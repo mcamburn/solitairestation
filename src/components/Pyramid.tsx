@@ -84,7 +84,7 @@ export function Pyramid() {
   }, [state?.won, stuck]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Scale the board so the 7-card-wide pyramid fits the available width on mobile.
-  // Design width: 7 × CARD_W + 6 × 6px gap = 7×74 + 36 = 554px.
+  // Design width: 7 Ã CARD_W + 6 Ã 6px gap = 7Ã74 + 36 = 554px.
   const boardRef = useRef<HTMLDivElement>(null);
   const [scale, setScale] = useState(1);
   const stateLoaded = state !== null;
@@ -107,7 +107,7 @@ export function Pyramid() {
   const cardH   = Math.round(cardW * 10 / 7);
   const cardGap = Math.max(3, Math.round(6 * scale));
 
-  const { time, getElapsedSeconds, isPaused, pause } = useGameTimer(state?.startedAt ?? 0, state);
+  const { time, getElapsedSeconds, isPaused, pause, resetTimer } = useGameTimer(state?.startedAt ?? 0, state);
 
   if (!state) {
     return (
@@ -162,7 +162,7 @@ export function Pyramid() {
 
   const showHint = () => {
     const h = findPyramidHint(game);
-    setHint(h ?? { selA: { kind: "waste" }, selB: null, description: "No moves available — try undoing or starting a new game." });
+    setHint(h ?? { selA: { kind: "waste" }, selB: null, description: "No moves available â try undoing or starting a new game." });
   };
 
   const handlePyramidClick = (row: number, col: number) => {
@@ -215,8 +215,9 @@ export function Pyramid() {
             Moves <span className="font-semibold text-foreground">{game.moves}</span>
           </span>
           <span className="flex items-center gap-1.5 tabular-nums text-muted-foreground">
-            <button onClick={pause} title={isPaused ? "Resume timer" : "Pause timer"} aria-label={isPaused ? "Resume timer" : "Pause timer"} className="opacity-50 hover:opacity-100 transition-opacity text-[10px] leading-none select-none">{isPaused ? "▶" : "⏸"}</button>
+            <button onClick={pause} title={isPaused ? "Resume timer" : "Pause timer"} aria-label={isPaused ? "Resume timer" : "Pause timer"} className="opacity-50 hover:opacity-100 transition-opacity text-[10px] leading-none select-none">{isPaused ? "â¶" : "â¸"}</button>
             <span className={isPaused ? "opacity-50" : ""}>{time}</span>
+            <button onClick={resetTimer} title="Restart timer" aria-label="Restart timer" className="opacity-50 hover:opacity-100 transition-opacity text-[10px] leading-none select-none">↺</button>
           </span>
           <span className="text-muted-foreground">
             Stock <span className="font-semibold text-foreground">{game.stock.length}</span>
@@ -268,7 +269,7 @@ export function Pyramid() {
             <span className="font-medium">Hint</span>
             <span className="text-muted-foreground">{hint.description}</span>
           </div>
-          <button onClick={() => setHint(null)} className="rounded-md px-2 py-0.5 text-[10px] text-muted-foreground hover:text-foreground" aria-label="Dismiss hint">✕</button>
+          <button onClick={() => setHint(null)} className="rounded-md px-2 py-0.5 text-[10px] text-muted-foreground hover:text-foreground" aria-label="Dismiss hint">â</button>
         </div>
       )}
 
@@ -339,7 +340,7 @@ export function Pyramid() {
                   className="slot-empty flex h-full w-full items-center justify-center rounded-[var(--card-radius)] text-lg text-muted-foreground/50"
                   title="Recycle waste"
                 >
-                  ↺
+                  âº
                 </div>
               )}
             </div>
@@ -377,7 +378,7 @@ export function Pyramid() {
           className="glass mt-6 rounded-2xl px-8 py-8 text-center"
           style={{ borderColor: "#f59e0b", boxShadow: "0 0 30px -8px #f59e0b" }}
         >
-          <div className="text-4xl">🃏</div>
+          <div className="text-4xl">ð</div>
           <h2 className="mt-3 text-xl font-bold tracking-tight">No more moves</h2>
           <p className="mt-1 text-sm text-muted-foreground">
             No pyramid cards can be paired and no drawable card creates a match. Try undoing or start fresh.

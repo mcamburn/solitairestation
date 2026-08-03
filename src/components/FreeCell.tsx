@@ -58,7 +58,7 @@ export function FreeCell() {
   const dailyResetRef = useRef<(() => void) | null>(null);
   const { dailySeed, dailyTrigger, onDailyWin } = useDailyChallenge();
 
-  // ── Drag state ────────────────────────────────────────────────────────────
+  // ââ Drag state ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
   const dragRef = useRef<DragInfo | null>(null);
   const [ghostPos, setGhostPos] = useState<{ x: number; y: number } | null>(null);
   const [dropZone, setDropZone] = useState<string | null>(null);
@@ -97,7 +97,7 @@ export function FreeCell() {
     }
   }, [state?.won]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // ── Grid measurement ───────────────────────────────────────────────────────
+  // ââ Grid measurement âââââââââââââââââââââââââââââââââââââââââââââââââââââââ
   const gridRef = useRef<HTMLDivElement>(null);
   const [colW, setColW] = useState(CARD_W_BASE);
   const stateLoaded = state !== null;
@@ -118,7 +118,7 @@ export function FreeCell() {
   const fanMultiplier = Math.min(1.3, Math.max(1.0, 80 / Math.max(colW, 40)));
   const fan   = Math.max(10, Math.round(FAN * cardH / CARD_H * fanMultiplier));
 
-  // ── Global pointer handlers ────────────────────────────────────────────────
+  // ââ Global pointer handlers ââââââââââââââââââââââââââââââââââââââââââââââââ
   useEffect(() => {
     const onMove = (e: PointerEvent) => {
       const dr = dragRef.current;
@@ -150,7 +150,7 @@ export function FreeCell() {
     };
   }, []);
 
-  const { time, getElapsedSeconds, isPaused, pause } = useGameTimer(state?.startedAt ?? 0, state);
+  const { time, getElapsedSeconds, isPaused, pause, resetTimer } = useGameTimer(state?.startedAt ?? 0, state);
 
   if (!state) {
     return (
@@ -206,11 +206,11 @@ export function FreeCell() {
 
   const showHint = () => {
     const h = findFreeCellHint(game);
-    setHint(h ?? { src: { kind: "tableau", col: 0, index: 0 }, description: "No moves available — try undoing or starting a new game." });
+    setHint(h ?? { src: { kind: "tableau", col: 0, index: 0 }, description: "No moves available â try undoing or starting a new game." });
     if (h) setSel(h.src);
   };
 
-  // ── Click handlers ─────────────────────────────────────────────────────────
+  // ââ Click handlers âââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
 
   const move = (dest: FCDest) => {
     if (!sel) return;
@@ -248,7 +248,7 @@ export function FreeCell() {
     commit(autoFCToFoundation(game, src));
   };
 
-  // ── Drag helpers ───────────────────────────────────────────────────────────
+  // ââ Drag helpers âââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
 
   const startDrag = (
     e: React.PointerEvent<Element>,
@@ -298,8 +298,9 @@ export function FreeCell() {
             Moves <span className="font-semibold text-foreground">{game.moves}</span>
           </span>
           <span className="flex items-center gap-1.5 tabular-nums text-muted-foreground">
-            <button onClick={pause} title={isPaused ? "Resume timer" : "Pause timer"} aria-label={isPaused ? "Resume timer" : "Pause timer"} className="opacity-50 hover:opacity-100 transition-opacity text-[10px] leading-none select-none">{isPaused ? "▶" : "⏸"}</button>
+            <button onClick={pause} title={isPaused ? "Resume timer" : "Pause timer"} aria-label={isPaused ? "Resume timer" : "Pause timer"} className="opacity-50 hover:opacity-100 transition-opacity text-[10px] leading-none select-none">{isPaused ? "â¶" : "â¸"}</button>
             <span className={isPaused ? "opacity-50" : ""}>{time}</span>
+            <button onClick={resetTimer} title="Restart timer" aria-label="Restart timer" className="opacity-50 hover:opacity-100 transition-opacity text-[10px] leading-none select-none">↺</button>
           </span>
         </div>
         <div className="flex items-center gap-2">
@@ -316,7 +317,7 @@ export function FreeCell() {
             <span className="font-medium">Hint</span>
             <span className="text-muted-foreground">{hint.description}</span>
           </div>
-          <button onClick={() => setHint(null)} className="rounded-md px-2 py-0.5 text-[10px] text-muted-foreground hover:text-foreground" aria-label="Dismiss hint">✕</button>
+          <button onClick={() => setHint(null)} className="rounded-md px-2 py-0.5 text-[10px] text-muted-foreground hover:text-foreground" aria-label="Dismiss hint">â</button>
         </div>
       )}
 
@@ -439,8 +440,8 @@ export function FreeCell() {
       <DragModeToggle
         dragMode={dragMode}
         onToggle={toggleDragMode}
-        dragHint="Drag cards to free cells, foundations, or tableau columns · Double-click to auto-move"
-        clickHint="Click a card to select, then click a destination · Double-click to auto-move to foundation"
+        dragHint="Drag cards to free cells, foundations, or tableau columns Â· Double-click to auto-move"
+        clickHint="Click a card to select, then click a destination Â· Double-click to auto-move to foundation"
       />
 
       {/* Drag ghost */}
@@ -451,7 +452,7 @@ export function FreeCell() {
   );
 }
 
-// ─── Ghost overlay ────────────────────────────────────────────────────────────
+// âââ Ghost overlay ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
 
 function FCGhost({
   dragInfo,
@@ -486,7 +487,7 @@ function FCGhost({
   );
 }
 
-// ─── FCColumn ─────────────────────────────────────────────────────────────────
+// âââ FCColumn âââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
 
 interface FCColumnProps {
   pile: Card[];

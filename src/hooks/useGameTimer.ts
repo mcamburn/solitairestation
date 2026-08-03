@@ -57,6 +57,18 @@ export function useGameTimer(startedAt: number, activitySignal: unknown) {
     setTick((n) => n + 1);
   }, []);
 
+  /** Reset the timer display to 00:00 without starting a new game. */
+  const resetTimer = useCallback((): void => {
+    const now = Date.now();
+    // Shift offset so that elapsed = 0 right now
+    ref.current.offset = now - startedAt;
+    // If paused, anchor pausedAt to now so getElapsedSeconds() stays 0
+    if (ref.current.pausedAt !== null) {
+      ref.current.pausedAt = now;
+    }
+    setTick((n) => n + 1);
+  }, [startedAt]);
+
   /** Elapsed seconds at the moment of the call — use this for win recording. */
   const getElapsedSeconds = useCallback((): number => {
     const { pausedAt, offset } = ref.current;
@@ -69,5 +81,6 @@ export function useGameTimer(startedAt: number, activitySignal: unknown) {
     getElapsedSeconds,
     isPaused: ref.current.pausedAt !== null,
     pause,
+    resetTimer,
   };
 }

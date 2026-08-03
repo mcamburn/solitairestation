@@ -165,7 +165,7 @@ export function Scorpion() {
     reset(dailySeed);
   }, [dailyTrigger]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const { time, getElapsedSeconds, isPaused, pause } = useGameTimer(state?.startedAt ?? 0, state);
+  const { time, getElapsedSeconds, isPaused, pause, resetTimer } = useGameTimer(state?.startedAt ?? 0, state);
 
   if (!state) {
     return (
@@ -205,7 +205,7 @@ export function Scorpion() {
 
   const showHint = () => {
     const h = findScorpionHint(game);
-    setHint(h ?? { fromCol: -1, fromIndex: -1, toCol: -1, description: "No moves found — try starting a new game." });
+    setHint(h ?? { fromCol: -1, fromIndex: -1, toCol: -1, description: "No moves found â try starting a new game." });
   };
 
   const handleCardClick = (col: number, index: number) => {
@@ -266,8 +266,9 @@ export function Scorpion() {
             Moves <span className="font-semibold text-foreground">{game.moves}</span>
           </span>
           <span className="flex items-center gap-1.5 tabular-nums text-muted-foreground">
-            <button onClick={pause} title={isPaused ? "Resume timer" : "Pause timer"} aria-label={isPaused ? "Resume timer" : "Pause timer"} className="opacity-50 hover:opacity-100 transition-opacity text-[10px] leading-none select-none">{isPaused ? "▶" : "⏸"}</button>
+            <button onClick={pause} title={isPaused ? "Resume timer" : "Pause timer"} aria-label={isPaused ? "Resume timer" : "Pause timer"} className="opacity-50 hover:opacity-100 transition-opacity text-[10px] leading-none select-none">{isPaused ? "â¶" : "â¸"}</button>
             <span className={isPaused ? "opacity-50" : ""}>{time}</span>
+            <button onClick={resetTimer} title="Restart timer" aria-label="Restart timer" className="opacity-50 hover:opacity-100 transition-opacity text-[10px] leading-none select-none">↺</button>
           </span>
           <span>
             <span className="text-muted-foreground">Done </span>
@@ -305,7 +306,7 @@ export function Scorpion() {
             <span className="font-medium">Hint</span>
             <span className="text-muted-foreground">{hint.description}</span>
           </div>
-          <button onClick={() => setHint(null)} className="rounded-md px-2 py-0.5 text-[10px] text-muted-foreground hover:text-foreground" aria-label="Dismiss hint">✕</button>
+          <button onClick={() => setHint(null)} className="rounded-md px-2 py-0.5 text-[10px] text-muted-foreground hover:text-foreground" aria-label="Dismiss hint">â</button>
         </div>
       )}
 
@@ -365,7 +366,7 @@ export function Scorpion() {
   );
 }
 
-// ─── Ghost overlay ────────────────────────────────────────────────────────────
+// âââ Ghost overlay ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
 
 function ScorpionGhost({
   dragInfo,
@@ -402,7 +403,7 @@ function ScorpionGhost({
   );
 }
 
-// ─── ScorpionColumn ───────────────────────────────────────────────────────────
+// âââ ScorpionColumn âââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
 
 interface ScorpionColumnProps {
   pile: Card[];

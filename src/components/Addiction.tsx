@@ -82,7 +82,7 @@ export function Addiction() {
     reset(dailySeed);
   }, [dailyTrigger]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const { time, getElapsedSeconds, isPaused, pause } = useGameTimer(state?.startedAt ?? 0, state);
+  const { time, getElapsedSeconds, isPaused, pause, resetTimer } = useGameTimer(state?.startedAt ?? 0, state);
 
   if (!state) {
     return (
@@ -118,14 +118,14 @@ export function Addiction() {
 
   const showHint = () => {
     const h = findAddictionHint(state);
-    setHint(h ?? { fromRow: 0, fromCol: 0, toRow: 0, toCol: 0, description: "No moves available — try shuffling or start a new game." });
+    setHint(h ?? { fromRow: 0, fromCol: 0, toRow: 0, toCol: 0, description: "No moves available â try shuffling or start a new game." });
   };
 
   const handleCardClick = (row: number, col: number) => {
     const card = state.grid[row][col];
 
     if (!card) {
-      // Clicking a gap — try to move selected card here
+      // Clicking a gap â try to move selected card here
       if (sel) {
         const [sr, sc] = sel;
         const moved = addictionMove(state, sr, sc, row, col);
@@ -137,7 +137,7 @@ export function Addiction() {
 
     // Clicking a card
     if (isLocked(state.grid, row, col)) {
-      // locked card — deselect
+      // locked card â deselect
       setSel(null);
       return;
     }
@@ -177,8 +177,9 @@ export function Addiction() {
             Moves <span className="font-semibold text-foreground">{state.moves}</span>
           </span>
           <span className="flex items-center gap-1.5 tabular-nums text-muted-foreground">
-            <button onClick={pause} title={isPaused ? "Resume timer" : "Pause timer"} aria-label={isPaused ? "Resume timer" : "Pause timer"} className="opacity-50 hover:opacity-100 transition-opacity text-[10px] leading-none select-none">{isPaused ? "▶" : "⏸"}</button>
+            <button onClick={pause} title={isPaused ? "Resume timer" : "Pause timer"} aria-label={isPaused ? "Resume timer" : "Pause timer"} className="opacity-50 hover:opacity-100 transition-opacity text-[10px] leading-none select-none">{isPaused ? "â¶" : "â¸"}</button>
             <span className={isPaused ? "opacity-50" : ""}>{time}</span>
+            <button onClick={resetTimer} title="Restart timer" aria-label="Restart timer" className="opacity-50 hover:opacity-100 transition-opacity text-[10px] leading-none select-none">↺</button>
           </span>
           <span className="text-muted-foreground">
             Shuffles <span className="font-semibold text-foreground">{state.shufflesLeft}</span>
@@ -217,7 +218,7 @@ export function Addiction() {
             <span className="font-medium">Hint</span>
             <span className="text-muted-foreground">{hint.description}</span>
           </div>
-          <button onClick={() => setHint(null)} className="rounded-md px-2 py-0.5 text-[10px] text-muted-foreground hover:text-foreground" aria-label="Dismiss hint">✕</button>
+          <button onClick={() => setHint(null)} className="rounded-md px-2 py-0.5 text-[10px] text-muted-foreground hover:text-foreground" aria-label="Dismiss hint">â</button>
         </div>
       )}
 
@@ -225,7 +226,7 @@ export function Addiction() {
       <NewGameToast visible={toastVisible} skin={skin} face={face} />
 
       <div className="game-board-glass glass mt-4 rounded-2xl p-3 sm:p-4">
-        {/* 4×13 grid */}
+        {/* 4Ã13 grid */}
         <div className="flex flex-col gap-[7px] sm:gap-1.5">
           {state.grid.map((row, rowIdx) => (
             <div key={rowIdx} className="flex gap-1">
@@ -253,7 +254,7 @@ export function Addiction() {
                           : "border-dashed border-border/50 bg-transparent",
                       ].join(" ")}
                     >
-                      {isValidGap && <span className="text-[8px] text-[var(--neon)] opacity-70">▼</span>}
+                      {isValidGap && <span className="text-[8px] text-[var(--neon)] opacity-70">â¼</span>}
                     </div>
                   );
                 }
@@ -319,7 +320,7 @@ export function Addiction() {
           className="glass mt-6 rounded-2xl px-8 py-8 text-center"
           style={{ borderColor: "#f59e0b", boxShadow: "0 0 30px -8px #f59e0b" }}
         >
-          <div className="text-4xl">🔀</div>
+          <div className="text-4xl">ð</div>
           <h2 className="mt-3 text-xl font-bold tracking-tight">No more moves</h2>
           <p className="mt-1 text-sm text-muted-foreground">
             No cards can be moved. {state.shufflesLeft > 0 ? `You have ${state.shufflesLeft} shuffle${state.shufflesLeft !== 1 ? "s" : ""} remaining.` : "No shuffles remaining."}

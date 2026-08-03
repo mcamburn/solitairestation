@@ -88,7 +88,7 @@ export function Mahjong() {
     return () => ro.disconnect();
   }, [stateLoaded]);
 
-  const { time, getElapsedSeconds, isPaused, pause } = useGameTimer(state?.startedAt ?? 0, state);
+  const { time, getElapsedSeconds, isPaused, pause, resetTimer } = useGameTimer(state?.startedAt ?? 0, state);
 
   if (!state) {
     return (
@@ -140,7 +140,7 @@ export function Mahjong() {
 
   const showHint = () => {
     const h = findMahjongHint(game);
-    setHint(h ?? { idxA: -1, idxB: -1, description: "No matches available — try undoing or starting a new game." });
+    setHint(h ?? { idxA: -1, idxB: -1, description: "No matches available â try undoing or starting a new game." });
   };
 
   const handleTileClick = (idx: number) => {
@@ -157,8 +157,9 @@ export function Mahjong() {
             Moves <span className="font-semibold text-foreground">{game.moves}</span>
           </span>
           <span className="flex items-center gap-1.5 tabular-nums text-muted-foreground">
-            <button onClick={pause} title={isPaused ? "Resume timer" : "Pause timer"} aria-label={isPaused ? "Resume timer" : "Pause timer"} className="opacity-50 hover:opacity-100 transition-opacity text-[10px] leading-none select-none">{isPaused ? "▶" : "⏸"}</button>
+            <button onClick={pause} title={isPaused ? "Resume timer" : "Pause timer"} aria-label={isPaused ? "Resume timer" : "Pause timer"} className="opacity-50 hover:opacity-100 transition-opacity text-[10px] leading-none select-none">{isPaused ? "â¶" : "â¸"}</button>
             <span className={isPaused ? "opacity-50" : ""}>{time}</span>
+            <button onClick={resetTimer} title="Restart timer" aria-label="Restart timer" className="opacity-50 hover:opacity-100 transition-opacity text-[10px] leading-none select-none">↺</button>
           </span>
           <span className="text-muted-foreground">
             Remaining{" "}
@@ -204,7 +205,7 @@ export function Mahjong() {
             <span className="font-medium">Hint</span>
             <span className="text-muted-foreground">{hint.description}</span>
           </div>
-          <button onClick={() => setHint(null)} className="rounded-md px-2 py-0.5 text-[10px] text-muted-foreground hover:text-foreground" aria-label="Dismiss hint">✕</button>
+          <button onClick={() => setHint(null)} className="rounded-md px-2 py-0.5 text-[10px] text-muted-foreground hover:text-foreground" aria-label="Dismiss hint">â</button>
         </div>
       )}
 
@@ -253,7 +254,7 @@ export function Mahjong() {
           className="glass mt-6 rounded-2xl px-8 py-8 text-center"
           style={{ borderColor: "#f59e0b", boxShadow: "0 0 30px -8px #f59e0b" }}
         >
-          <div className="text-4xl">🤔</div>
+          <div className="text-4xl">ð¤</div>
           <h2 className="mt-3 text-xl font-bold tracking-tight">No more matches</h2>
           <p className="mt-1 text-sm text-muted-foreground">
             No free tiles can be paired. Try undoing or start a new game.

@@ -218,7 +218,7 @@ export function Solitaire({ initialMode }: { initialMode?: KlondikeMode } = {}) 
   }, []);
 
   // ── Loading skeleton ───────────────────────────────────────────────────────
-  const { time, getElapsedSeconds, isPaused, pause } = useGameTimer(state?.startedAt ?? 0, state);
+  const { time, getElapsedSeconds, isPaused, pause, resetTimer } = useGameTimer(state?.startedAt ?? 0, state);
 
   if (!state) {
     return (
@@ -393,6 +393,7 @@ export function Solitaire({ initialMode }: { initialMode?: KlondikeMode } = {}) 
         time={time}
         isPaused={isPaused}
         onPause={pause}
+        onReset={resetTimer}
         onUndo={undo}
         onNew={() => reset()}
         onHint={showHint}
@@ -822,7 +823,7 @@ function TableauColumn({
 // ─── TopBar ───────────────────────────────────────────────────────────────────
 
 function TopBar({
-  moves, scoreLabel, scoreValue, time, isPaused, onPause, onUndo, onNew, onHint, canUndo, vegasPasses,
+  moves, scoreLabel, scoreValue, time, isPaused, onPause, onReset, onUndo, onNew, onHint, canUndo, vegasPasses,
 }: {
   moves: number;
   scoreLabel: string;
@@ -830,6 +831,7 @@ function TopBar({
   time: string;
   isPaused: boolean;
   onPause: () => void;
+  onReset: () => void;
   onUndo: () => void;
   onNew: () => void;
   onHint: () => void;
@@ -848,7 +850,10 @@ function TopBar({
             <button onClick={onPause} title={isPaused ? "Resume timer" : "Pause timer"} aria-label={isPaused ? "Resume timer" : "Pause timer"} className="opacity-50 hover:opacity-100 transition-opacity leading-none select-none">{isPaused ? "▶" : "⏸"}</button>
             TIME
           </div>
-          <div className="text-sm font-semibold" style={isPaused ? { opacity: 0.5 } : undefined}>{time}</div>
+          <div className="flex items-center gap-1 text-sm font-semibold" style={isPaused ? { opacity: 0.5 } : undefined}>
+            {time}
+            <button onClick={onReset} title="Restart timer" aria-label="Restart timer" className="opacity-50 hover:opacity-100 transition-opacity text-[9px] leading-none select-none">↺</button>
+          </div>
         </div>
         <Stat label="MOVES" value={String(moves)} />
         {vegasPasses && <Stat label="PASS" value={`${vegasPasses.current}/${vegasPasses.max}`} />}

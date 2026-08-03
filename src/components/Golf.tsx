@@ -160,7 +160,7 @@ export function Golf() {
     reset(dailySeed);
   }, [dailyTrigger]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const { time, getElapsedSeconds, isPaused, pause } = useGameTimer(state?.startedAt ?? 0, state);
+  const { time, getElapsedSeconds, isPaused, pause, resetTimer } = useGameTimer(state?.startedAt ?? 0, state);
 
   if (!state) {
     return (
@@ -201,7 +201,7 @@ export function Golf() {
 
   const showHint = () => {
     const h = findGolfHint(game);
-    setHint(h ?? { col: -1, description: "No moves available — draw from stock or start a new game." });
+    setHint(h ?? { col: -1, description: "No moves available â draw from stock or start a new game." });
   };
 
   const handleColClick = (col: number) => {
@@ -247,12 +247,13 @@ export function Golf() {
             Moves <span className="font-semibold text-foreground">{game.moves}</span>
           </span>
           <span className="flex items-center gap-1.5 tabular-nums text-muted-foreground">
-            <button onClick={pause} title={isPaused ? "Resume timer" : "Pause timer"} aria-label={isPaused ? "Resume timer" : "Pause timer"} className="opacity-50 hover:opacity-100 transition-opacity text-[10px] leading-none select-none">{isPaused ? "▶" : "⏸"}</button>
+            <button onClick={pause} title={isPaused ? "Resume timer" : "Pause timer"} aria-label={isPaused ? "Resume timer" : "Pause timer"} className="opacity-50 hover:opacity-100 transition-opacity text-[10px] leading-none select-none">{isPaused ? "â¶" : "â¸"}</button>
             <span className={isPaused ? "opacity-50" : ""}>{time}</span>
+            <button onClick={resetTimer} title="Restart timer" aria-label="Restart timer" className="opacity-50 hover:opacity-100 transition-opacity text-[10px] leading-none select-none">↺</button>
           </span>
           {game.streak > 1 && (
             <span className="font-semibold" style={{ color: "var(--neon)" }}>
-              🔥 Run ×{game.streak}
+              ð¥ Run Ã{game.streak}
             </span>
           )}
           <span className="text-muted-foreground">
@@ -282,7 +283,7 @@ export function Golf() {
             <span className="font-medium">Hint</span>
             <span className="text-muted-foreground">{hint.description}</span>
           </div>
-          <button onClick={() => setHint(null)} className="rounded-md px-2 py-0.5 text-[10px] text-muted-foreground hover:text-foreground" aria-label="Dismiss hint">✕</button>
+          <button onClick={() => setHint(null)} className="rounded-md px-2 py-0.5 text-[10px] text-muted-foreground hover:text-foreground" aria-label="Dismiss hint">â</button>
         </div>
       )}
 
@@ -312,7 +313,7 @@ export function Golf() {
                       className="slot-empty flex items-center justify-center rounded-[var(--card-radius)] text-muted-foreground/30"
                       style={{ width: cardW, height: cardH, border: "2px dashed" }}
                     >
-                      ✓
+                      â
                     </div>
                   ) : (
                     col.map((card, cardIdx) => {
@@ -367,13 +368,13 @@ export function Golf() {
                     interactive
                   />
                 ) : (
-                  <div className="slot-empty flex h-full w-full items-center justify-center rounded-[var(--card-radius)] text-2xl text-muted-foreground/40" title="Stock empty">∅</div>
+                  <div className="slot-empty flex h-full w-full items-center justify-center rounded-[var(--card-radius)] text-2xl text-muted-foreground/40" title="Stock empty">â</div>
                 )}
               </div>
               <span className="text-xs text-muted-foreground">{game.stock.length} left</span>
             </div>
 
-            {/* Waste — drop target */}
+            {/* Waste â drop target */}
             <div className="flex flex-col items-center gap-1">
               <div
                 data-drop-zone="waste"
@@ -387,7 +388,7 @@ export function Golf() {
                 )}
               </div>
               <span className="text-xs text-muted-foreground">
-                {wasteTop ? `${rankLabel(wasteTop.rank)}${suitGlyph(wasteTop.suit)}` : "—"}
+                {wasteTop ? `${rankLabel(wasteTop.rank)}${suitGlyph(wasteTop.suit)}` : "â"}
               </span>
             </div>
           </div>
@@ -397,7 +398,7 @@ export function Golf() {
       {gameOver && !game.won && (
         <DailyWinBanner
           variant="stuck"
-          message={`Game over — ${remaining} card${remaining !== 1 ? "s" : ""} remaining in tableau.${game.longestStreak > 0 ? ` Longest run: ${game.longestStreak}.` : ""}`}
+          message={`Game over â ${remaining} card${remaining !== 1 ? "s" : ""} remaining in tableau.${game.longestStreak > 0 ? ` Longest run: ${game.longestStreak}.` : ""}`}
           onNew={reset}
           stats={gameStats}
         />
@@ -407,7 +408,7 @@ export function Golf() {
       )}
 
       <p className="mt-3 text-center text-xs text-muted-foreground">
-        Play tableau top cards ±1 from waste top. Click stock to draw. No wrapping (Ace ≠ King).
+        Play tableau top cards Â±1 from waste top. Click stock to draw. No wrapping (Ace â  King).
       </p>
 
       <DragModeToggle

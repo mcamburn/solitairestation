@@ -160,7 +160,7 @@ export function BakersGame() {
     reset(dailySeed);
   }, [dailyTrigger]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const { time, getElapsedSeconds, isPaused, pause } = useGameTimer(state?.startedAt ?? 0, state);
+  const { time, getElapsedSeconds, isPaused, pause, resetTimer } = useGameTimer(state?.startedAt ?? 0, state);
 
   if (!state) {
     return (
@@ -201,7 +201,7 @@ export function BakersGame() {
 
   const showHint = () => {
     const h = findBakersGameHint(game);
-    setHint(h ?? { src: { kind: "tableau", col: 0, index: 0 }, description: "No moves available — try undoing or starting a new game." });
+    setHint(h ?? { src: { kind: "tableau", col: 0, index: 0 }, description: "No moves available â try undoing or starting a new game." });
     if (h) setSel(h.src);
   };
 
@@ -285,8 +285,9 @@ export function BakersGame() {
             Moves <span className="font-semibold text-foreground">{game.moves}</span>
           </span>
           <span className="flex items-center gap-1.5 tabular-nums text-muted-foreground">
-            <button onClick={pause} title={isPaused ? "Resume timer" : "Pause timer"} aria-label={isPaused ? "Resume timer" : "Pause timer"} className="opacity-50 hover:opacity-100 transition-opacity text-[10px] leading-none select-none">{isPaused ? "▶" : "⏸"}</button>
+            <button onClick={pause} title={isPaused ? "Resume timer" : "Pause timer"} aria-label={isPaused ? "Resume timer" : "Pause timer"} className="opacity-50 hover:opacity-100 transition-opacity text-[10px] leading-none select-none">{isPaused ? "â¶" : "â¸"}</button>
             <span className={isPaused ? "opacity-50" : ""}>{time}</span>
+            <button onClick={resetTimer} title="Restart timer" aria-label="Restart timer" className="opacity-50 hover:opacity-100 transition-opacity text-[10px] leading-none select-none">↺</button>
           </span>
         </div>
         <div className="flex items-center gap-2">
@@ -303,7 +304,7 @@ export function BakersGame() {
             <span className="font-medium">Hint</span>
             <span className="text-muted-foreground">{hint.description}</span>
           </div>
-          <button onClick={() => setHint(null)} className="rounded-md px-2 py-0.5 text-[10px] text-muted-foreground hover:text-foreground" aria-label="Dismiss hint">✕</button>
+          <button onClick={() => setHint(null)} className="rounded-md px-2 py-0.5 text-[10px] text-muted-foreground hover:text-foreground" aria-label="Dismiss hint">â</button>
         </div>
       )}
 
@@ -426,8 +427,8 @@ export function BakersGame() {
       <DragModeToggle
         dragMode={dragMode}
         onToggle={toggleDragMode}
-        dragHint="Drag cards to free cells, foundations, or tableau columns · Double-click to auto-move"
-        clickHint="Click a card to select, then click a destination · Double-click to auto-move to foundation"
+        dragHint="Drag cards to free cells, foundations, or tableau columns Â· Double-click to auto-move"
+        clickHint="Click a card to select, then click a destination Â· Double-click to auto-move to foundation"
       />
 
       {isDragging && dragRef.current && (
@@ -437,7 +438,7 @@ export function BakersGame() {
   );
 }
 
-// ─── Ghost overlay ────────────────────────────────────────────────────────────
+// âââ Ghost overlay ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
 
 function BGGhost({
   dragInfo,
@@ -472,7 +473,7 @@ function BGGhost({
   );
 }
 
-// ─── BGColumn ─────────────────────────────────────────────────────────────────
+// âââ BGColumn âââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
 
 interface BGColumnProps {
   pile: Card[];
