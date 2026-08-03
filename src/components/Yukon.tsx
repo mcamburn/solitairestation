@@ -15,6 +15,7 @@ import {
 } from "@/lib/yukon";
 import { PlayingCard, type CardBackSkin, type CardFaceStyle } from "./PlayingCard";
 import { AppearanceBar, useCardAppearance, useNewGameToast, NewGameToast } from "./CardPickers";
+import { useDragMode, DragModeToggle } from "./DragModeToggle";
 import { DailyWinBanner } from "./DailyWinBanner";
 import type { Card } from "@/lib/solitaire";
 
@@ -53,6 +54,7 @@ export function Yukon() {
   const [sel, setSel] = useState<Sel>(null);
   const [hint, setHint] = useState<YukonHint | null>(null);
   const { skin, face, setSkin, setFace } = useCardAppearance();
+  const { dragMode, toggleDragMode } = useDragMode();
   const { visible: toastVisible, show: showToast } = useNewGameToast();
   const [, forceUpdate] = useState(0);
   const statsRef = useRef(false);
@@ -262,6 +264,7 @@ export function Yukon() {
     cards: Card[],
     onTap: () => void,
   ) => {
+    if (!dragMode) return;
     e.preventDefault();
     e.stopPropagation();
     const rect = e.currentTarget.getBoundingClientRect();
@@ -324,6 +327,12 @@ export function Yukon() {
       )}
 
       <AppearanceBar skin={skin} face={face} onSkinChange={setSkin} onFaceChange={setFace} />
+      <DragModeToggle
+        dragMode={dragMode}
+        onToggle={toggleDragMode}
+        dragHint="Drag cards to a column or foundation"
+        clickHint="Click a card to select, then click a destination"
+      />
       <NewGameToast visible={toastVisible} skin={skin} face={face} />
 
       {/* Board */}
@@ -373,7 +382,7 @@ export function Yukon() {
               key={col}
               pile={pile}
               col={col}
-              sel={sel}
+              sel={dragMode ? null : sel}
               draggingFrom={draggingFrom}
               hint={hint}
               skin={skin}
@@ -383,6 +392,7 @@ export function Yukon() {
               fanDown={fanDown}
               dropZone={`col-${col}`}
               highlighted={dropZone === `col-${col}`}
+              dragMode={dragMode}
               onCardClick={(i) => handleCardClick(col, i)}
               onEmptyClick={() => handleCardClick(col, 0)}
               onDragStart={(e, i) => {
@@ -458,6 +468,7 @@ interface YukonColumnProps {
   fanDown: number;
   dropZone: string;
   highlighted: boolean;
+  dragMode: boolean;
   onCardClick: (i: number) => void;
   onEmptyClick: () => void;
   onDragStart: (e: React.PointerEvent<Element>, i: number) => void;
@@ -465,7 +476,7 @@ interface YukonColumnProps {
 
 function YukonColumn({
   pile, col, sel, draggingFrom, hint, skin, face, cardH, fanUp, fanDown,
-  dropZone, highlighted, onCardClick, onEmptyClick, onDragStart,
+  dropZone, highlighted, dragMode, onCardClick, onEmptyClick, onDragStart,
 }: YukonColumnProps) {
   const offsets = useMemo(() => {
     let y = 0;
@@ -515,7 +526,7 @@ function YukonColumn({
               height: cardH,
               opacity: isDraggingFrom(i) ? 0.4 : 1,
               transition: "opacity 0.1s",
-              touchAction: c.faceUp ? "none" : undefined,
+              touchAction: c.faceUp && dragMode ? "none" : undefined,
               ...(isTopDrop ? { boxShadow: "0 0 20px -2px var(--neon)" } : {}),
             }}
           >
@@ -527,10 +538,9 @@ function YukonColumn({
               faceStyle={face}
               onPointerDown={
                 c.faceUp
-                  ? (e) => {
-                      e.stopPropagation();
-                      onDragStart(e, i);
-                    }
+                  ? dragMode
+                    ? (e) => { e.stopPropagation(); onDragStart(e, i); }
+                    : (e) => { e.stopPropagation(); onCardClick(i); }
                   : undefined
               }
               interactive={c.faceUp}
