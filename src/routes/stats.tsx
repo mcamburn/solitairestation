@@ -60,6 +60,7 @@ interface HistoryEntry {
 
 type SortKey = "title" | "gamesPlayed" | "wins" | "winRate" | "bestTime" | "longestStreak";
 type HistorySortKey = "game" | "result" | "time" | "moves" | "date";
+type DrilldownSortKey = "result" | "time" | "moves" | "date";
 type SortDir = "asc" | "desc";
 
 /* ── Default rows (no localStorage access — safe for SSR) ────────────────── */
@@ -160,6 +161,31 @@ function sortHistory(entries: HistoryEntry[], key: HistorySortKey, dir: SortDir)
   });
 }
 
+/* ── Per-game drilldown sort ──────────────────────────────────────────────── */
+
+function drilldownSortValue(record: GameRecord, key: DrilldownSortKey): number {
+  switch (key) {
+    case "result": return record.won ? 0 : 1;
+    case "time":   return record.won && record.durationSeconds > 0 ? record.durationSeconds : Infinity;
+    case "moves":  return record.moves > 0 ? record.moves : Infinity;
+    case "date":   return record.date;
+  }
+}
+
+function sortDrilldown(records: GameRecord[], key: DrilldownSortKey, dir: SortDir): GameRecord[] {
+  return [...records].sort((a, b) => {
+    const av = drilldownSortValue(a, key);
+    const bv = drilldownSortValue(b, key);
+    const aInf = av === Infinity;
+    const bInf = bv === Infinity;
+    if (aInf && bInf) return 0;
+    if (aInf) return 1;
+    if (bInf) return -1;
+    const cmp = av - bv;
+    return dir === "asc" ? cmp : -cmp;
+  });
+}
+
 /* ── Combined history builder ─────────────────────────────────────────────── */
 
 function buildCombinedHistory(rows: GameRow[]): HistoryEntry[] {
@@ -213,6 +239,8 @@ function StatsPage() {
   const [historyLimit, setHistoryLimit] = useState(25);
   const [historySortKey, setHistorySortKey] = useState<HistorySortKey>("date");
   const [historySortDir, setHistorySortDir] = useState<SortDir>("desc");
+  const [drilldownSortKey, setDrilldownSortKey] = useState<DrilldownSortKey>("date");
+  const [drilldownSortDir, setDrilldownSortDir] = useState<SortDir>("desc");
   const [expandedGames, setExpandedGames] = useState<Set<string>>(new Set());
 
   function toggleGameExpanded(saveKey: string) {
@@ -243,6 +271,11 @@ function StatsPage() {
       const validHistKeys: HistorySortKey[] = ["game", "result", "time", "moves", "date"];
       if (savedHistKey && validHistKeys.includes(savedHistKey)) setHistorySortKey(savedHistKey);
       if (savedHistDir === "asc" || savedHistDir === "desc") setHistorySortDir(savedHistDir);
+      const savedDrillKey = localStorage.getItem("stats-drilldown-sort-key") as DrilldownSortKey | null;
+      const savedDrillDir = localStorage.getItem("stats-drilldown-sort-dir") as SortDir | null;
+      const validDrillKeys: DrilldownSortKey[] = ["result", "time", "moves", "date"];
+      if (savedDrillKey && validDrillKeys.includes(savedDrillKey)) setDrilldownSortKey(savedDrillKey);
+      if (savedDrillDir === "asc" || savedDrillDir === "desc") setDrilldownSortDir(savedDrillDir);
     } catch {
       // localStorage unavailable — keep defaults
     }
@@ -313,6 +346,29 @@ function StatsPage() {
       localStorage.setItem("stats-history-sort-dir", dir);
     } catch {
       // ignore
+    }
+  }
+
+  function persistDrilldownSort(key: DrilldownSortKey, dir: SortDir) {
+    try {
+      localStorage.setItem("stats-drilldown-sort-key", key);
+      localStorage.setItem("stats-drilldown-sort-dir", dir);
+    } catch {
+      // ignore
+    }
+  }
+
+  function handleDrilldownSort(key: DrilldownSortKey) {
+    if (key === drilldownSortKey) {
+      const newDir: SortDir = drilldownSortDir === "asc" ? "desc" : "asc";
+      setDrilldownSortDir(newDir);
+      persistDrilldownSort(key, newDir);
+    } else {
+      // date → desc (newest first); time/moves → asc (fastest/fewest first); result → asc (wins first)
+      const newDir: SortDir = key === "date" ? "desc" : "asc";
+      setDrilldownSortKey(key);
+      setDrilldownSortDir(newDir);
+      persistDrilldownSort(key, newDir);
     }
   }
 
@@ -432,6 +488,9 @@ function StatsPage() {
                   onToggleExpand={() => toggleGameExpanded(row.saveKey)}
                   drilldownDailyOnly={drilldownDailyOnly}
                   onToggleDrilldownDailyOnly={handleToggleDrilldownDailyOnly}
+                  drilldownSortKey={drilldownSortKey}
+                  drilldownSortDir={drilldownSortDir}
+                  onDrilldownSort={handleDrilldownSort}
                   rowRef={(el) => {
                     if (el) tableRowRefs.current.set(row.saveKey, el);
                     else tableRowRefs.current.delete(row.saveKey);
@@ -499,6 +558,9 @@ function StatsPage() {
               onToggleExpand={() => toggleGameExpanded(row.saveKey)}
               drilldownDailyOnly={drilldownDailyOnly}
               onToggleDrilldownDailyOnly={handleToggleDrilldownDailyOnly}
+              drilldownSortKey={drilldownSortKey}
+              drilldownSortDir={drilldownSortDir}
+              onDrilldownSort={handleDrilldownSort}
               rowRef={(el) => {
                 if (el) mobileCardRefs.current.set(row.saveKey, el);
                 else mobileCardRefs.current.delete(row.saveKey);
@@ -762,6 +824,9 @@ function TableRow({
   onToggleExpand,
   drilldownDailyOnly,
   onToggleDrilldownDailyOnly,
+  drilldownSortKey,
+  drilldownSortDir,
+  onDrilldownSort,
   rowRef,
 }: {
   row: GameRow;
@@ -771,15 +836,21 @@ function TableRow({
   onToggleExpand?: () => void;
   drilldownDailyOnly?: boolean;
   onToggleDrilldownDailyOnly?: () => void;
+  drilldownSortKey?: DrilldownSortKey;
+  drilldownSortDir?: SortDir;
+  onDrilldownSort?: (key: DrilldownSortKey) => void;
   rowRef?: (el: HTMLTableRowElement | null) => void;
 }) {
   const { stats } = row;
   const hasPlayed = stats.gamesPlayed > 0;
   const hasHistory = stats.history.length > 0;
   const hasDailyGames = stats.history.some((r) => r.isDaily);
-  const drilldownHistory = drilldownDailyOnly
+  const filteredHistory = drilldownDailyOnly
     ? stats.history.filter((r) => r.isDaily)
     : stats.history;
+  const drilldownHistory = drilldownSortKey && drilldownSortDir
+    ? sortDrilldown(filteredHistory, drilldownSortKey, drilldownSortDir)
+    : filteredHistory;
   const winRate = getWinRate(stats);
   const showBorder = !isLast || expanded;
 
@@ -919,10 +990,10 @@ function TableRow({
                       color: "var(--muted-foreground)",
                     }}
                   >
-                    <th className="pb-1.5 pr-4 text-left font-semibold">Result</th>
-                    <th className="pb-1.5 px-4 text-right font-semibold">Time</th>
-                    <th className="pb-1.5 px-4 text-right font-semibold">Moves</th>
-                    <th className="pb-1.5 pl-4 text-right font-semibold">Date</th>
+                    <SortTh col="result" label="Result" align="left" sortKey={drilldownSortKey ?? "date"} sortDir={drilldownSortDir ?? "desc"} onSort={(k) => onDrilldownSort?.(k as DrilldownSortKey)} />
+                    <SortTh col="time" label="Time" align="right" sortKey={drilldownSortKey ?? "date"} sortDir={drilldownSortDir ?? "desc"} onSort={(k) => onDrilldownSort?.(k as DrilldownSortKey)} />
+                    <SortTh col="moves" label="Moves" align="right" sortKey={drilldownSortKey ?? "date"} sortDir={drilldownSortDir ?? "desc"} onSort={(k) => onDrilldownSort?.(k as DrilldownSortKey)} />
+                    <SortTh col="date" label="Date" align="right" sortKey={drilldownSortKey ?? "date"} sortDir={drilldownSortDir ?? "desc"} onSort={(k) => onDrilldownSort?.(k as DrilldownSortKey)} />
                   </tr>
                 </thead>
                 <tbody>
@@ -1329,6 +1400,9 @@ function MobileCard({
   onToggleExpand,
   drilldownDailyOnly,
   onToggleDrilldownDailyOnly,
+  drilldownSortKey,
+  drilldownSortDir,
+  onDrilldownSort,
   rowRef,
 }: {
   row: GameRow;
@@ -1337,15 +1411,21 @@ function MobileCard({
   onToggleExpand?: () => void;
   drilldownDailyOnly?: boolean;
   onToggleDrilldownDailyOnly?: () => void;
+  drilldownSortKey?: DrilldownSortKey;
+  drilldownSortDir?: SortDir;
+  onDrilldownSort?: (key: DrilldownSortKey) => void;
   rowRef?: (el: HTMLDivElement | null) => void;
 }) {
   const { stats } = row;
   const hasPlayed = stats.gamesPlayed > 0;
   const hasHistory = stats.history.length > 0;
   const hasDailyGames = stats.history.some((r) => r.isDaily);
-  const drilldownHistory = drilldownDailyOnly
+  const filteredHistory = drilldownDailyOnly
     ? stats.history.filter((r) => r.isDaily)
     : stats.history;
+  const drilldownHistory = drilldownSortKey && drilldownSortDir
+    ? sortDrilldown(filteredHistory, drilldownSortKey, drilldownSortDir)
+    : filteredHistory;
   const winRate = getWinRate(stats);
 
   return (
@@ -1462,6 +1542,50 @@ function MobileCard({
               </button>
             )}
           </div>
+          {/* Drilldown sort toolbar */}
+          {drilldownHistory.length > 1 && (
+            <div className="flex items-center gap-1.5 mb-2">
+              <label className="sr-only" htmlFor={`drilldown-sort-${row.saveKey}`}>Sort history by</label>
+              <select
+                id={`drilldown-sort-${row.saveKey}`}
+                value={drilldownSortKey ?? "date"}
+                onChange={(e) => {
+                  const key = e.target.value as DrilldownSortKey;
+                  if (key !== drilldownSortKey) onDrilldownSort?.(key);
+                }}
+                className="flex-1 rounded px-2 py-1 text-[11px] font-medium appearance-none cursor-pointer transition"
+                style={{
+                  background: "color-mix(in oklab, var(--neon) 6%, oklch(0.16 0.03 155))",
+                  border: "1px solid color-mix(in oklab, var(--neon) 16%, transparent)",
+                  color: "var(--foreground)",
+                }}
+              >
+                <option value="date">Date</option>
+                <option value="result">Result</option>
+                <option value="time">Time</option>
+                <option value="moves">Moves</option>
+              </select>
+              <button
+                aria-label={(drilldownSortDir ?? "desc") === "asc" ? "Sort descending" : "Sort ascending"}
+                onClick={() => {
+                  const key = drilldownSortKey ?? "date";
+                  const newDir: SortDir = (drilldownSortDir ?? "desc") === "asc" ? "desc" : "asc";
+                  // Reuse handleDrilldownSort by toggling direction manually via onDrilldownSort
+                  // But since we need to force a direction flip on the current key, we call the sort
+                  // handler which toggles direction when key === current key.
+                  onDrilldownSort?.(key);
+                }}
+                className="rounded px-2 py-1 text-[11px] font-semibold transition shrink-0"
+                style={{
+                  background: "color-mix(in oklab, var(--neon) 6%, oklch(0.16 0.03 155))",
+                  border: "1px solid color-mix(in oklab, var(--neon) 16%, transparent)",
+                  color: "var(--neon)",
+                }}
+              >
+                {(drilldownSortDir ?? "desc") === "asc" ? "↑" : "↓"}
+              </button>
+            </div>
+          )}
           {drilldownHistory.length === 0 ? (
             <p className="text-xs text-muted-foreground py-1">No daily challenge games recorded yet.</p>
           ) : drilldownHistory.map((record) => {
