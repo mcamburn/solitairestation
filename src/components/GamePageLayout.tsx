@@ -76,9 +76,10 @@ export function GamePageLayout({ gameKey, badge, title, tagline, rulesIntro, rul
               </div>
             </div>
 
-            {/* Mobile: [stats centered] then [GameSwitcher] */}
+            {/* Mobile: [logo left | stats right] then [GameSwitcher] */}
             <div className="md:hidden flex flex-col gap-1 py-1">
-              <div className="flex items-center justify-center gap-2 px-2 pt-1">
+              <div className="flex items-center justify-between gap-2 px-2 pt-1">
+                <SolitaireStationLogo variant="full" className="shrink-0" />
                 <GameStatsBar gameKey={gameKey} variant="inline" />
               </div>
               <GameSwitcher />
@@ -87,12 +88,9 @@ export function GamePageLayout({ gameKey, badge, title, tagline, rulesIntro, rul
           </div>
         </div>
 
-        {/* ── Hero ───────────────────────────────────────────────────────── */}
-        <header className="game-hero mx-auto mb-6 xl:mb-10 max-w-[900px] xl:max-w-[1200px] px-4 text-center">
-          <div className="md:hidden flex justify-center mb-4">
-            <SolitaireStationLogo variant="full" />
-          </div>
-          <div className="hidden md:inline-flex items-center gap-2 rounded-full border border-border bg-surface/60 px-3 py-1 text-[10px] uppercase tracking-[0.22em] text-muted-foreground backdrop-blur">
+        {/* ── Hero (desktop only) ─────────────────────────────────────────── */}
+        <header className="game-hero hidden md:block mx-auto mb-6 xl:mb-10 max-w-[900px] xl:max-w-[1200px] px-4 text-center">
+          <div className="inline-flex items-center gap-2 rounded-full border border-border bg-surface/60 px-3 py-1 text-[10px] uppercase tracking-[0.22em] text-muted-foreground backdrop-blur">
             <span
               className="h-1.5 w-1.5 rounded-full"
               style={{ background: "var(--neon)", boxShadow: "0 0 8px var(--neon)" }}
