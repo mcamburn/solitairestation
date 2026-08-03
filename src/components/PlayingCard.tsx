@@ -133,7 +133,7 @@ export function PlayingCard({
       {...faceUpKbProps}
     >
       <div
-        className={`flex items-start justify-between text-[18px] font-semibold leading-none ${textColorClass}`}
+        className={`card-corner flex items-start justify-between text-[18px] font-semibold leading-none ${textColorClass}`}
         style={{ fontFamily }}
       >
         <div className="flex flex-col items-center">
@@ -145,6 +145,15 @@ export function PlayingCard({
             {glyph}
           </div>
         )}
+      </div>
+
+      {/* Center pip — visible only on very narrow cards (≤40 px) via container query */}
+      <div
+        className={`card-center-pip absolute inset-0 flex-col items-center justify-center leading-none ${textColorClass}`}
+        style={{ fontFamily }}
+      >
+        <span className="card-pip-rank font-bold">{label}</span>
+        <span className={`card-pip-suit ${isRed ? "text-red-suit" : ""}`}>{glyph}</span>
       </div>
 
       {faceStyle === "minimal" ? (
