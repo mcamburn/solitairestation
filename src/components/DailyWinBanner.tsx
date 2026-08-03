@@ -46,6 +46,7 @@ export function DailyWinBanner({ message, onNew, variant = "win", stats, modeLab
       if (stats.gamesPlayed > 1) statItems.push(`${getWinRate(stats)}% win rate`);
       if (stats.currentStreak >= 2) statItems.push(`🔥 ${stats.currentStreak} streak`);
       if (stats.bestTime !== null) statItems.push(`Best: ${formatStatTime(stats.bestTime)}`);
+      if (stats.bestRun > 0) statItems.push(`Best run: ${stats.bestRun}`);
     }
 
     return (
@@ -126,6 +127,7 @@ export function DailyWinBanner({ message, onNew, variant = "win", stats, modeLab
     statItems.push(`${stats.wins} win${stats.wins !== 1 ? "s" : ""} / ${stats.gamesPlayed} played`);
     if (stats.gamesPlayed > 1) statItems.push(`${getWinRate(stats)}% win rate`);
     if (stats.bestTime !== null) statItems.push(`Best: ${formatStatTime(stats.bestTime)}`);
+    if (stats.bestRun > 0) statItems.push(`Best run: ${stats.bestRun}`);
   }
 
   return (

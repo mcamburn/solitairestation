@@ -83,6 +83,7 @@ function buildDefaultRows(): GameRow[] {
       avgMoves: null,
       lastPlayedAt: 0,
       history: [],
+      bestRun: 0,
     },
   }));
 }

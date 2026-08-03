@@ -13,7 +13,7 @@
  */
 
 import { describe, it, expect, beforeEach } from "vitest";
-import { importStatsFromExport, mergeStats, loadStats } from "./stats";
+import { importStatsFromExport, mergeStats, loadStats, recordWin, recordLoss } from "./stats";
 import type { StatsExport, GameStats } from "./stats";
 
 // ---------------------------------------------------------------------------
@@ -32,6 +32,7 @@ function validStats(overrides: Partial<GameStats> = {}): GameStats {
     avgTime: 180,
     avgMoves: 40,
     lastPlayedAt: 1_700_000_000_000,
+    bestRun: 0,
     history: [
       {
         date: 1_700_000_000_000,
@@ -714,5 +715,106 @@ describe("importStatsFromExport – merges into existing localStorage stats", ()
     importStatsFromExport(data);
 
     expect(loadStats("klondike").bestTime).toBe(50);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// bestRun – persistence, merge, and import validation
+// ---------------------------------------------------------------------------
+
+describe("bestRun – recordWin and recordLoss persist the peak run", () => {
+  beforeEach(() => {
+    localStorage.clear();
+  });
+
+  it("recordWin persists peakRun when it exceeds the stored bestRun", () => {
+    recordWin("pyramid", 60, 20, false, 8);
+    expect(loadStats("pyramid").bestRun).toBe(8);
+  });
+
+  it("recordWin does not lower bestRun when a later game has a smaller peak", () => {
+    recordWin("pyramid", 60, 20, false, 8);
+    recordWin("pyramid", 60, 20, false, 3);
+    expect(loadStats("pyramid").bestRun).toBe(8);
+  });
+
+  it("recordLoss persists peakRun when it exceeds the stored bestRun", () => {
+    recordLoss("pyramid", 10, false, 5);
+    expect(loadStats("pyramid").bestRun).toBe(5);
+  });
+
+  it("recordLoss does not lower bestRun when a later loss has a smaller peak", () => {
+    recordLoss("pyramid", 10, false, 5);
+    recordLoss("pyramid", 10, false, 2);
+    expect(loadStats("pyramid").bestRun).toBe(5);
+  });
+});
+
+describe("mergeStats – bestRun takes the larger value", () => {
+  it("takes the larger bestRun from either side", () => {
+    const a = validStats({ bestRun: 7 });
+    const b = validStats({ bestRun: 12 });
+    expect(mergeStats(a, b).bestRun).toBe(12);
+  });
+
+  it("keeps existing bestRun when imported is lower", () => {
+    const a = validStats({ bestRun: 15 });
+    const b = validStats({ bestRun: 3 });
+    expect(mergeStats(a, b).bestRun).toBe(15);
+  });
+
+  it("handles missing bestRun on legacy import side (treated as 0)", () => {
+    const a = validStats({ bestRun: 10 });
+    const b = { ...validStats(), bestRun: undefined } as unknown as GameStats;
+    // mergeStats uses ?? 0 guard
+    expect(mergeStats(a, b).bestRun).toBe(10);
+  });
+});
+
+describe("importStatsFromExport – bestRun validation", () => {
+  beforeEach(() => {
+    localStorage.clear();
+  });
+
+  it("accepts a valid bestRun value in the import", () => {
+    const data = validExport({ games: { klondike: validStats({ bestRun: 6 }) } });
+    const count = importStatsFromExport(data);
+    expect(count).toBe(1);
+    expect(loadStats("klondike").bestRun).toBe(6);
+  });
+
+  it("defaults bestRun to 0 when the field is absent (legacy export)", () => {
+    const statsWithoutBestRun = { ...validStats() } as Record<string, unknown>;
+    delete statsWithoutBestRun.bestRun;
+    const data = validExport({ games: { klondike: statsWithoutBestRun as unknown as GameStats } });
+    const count = importStatsFromExport(data);
+    expect(count).toBe(1);
+    expect(loadStats("klondike").bestRun).toBe(0);
+  });
+
+  it("skips a game entry whose bestRun is a negative number", () => {
+    const data = validExport({
+      games: { klondike: validStats({ bestRun: -1 }) },
+    });
+    const count = importStatsFromExport(data);
+    expect(count).toBe(0);
+  });
+
+  it("skips a game entry whose bestRun is a non-integer (float)", () => {
+    const data = validExport({
+      games: { klondike: validStats({ bestRun: 3.7 as unknown as number }) },
+    });
+    const count = importStatsFromExport(data);
+    expect(count).toBe(0);
+  });
+
+  it("does not reduce existing bestRun when imported bestRun is lower", () => {
+    localStorage.setItem(
+      "neon-solitaire:stats:klondike",
+      JSON.stringify(validStats({ bestRun: 10 }))
+    );
+    const data = validExport({ games: { klondike: validStats({ bestRun: 4 }) } });
+    importStatsFromExport(data);
+    expect(loadStats("klondike").bestRun).toBe(10);
   });
 });

@@ -49,8 +49,12 @@ export function Pyramid() {
   useEffect(() => {
     const saved = loadGame<PyramidState>("pyramid");
     if (saved && saved.moves > 0) {
-      // Normalise legacy saves that pre-date the streak field
-      const normalised: PyramidState = { ...saved, streak: saved.streak ?? 0 };
+      // Normalise legacy saves that pre-date the streak / peakStreak fields
+      const normalised: PyramidState = {
+        ...saved,
+        streak: saved.streak ?? 0,
+        peakStreak: saved.peakStreak ?? saved.streak ?? 0,
+      };
       setState(normalised);
       if (!normalised.won) setStuck(!hasAnyPyramidMove(normalised));
     } else {
@@ -80,11 +84,11 @@ export function Pyramid() {
     if (state.won) {
       statsRef.current = true;
       const elapsed = Math.floor((Date.now() - state.startedAt) / 1000);
-      setGameStats(recordWin("pyramid", elapsed, state.moves, dailyModeRef.current));
+      setGameStats(recordWin("pyramid", elapsed, state.moves, dailyModeRef.current, state.peakStreak));
       if (dailyModeRef.current) { onDailyWin(); dailyModeRef.current = false; }
     } else if (stuck) {
       statsRef.current = true;
-      setGameStats(recordLoss("pyramid", state.moves, dailyModeRef.current));
+      setGameStats(recordLoss("pyramid", state.moves, dailyModeRef.current, state.peakStreak));
       if (dailyModeRef.current) dailyModeRef.current = false;
     }
   }, [state?.won, stuck]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -134,9 +138,13 @@ export function Pyramid() {
   };
 
   const undo = () => {
+    // Capture the current peakStreak before the history callback so the
+    // restored snapshot never erases a peak the player already achieved.
+    const currentPeak = state?.peakStreak ?? 0;
     setHistory((h) => {
       if (h.length === 0) return h;
-      setState(h[h.length - 1]);
+      const restored = h[h.length - 1];
+      setState({ ...restored, peakStreak: Math.max(restored.peakStreak, currentPeak) });
       setSel(null);
       setHint(null);
       setStuck(false);
@@ -146,7 +154,7 @@ export function Pyramid() {
 
   const reset = (seed?: number) => {
     if (state?.moves > 0 && !state?.won && !statsRef.current) {
-      recordLoss("pyramid", state.moves, dailyModeRef.current);
+      recordLoss("pyramid", state.moves, dailyModeRef.current, state.peakStreak);
     }
     if (!seed) dailyModeRef.current = false;
     statsRef.current = false;
@@ -221,6 +229,9 @@ export function Pyramid() {
           </span>
           {game.streak > 0 && (
             <span className="text-muted-foreground">Run <span className="font-semibold tabular-nums" style={{ color: "var(--neon)" }}>{game.streak}</span></span>
+          )}
+          {Math.max(topBarStats.bestRun, game.peakStreak) > 0 && (
+            <span className="text-muted-foreground">Best run <span className="font-semibold tabular-nums" style={{ color: "var(--neon)" }}>{Math.max(topBarStats.bestRun, game.peakStreak)}</span></span>
           )}
           {topBarStats.hasPlayed && (
             <span className="text-muted-foreground">Streak <span className="font-semibold tabular-nums" style={{ color: "var(--neon)" }}>{topBarStats.streak}</span></span>

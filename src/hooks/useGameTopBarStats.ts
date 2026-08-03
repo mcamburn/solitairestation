@@ -14,6 +14,8 @@ interface TopBarStats {
   winRate: number;
   /** true once at least one game has been played */
   hasPlayed: boolean;
+  /** All-time best in-game run (e.g. Pyramid consecutive removals). 0 for games that don't use it. */
+  bestRun: number;
 }
 
 export function useGameTopBarStats(gameKey: string): TopBarStats {
@@ -38,5 +40,6 @@ export function useGameTopBarStats(gameKey: string): TopBarStats {
     streak: stats.currentStreak,
     winRate: getWinRate(stats),
     hasPlayed: stats.gamesPlayed > 0,
+    bestRun: stats.bestRun ?? 0,
   };
 }

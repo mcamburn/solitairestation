@@ -10,7 +10,8 @@ export interface PyramidState {
   moves: number;
   won: boolean;
   startedAt: number;
-  streak: number; // consecutive pair removals without drawing from stock
+  streak: number; // consecutive pair removals without drawing from stock (resets on draw)
+  peakStreak: number; // highest streak reached so far this game (never decreases)
 }
 
 export type PyramidSel =
@@ -56,6 +57,7 @@ export function newPyramidGame(seed?: number): PyramidState {
     won: false,
     startedAt: Date.now(),
     streak: 0,
+    peakStreak: 0,
   };
   return updateFaceUp(state);
 }
@@ -217,6 +219,7 @@ export function tryPyramidRemove(
     else s.waste.pop();
     s.moves++;
     s.streak++;
+    s.peakStreak = Math.max(s.peakStreak, s.streak);
     s.won = s.pyramid.every(row => row.every(c => c === null));
     return updateFaceUp(s);
   }
@@ -233,6 +236,7 @@ export function tryPyramidRemove(
   else s.waste.pop();
   s.moves++;
   s.streak++;
+  s.peakStreak = Math.max(s.peakStreak, s.streak);
   s.won = s.pyramid.every(row => row.every(c => c === null));
   return updateFaceUp(s);
 }

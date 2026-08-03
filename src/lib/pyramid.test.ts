@@ -252,3 +252,140 @@ describe("legacy save without streak field is normalised to 0 before play", () =
     expect(streak(next)).toBe(1);
   });
 });
+
+// ---------------------------------------------------------------------------
+// peakStreak — all-time-best run within a single game session
+// ---------------------------------------------------------------------------
+
+describe("peakStreak tracks the highest run reached this game", () => {
+  it("starts at 0 on a fresh game", () => {
+    const state = newPyramidGame(SEED);
+    expect(state.peakStreak).toBe(0);
+  });
+
+  it("rises to match streak after a removal", () => {
+    let state = newPyramidGame(SEED);
+    state = drawUntilRemovable(state);
+    const pair = findRemovablePair(state);
+    if (!pair) return;
+    const next = tryPyramidRemove(state, pair[0], pair[1]);
+    if (!next) return;
+    expect(next.peakStreak).toBe(next.streak);
+    expect(next.peakStreak).toBeGreaterThanOrEqual(1);
+  });
+
+  it("is NOT reset when stock is drawn (preserves the previous peak)", () => {
+    // Build up a streak first, then draw from stock
+    let state = newPyramidGame(SEED);
+    state = drawUntilRemovable(state);
+    const pair = findRemovablePair(state);
+    if (!pair) return;
+    const afterRemoval = tryPyramidRemove(state, pair[0], pair[1]);
+    if (!afterRemoval) return;
+    const peakBeforeDraw = afterRemoval.peakStreak;
+    expect(peakBeforeDraw).toBeGreaterThanOrEqual(1);
+
+    // Draw from stock — streak resets to 0 but peakStreak must be preserved
+    const afterDraw = drawPyramidStock(afterRemoval);
+    if (!afterDraw) return;
+    expect(afterDraw.streak).toBe(0);
+    expect(afterDraw.peakStreak).toBe(peakBeforeDraw);
+  });
+
+  it("peakStreak reflects the highest run even after multiple stock draws follow it", () => {
+    let state = newPyramidGame(SEED);
+
+    // Make at least one removal to set a peak
+    state = drawUntilRemovable(state);
+    const pair = findRemovablePair(state);
+    if (!pair) return;
+    const afterRemoval = tryPyramidRemove(state, pair[0], pair[1]);
+    if (!afterRemoval) return;
+    const savedPeak = afterRemoval.peakStreak;
+
+    // Draw from stock several times — peak must not change
+    let s = afterRemoval;
+    for (let i = 0; i < 3; i++) {
+      const next = drawPyramidStock(s);
+      if (!next) break;
+      expect(next.peakStreak).toBe(savedPeak);
+      s = next;
+    }
+  });
+
+  it("legacy save without peakStreak normalises to streak value (component load behaviour)", () => {
+    const base = newPyramidGame(SEED);
+    // Simulate load: missing peakStreak field (written before this feature)
+    const legacySave = { ...base } as Partial<PyramidState>;
+    delete (legacySave as Record<string, unknown>).peakStreak;
+
+    // Same normalisation the component applies
+    const loaded: PyramidState = {
+      ...(legacySave as PyramidState),
+      streak: (legacySave as PyramidState).streak ?? 0,
+      peakStreak: (legacySave as PyramidState).peakStreak ?? (legacySave as PyramidState).streak ?? 0,
+    };
+    expect(loaded.peakStreak).toBe(0); // base game has streak 0
+  });
+});
+
+// ---------------------------------------------------------------------------
+// peakStreak survives undo — the peak must never decrease after an undo
+// ---------------------------------------------------------------------------
+
+describe("peakStreak is preserved when undo restores a prior snapshot", () => {
+  it("undo does not lower peakStreak below the highest value achieved before the undo", () => {
+    // Build up a peakStreak via a removal
+    let state = newPyramidGame(SEED);
+    state = drawUntilRemovable(state);
+
+    const pair = findRemovablePair(state);
+    if (!pair) return; // seed produces no removable pair — skip gracefully
+
+    // Snapshot the state before the removal (this would be the undo target)
+    const snapshotBeforeRemoval = state;
+
+    // Make the removal — peakStreak rises to 1 (or higher)
+    const afterRemoval = tryPyramidRemove(state, pair[0], pair[1]);
+    if (!afterRemoval) return;
+    const achievedPeak = afterRemoval.peakStreak;
+    expect(achievedPeak).toBeGreaterThanOrEqual(1);
+
+    // Simulate the component's undo: restore snapshotBeforeRemoval but
+    // preserve the current peakStreak (Math.max of both sides)
+    const currentPeak = afterRemoval.peakStreak;
+    const restored: PyramidState = {
+      ...snapshotBeforeRemoval,
+      peakStreak: Math.max(snapshotBeforeRemoval.peakStreak, currentPeak),
+    };
+
+    // The restored state's peakStreak must be at least the peak reached before undo
+    expect(restored.peakStreak).toBe(achievedPeak);
+    expect(restored.peakStreak).toBeGreaterThanOrEqual(1);
+  });
+
+  it("drawing from stock after undo-restored state does not erase the preserved peak", () => {
+    let state = newPyramidGame(SEED);
+    state = drawUntilRemovable(state);
+
+    const pair = findRemovablePair(state);
+    if (!pair) return;
+
+    const snapshotBeforeRemoval = state;
+    const afterRemoval = tryPyramidRemove(state, pair[0], pair[1]);
+    if (!afterRemoval) return;
+    const achievedPeak = afterRemoval.peakStreak;
+
+    // Simulate undo with peakStreak preservation
+    const restored: PyramidState = {
+      ...snapshotBeforeRemoval,
+      peakStreak: Math.max(snapshotBeforeRemoval.peakStreak, achievedPeak),
+    };
+
+    // Draw from stock — streak resets, peakStreak must remain
+    const afterDraw = drawPyramidStock(restored);
+    if (!afterDraw) return;
+    expect(afterDraw.streak).toBe(0);
+    expect(afterDraw.peakStreak).toBe(achievedPeak);
+  });
+});

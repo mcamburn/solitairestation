@@ -32,6 +32,11 @@ export interface GameStats {
   avgMoves: number | null;
   lastPlayedAt: number;
   history: GameRecord[];
+  /**
+   * All-time best in-game run (e.g. consecutive Pyramid pair removals without
+   * drawing from stock). Zero for games that don't use this metric.
+   */
+  bestRun: number;
 }
 
 function defaultStats(): GameStats {
@@ -47,6 +52,7 @@ function defaultStats(): GameStats {
     avgMoves: null,
     lastPlayedAt: 0,
     history: [],
+    bestRun: 0,
   };
 }
 
@@ -85,12 +91,14 @@ function updateAvg(prev: number | null, newVal: number, count: number): number {
  * @param elapsedSeconds - how long the game took
  * @param moves - number of moves made
  * @param isDaily - whether this was a daily challenge game
+ * @param peakRun - highest in-game run counter reached this session (e.g. Pyramid streak)
  */
 export function recordWin(
   gameKey: string,
   elapsedSeconds: number,
   moves: number = 0,
   isDaily: boolean = false,
+  peakRun: number = 0,
 ): GameStats {
   const stats = loadStats(gameKey);
   const newStreak = stats.currentStreak + 1;
@@ -127,6 +135,7 @@ export function recordWin(
         : updateAvg(stats.avgMoves, moves, stats.gamesPlayed + 1),
     lastPlayedAt: Date.now(),
     history: [record, ...stats.history].slice(0, MAX_HISTORY),
+    bestRun: Math.max(stats.bestRun ?? 0, peakRun),
   };
   saveStats(gameKey, updated);
   return updated;
@@ -134,11 +143,13 @@ export function recordWin(
 
 /**
  * Record a loss/abandon for the given game key. Resets current streak.
+ * @param peakRun - highest in-game run counter reached this session (e.g. Pyramid streak)
  */
 export function recordLoss(
   gameKey: string,
   moves: number = 0,
   isDaily: boolean = false,
+  peakRun: number = 0,
 ): GameStats {
   const stats = loadStats(gameKey);
 
@@ -165,6 +176,7 @@ export function recordLoss(
     avgTime: stats.avgTime,
     lastPlayedAt: Date.now(),
     history: [record, ...stats.history].slice(0, MAX_HISTORY),
+    bestRun: Math.max(stats.bestRun ?? 0, peakRun),
   };
   saveStats(gameKey, updated);
   return updated;
@@ -298,6 +310,12 @@ function validateGameStats(raw: unknown): { stats: GameStats } | { error: string
     return { error: "wins + losses cannot exceed gamesPlayed" };
   }
 
+  // bestRun: optional in legacy exports; default 0 when absent; reject invalid values
+  const rawBestRun = s.bestRun ?? 0;
+  if (!isNonNegativeInt(rawBestRun)) {
+    return { error: "bestRun must be a non-negative integer" };
+  }
+
   // History: keep only well-formed entries; drop malformed ones silently
   const rawHistory = Array.isArray(s.history) ? s.history : [];
   const history: GameRecord[] = rawHistory.filter(isValidGameRecord);
@@ -306,6 +324,7 @@ function validateGameStats(raw: unknown): { stats: GameStats } | { error: string
     ...defaultStats(),
     ...(s as Partial<GameStats>),
     history,
+    bestRun: rawBestRun,
   };
   return { stats: merged };
 }
@@ -360,6 +379,7 @@ export function mergeStats(existing: GameStats, imported: GameStats): GameStats 
     avgMoves: existing.avgMoves ?? imported.avgMoves,
     lastPlayedAt: Math.max(existing.lastPlayedAt, imported.lastPlayedAt),
     history,
+    bestRun: Math.max(existing.bestRun ?? 0, imported.bestRun ?? 0),
   };
 }
 
