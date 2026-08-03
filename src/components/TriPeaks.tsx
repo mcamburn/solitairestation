@@ -103,7 +103,7 @@ export function TriPeaks() {
     if (!el) return;
     const measure = () => {
       const w = el.getBoundingClientRect().width;
-      setScale(Math.max(0.55, Math.min(1, w / TOTAL_W)));
+      setScale(Math.max(0.35, Math.min(1, w / TOTAL_W)));
     };
     measure();
     const ro = new ResizeObserver(measure);
@@ -246,7 +246,7 @@ export function TriPeaks() {
       <NewGameToast visible={toastVisible} skin={skin} face={face} />
 
       {/* Board */}
-      <div className="game-board-glass glass mt-4 overflow-x-auto rounded-2xl p-4 sm:p-6">
+      <div className="game-board-glass glass mt-4 overflow-x-hidden rounded-2xl p-4 sm:p-6">
         {/* boardRef div measures available content width for scaling */}
         <div ref={boardRef}>
           {/* Three peaks — absolutely positioned */}
