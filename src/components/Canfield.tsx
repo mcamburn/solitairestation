@@ -364,12 +364,6 @@ export function Canfield() {
       )}
 
       <AppearanceBar skin={skin} face={face} onSkinChange={setSkin} onFaceChange={setFace} />
-      <DragModeToggle
-        dragMode={dragMode}
-        onToggle={toggleDragMode}
-        dragHint="Drag from waste, reserve, or tableau to a destination"
-        clickHint="Click to select, then click a destination to move. Double-click for foundation."
-      />
       <NewGameToast visible={toastVisible} skin={skin} face={face} />
 
       {/* Game board */}
@@ -554,6 +548,13 @@ export function Canfield() {
           ? "Drag from waste, reserve, or tableau to move. Double-click to send to foundation."
           : "Click to select, click destination to move. Double-click to send to foundation. Draw 3 from stock."}
       </p>
+
+      <DragModeToggle
+        dragMode={dragMode}
+        onToggle={toggleDragMode}
+        dragHint="Drag from waste, reserve, or tableau to a destination"
+        clickHint="Click to select, then click a destination to move. Double-click for foundation."
+      />
 
       {/* Drag ghost */}
       {isDragging && dragRef.current && (

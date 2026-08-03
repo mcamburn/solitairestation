@@ -327,12 +327,6 @@ export function Yukon() {
       )}
 
       <AppearanceBar skin={skin} face={face} onSkinChange={setSkin} onFaceChange={setFace} />
-      <DragModeToggle
-        dragMode={dragMode}
-        onToggle={toggleDragMode}
-        dragHint="Drag cards to a column or foundation"
-        clickHint="Click a card to select, then click a destination"
-      />
       <NewGameToast visible={toastVisible} skin={skin} face={face} />
 
       {/* Board */}
@@ -407,6 +401,13 @@ export function Yukon() {
       {game.won && (
         <DailyWinBanner message={`All cards moved to foundations in ${game.moves} moves!`} onNew={reset} stats={gameStats} />
       )}
+
+      <DragModeToggle
+        dragMode={dragMode}
+        onToggle={toggleDragMode}
+        dragHint="Drag cards to a column or foundation"
+        clickHint="Click a card to select, then click a destination"
+      />
 
       {/* Drag ghost */}
       {isDragging && dragRef.current && (

@@ -276,12 +276,6 @@ export function BakersDozn() {
       )}
 
       <AppearanceBar skin={skin} face={face} onSkinChange={setSkin} onFaceChange={setFace} />
-      <DragModeToggle
-        dragMode={dragMode}
-        onToggle={toggleDragMode}
-        dragHint="Drag a column's top card to another column or foundation"
-        clickHint="Click a column to select its top card, then click a destination"
-      />
       <NewGameToast visible={toastVisible} skin={skin} face={face} />
 
       {/* Foundations */}
@@ -389,6 +383,13 @@ export function BakersDozn() {
           ? "Drag a column's top card to move it. Double-click to send to foundation."
           : "Click a column to select its top card, then click a destination. Double-click to send to foundation."}
       </p>
+
+      <DragModeToggle
+        dragMode={dragMode}
+        onToggle={toggleDragMode}
+        dragHint="Drag a column's top card to another column or foundation"
+        clickHint="Click a column to select its top card, then click a destination"
+      />
 
       {/* Drag ghost */}
       {isDragging && dragRef.current && (

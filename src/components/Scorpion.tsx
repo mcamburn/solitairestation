@@ -316,12 +316,6 @@ export function Scorpion() {
       )}
 
       <AppearanceBar skin={skin} face={face} onSkinChange={setSkin} onFaceChange={setFace} />
-      <DragModeToggle
-        dragMode={dragMode}
-        onToggle={toggleDragMode}
-        dragHint="Drag cards to move sequences between columns"
-        clickHint="Click a card to select, then click a destination column"
-      />
       <NewGameToast visible={toastVisible} skin={skin} face={face} />
 
       {/* Board */}
@@ -361,6 +355,13 @@ export function Scorpion() {
       {game.won && (
         <DailyWinBanner message={`All 4 sequences completed in ${game.moves} moves!`} onNew={reset} stats={gameStats} />
       )}
+
+      <DragModeToggle
+        dragMode={dragMode}
+        onToggle={toggleDragMode}
+        dragHint="Drag cards to move sequences between columns"
+        clickHint="Click a card to select, then click a destination column"
+      />
 
       {/* Drag ghost */}
       {isDragging && dragRef.current && (
