@@ -152,7 +152,7 @@ export function GameSwitcher() {
 
                   {/* Title */}
                   <span
-                    className="mt-1.5 text-[11px] font-bold leading-tight tracking-tight"
+                    className="mt-1.5 text-[11px] font-bold leading-tight tracking-tight w-full truncate"
                     style={isCurrent ? { color: "var(--neon)" } : { color: "var(--foreground)" }}
                   >
                     {g.title}
