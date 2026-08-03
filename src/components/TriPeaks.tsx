@@ -160,7 +160,7 @@ export function TriPeaks() {
 
   const showHint = () => {
     const h = findTPHint(game);
-    setHint(h ?? { cardIdx: -1, description: "No moves available â try undoing or starting a new game." });
+    setHint(h ?? { cardIdx: -1, description: "No moves available — try undoing or starting a new game." });
   };
 
   const handleCardClick = (idx: number) => {
@@ -182,7 +182,7 @@ export function TriPeaks() {
             Moves <span className="font-semibold text-foreground">{game.moves}</span>
           </span>
           <span className="flex items-center gap-1.5 tabular-nums text-muted-foreground">
-            <button onClick={pause} title={isPaused ? "Resume timer" : "Pause timer"} aria-label={isPaused ? "Resume timer" : "Pause timer"} className="opacity-50 hover:opacity-100 transition-opacity text-[10px] leading-none select-none">{isPaused ? "â¶" : "â¸"}</button>
+            <button onClick={pause} title={isPaused ? "Resume timer" : "Pause timer"} aria-label={isPaused ? "Resume timer" : "Pause timer"} className="opacity-50 hover:opacity-100 transition-opacity text-[10px] leading-none select-none">{isPaused ? "▶" : "⏸"}</button>
             <span className={isPaused ? "opacity-50" : ""}>{time}</span>
             <button onClick={resetTimer} title="Restart timer" aria-label="Restart timer" className="opacity-50 hover:opacity-100 transition-opacity text-[10px] leading-none select-none">↺</button>
           </span>
@@ -232,7 +232,7 @@ export function TriPeaks() {
             <span className="font-medium">Hint</span>
             <span className="text-muted-foreground">{hint.description}</span>
           </div>
-          <button onClick={() => setHint(null)} className="rounded-md px-2 py-0.5 text-[10px] text-muted-foreground hover:text-foreground" aria-label="Dismiss hint">â</button>
+          <button onClick={() => setHint(null)} className="rounded-md px-2 py-0.5 text-[10px] text-muted-foreground hover:text-foreground" aria-label="Dismiss hint">✕</button>
         </div>
       )}
 
@@ -244,7 +244,7 @@ export function TriPeaks() {
       <div className="game-board-glass glass mt-4 overflow-x-hidden rounded-2xl p-4 sm:p-6">
         {/* boardRef div measures available content width for scaling */}
         <div ref={boardRef}>
-          {/* Three peaks â absolutely positioned */}
+          {/* Three peaks — absolutely positioned */}
           <div className="mx-auto" style={{ width: totalW, position: "relative", height: totalH }}>
             {Array.from({ length: 28 }).map((_, idx) => {
               const card = game.cards[idx];
@@ -339,7 +339,7 @@ export function TriPeaks() {
           className="glass mt-6 rounded-2xl px-8 py-8 text-center"
           style={{ borderColor: "#f59e0b", boxShadow: "0 0 30px -8px #f59e0b" }}
         >
-          <div className="text-4xl">â°ï¸</div>
+          <div className="text-4xl">⛰ï¸</div>
           <h2 className="mt-3 text-xl font-bold tracking-tight">No more moves</h2>
           <p className="mt-1 text-sm text-muted-foreground">
             The stock is empty and no board card plays on the waste top. Try undoing or start a new game.

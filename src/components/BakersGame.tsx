@@ -201,7 +201,7 @@ export function BakersGame() {
 
   const showHint = () => {
     const h = findBakersGameHint(game);
-    setHint(h ?? { src: { kind: "tableau", col: 0, index: 0 }, description: "No moves available â try undoing or starting a new game." });
+    setHint(h ?? { src: { kind: "tableau", col: 0, index: 0 }, description: "No moves available — try undoing or starting a new game." });
     if (h) setSel(h.src);
   };
 
@@ -285,7 +285,7 @@ export function BakersGame() {
             Moves <span className="font-semibold text-foreground">{game.moves}</span>
           </span>
           <span className="flex items-center gap-1.5 tabular-nums text-muted-foreground">
-            <button onClick={pause} title={isPaused ? "Resume timer" : "Pause timer"} aria-label={isPaused ? "Resume timer" : "Pause timer"} className="opacity-50 hover:opacity-100 transition-opacity text-[10px] leading-none select-none">{isPaused ? "â¶" : "â¸"}</button>
+            <button onClick={pause} title={isPaused ? "Resume timer" : "Pause timer"} aria-label={isPaused ? "Resume timer" : "Pause timer"} className="opacity-50 hover:opacity-100 transition-opacity text-[10px] leading-none select-none">{isPaused ? "▶" : "⏸"}</button>
             <span className={isPaused ? "opacity-50" : ""}>{time}</span>
             <button onClick={resetTimer} title="Restart timer" aria-label="Restart timer" className="opacity-50 hover:opacity-100 transition-opacity text-[10px] leading-none select-none">↺</button>
           </span>
@@ -304,7 +304,7 @@ export function BakersGame() {
             <span className="font-medium">Hint</span>
             <span className="text-muted-foreground">{hint.description}</span>
           </div>
-          <button onClick={() => setHint(null)} className="rounded-md px-2 py-0.5 text-[10px] text-muted-foreground hover:text-foreground" aria-label="Dismiss hint">â</button>
+          <button onClick={() => setHint(null)} className="rounded-md px-2 py-0.5 text-[10px] text-muted-foreground hover:text-foreground" aria-label="Dismiss hint">✕</button>
         </div>
       )}
 
@@ -438,7 +438,7 @@ export function BakersGame() {
   );
 }
 
-// âââ Ghost overlay ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
+// ─── Ghost overlay ────────────────────────────────────────────────────────────
 
 function BGGhost({
   dragInfo,
@@ -473,7 +473,7 @@ function BGGhost({
   );
 }
 
-// âââ BGColumn âââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
+// ─── BGColumn ─────────────────────────────────────────────────────────────────
 
 interface BGColumnProps {
   pile: Card[];

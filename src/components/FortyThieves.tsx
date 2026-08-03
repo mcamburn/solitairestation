@@ -203,7 +203,7 @@ export function FortyThieves() {
 
   const showHint = () => {
     const h = findFTHint(state);
-    setHint(h ?? { src: { kind: "waste" }, destKind: "tableau", description: "No moves available â try drawing from stock or start a new game." });
+    setHint(h ?? { src: { kind: "waste" }, destKind: "tableau", description: "No moves available — try drawing from stock or start a new game." });
   };
 
   const handleSourceClick = (src: FTSource) => {
@@ -278,7 +278,7 @@ export function FortyThieves() {
         <div className="flex items-center gap-4">
           <span className="text-muted-foreground">Moves <span className="font-semibold text-foreground">{state.moves}</span></span>
           <span className="flex items-center gap-1.5 tabular-nums text-muted-foreground">
-            <button onClick={pause} title={isPaused ? "Resume timer" : "Pause timer"} aria-label={isPaused ? "Resume timer" : "Pause timer"} className="opacity-50 hover:opacity-100 transition-opacity text-[10px] leading-none select-none">{isPaused ? "â¶" : "â¸"}</button>
+            <button onClick={pause} title={isPaused ? "Resume timer" : "Pause timer"} aria-label={isPaused ? "Resume timer" : "Pause timer"} className="opacity-50 hover:opacity-100 transition-opacity text-[10px] leading-none select-none">{isPaused ? "▶" : "⏸"}</button>
             <span className={isPaused ? "opacity-50" : ""}>{time}</span>
             <button onClick={resetTimer} title="Restart timer" aria-label="Restart timer" className="opacity-50 hover:opacity-100 transition-opacity text-[10px] leading-none select-none">↺</button>
           </span>
@@ -304,7 +304,7 @@ export function FortyThieves() {
             <span className="font-medium">Hint</span>
             <span className="text-muted-foreground">{hint.description}</span>
           </div>
-          <button onClick={() => setHint(null)} className="rounded-md px-2 py-0.5 text-[10px] text-muted-foreground hover:text-foreground" aria-label="Dismiss hint">â</button>
+          <button onClick={() => setHint(null)} className="rounded-md px-2 py-0.5 text-[10px] text-muted-foreground hover:text-foreground" aria-label="Dismiss hint">✕</button>
         </div>
       )}
 
@@ -330,7 +330,7 @@ export function FortyThieves() {
                   interactive
                 />
               ) : (
-                <div className="slot-empty flex h-full w-full items-center justify-center rounded-[var(--card-radius)] text-lg text-muted-foreground/50 border border-dashed border-border">â</div>
+                <div className="slot-empty flex h-full w-full items-center justify-center rounded-[var(--card-radius)] text-lg text-muted-foreground/50 border border-dashed border-border">⊘</div>
               )}
             </div>
             {/* Waste */}

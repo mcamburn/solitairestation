@@ -60,7 +60,7 @@ export function Spider({ initialDifficulty }: { initialDifficulty?: SpiderDiffic
   const dailyResetRef = useRef<(() => void) | null>(null);
   const { dailySeed, dailyTrigger, onDailyWin } = useDailyChallenge();
 
-  // ââ Drag state ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
+  // ── Drag state ────────────────────────────────────────────────────────────
   const dragRef = useRef<DragInfo | null>(null);
   const [ghostPos, setGhostPos] = useState<{ x: number; y: number } | null>(null);
   const [dropZone, setDropZone] = useState<string | null>(null);
@@ -119,7 +119,7 @@ export function Spider({ initialDifficulty }: { initialDifficulty?: SpiderDiffic
     }
   }, [state?.won]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // ââ Grid measurement âââââââââââââââââââââââââââââââââââââââââââââââââââââââ
+  // ── Grid measurement ───────────────────────────────────────────────────────
   const gridRef = useRef<HTMLDivElement>(null);
   const [colW, setColW] = useState(CARD_W_BASE);
   const stateLoaded = state !== null;
@@ -141,7 +141,7 @@ export function Spider({ initialDifficulty }: { initialDifficulty?: SpiderDiffic
   const fanUp   = Math.max(6, Math.round(FAN_UP   * cardH / CARD_H * fanMultiplier));
   const fanDown = Math.max(3, Math.round(FAN_DOWN * cardH / CARD_H * fanMultiplier));
 
-  // ââ Global pointer handlers ââââââââââââââââââââââââââââââââââââââââââââââââ
+  // ── Global pointer handlers ────────────────────────────────────────────────
   useEffect(() => {
     const onMove = (e: PointerEvent) => {
       const dr = dragRef.current;
@@ -233,7 +233,7 @@ export function Spider({ initialDifficulty }: { initialDifficulty?: SpiderDiffic
 
   const showHint = () => {
     const h = findSpiderHint(game);
-    setHint(h ?? { fromCol: -1, fromIdx: -1, description: "No moves found â try dealing or starting a new game." });
+    setHint(h ?? { fromCol: -1, fromIdx: -1, description: "No moves found — try dealing or starting a new game." });
   };
 
   const handleCardClick = (col: number, index: number) => {
@@ -292,7 +292,7 @@ export function Spider({ initialDifficulty }: { initialDifficulty?: SpiderDiffic
             Moves <span className="font-semibold text-foreground">{game.moves}</span>
           </span>
           <span className="flex items-center gap-1.5 tabular-nums text-muted-foreground">
-            <button onClick={pause} title={isPaused ? "Resume timer" : "Pause timer"} aria-label={isPaused ? "Resume timer" : "Pause timer"} className="opacity-50 hover:opacity-100 transition-opacity text-[10px] leading-none select-none">{isPaused ? "â¶" : "â¸"}</button>
+            <button onClick={pause} title={isPaused ? "Resume timer" : "Pause timer"} aria-label={isPaused ? "Resume timer" : "Pause timer"} className="opacity-50 hover:opacity-100 transition-opacity text-[10px] leading-none select-none">{isPaused ? "▶" : "⏸"}</button>
             <span className={isPaused ? "opacity-50" : ""}>{time}</span>
             <button onClick={resetTimer} title="Restart timer" aria-label="Restart timer" className="opacity-50 hover:opacity-100 transition-opacity text-[10px] leading-none select-none">↺</button>
           </span>
@@ -346,7 +346,7 @@ export function Spider({ initialDifficulty }: { initialDifficulty?: SpiderDiffic
             <span className="font-medium">Hint</span>
             <span className="text-muted-foreground">{hint.description}</span>
           </div>
-          <button onClick={() => setHint(null)} className="rounded-md px-2 py-0.5 text-[10px] text-muted-foreground hover:text-foreground" aria-label="Dismiss hint">â</button>
+          <button onClick={() => setHint(null)} className="rounded-md px-2 py-0.5 text-[10px] text-muted-foreground hover:text-foreground" aria-label="Dismiss hint">✕</button>
         </div>
       )}
       <NewGameToast visible={toastVisible} skin={skin} face={face} />
@@ -410,7 +410,7 @@ export function Spider({ initialDifficulty }: { initialDifficulty?: SpiderDiffic
   );
 }
 
-// âââ Ghost overlay ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
+// ─── Ghost overlay ────────────────────────────────────────────────────────────
 
 function SpiderGhost({
   dragInfo,
@@ -447,7 +447,7 @@ function SpiderGhost({
   );
 }
 
-// âââ SpiderColumn âââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
+// ─── SpiderColumn ─────────────────────────────────────────────────────────────
 
 interface SpiderColumnProps {
   pile: Card[];

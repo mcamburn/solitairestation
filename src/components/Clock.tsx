@@ -21,7 +21,7 @@ const CARD_H = 80;
 // Clock positions: index 0-11 = 1 o'clock through 12 o'clock
 // Standard clock: 12 at top, 3 at right, 6 at bottom, 9 at left
 // Position i corresponds to rank i+1
-// i=0 â 1 o'clock, i=11 â 12 o'clock
+// i=0 → 1 o'clock, i=11 → 12 o'clock
 function clockPosition(index: number, radius: number): { x: number; y: number } {
   // i=11 is 12 o'clock (top), i=0 is 1 o'clock
   // angle = ((i + 1) / 12) * 2Ï - Ï/2  (start at top, go clockwise)
@@ -98,7 +98,7 @@ function PileDisplay({ pile, label, isActive, cardW, cardH, skin, face }: PileDi
             className="absolute inset-0 flex items-center justify-center rounded-[var(--card-radius)] text-muted-foreground/20"
             style={{ border: "2px dashed" }}
           >
-            â
+            ✓
           </div>
         )}
       </div>
@@ -240,7 +240,7 @@ export function Clock() {
   const centerX = boardSize / 2;
   const centerY = boardSize / 2;
 
-  // Labels for clock positions (1â12)
+  // Labels for clock positions (1–12)
   const clockLabels = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q"];
 
   return (
@@ -252,7 +252,7 @@ export function Clock() {
             Moves <span className="font-semibold text-foreground">{game.moves}</span>
           </span>
           <span className="flex items-center gap-1.5 tabular-nums text-muted-foreground">
-            <button onClick={pause} title={isPaused ? "Resume timer" : "Pause timer"} aria-label={isPaused ? "Resume timer" : "Pause timer"} className="opacity-50 hover:opacity-100 transition-opacity text-[10px] leading-none select-none">{isPaused ? "â¶" : "â¸"}</button>
+            <button onClick={pause} title={isPaused ? "Resume timer" : "Pause timer"} aria-label={isPaused ? "Resume timer" : "Pause timer"} className="opacity-50 hover:opacity-100 transition-opacity text-[10px] leading-none select-none">{isPaused ? "▶" : "⏸"}</button>
             <span className={isPaused ? "opacity-50" : ""}>{time}</span>
             <button onClick={resetTimer} title="Restart timer" aria-label="Restart timer" className="opacity-50 hover:opacity-100 transition-opacity text-[10px] leading-none select-none">↺</button>
           </span>
@@ -267,7 +267,7 @@ export function Clock() {
             className="rounded-lg border border-border px-2.5 py-1 transition hover:bg-secondary/70 disabled:opacity-40"
             style={autoPlay ? { borderColor: "var(--neon)", color: "var(--neon)" } : undefined}
           >
-            {autoPlay ? "â¸ Pause" : "âµ Auto"}
+            {autoPlay ? "⏸ Pause" : "⏵ Auto"}
           </button>
           <button
             onClick={() => reset()}
@@ -286,7 +286,7 @@ export function Clock() {
       <div className="game-board-glass glass mt-4 rounded-2xl p-4 sm:p-6" ref={containerRef}>
         {/* Clock SVG layout */}
         <div className="relative mx-auto" style={{ width: boardSize, height: boardSize }}>
-          {/* Clock positions 1â12 (pile indices 0â11) */}
+          {/* Clock positions 1–12 (pile indices 0–11) */}
           {game.piles.slice(0, 12).map((pile, i) => {
             const pos = clockPosition(i, clockRadius);
             const isActive = game.currentPile === i;
@@ -352,7 +352,7 @@ export function Clock() {
             {hasNext
               ? <>Current pile: <strong className="text-foreground">{
                   game.currentPile === 12 ? "K (center)" : clockLabels[game.currentPile]
-                }</strong> â flip next face-down card</>
+                }</strong> — flip next face-down card</>
               : "No face-down cards left in current pile"}
           </div>
         )}
@@ -361,7 +361,7 @@ export function Clock() {
       {game.lost && (
         <DailyWinBanner
           variant="stuck"
-          message={`All 4 Kings revealed â the game ends. Better luck next time!`}
+          message={`All 4 Kings revealed — the game ends. Better luck next time!`}
           onNew={reset}
           stats={gameStats}
         />
@@ -369,14 +369,14 @@ export function Clock() {
 
       {game.won && (
         <DailyWinBanner
-          message={`Incredible! All cards revealed before the 4th King â you beat Clock Patience!`}
+          message={`Incredible! All cards revealed before the 4th King — you beat Clock Patience!`}
           onNew={reset}
           stats={gameStats}
         />
       )}
 
       <p className="mt-3 text-center text-xs text-muted-foreground">
-        Fully automatic â deal cards to their matching clock position. 4 Kings revealed = lose.
+        Fully automatic — deal cards to their matching clock position. 4 Kings revealed = lose.
       </p>
     </div>
   );
