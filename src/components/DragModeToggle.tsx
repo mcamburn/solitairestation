@@ -119,18 +119,6 @@ export function DragModeToggle({
         {dragMode ? dragHint : clickHint}
       </p>
 
-      {/* Scroll-to-instructions link */}
-      <a
-        href="#how-to-play"
-        onClick={(e) => {
-          e.preventDefault();
-          document.getElementById("how-to-play")?.scrollIntoView({ behavior: "smooth" });
-        }}
-        className="w-full text-center text-xs hover:underline"
-        style={{ color: "var(--muted-foreground)" }}
-      >
-        ↓ Game instructions
-      </a>
     </div>
   );
 }
