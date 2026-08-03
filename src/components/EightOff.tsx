@@ -398,28 +398,19 @@ export function EightOff() {
             );
           });
 
-          if (colW < 50) {
-            // Mobile: two rows on the same 8-col grid so all cells match tableau width.
-            // Foundations (4 slots) sit right-aligned in cols 5-8.
-            return (
-              <>
-                <div className="mb-[7px] grid gap-[7px]" style={{ gridTemplateColumns: "repeat(8, minmax(0, 1fr))" }}>
-                  {freeCellSlots}
-                </div>
-                <div className="mb-4 grid gap-[7px]" style={{ gridTemplateColumns: "repeat(8, minmax(0, 1fr))" }}>
-                  <div /><div /><div /><div />
-                  {foundationSlots}
-                </div>
-              </>
-            );
-          }
-
-          // Desktop: single 12-col row
+          // Two rows on the same 8-col grid at all screen sizes so FC cards
+          // always match tableau column width. Foundations sit right-aligned
+          // in cols 5-8.
           return (
-            <div className="mb-4 grid gap-1.5" style={{ gridTemplateColumns: "repeat(12, minmax(0, 1fr))" }}>
-              {freeCellSlots}
-              {foundationSlots}
-            </div>
+            <>
+              <div className="mb-[7px] grid gap-[7px] sm:gap-1.5" style={{ gridTemplateColumns: "repeat(8, minmax(0, 1fr))" }}>
+                {freeCellSlots}
+              </div>
+              <div className="mb-4 grid gap-[7px] sm:gap-1.5" style={{ gridTemplateColumns: "repeat(8, minmax(0, 1fr))" }}>
+                <div /><div /><div /><div />
+                {foundationSlots}
+              </div>
+            </>
           );
         })()}
 
