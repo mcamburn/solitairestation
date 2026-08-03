@@ -59,16 +59,16 @@ export function GamePageLayout({ gameKey, badge, title, tagline, rulesIntro, rul
         >
           <div className="relative mx-auto max-w-[900px] xl:max-w-[1200px] md:px-4 md:py-2">
 
-            {/* Desktop: [Logo | divider] — [stats centered] — [divider | GameSwitcher] */}
-            <div className="hidden md:grid items-center" style={{ gridTemplateColumns: "auto 1fr auto" }}>
-              <div className="flex items-center gap-3 pr-3">
+            {/* Desktop: Logo left — stats absolutely centered — GameSwitcher right */}
+            <div className="hidden md:flex items-center justify-between relative">
+              <div className="flex items-center gap-3">
                 <SolitaireStationLogo variant="full" className="shrink-0" />
                 {VERT_DIVIDER}
               </div>
-              <div className="flex items-center justify-center">
+              <div className="absolute left-1/2 -translate-x-1/2 flex items-center">
                 <GameStatsBar gameKey={gameKey} variant="inline" />
               </div>
-              <div className="flex items-center gap-3 pl-3">
+              <div className="flex items-center gap-3">
                 {VERT_DIVIDER}
                 <div className="w-72 shrink-0">
                   <GameSwitcher />
