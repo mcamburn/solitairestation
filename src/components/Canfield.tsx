@@ -367,7 +367,7 @@ export function Canfield() {
       <NewGameToast visible={toastVisible} skin={skin} face={face} />
 
       {/* Game board */}
-      <div className="game-board-glass glass mt-4 overflow-x-auto rounded-2xl p-3 sm:p-5">
+      <div className="game-board-glass glass mt-4 overflow-x-auto rounded-2xl p-3 sm:p-5" style={{ touchAction: "pan-x" }}>
         <div ref={boardRef}>
           {/* Top row: Stock, Waste, Reserve, gap, Foundations × 4 */}
           <div className="flex items-start" style={{ gap: colGap }}>

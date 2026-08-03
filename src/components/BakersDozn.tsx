@@ -317,7 +317,7 @@ export function BakersDozn() {
       </div>
 
       {/* Tableau */}
-      <div className="game-board-glass glass mt-3 overflow-x-auto rounded-2xl p-3 sm:p-4">
+      <div className="game-board-glass glass mt-3 overflow-x-auto rounded-2xl p-3 sm:p-4" style={{ touchAction: "pan-x" }}>
         <div ref={boardRef}>
           <div className="flex" style={{ gap: colGap }}>
             {game.tableau.map((col, colIdx) => {

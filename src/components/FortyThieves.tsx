@@ -316,7 +316,7 @@ export function FortyThieves() {
       <AppearanceBar skin={skin} face={face} onSkinChange={setSkin} onFaceChange={setFace} />
       <NewGameToast visible={toastVisible} skin={skin} face={face} />
 
-      <div className="game-board-glass glass mt-4 overflow-x-auto rounded-2xl p-4" ref={boardRef}>
+      <div className="game-board-glass glass mt-4 overflow-x-auto rounded-2xl p-4" ref={boardRef} style={{ touchAction: "pan-x" }}>
         {/* Foundations row */}
         <div className="mb-3 flex justify-between">
           {/* Left: stock + waste */}
