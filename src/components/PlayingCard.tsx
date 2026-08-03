@@ -1,119 +1,5 @@
 import { type Card, rankLabel, suitColor, suitGlyph } from "@/lib/solitaire";
 
-// ── Suit-coloured ribbon rendered at the bottom of each card ─────────────────
-// Shape varies per face style; colour is always tied to the card's suit.
-function BottomRibbon({
-  faceStyle,
-  isRed,
-  isBoldFace,
-}: {
-  faceStyle: string;
-  isRed: boolean;
-  isBoldFace: boolean;
-}) {
-  // rc = ribbon fill — suit-red for ♥♦, theme-foreground for ♠♣ (readable on any bg)
-  const rc = isRed
-    ? "var(--red-suit)"
-    : isBoldFace
-    ? "var(--foreground)"
-    : "var(--card-foreground)";
-  const ac = isRed ? "var(--red-suit)" : "var(--neon)";
-
-  // All ribbons share the same SVG shell: full card width, 14 px tall, bottom-pinned.
-  // preserveAspectRatio="none" lets it stretch horizontally to any card width.
-  const base = {
-    className: "card-bottom-ribbon absolute bottom-0 inset-x-0 w-full pointer-events-none" as const,
-    viewBox: "0 0 80 14" as const,
-    preserveAspectRatio: "none" as const,
-    height: 14,
-    "aria-hidden": true as const,
-  };
-
-  switch (faceStyle) {
-    // Straight flat band
-    case "modern":
-      return (
-        <svg {...base}>
-          <rect x="0" y="4" width="80" height="10" fill={rc} opacity="0.17" />
-        </svg>
-      );
-
-    // Banner with a centre V-notch (heraldic swallow-tail)
-    case "classic":
-      return (
-        <svg {...base}>
-          <path d="M0 3 L36 3 L40 8 L44 3 L80 3 L80 14 L0 14 Z" fill={rc} opacity="0.2" />
-        </svg>
-      );
-
-    // Hairline — very minimal footprint for the minimal style
-    case "minimal":
-      return (
-        <svg {...base} height={4} viewBox="0 0 80 4">
-          <rect x="0" y="0" width="80" height="4" fill={rc} opacity="0.28" />
-        </svg>
-      );
-
-    // Thick solid bar — punchy, matches the bold weight
-    case "bold":
-      return (
-        <svg {...base}>
-          <rect x="0" y="0" width="80" height="14" fill={rc} opacity="0.26" />
-        </svg>
-      );
-
-    // Crenellated (battlements) top edge — pixel-art feel
-    case "pixel":
-      return (
-        <svg {...base}>
-          <path
-            d="M0 14 L0 8 L10 8 L10 4 L20 4 L20 8 L30 8 L30 4 L40 4 L40 8 L50 8 L50 4 L60 4 L60 8 L70 8 L70 4 L80 4 L80 14 Z"
-            fill={rc} opacity="0.24"
-          />
-        </svg>
-      );
-
-    // Soft wave — flowing, organic
-    case "script":
-      return (
-        <svg {...base}>
-          <path
-            d="M0 14 L0 9 Q10 2 20 8 Q30 14 40 7 Q50 0 60 7 Q70 14 80 8 L80 14 Z"
-            fill={rc} opacity="0.22"
-          />
-        </svg>
-      );
-
-    // Hollow — two parallel strokes only, no fill
-    case "outline":
-      return (
-        <svg {...base}>
-          <line x1="0" y1="4"  x2="80" y2="4"  stroke={rc} strokeWidth="1.5" opacity="0.28" />
-          <line x1="0" y1="12" x2="80" y2="12" stroke={rc} strokeWidth="1"   opacity="0.2"  />
-        </svg>
-      );
-
-    // Glowing neon stripe
-    case "retro":
-      return (
-        <svg {...base} height={8} viewBox="0 0 80 8"
-          style={{ filter: `drop-shadow(0 0 5px ${ac})` }}>
-          <rect x="0" y="2" width="80" height="5" fill={ac} opacity="0.6" />
-        </svg>
-      );
-
-    // Angular trapezoid with chamfered top corners
-    case "stencil":
-      return (
-        <svg {...base}>
-          <path d="M0 14 L0 6 L6 3 L74 3 L80 6 L80 14 Z" fill={rc} opacity="0.22" />
-        </svg>
-      );
-
-    default:
-      return null;
-  }
-}
 
 export type CardBackSkin =
   | "neon"
@@ -350,8 +236,43 @@ export function PlayingCard({
           )}
         </div>
       )}
-      {/* ── Suit-coloured ribbon at card bottom ───────────────────── */}
-      <BottomRibbon faceStyle={faceStyle} isRed={isRed} isBoldFace={isBoldFace} />
+      {/* ── Suit watermark — large ghost glyph clipped at card bottom ── */}
+      {/* Skipped for minimal (suit already shown prominently at bottom) */}
+      {faceStyle !== "minimal" && (() => {
+        const rc = isRed ? "var(--red-suit)" : isBoldFace ? "var(--foreground)" : "var(--card-foreground)";
+        const wStyle: React.CSSProperties =
+          faceStyle === "retro"
+            ? { fontSize: "5rem", lineHeight: 1, opacity: 0.5,
+                color: isRed ? "var(--red-suit)" : "var(--neon)",
+                textShadow: `0 0 14px ${isRed ? "var(--red-suit)" : "var(--neon)"}`,
+                fontFamily }
+            : faceStyle === "outline"
+            ? { fontSize: "5rem", lineHeight: 1, opacity: 0.22,
+                color: "transparent",
+                WebkitTextStroke: `1.5px ${rc}` }
+            : faceStyle === "bold"
+            ? { fontSize: "5rem", lineHeight: 1, opacity: 0.2, color: rc }
+            : faceStyle === "script"
+            ? { fontSize: "5rem", lineHeight: 1, opacity: 0.1, color: rc,
+                fontFamily, transform: "rotate(-8deg)" }
+            : faceStyle === "stencil"
+            ? { fontSize: "5rem", lineHeight: 1, opacity: 0.1, color: rc, fontFamily }
+            : faceStyle === "pixel"
+            ? { fontSize: "5rem", lineHeight: 1, opacity: 0.12, color: rc, fontFamily }
+            : faceStyle === "classic"
+            ? { fontSize: "5rem", lineHeight: 1, opacity: 0.09, color: rc,
+                fontStyle: "italic", fontFamily }
+            : /* modern */ { fontSize: "5rem", lineHeight: 1, opacity: 0.08, color: rc };
+        return (
+          <div
+            className="card-suit-watermark absolute inset-x-0 bottom-0 overflow-hidden flex justify-center items-start pointer-events-none select-none"
+            style={{ height: "2.2rem" }}
+            aria-hidden="true"
+          >
+            <span style={wStyle}>{glyph}</span>
+          </div>
+        );
+      })()}
     </div>
   );
 }
