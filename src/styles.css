@@ -431,8 +431,11 @@
     opacity: 0;
     margin-top: 0 !important;
   }
-  /* Tighten the board top-margin once bars are gone */
-  .toolbars-collapsed .game-board-glass { margin-top: 0.5rem !important; }
+  /* Slide the board up in sync with the bars so no gap is left behind */
+  .game-board-glass {
+    transition: margin-top 0.22s ease-in-out;
+  }
+  .toolbars-collapsed .game-board-glass { margin-top: 0 !important; }
 }
 
 /* ─── Phone landscape: compact chrome so the game board gets the screen ─── */
