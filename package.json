@@ -7,7 +7,7 @@
     "prepare": "git config core.hooksPath .githooks",
     "dev": "vite dev",
     "start": "node .output/server/index.mjs",
-    "build": "vite build",
+    "build": "node scripts/generate-og-images.mjs && vite build",
     "build:dev": "vite build --mode development",
     "preview": "vite preview",
     "lint": "eslint .",
