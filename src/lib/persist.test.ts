@@ -148,6 +148,57 @@ describe("persist – save/load round-trip", () => {
 });
 
 // ---------------------------------------------------------------------------
+// Pyramid streak (run counter) round-trip
+// ---------------------------------------------------------------------------
+
+describe("persist – Pyramid streak survives save/reload", () => {
+  beforeEach(() => {
+    localStorage.clear();
+  });
+
+  it("streak > 0 is preserved exactly after saveGame → loadGame", () => {
+    const base = newPyramidGame(SEED);
+    const state: PyramidState = { ...base, streak: 5 };
+    saveGame<PyramidState>("pyramid", state);
+    const loaded = loadGame<PyramidState>("pyramid");
+    expect(loaded?.streak).toBe(5);
+  });
+
+  it("peakStreak > 0 is preserved exactly after saveGame → loadGame", () => {
+    const base = newPyramidGame(SEED);
+    const state: PyramidState = { ...base, streak: 3, peakStreak: 7 };
+    saveGame<PyramidState>("pyramid", state);
+    const loaded = loadGame<PyramidState>("pyramid");
+    expect(loaded?.peakStreak).toBe(7);
+  });
+
+  it("streak and peakStreak are both preserved in the same round-trip", () => {
+    const base = newPyramidGame(SEED);
+    const state: PyramidState = { ...base, streak: 4, peakStreak: 9 };
+    saveGame<PyramidState>("pyramid", state);
+    const loaded = loadGame<PyramidState>("pyramid");
+    expect(loaded?.streak).toBe(4);
+    expect(loaded?.peakStreak).toBe(9);
+  });
+
+  it("streak === 0 round-trips without change (baseline)", () => {
+    const state = newPyramidGame(SEED);
+    expect(state.streak).toBe(0);
+    saveGame<PyramidState>("pyramid", state);
+    const loaded = loadGame<PyramidState>("pyramid");
+    expect(loaded?.streak).toBe(0);
+  });
+
+  it("full state equality is preserved when streak > 0 (no other fields corrupted)", () => {
+    const base = newPyramidGame(SEED);
+    const state: PyramidState = { ...base, streak: 2, peakStreak: 2 };
+    saveGame<PyramidState>("pyramid", state);
+    const loaded = loadGame<PyramidState>("pyramid");
+    expect(loaded).toEqual(state);
+  });
+});
+
+// ---------------------------------------------------------------------------
 // Zero-move save regression
 // ---------------------------------------------------------------------------
 // Games must NOT show "In Progress" for a save that has moves === 0.
