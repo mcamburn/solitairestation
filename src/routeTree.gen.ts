@@ -38,6 +38,7 @@ import { Route as TermsRouteImport } from './routes/terms'
 import { Route as TripeaksRouteImport } from './routes/tripeaks'
 import { Route as Turn3SolitaireRouteImport } from './routes/turn-3-solitaire'
 import { Route as VegasSolitaireRouteImport } from './routes/vegas-solitaire'
+import { Route as WinPreviewRouteImport } from './routes/win-preview'
 import { Route as YukonRouteImport } from './routes/yukon'
 import { Route as GuidesIndexRouteImport } from './routes/guides/index'
 import { Route as GuidesSlugRouteImport } from './routes/guides/$slug'
@@ -187,6 +188,11 @@ const VegasSolitaireRoute = VegasSolitaireRouteImport.update({
   path: '/vegas-solitaire',
   getParentRoute: () => rootRouteImport,
 } as any)
+const WinPreviewRoute = WinPreviewRouteImport.update({
+  id: '/win-preview',
+  path: '/win-preview',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const YukonRoute = YukonRouteImport.update({
   id: '/yukon',
   path: '/yukon',
@@ -233,6 +239,7 @@ export interface FileRoutesByFullPath {
   '/tripeaks': typeof TripeaksRoute
   '/turn-3-solitaire': typeof Turn3SolitaireRoute
   '/vegas-solitaire': typeof VegasSolitaireRoute
+  '/win-preview': typeof WinPreviewRoute
   '/yukon': typeof YukonRoute
   '/guides/$slug': typeof GuidesSlugRoute
   '/guides/': typeof GuidesIndexRoute
@@ -267,6 +274,7 @@ export interface FileRoutesByTo {
   '/tripeaks': typeof TripeaksRoute
   '/turn-3-solitaire': typeof Turn3SolitaireRoute
   '/vegas-solitaire': typeof VegasSolitaireRoute
+  '/win-preview': typeof WinPreviewRoute
   '/yukon': typeof YukonRoute
   '/guides/$slug': typeof GuidesSlugRoute
   '/guides': typeof GuidesIndexRoute
@@ -302,6 +310,7 @@ export interface FileRoutesById {
   '/tripeaks': typeof TripeaksRoute
   '/turn-3-solitaire': typeof Turn3SolitaireRoute
   '/vegas-solitaire': typeof VegasSolitaireRoute
+  '/win-preview': typeof WinPreviewRoute
   '/yukon': typeof YukonRoute
   '/guides/$slug': typeof GuidesSlugRoute
   '/guides/': typeof GuidesIndexRoute
@@ -338,6 +347,7 @@ export interface FileRouteTypes {
     | '/tripeaks'
     | '/turn-3-solitaire'
     | '/vegas-solitaire'
+    | '/win-preview'
     | '/yukon'
     | '/guides/$slug'
     | '/guides/'
@@ -372,6 +382,7 @@ export interface FileRouteTypes {
     | '/tripeaks'
     | '/turn-3-solitaire'
     | '/vegas-solitaire'
+    | '/win-preview'
     | '/yukon'
     | '/guides/$slug'
     | '/guides'
@@ -406,6 +417,7 @@ export interface FileRouteTypes {
     | '/tripeaks'
     | '/turn-3-solitaire'
     | '/vegas-solitaire'
+    | '/win-preview'
     | '/yukon'
     | '/guides/$slug'
     | '/guides/'
@@ -441,6 +453,7 @@ export interface RootRouteChildren {
   TripeaksRoute: typeof TripeaksRoute
   Turn3SolitaireRoute: typeof Turn3SolitaireRoute
   VegasSolitaireRoute: typeof VegasSolitaireRoute
+  WinPreviewRoute: typeof WinPreviewRoute
   YukonRoute: typeof YukonRoute
   GuidesSlugRoute: typeof GuidesSlugRoute
   GuidesIndexRoute: typeof GuidesIndexRoute
@@ -651,6 +664,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof VegasSolitaireRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/win-preview': {
+      id: '/win-preview'
+      path: '/win-preview'
+      fullPath: '/win-preview'
+      preLoaderRoute: typeof WinPreviewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/yukon': {
       id: '/yukon'
       path: '/yukon'
@@ -705,6 +725,7 @@ const rootRouteChildren: RootRouteChildren = {
   TripeaksRoute: TripeaksRoute,
   Turn3SolitaireRoute: Turn3SolitaireRoute,
   VegasSolitaireRoute: VegasSolitaireRoute,
+  WinPreviewRoute: WinPreviewRoute,
   YukonRoute: YukonRoute,
   GuidesSlugRoute: GuidesSlugRoute,
   GuidesIndexRoute: GuidesIndexRoute,
