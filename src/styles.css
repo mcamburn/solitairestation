@@ -344,6 +344,20 @@
   z-index: 5;
 }
 
+/* ─── Phone portrait: game board glass goes full-bleed edge-to-edge ──────── */
+@media (max-width: 639px) {
+  .game-board-glass {
+    border-left: none !important;
+    border-right: none !important;
+    border-radius: 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    margin-top: 0.75rem !important;
+  }
+  /* Taller card proportion on phones: 2:3 aspect ratio */
+  .slot-empty { aspect-ratio: 2 / 3 !important; }
+}
+
 /* ─── Phone landscape: compact chrome so the game board gets the screen ─── */
 /* Targets phones rotated to landscape (viewport height ≤ 540 px) but not   */
 /* tablets or desktop monitors, which are both wider and taller.             */
