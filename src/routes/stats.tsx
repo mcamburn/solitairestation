@@ -518,7 +518,7 @@ function StatsPage() {
         if (allHistory.length === 0) return null;
 
         return (
-          <div className="mt-10">
+          <div className="mt-10" data-testid="recent-history-section">
             {/* Section header + filter toggle */}
             <div className="flex items-center justify-between mb-4">
               <h2
@@ -588,7 +588,7 @@ function StatsPage() {
                           <SortTh col="date" label="Date" align="right" sortKey={historySortKey} sortDir={historySortDir} onSort={(k) => handleHistorySort(k as HistorySortKey)} />
                         </tr>
                       </thead>
-                      <tbody>
+                      <tbody data-testid="recent-history-tbody">
                         {visibleHistory.map((entry, i) => (
                           <HistoryTableRow
                             key={`${entry.gameTo}-${entry.record.date}`}
