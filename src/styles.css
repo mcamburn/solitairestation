@@ -408,6 +408,13 @@
     padding: 0.25rem 0.5rem !important;
     gap: 0.5rem !important;
     justify-content: center !important;
+    /* Slide transition for hide/show bars */
+    overflow: hidden;
+    max-height: 12rem;        /* generous ceiling — taller than any bar */
+    opacity: 1;
+    transition: max-height 0.22s ease-in-out,
+                opacity     0.18s ease-in-out,
+                margin-top  0.22s ease-in-out;
   }
   /* Tighten the inner stats / button flex groups (stats normally use gap-4) */
   .game-controls > div { gap: 0.5rem !important; }
@@ -418,8 +425,12 @@
   }
   /* Card picker rows */
   .picker-wrap   { margin-top: 0.25rem !important; padding-top: 0.25rem !important; padding-bottom: 0.25rem !important; }
-  /* Hide timer + appearance bars when the player taps "hide bars" */
-  .toolbars-collapsed .game-controls { display: none !important; }
+  /* Slide the bars away when the player taps "hide bars" */
+  .toolbars-collapsed .game-controls {
+    max-height: 0 !important;
+    opacity: 0;
+    margin-top: 0 !important;
+  }
   /* Tighten the board top-margin once bars are gone */
   .toolbars-collapsed .game-board-glass { margin-top: 0.5rem !important; }
 }
