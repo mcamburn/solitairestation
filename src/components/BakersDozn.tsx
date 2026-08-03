@@ -346,6 +346,7 @@ export function BakersDozn() {
                       return (
                         <div
                           key={card.id}
+                          className="card-slot-container"
                           style={{
                             position: "absolute", top: cardIdx * overlap,
                             width: cardW, height: cardH, zIndex: cardIdx,
