@@ -36,6 +36,7 @@ import { Route as SpiderSolitaireRouteImport } from './routes/spider-solitaire'
 import { Route as StatsRouteImport } from './routes/stats'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as TripeaksRouteImport } from './routes/tripeaks'
+import { Route as Turn1SolitaireRouteImport } from './routes/turn-1-solitaire'
 import { Route as Turn3SolitaireRouteImport } from './routes/turn-3-solitaire'
 import { Route as VegasSolitaireRouteImport } from './routes/vegas-solitaire'
 import { Route as YukonRouteImport } from './routes/yukon'
@@ -177,6 +178,11 @@ const TripeaksRoute = TripeaksRouteImport.update({
   path: '/tripeaks',
   getParentRoute: () => rootRouteImport,
 } as any)
+const Turn1SolitaireRoute = Turn1SolitaireRouteImport.update({
+  id: '/turn-1-solitaire',
+  path: '/turn-1-solitaire',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const Turn3SolitaireRoute = Turn3SolitaireRouteImport.update({
   id: '/turn-3-solitaire',
   path: '/turn-3-solitaire',
@@ -231,6 +237,7 @@ export interface FileRoutesByFullPath {
   '/stats': typeof StatsRoute
   '/terms': typeof TermsRoute
   '/tripeaks': typeof TripeaksRoute
+  '/turn-1-solitaire': typeof Turn1SolitaireRoute
   '/turn-3-solitaire': typeof Turn3SolitaireRoute
   '/vegas-solitaire': typeof VegasSolitaireRoute
   '/yukon': typeof YukonRoute
@@ -265,6 +272,7 @@ export interface FileRoutesByTo {
   '/stats': typeof StatsRoute
   '/terms': typeof TermsRoute
   '/tripeaks': typeof TripeaksRoute
+  '/turn-1-solitaire': typeof Turn1SolitaireRoute
   '/turn-3-solitaire': typeof Turn3SolitaireRoute
   '/vegas-solitaire': typeof VegasSolitaireRoute
   '/yukon': typeof YukonRoute
@@ -300,6 +308,7 @@ export interface FileRoutesById {
   '/stats': typeof StatsRoute
   '/terms': typeof TermsRoute
   '/tripeaks': typeof TripeaksRoute
+  '/turn-1-solitaire': typeof Turn1SolitaireRoute
   '/turn-3-solitaire': typeof Turn3SolitaireRoute
   '/vegas-solitaire': typeof VegasSolitaireRoute
   '/yukon': typeof YukonRoute
@@ -336,6 +345,7 @@ export interface FileRouteTypes {
     | '/stats'
     | '/terms'
     | '/tripeaks'
+    | '/turn-1-solitaire'
     | '/turn-3-solitaire'
     | '/vegas-solitaire'
     | '/yukon'
@@ -370,6 +380,7 @@ export interface FileRouteTypes {
     | '/stats'
     | '/terms'
     | '/tripeaks'
+    | '/turn-1-solitaire'
     | '/turn-3-solitaire'
     | '/vegas-solitaire'
     | '/yukon'
@@ -404,6 +415,7 @@ export interface FileRouteTypes {
     | '/stats'
     | '/terms'
     | '/tripeaks'
+    | '/turn-1-solitaire'
     | '/turn-3-solitaire'
     | '/vegas-solitaire'
     | '/yukon'
@@ -439,6 +451,7 @@ export interface RootRouteChildren {
   StatsRoute: typeof StatsRoute
   TermsRoute: typeof TermsRoute
   TripeaksRoute: typeof TripeaksRoute
+  Turn1SolitaireRoute: typeof Turn1SolitaireRoute
   Turn3SolitaireRoute: typeof Turn3SolitaireRoute
   VegasSolitaireRoute: typeof VegasSolitaireRoute
   YukonRoute: typeof YukonRoute
@@ -637,6 +650,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TripeaksRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/turn-1-solitaire': {
+      id: '/turn-1-solitaire'
+      path: '/turn-1-solitaire'
+      fullPath: '/turn-1-solitaire'
+      preLoaderRoute: typeof Turn1SolitaireRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/turn-3-solitaire': {
       id: '/turn-3-solitaire'
       path: '/turn-3-solitaire'
@@ -703,6 +723,7 @@ const rootRouteChildren: RootRouteChildren = {
   StatsRoute: StatsRoute,
   TermsRoute: TermsRoute,
   TripeaksRoute: TripeaksRoute,
+  Turn1SolitaireRoute: Turn1SolitaireRoute,
   Turn3SolitaireRoute: Turn3SolitaireRoute,
   VegasSolitaireRoute: VegasSolitaireRoute,
   YukonRoute: YukonRoute,
