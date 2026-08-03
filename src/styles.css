@@ -403,18 +403,30 @@
   #game-board {
     min-height: calc(100dvh - var(--sticky-nav-height, 60px));
   }
+  /* Nav: shrink gap below when bars are hidden so board sits closer to nav */
+  .game-nav-wrap {
+    transition: margin-bottom 0.22s ease-in-out;
+  }
+  .game-nav-wrap.bars-hidden { margin-bottom: 0.25rem !important; }
+
   /* Controls bar: compact padding + tighter gaps so stats + buttons fit one row */
   .game-controls {
     padding: 0.25rem 0.5rem !important;
     gap: 0.5rem !important;
     justify-content: center !important;
-    /* Slide transition for hide/show bars */
     overflow: hidden;
-    max-height: 12rem;        /* generous ceiling — taller than any bar */
+    max-height: 12rem;   /* generous ceiling — taller than any bar */
     opacity: 1;
+    /* transitions live on bars-anim-ready so they don't fire on initial mount */
+  }
+  /* Enable slide transitions only after the first painted frame */
+  .bars-anim-ready .game-controls {
     transition: max-height 0.22s ease-in-out,
                 opacity     0.18s ease-in-out,
                 margin-top  0.22s ease-in-out;
+  }
+  .bars-anim-ready .game-board-glass {
+    transition: margin-top 0.22s ease-in-out;
   }
   /* Tighten the inner stats / button flex groups (stats normally use gap-4) */
   .game-controls > div { gap: 0.5rem !important; }
@@ -425,16 +437,13 @@
   }
   /* Card picker rows */
   .picker-wrap   { margin-top: 0.25rem !important; padding-top: 0.25rem !important; padding-bottom: 0.25rem !important; }
-  /* Slide the bars away when the player taps "hide bars" */
+  /* Collapse the bars when the player taps "hide bars" */
   .toolbars-collapsed .game-controls {
     max-height: 0 !important;
     opacity: 0;
     margin-top: 0 !important;
   }
-  /* Slide the board up in sync with the bars so no gap is left behind */
-  .game-board-glass {
-    transition: margin-top 0.22s ease-in-out;
-  }
+  /* Slide the board up flush with no gap left behind */
   .toolbars-collapsed .game-board-glass { margin-top: 0 !important; }
 }
 

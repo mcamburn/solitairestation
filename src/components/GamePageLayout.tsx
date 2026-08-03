@@ -42,6 +42,14 @@ export function GamePageLayout({ gameKey, badge, title, tagline, rulesIntro, rul
     });
   };
 
+  // Suppress bar slide transitions on initial mount so switching games doesn't
+  // produce a blip. Transitions are only enabled after the first painted frame.
+  const [barAnimReady, setBarAnimReady] = useState(false);
+  useEffect(() => {
+    const id = requestAnimationFrame(() => setBarAnimReady(true));
+    return () => cancelAnimationFrame(id);
+  }, []);
+
   useEffect(() => {
     const el = navBarRef.current;
     if (!el) return;
@@ -62,7 +70,7 @@ export function GamePageLayout({ gameKey, badge, title, tagline, rulesIntro, rul
         {/* ── Sticky nav bar ─────────────────────────────────────────────── */}
         <div
           ref={navBarRef}
-          className="game-nav-wrap sticky top-0 z-50 mb-4"
+          className={`game-nav-wrap sticky top-0 z-50 mb-4${toolbarsHidden ? " bars-hidden" : ""}`}
           style={{
             background: "color-mix(in oklab, var(--surface) 80%, transparent)",
             backdropFilter: "blur(16px) saturate(160%)",
@@ -134,7 +142,7 @@ export function GamePageLayout({ gameKey, badge, title, tagline, rulesIntro, rul
         {/* ── Game board ─────────────────────────────────────────────────── */}
         <section
           id="game-board"
-          className={`sm:mx-auto sm:max-w-[900px] xl:max-w-[1200px]${toolbarsHidden ? " toolbars-collapsed" : ""}`}
+          className={`sm:mx-auto sm:max-w-[900px] xl:max-w-[1200px]${barAnimReady ? " bars-anim-ready" : ""}${toolbarsHidden ? " toolbars-collapsed" : ""}`}
           style={{ scrollMarginTop: "var(--sticky-nav-height)" }}
         >
           {children}
