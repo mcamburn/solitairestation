@@ -1324,14 +1324,14 @@ function ExportImportControls({ onImported }: { onImported: () => void }) {
               className="text-base font-semibold tracking-tight"
               style={{ fontFamily: "var(--font-display)" }}
             >
-              Replace your stats?
+              Merge stats from file?
             </h3>
             <p className="text-sm text-muted-foreground leading-relaxed">
-              This will overwrite your existing stats for{" "}
+              Your existing stats will be merged with the imported file for{" "}
               <span className="font-semibold" style={{ color: "var(--foreground)" }}>
                 {pendingImport.count} game{pendingImport.count !== 1 ? "s" : ""}
               </span>
-              . Any progress not in the imported file will be lost.
+              . Your history and best scores are kept — the import only adds to them.
             </p>
             <div className="flex gap-3 justify-end mt-1">
               <button

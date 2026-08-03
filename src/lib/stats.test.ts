@@ -13,7 +13,7 @@
  */
 
 import { describe, it, expect, beforeEach } from "vitest";
-import { importStatsFromExport } from "./stats";
+import { importStatsFromExport, mergeStats, loadStats } from "./stats";
 import type { StatsExport, GameStats } from "./stats";
 
 // ---------------------------------------------------------------------------
@@ -495,5 +495,224 @@ describe("importStatsFromExport – partial corruption", () => {
       },
     };
     expect(importStatsFromExport(data)).toBe(1);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// mergeStats unit tests
+// ---------------------------------------------------------------------------
+
+describe("mergeStats – history deduplication and merging", () => {
+  it("keeps entries from both sides when timestamps are distinct", () => {
+    const a = validStats({ history: [{ date: 1000, won: true, moves: 10, durationSeconds: 60, isDaily: false }] });
+    const b = validStats({ history: [{ date: 2000, won: false, moves: 20, durationSeconds: 30, isDaily: false }] });
+    const result = mergeStats(a, b);
+    expect(result.history).toHaveLength(2);
+    expect(result.history[0].date).toBe(2000); // newest first
+    expect(result.history[1].date).toBe(1000);
+  });
+
+  it("deduplicates history entries with the same timestamp", () => {
+    const entry = { date: 1000, won: true, moves: 10, durationSeconds: 60, isDaily: false };
+    const a = validStats({ history: [entry] });
+    const b = validStats({ history: [entry] });
+    const result = mergeStats(a, b);
+    expect(result.history).toHaveLength(1);
+  });
+
+  it("caps history at MAX_HISTORY (50 entries)", () => {
+    const makeEntries = (count: number, startDate: number) =>
+      Array.from({ length: count }, (_, i) => ({
+        date: startDate + i,
+        won: true,
+        moves: 10,
+        durationSeconds: 60,
+        isDaily: false,
+      }));
+    const a = validStats({ history: makeEntries(40, 1000) });
+    const b = validStats({ history: makeEntries(40, 5000) });
+    const result = mergeStats(a, b);
+    expect(result.history).toHaveLength(50);
+  });
+
+  it("prefers entries from existing side when merging with empty imported history", () => {
+    const a = validStats({ history: [{ date: 9999, won: true, moves: 5, durationSeconds: 45, isDaily: false }] });
+    const b = validStats({ history: [] });
+    const result = mergeStats(a, b);
+    expect(result.history).toHaveLength(1);
+    expect(result.history[0].date).toBe(9999);
+  });
+});
+
+describe("mergeStats – aggregate field merging", () => {
+  it("takes the larger gamesPlayed", () => {
+    const a = validStats({ gamesPlayed: 20 });
+    const b = validStats({ gamesPlayed: 10 });
+    expect(mergeStats(a, b).gamesPlayed).toBe(20);
+  });
+
+  it("takes the larger wins", () => {
+    const a = validStats({ wins: 5 });
+    const b = validStats({ wins: 8 });
+    expect(mergeStats(a, b).wins).toBe(8);
+  });
+
+  it("takes the larger losses", () => {
+    const a = validStats({ losses: 3 });
+    const b = validStats({ losses: 1 });
+    expect(mergeStats(a, b).losses).toBe(3);
+  });
+
+  it("takes the larger currentStreak", () => {
+    const a = validStats({ currentStreak: 2 });
+    const b = validStats({ currentStreak: 7 });
+    expect(mergeStats(a, b).currentStreak).toBe(7);
+  });
+
+  it("takes the larger longestStreak", () => {
+    const a = validStats({ longestStreak: 5 });
+    const b = validStats({ longestStreak: 12 });
+    expect(mergeStats(a, b).longestStreak).toBe(12);
+  });
+
+  it("takes the smaller (better) bestTime when both are non-null", () => {
+    const a = validStats({ bestTime: 90 });
+    const b = validStats({ bestTime: 120 });
+    expect(mergeStats(a, b).bestTime).toBe(90);
+  });
+
+  it("uses imported bestTime when existing bestTime is null", () => {
+    const a = validStats({ bestTime: null });
+    const b = validStats({ bestTime: 75 });
+    expect(mergeStats(a, b).bestTime).toBe(75);
+  });
+
+  it("uses existing bestTime when imported bestTime is null", () => {
+    const a = validStats({ bestTime: 60 });
+    const b = validStats({ bestTime: null });
+    expect(mergeStats(a, b).bestTime).toBe(60);
+  });
+
+  it("returns null bestTime when both are null", () => {
+    const a = validStats({ bestTime: null });
+    const b = validStats({ bestTime: null });
+    expect(mergeStats(a, b).bestTime).toBeNull();
+  });
+
+  it("takes the smaller (better) bestMoves when both are non-null", () => {
+    const a = validStats({ bestMoves: 25 });
+    const b = validStats({ bestMoves: 40 });
+    expect(mergeStats(a, b).bestMoves).toBe(25);
+  });
+
+  it("prefers existing avgTime over imported", () => {
+    const a = validStats({ avgTime: 100 });
+    const b = validStats({ avgTime: 200 });
+    expect(mergeStats(a, b).avgTime).toBe(100);
+  });
+
+  it("falls back to imported avgTime when existing is null", () => {
+    const a = validStats({ avgTime: null });
+    const b = validStats({ avgTime: 150 });
+    expect(mergeStats(a, b).avgTime).toBe(150);
+  });
+
+  it("takes the more recent lastPlayedAt", () => {
+    const a = validStats({ lastPlayedAt: 1_000_000 });
+    const b = validStats({ lastPlayedAt: 2_000_000 });
+    expect(mergeStats(a, b).lastPlayedAt).toBe(2_000_000);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// importStatsFromExport merges into existing stats (not replaces)
+// ---------------------------------------------------------------------------
+
+describe("importStatsFromExport – merges into existing localStorage stats", () => {
+  beforeEach(() => {
+    localStorage.clear();
+  });
+
+  it("preserves existing history when importing a file with different history entries", () => {
+    // Seed localStorage with an existing record
+    const existingEntry = { date: 1000, won: true, moves: 10, durationSeconds: 60, isDaily: false };
+    localStorage.setItem(
+      "neon-solitaire:stats:klondike",
+      JSON.stringify(validStats({ history: [existingEntry] }))
+    );
+
+    // Import a file with a different record
+    const importedEntry = { date: 2000, won: false, moves: 20, durationSeconds: 30, isDaily: false };
+    const data = validExport({ games: { klondike: validStats({ history: [importedEntry] }) } });
+    importStatsFromExport(data);
+
+    const saved = loadStats("klondike");
+    const dates = saved.history.map((r) => r.date);
+    expect(dates).toContain(1000); // existing entry preserved
+    expect(dates).toContain(2000); // imported entry added
+  });
+
+  it("does not duplicate history entries that appear in both existing and imported", () => {
+    const entry = { date: 5000, won: true, moves: 15, durationSeconds: 90, isDaily: false };
+    localStorage.setItem(
+      "neon-solitaire:stats:klondike",
+      JSON.stringify(validStats({ history: [entry] }))
+    );
+    const data = validExport({ games: { klondike: validStats({ history: [entry] }) } });
+    importStatsFromExport(data);
+
+    const saved = loadStats("klondike");
+    expect(saved.history.filter((r) => r.date === 5000)).toHaveLength(1);
+  });
+
+  it("does not reduce gamesPlayed below the existing value", () => {
+    localStorage.setItem(
+      "neon-solitaire:stats:klondike",
+      JSON.stringify(validStats({ gamesPlayed: 50, wins: 30, losses: 20 }))
+    );
+    // Import file has fewer games played (e.g., older backup)
+    const data = validExport({
+      games: { klondike: validStats({ gamesPlayed: 10, wins: 7, losses: 3 }) },
+    });
+    importStatsFromExport(data);
+
+    const saved = loadStats("klondike");
+    expect(saved.gamesPlayed).toBe(50);
+    expect(saved.wins).toBe(30);
+  });
+
+  it("does not reduce longestStreak below the existing value", () => {
+    localStorage.setItem(
+      "neon-solitaire:stats:klondike",
+      JSON.stringify(validStats({ longestStreak: 15 }))
+    );
+    const data = validExport({
+      games: { klondike: validStats({ longestStreak: 5 }) },
+    });
+    importStatsFromExport(data);
+
+    expect(loadStats("klondike").longestStreak).toBe(15);
+  });
+
+  it("does not replace a better bestTime with a worse one", () => {
+    localStorage.setItem(
+      "neon-solitaire:stats:klondike",
+      JSON.stringify(validStats({ bestTime: 45 }))
+    );
+    const data = validExport({ games: { klondike: validStats({ bestTime: 200 }) } });
+    importStatsFromExport(data);
+
+    expect(loadStats("klondike").bestTime).toBe(45);
+  });
+
+  it("imports a better bestTime from the file when it is lower", () => {
+    localStorage.setItem(
+      "neon-solitaire:stats:klondike",
+      JSON.stringify(validStats({ bestTime: 300 }))
+    );
+    const data = validExport({ games: { klondike: validStats({ bestTime: 50 }) } });
+    importStatsFromExport(data);
+
+    expect(loadStats("klondike").bestTime).toBe(50);
   });
 });

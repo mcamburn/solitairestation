@@ -311,8 +311,62 @@ function validateGameStats(raw: unknown): { stats: GameStats } | { error: string
 }
 
 /**
- * Import a StatsExport object, writing each game's stats to localStorage.
- * Existing stats for each game are replaced entirely.
+ * Merge two GameStats objects so the player is never left worse off.
+ *
+ * - History: union of both sets, deduplicated by timestamp, newest first,
+ *   capped at MAX_HISTORY.
+ * - Aggregate counts: take the larger value from each side.
+ * - Best times / best moves: take the smaller (better) non-null value.
+ * - Running averages: prefer the existing value (more accurate for live play).
+ * - lastPlayedAt: take the more recent timestamp.
+ */
+export function mergeStats(existing: GameStats, imported: GameStats): GameStats {
+  // Build a deduped, sorted merged history
+  const seen = new Set<number>();
+  const combined: GameRecord[] = [];
+  for (const r of [...existing.history, ...imported.history]) {
+    if (!seen.has(r.date)) {
+      seen.add(r.date);
+      combined.push(r);
+    }
+  }
+  combined.sort((a, b) => b.date - a.date);
+  const history = combined.slice(0, MAX_HISTORY);
+
+  const bestTime =
+    existing.bestTime === null
+      ? imported.bestTime
+      : imported.bestTime === null
+        ? existing.bestTime
+        : Math.min(existing.bestTime, imported.bestTime);
+
+  const bestMoves =
+    existing.bestMoves === null
+      ? imported.bestMoves
+      : imported.bestMoves === null
+        ? existing.bestMoves
+        : Math.min(existing.bestMoves, imported.bestMoves);
+
+  return {
+    gamesPlayed: Math.max(existing.gamesPlayed, imported.gamesPlayed),
+    wins: Math.max(existing.wins, imported.wins),
+    losses: Math.max(existing.losses, imported.losses),
+    currentStreak: Math.max(existing.currentStreak, imported.currentStreak),
+    longestStreak: Math.max(existing.longestStreak, imported.longestStreak),
+    bestTime,
+    bestMoves,
+    // Prefer the existing running averages; fall back to imported if we have none yet
+    avgTime: existing.avgTime ?? imported.avgTime,
+    avgMoves: existing.avgMoves ?? imported.avgMoves,
+    lastPlayedAt: Math.max(existing.lastPlayedAt, imported.lastPlayedAt),
+    history,
+  };
+}
+
+/**
+ * Import a StatsExport object, merging each game's stats into localStorage.
+ * Existing stats are never replaced outright — imported data is merged so the
+ * player ends up with the union of both histories and the best aggregate values.
  * Throws on structurally invalid files; silently skips corrupted per-game entries.
  * Returns the number of games successfully imported.
  */
@@ -334,7 +388,8 @@ export function importStatsFromExport(data: unknown): number {
     if (typeof gameKey !== "string") continue;
     const result = validateGameStats(stats);
     if ("error" in result) continue; // skip corrupted entry
-    saveStats(gameKey, result.stats);
+    const existing = loadStats(gameKey);
+    saveStats(gameKey, mergeStats(existing, result.stats));
     count++;
   }
   return count;
