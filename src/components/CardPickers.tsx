@@ -625,7 +625,7 @@ export function AppearanceBar({
 
       {/* ── Mobile inline chip rows (visible only on < 640 px screens) ── */}
       {/* Card Back chips — horizontal scroll row showing each skin's gradient/texture */}
-      {open === "back" && (
+      {open === "back" && !isDesktop && (
         <div
           id="appearance-panel"
           className="block sm:hidden glass mt-1.5 rounded-2xl px-3 py-2.5"
@@ -661,7 +661,7 @@ export function AppearanceBar({
       )}
 
       {/* Card Face chips — horizontal scroll row showing each face style's "A" glyph */}
-      {open === "face" && (
+      {open === "face" && !isDesktop && (
         <div
           id="appearance-panel"
           className="block sm:hidden glass mt-1.5 rounded-2xl px-3 py-2.5"
