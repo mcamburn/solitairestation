@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Addiction } from "@/components/Addiction";
 import { GamePageLayout } from "@/components/GamePageLayout";
+import { AddictionGapDemo } from "@/components/RuleDemo";
 import { SITE_URL } from "@/lib/site";
 
 export const Route = createFileRoute("/addiction")({
@@ -65,6 +66,7 @@ function AddictionPage() {
           {
             title: "Moving a card into a gap",
             body: "A card can slide into a gap only if the card immediately to the left of that gap is the same suit and exactly one rank lower. For example, 6♥ can slide into a gap that has 5♥ to its left.",
+            demo: <AddictionGapDemo />,
           },
           {
             title: "Column 1 (leftmost)",

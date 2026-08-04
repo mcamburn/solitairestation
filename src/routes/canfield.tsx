@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Canfield } from "@/components/Canfield";
 import { GamePageLayout } from "@/components/GamePageLayout";
+import { CanfieldWrapDemo } from "@/components/RuleDemo";
 import { SITE_URL } from "@/lib/site";
 
 export const Route = createFileRoute("/canfield")({
@@ -85,6 +86,7 @@ function CanfieldPage() {
           {
             title: "Foundations",
             body: "All four foundations must start at the base rank (one per suit). Foundations build up in suit, wrapping around: for example, if the base rank is 7, build 7→8→9→10→J→Q→K→A→2→3→4→5→6. Win by filling all four foundations.",
+            demo: <CanfieldWrapDemo />,
           },
           {
             title: "Tableau building",

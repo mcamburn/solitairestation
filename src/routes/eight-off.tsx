@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { EightOff } from "@/components/EightOff";
 import { GamePageLayout } from "@/components/GamePageLayout";
+import { EightOffSameSuitDemo } from "@/components/RuleDemo";
 import { SITE_URL } from "@/lib/site";
 
 export const Route = createFileRoute("/eight-off")({
@@ -69,6 +70,7 @@ function EightOffPage() {
           {
             title: "Tableau sequences",
             body: "Stack cards in descending rank and same suit (a 6♠ on a 7♠). Click a card or the start of a valid same-suit sequence to select it, then click the destination.",
+            demo: <EightOffSameSuitDemo />,
           },
           {
             title: "Free cells",

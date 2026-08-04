@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Scorpion } from "@/components/Scorpion";
 import { GamePageLayout } from "@/components/GamePageLayout";
+import { ScorpionGroupDemo } from "@/components/RuleDemo";
 import { SITE_URL } from "@/lib/site";
 
 export const Route = createFileRoute("/scorpion")({
@@ -65,6 +66,7 @@ function ScorpionPage() {
           {
             title: "Moving groups — Scorpion's rule",
             body: "Pick up any face-up card plus ALL cards on top of it (as a group, even if they're not in order or same suit) and place them on another column whose top card is exactly one rank higher AND the same suit as the bottom card of your moving group. For example, move a group starting with 8♥ onto a 9♥.",
+            demo: <ScorpionGroupDemo />,
           },
           {
             title: "Empty columns",

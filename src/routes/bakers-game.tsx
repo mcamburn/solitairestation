@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { BakersGame } from "@/components/BakersGame";
 import { GamePageLayout } from "@/components/GamePageLayout";
+import { BakersGameSameSuitDemo } from "@/components/RuleDemo";
 import { SITE_URL } from "@/lib/site";
 
 export const Route = createFileRoute("/bakers-game")({
@@ -69,6 +70,7 @@ function BakersGamePage() {
           {
             title: "Tableau sequences",
             body: "Stack cards in descending rank and same suit (a 6♥ on a 7♥). Unlike FreeCell, alternating colors are not allowed — only same-suit sequences are valid.",
+            demo: <BakersGameSameSuitDemo />,
           },
           {
             title: "Free cells",

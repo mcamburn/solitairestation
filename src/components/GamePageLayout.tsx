@@ -178,7 +178,7 @@ export function GamePageLayout({ gameKey, badge, title, tagline, rulesIntro, rul
               How to play
             </h2>
             <p className="mt-2 text-sm text-muted-foreground">{rulesIntro}</p>
-            <div className="mt-6 grid gap-6 sm:grid-cols-2">
+            <div className="mt-6 grid gap-6">
               {rules.map((r, i) => (
                 <div key={i}>
                   <h3 className="text-sm font-semibold tracking-tight">{r.title}</h3>

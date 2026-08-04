@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { TriPeaks } from "@/components/TriPeaks";
 import { GamePageLayout } from "@/components/GamePageLayout";
+import { TriPeaksWrapDemo } from "@/components/RuleDemo";
 import { SITE_URL } from "@/lib/site";
 
 export const Route = createFileRoute("/tripeaks")({
@@ -69,6 +70,7 @@ function TriPeaksPage() {
         {
           title: "Playing cards",
           body: "Click any available card that is one rank above or below the current waste top. Ace and King wrap — a King can be played on an Ace and vice versa.",
+          demo: <TriPeaksWrapDemo />,
         },
         {
           title: "Stock",

@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Clock } from "@/components/Clock";
 import { GamePageLayout } from "@/components/GamePageLayout";
+import { ClockCascadeDemo } from "@/components/RuleDemo";
 import { SITE_URL } from "@/lib/site";
 
 export const Route = createFileRoute("/clock")({
@@ -65,6 +66,7 @@ function ClockPage() {
           {
             title: "How it works",
             body: "The game starts by flipping the top face-down card from the King pile (center). Each card is placed face-up at the bottom of the pile matching its rank. The top face-down card of that pile is then flipped and moved to its own pile — and so on, cascading around the clock.",
+            demo: <ClockCascadeDemo />,
           },
           {
             title: "The only decision",

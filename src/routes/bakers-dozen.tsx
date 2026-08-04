@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { BakersDozn } from "@/components/BakersDozn";
 import { GamePageLayout } from "@/components/GamePageLayout";
+import { BakersDozAnySuitDemo } from "@/components/RuleDemo";
 import { SITE_URL } from "@/lib/site";
 
 export const Route = createFileRoute("/bakers-dozen")({
@@ -85,6 +86,7 @@ function BakersDozenPage() {
           {
             title: "Moving cards",
             body: "Only the top card of each column can be moved. A card may be placed on any other column whose top card has a rank exactly one higher — suit does not matter. For example, a 7 of any suit can go on an 8 of any suit.",
+            demo: <BakersDozAnySuitDemo />,
           },
           {
             title: "Empty columns",

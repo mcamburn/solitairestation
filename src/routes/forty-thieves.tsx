@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { FortyThieves } from "@/components/FortyThieves";
 import { GamePageLayout } from "@/components/GamePageLayout";
+import { FortyThievesSameSuitDemo } from "@/components/RuleDemo";
 import { SITE_URL } from "@/lib/site";
 
 export const Route = createFileRoute("/forty-thieves")({
@@ -69,6 +70,7 @@ function FortyThievesPage() {
           {
             title: "Tableau building",
             body: "Tableau columns build downward in the same suit. For example, 8♥ can be placed on 9♥. Any single card can be placed on an empty column.",
+            demo: <FortyThievesSameSuitDemo />,
           },
           {
             title: "Stock and waste",

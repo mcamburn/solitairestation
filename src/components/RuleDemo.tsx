@@ -473,3 +473,428 @@ export function YukonGroupMoveDemo() {
     </Box>
   );
 }
+
+// ─── Demo 8: King/Ace wrap ── TriPeaks ────────────────────────────────────────
+
+/**
+ * Waste=K: Q and A both glow (K wraps to A and descends to Q).
+ * Waste=A: K and 2 both glow (A wraps to K and ascends to 2).
+ */
+export function TriPeaksWrapDemo() {
+  const p = usePhase([1000, 900, 1200, 900, 1200, 600]);
+  const wasteIsKing = p <= 2;
+  const wasteRank   = wasteIsKing ? "K" : "A";
+  const wasteSuit   = wasteIsKing ? "♠" : "♥";
+
+  const qGlow:   Glow = (p === 1 || p === 2) ? "valid" : "none";
+  const aceGlow: Glow = (p === 1 || p === 2) ? "valid" : "none";
+  const kGlow:   Glow = (p === 4 || p === 5) ? "valid" : "none";
+  const twoGlow: Glow = (p === 4 || p === 5) ? "valid" : "none";
+
+  const statuses = [
+    "waste = K — what plays?",
+    "Q (normal) and A (wrap) both valid ✓",
+    "",
+    "waste = A — both directions wrap",
+    "K (wrap) and 2 (normal) both valid ✓",
+    "",
+  ];
+
+  return (
+    <Box style={{ gap: 10, flexWrap: "nowrap" }}>
+      <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+        <Card rank={wasteRank} suit={wasteSuit} />
+        <L text="waste" />
+      </div>
+      <div style={{ width: 1, alignSelf: "stretch", background: "rgba(255,255,255,0.08)", margin: "0 2px" }} />
+      <div style={{ display: "flex", gap: 8, alignItems: "flex-end" }}>
+        {[
+          { rank: "Q", suit: "♣", glow: qGlow,   label: "Q♣" },
+          { rank: "A", suit: "♣", glow: aceGlow,  label: "A♣" },
+          { rank: "K", suit: "♦", glow: kGlow,    label: "K♦" },
+          { rank: "2", suit: "♦", glow: twoGlow,  label: "2♦" },
+        ].map(({ rank, suit, glow, label }) => (
+          <div key={label} style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+            <Card rank={rank} suit={suit} glow={glow} />
+            <L text={glow === "valid" ? `${label} ✓` : label} highlight={glow === "valid"} />
+          </div>
+        ))}
+      </div>
+      <Status text={statuses[p]} />
+    </Box>
+  );
+}
+
+// ─── Demo 9: Same-suit tableau ── Forty Thieves ───────────────────────────────
+
+/**
+ * 8♥ on 9♥ glows valid (same suit). 8♠ on 9♥ glows invalid (wrong suit).
+ */
+export function FortyThievesSameSuitDemo() {
+  const p = usePhase([900, 700, 1200, 700, 1200]);
+  const valid   = p === 1 || p === 2;
+  const invalid = p === 3 || p === 4;
+
+  return (
+    <Box>
+      <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+        <Fan cards={[
+          { rank: "9", suit: "♥", glow: valid ? "valid" : "none" },
+          { rank: "8", suit: "♥", glow: valid ? "valid" : "none" },
+        ]} />
+        <L text={valid ? "✓ same suit" : "8♥ on 9♥"} highlight={valid} />
+      </div>
+      <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+        <Fan cards={[
+          { rank: "9", suit: "♥", glow: invalid ? "invalid" : "none" },
+          { rank: "8", suit: "♠", glow: invalid ? "invalid" : "none" },
+        ]} />
+        <L text={invalid ? "✗ wrong suit" : "8♠ on 9♥"} danger={invalid} />
+      </div>
+    </Box>
+  );
+}
+
+// ─── Demo 10: Same-suit group move ── Scorpion ────────────────────────────────
+
+/**
+ * Disorganised group (8♥ at bottom) selects. Destination 9♥ glows.
+ * Bottom card must be same suit AND rank −1 from destination top.
+ */
+export function ScorpionGroupDemo() {
+  const p = usePhase([1200, 1000, 1000, 1200, 700]);
+
+  const groupGlow: Glow = p >= 1 && p <= 3 ? "valid" : "none";
+  const destGlow:  Glow = p >= 2 && p <= 3 ? "valid" : "none";
+
+  const statuses = [
+    "any face-up group moves as one unit",
+    "8♥ fits on 9♥ (same suit, rank −1)",
+    "whole group follows!",
+    "moved — same suit + rank rule ✓",
+    "",
+  ];
+
+  return (
+    <Box>
+      <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+        <Fan cards={[
+          { rank: "8", suit: "♥", glow: groupGlow },
+          { rank: "J", suit: "♣", glow: groupGlow },
+          { rank: "4", suit: "♦", glow: groupGlow },
+        ]} />
+        <L text={groupGlow === "valid" ? "group selected" : "8♥ at bottom"} highlight={groupGlow === "valid"} />
+      </div>
+      <div style={{
+        alignSelf: "center", fontSize: 18,
+        color: p >= 2 ? "var(--neon)" : "var(--muted-foreground)",
+        transition: "color 0.3s",
+      }}>→</div>
+      <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+        <Card rank="9" suit="♥" glow={destGlow} />
+        <L text="9♥" highlight={destGlow === "valid"} />
+      </div>
+      <Status text={statuses[p]} />
+    </Box>
+  );
+}
+
+// ─── Demo 11: Same-suit descending ── Eight Off ───────────────────────────────
+
+/**
+ * 6♠ on 7♠ glows valid (same suit). 6♥ on 7♠ glows invalid (wrong suit).
+ */
+export function EightOffSameSuitDemo() {
+  const p = usePhase([900, 700, 1200, 700, 1200]);
+  const valid   = p === 1 || p === 2;
+  const invalid = p === 3 || p === 4;
+
+  return (
+    <Box>
+      <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+        <Fan cards={[
+          { rank: "7", suit: "♠", glow: valid ? "valid" : "none" },
+          { rank: "6", suit: "♠", glow: valid ? "valid" : "none" },
+        ]} />
+        <L text={valid ? "✓ same suit" : "6♠ on 7♠"} highlight={valid} />
+      </div>
+      <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+        <Fan cards={[
+          { rank: "7", suit: "♠", glow: invalid ? "invalid" : "none" },
+          { rank: "6", suit: "♥", glow: invalid ? "invalid" : "none" },
+        ]} />
+        <L text={invalid ? "✗ wrong suit" : "6♥ on 7♠"} danger={invalid} />
+      </div>
+    </Box>
+  );
+}
+
+// ─── Demo 12: Wrapping foundation ── Canfield ─────────────────────────────────
+
+/**
+ * Base rank = 9. Foundation built up to K♥ — next card is A♥ (wrap).
+ * Then 2♥ follows normally. Shows K→A→2 wrap sequence.
+ */
+export function CanfieldWrapDemo() {
+  const p = usePhase([1200, 900, 1000, 900, 1000, 600]);
+
+  // Foundation pile: starts showing K♥, then A♥ added, then 2♥ added
+  const foundationTop =
+    p <= 1 ? { rank: "K", suit: "♥" } :
+    p <= 3 ? { rank: "A", suit: "♥" } :
+             { rank: "2", suit: "♥" };
+
+  const aceGlow: Glow = p === 1 ? "valid" : "none";
+  const twoGlow: Glow = p === 3 ? "valid" : "none";
+
+  const statuses = [
+    "foundation built up to K♥ (base was 9♥)",
+    "A♥ is next — wraps past King ✓",
+    "A♥ placed — wrap complete",
+    "2♥ is next — continues normally ✓",
+    "2♥ placed — wrapping done",
+    "",
+  ];
+
+  return (
+    <Box style={{ gap: 20 }}>
+      <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+        <div style={{
+          width: 32, height: 46, borderRadius: 4, background: "oklch(0.97 0.002 250)",
+          display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 2,
+          boxShadow: "0 2px 5px rgba(0,0,0,0.45)",
+        }}>
+          <span style={{ fontSize: 12, fontWeight: 800, lineHeight: 1, color: "var(--red-suit)" }}>
+            {foundationTop.rank}
+          </span>
+          <span style={{ fontSize: 10, lineHeight: 1, color: "var(--red-suit)" }}>
+            {foundationTop.suit}
+          </span>
+        </div>
+        <L text="foundation" />
+      </div>
+      <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+          <Card rank="A" suit="♥" glow={aceGlow} />
+          <L text={aceGlow === "valid" ? "wraps! ✓" : "A♥"} highlight={aceGlow === "valid"} />
+        </div>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+          <Card rank="2" suit="♥" glow={twoGlow} />
+          <L text={twoGlow === "valid" ? "then 2♥ ✓" : "2♥"} highlight={twoGlow === "valid"} />
+        </div>
+      </div>
+      <Status text={statuses[p]} />
+    </Box>
+  );
+}
+
+// ─── Demo 13: Any-suit rank−1 ── Baker's Dozen ───────────────────────────────
+
+/**
+ * Any 7 goes on any 8 — suit is irrelevant. All three 7s glow valid on 8♣.
+ */
+export function BakersDozAnySuitDemo() {
+  const p = usePhase([1000, 1400, 800, 600]);
+  const showing = p === 1 || p === 2;
+
+  const h7Glow: Glow = showing ? "valid" : "none";
+  const s7Glow: Glow = showing ? "valid" : "none";
+  const d7Glow: Glow = showing ? "valid" : "none";
+
+  const statuses = [
+    "8♣ on top — what can go on it?",
+    "any 7 — suit doesn't matter ✓",
+    "",
+    "",
+  ];
+
+  return (
+    <Box style={{ gap: 12 }}>
+      <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+        <Card rank="8" suit="♣" glow={showing ? "valid" : "none"} />
+        <L text="destination" highlight={showing} />
+      </div>
+      <div style={{ width: 1, alignSelf: "stretch", background: "rgba(255,255,255,0.08)", margin: "0 2px" }} />
+      <div style={{ display: "flex", gap: 8, alignItems: "flex-end" }}>
+        {[
+          { rank: "7", suit: "♥", glow: h7Glow, label: "7♥" },
+          { rank: "7", suit: "♠", glow: s7Glow, label: "7♠" },
+          { rank: "7", suit: "♦", glow: d7Glow, label: "7♦" },
+        ].map(({ rank, suit, glow, label }) => (
+          <div key={label} style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+            <Card rank={rank} suit={suit} glow={glow} />
+            <L text={glow === "valid" ? `${label} ✓` : label} highlight={glow === "valid"} />
+          </div>
+        ))}
+      </div>
+      <Status text={statuses[p]} />
+    </Box>
+  );
+}
+
+// ─── Demo 14: Same-suit only (not alt-color) ── Baker's Game ─────────────────
+
+/**
+ * 6♥ on 7♥ glows valid. 6♠ on 7♥ glows invalid — unlike FreeCell, suit must match.
+ */
+export function BakersGameSameSuitDemo() {
+  const p = usePhase([900, 700, 1200, 700, 1200]);
+  const valid   = p === 1 || p === 2;
+  const invalid = p === 3 || p === 4;
+
+  return (
+    <Box>
+      <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+        <Fan cards={[
+          { rank: "7", suit: "♥", glow: valid ? "valid" : "none" },
+          { rank: "6", suit: "♥", glow: valid ? "valid" : "none" },
+        ]} />
+        <L text={valid ? "✓ same suit" : "6♥ on 7♥"} highlight={valid} />
+      </div>
+      <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+        <Fan cards={[
+          { rank: "7", suit: "♥", glow: invalid ? "invalid" : "none" },
+          { rank: "6", suit: "♠", glow: invalid ? "invalid" : "none" },
+        ]} />
+        <L text={invalid ? "✗ suit must match" : "6♠ on 7♥"} danger={invalid} />
+      </div>
+    </Box>
+  );
+}
+
+// ─── Demo 15: Cascade mechanic ── Clock ──────────────────────────────────────
+
+/**
+ * Center (K) pile flips → reveals 7♣ → goes to 7-pile → that pile flips → 3♦ → goes to 3-pile.
+ * Illustrates the self-driving cascade with no player choices.
+ */
+export function ClockCascadeDemo() {
+  const p = usePhase([1200, 800, 1000, 800, 1000, 800]);
+
+  // Three clock positions: center (K), 7, 3
+  const centerGlow: Glow  = p === 0 ? "valid" : "none";
+  const sevenGlow:  Glow  = p === 2 ? "valid" : p >= 3 ? "none" : "none";
+  const threeGlow:  Glow  = p === 4 ? "valid" : "none";
+
+  // Revealed card hovering between piles
+  const showSeven  = p === 1 || p === 2;
+  const showThree  = p === 3 || p === 4;
+
+  const statuses = [
+    "flip the center (K) pile →",
+    "7♣ revealed — goes to position 7",
+    "7♣ placed; flip 7-pile →",
+    "3♦ revealed — goes to position 3",
+    "3♦ placed; cascade continues…",
+    "",
+  ];
+
+  function ClockPos({ label, rank, highlight, hasCard }: {
+    label: string; rank: string; highlight: boolean; hasCard: boolean;
+  }) {
+    return (
+      <div style={{
+        display: "flex", flexDirection: "column", alignItems: "center", gap: 3,
+      }}>
+        <div style={{
+          width: 36, height: 46, borderRadius: 4,
+          background: "oklch(0.20 0.07 255)",
+          border: `1.5px solid ${highlight ? "var(--neon)" : "rgba(255,255,255,0.12)"}`,
+          boxShadow: highlight ? "0 0 0 2px var(--neon), 0 0 10px color-mix(in oklab, var(--neon) 50%, transparent)" : "none",
+          display: "flex", alignItems: "center", justifyContent: "center",
+          transition: "all 0.3s",
+        }}>
+          <span style={{ fontSize: 11, color: hasCard ? "rgba(255,255,255,0.7)" : "rgba(255,255,255,0.25)", fontWeight: 600 }}>
+            {hasCard ? "▪▪" : "··"}
+          </span>
+        </div>
+        <span style={{ fontSize: 9, color: highlight ? "var(--neon)" : "var(--muted-foreground)", fontWeight: 600, transition: "color 0.3s" }}>
+          {rank === "K" ? "K (center)" : `pos ${rank}`}
+        </span>
+      </div>
+    );
+  }
+
+  return (
+    <Box style={{ flexDirection: "column", alignItems: "center" }}>
+      <div style={{ display: "flex", gap: 16, alignItems: "flex-end" }}>
+        <ClockPos label="K" rank="K" highlight={centerGlow === "valid"} hasCard={!showSeven} />
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+          {showSeven && (
+            <div style={{ marginBottom: 4 }}>
+              <Card rank="7" suit="♣" glow="valid" />
+            </div>
+          )}
+          <ClockPos label="7" rank="7" highlight={sevenGlow === "valid" || p === 2} hasCard={p >= 3 && !showThree} />
+        </div>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+          {showThree && (
+            <div style={{ marginBottom: 4 }}>
+              <Card rank="3" suit="♦" glow="valid" />
+            </div>
+          )}
+          <ClockPos label="3" rank="3" highlight={threeGlow === "valid" || p === 4} hasCard={p >= 5} />
+        </div>
+      </div>
+      <Status text={statuses[p]} />
+    </Box>
+  );
+}
+
+// ─── Demo 16: Slide into a gap ── Addiction ───────────────────────────────────
+
+/**
+ * Left neighbor is 5♥ → gap. 6♥ glows valid (same suit, rank +1).
+ * 6♠ glows invalid (wrong suit). Gap fills with 6♥.
+ */
+export function AddictionGapDemo() {
+  const p = usePhase([1100, 900, 1200, 900, 1200, 600]);
+
+  const sixHGlow: Glow = p === 1 || p === 2 ? "valid" : p <= 0 ? "none" : "faded";
+  const sixSGlow: Glow = p === 3 || p === 4 ? "invalid" : "dim";
+  const gapFilled = p === 2;
+
+  const statuses = [
+    "gap to the right of 5♥ — what fits?",
+    "6♥ — same suit, rank 5+1 ✓",
+    "6♥ slides in!",
+    "6♠ — wrong suit ✗",
+    "suit must match the left neighbor",
+    "",
+  ];
+
+  return (
+    <Box style={{ flexDirection: "column", alignItems: "center" }}>
+      {/* Row showing: [5♥] [gap or 6♥] */}
+      <div style={{ display: "flex", gap: 4, alignItems: "center" }}>
+        <Card rank="5" suit="♥" />
+        {gapFilled ? (
+          <Card rank="6" suit="♥" glow="valid" />
+        ) : (
+          <div style={{
+            width: 32, height: 46, borderRadius: 4,
+            background: "oklch(0.16 0.025 265)",
+            border: "2px dashed var(--neon)",
+            boxShadow: "0 0 8px color-mix(in oklab, var(--neon) 30%, transparent)",
+            display: "flex", alignItems: "center", justifyContent: "center",
+          }}>
+            <span style={{ fontSize: 9, color: "var(--neon)", fontWeight: 700 }}>gap</span>
+          </div>
+        )}
+        <Card rank="8" suit="♠" glow="dim" />
+      </div>
+      {/* Candidates */}
+      <div style={{ display: "flex", gap: 12, marginTop: 10 }}>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+          <Card rank="6" suit="♥" glow={sixHGlow} />
+          <L text={sixHGlow === "valid" ? "fits ✓" : "6♥"} highlight={sixHGlow === "valid"} />
+        </div>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+          <Card rank="6" suit="♠" glow={sixSGlow} />
+          <L text={sixSGlow === "invalid" ? "✗ wrong suit" : "6♠"} danger={sixSGlow === "invalid"} />
+        </div>
+      </div>
+      <Status text={statuses[p]} />
+    </Box>
+  );
+}
