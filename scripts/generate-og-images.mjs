@@ -47,112 +47,95 @@ const CARD_SVG = `
 
 function makeSvg(game) {
   const W = 1200, H = 630;
-  // decorative scattered suit symbols
-  const scatterSeeds = [
-    { x: 60,  y: 80,  sym: game.suits[0], op: 0.07, sz: 80 },
-    { x: 200, y: 500, sym: game.suits[1], op: 0.06, sz: 65 },
-    { x: 900, y: 50,  sym: game.suits[2], op: 0.07, sz: 90 },
-    { x: 1050,y: 480, sym: game.suits[3], op: 0.06, sz: 70 },
-    { x: 500, y: 560, sym: game.suits[0], op: 0.04, sz: 55 },
-    { x: 700, y: 30,  sym: game.suits[1], op: 0.05, sz: 60 },
-  ];
 
-  const scatter = scatterSeeds
-    .map(
-      ({ x, y, sym, op, sz }) =>
-        `<text x="${x}" y="${y}" font-family="Georgia,serif" font-size="${sz}"
-          fill="${game.accent}" opacity="${op}" text-anchor="middle">${sym}</text>`
-    )
-    .join("\n    ");
+  // Card icon: scale the 110×138 base coords to ~168×210 px, centered horizontally
+  const CARD_SCALE = 1.527; // 110 * 1.527 ≈ 168 px wide
+  const CARD_W = Math.round(110 * CARD_SCALE); // 168
+  const CARD_X = Math.round((W - CARD_W) / 2); // 516  — centered
+  const CARD_Y = 42;
+  const CARD_H = Math.round(138 * CARD_SCALE); // 211
 
-  // subtle vignette
-  const vignette = `
-    <defs>
-      <radialGradient id="vig" cx="50%" cy="50%" r="70%">
-        <stop offset="0%"   stop-color="#000" stop-opacity="0"/>
-        <stop offset="100%" stop-color="#000" stop-opacity="0.45"/>
-      </radialGradient>
-      <radialGradient id="glow" cx="50%" cy="50%" r="50%">
-        <stop offset="0%"   stop-color="#2a5c38" stop-opacity="0.4"/>
-        <stop offset="100%" stop-color="#2a5c38" stop-opacity="0"/>
-      </radialGradient>
-    </defs>`;
+  // Text baseline positions (all centered via text-anchor="middle")
+  const brandY   = CARD_Y + CARD_H + 70;  // ~323
+  const nameY    = brandY + 66;            // ~389
+  const taglineY = nameY  + 52;            // ~441
 
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">
-  ${vignette}
+  <defs>
+    <radialGradient id="vig" cx="50%" cy="50%" r="70%">
+      <stop offset="0%"   stop-color="#000" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#000" stop-opacity="0.4"/>
+    </radialGradient>
+  </defs>
 
-  <!-- Background: dark green felt -->
-  <rect width="${W}" height="${H}" fill="#1a3d22"/>
+  <!-- Background -->
+  <rect width="${W}" height="${H}" fill="#152e1a"/>
 
   <!-- Subtle felt texture stripes -->
   ${Array.from({ length: 32 }, (_, i) =>
-    `<rect x="0" y="${i * 20}" width="${W}" height="10" fill="#1e4226" opacity="0.4"/>`
+    `<rect x="0" y="${i * 20}" width="${W}" height="10" fill="#1a3520" opacity="0.35"/>`
   ).join("\n  ")}
 
-  <!-- Center glow -->
-  <rect width="${W}" height="${H}" fill="url(#glow)"/>
-
-  <!-- Decorative suit symbols -->
-  ${scatter}
-
-  <!-- Gold accent top bar -->
-  <rect x="0" y="0" width="${W}" height="6" fill="${game.accent}" opacity="0.9"/>
-  <!-- Gold accent bottom bar -->
-  <rect x="0" y="${H - 6}" width="${W}" height="6" fill="${game.accent}" opacity="0.9"/>
-
-  <!-- Vignette overlay -->
+  <!-- Vignette -->
   <rect width="${W}" height="${H}" fill="url(#vig)"/>
 
-  <!-- Card logo (centred left area) -->
-  <g transform="translate(120, 210) scale(2.4)">
+  <!-- Thin accent line at top -->
+  <rect x="0" y="0" width="${W}" height="5" fill="${game.accent}" opacity="0.85"/>
+
+  <!-- Card icon — top-center -->
+  <g transform="translate(${CARD_X}, ${CARD_Y}) scale(${CARD_SCALE})">
     ${CARD_SVG}
   </g>
 
-  <!-- Divider line -->
-  <line x1="420" y1="180" x2="420" y2="450" stroke="${game.accent}" stroke-width="1.5" stroke-opacity="0.4"/>
-
-  <!-- Brand: "Solitaire Station" -->
+  <!-- Brand: "Solitaire Station" — centered -->
   <text
-    x="480" y="258"
+    x="${W / 2}" y="${brandY}"
     font-family="DejaVu Serif, serif"
-    font-size="68"
+    font-size="66"
     font-weight="700"
     fill="${game.accent}"
-    letter-spacing="1"
+    text-anchor="middle"
   >Solitaire Station</text>
 
-  <!-- Game name -->
+  <!-- Thin separator line under brand -->
+  <line
+    x1="${W / 2 - 140}" y1="${brandY + 14}"
+    x2="${W / 2 + 140}" y2="${brandY + 14}"
+    stroke="${game.accent}" stroke-width="1" stroke-opacity="0.3"
+  />
+
+  <!-- Game name — centered -->
   <text
-    x="482" y="335"
+    x="${W / 2}" y="${nameY}"
     font-family="DejaVu Serif, serif"
-    font-size="42"
+    font-size="40"
     font-weight="400"
     fill="#e8dfc8"
-    letter-spacing="0.5"
+    text-anchor="middle"
     opacity="0.92"
   >${game.label}</text>
 
-  <!-- Tagline -->
+  <!-- Tagline — centered -->
   <text
-    x="484" y="388"
+    x="${W / 2}" y="${taglineY}"
     font-family="DejaVu Sans, sans-serif"
-    font-size="24"
+    font-size="21"
     font-weight="400"
     fill="#a0c0a8"
-    letter-spacing="2"
+    text-anchor="middle"
     opacity="0.80"
-  >FREE · NO ADS · NO DOWNLOAD</text>
+  >FREE  ·  NO ADS  ·  NO DOWNLOAD</text>
 
-  <!-- Bottom domain -->
+  <!-- Bottom domain — centered -->
   <text
-    x="${W / 2}" y="${H - 28}"
+    x="${W / 2}" y="${H - 26}"
     font-family="DejaVu Sans, sans-serif"
-    font-size="20"
+    font-size="17"
     fill="${game.accent}"
     text-anchor="middle"
-    opacity="0.55"
-    letter-spacing="3"
-  >FREE-KLONDIKE-SOLITAIRE.COM</text>
+    opacity="0.50"
+    letter-spacing="2"
+  >SOLITAIRESTATION.COM</text>
 </svg>`;
 }
 
