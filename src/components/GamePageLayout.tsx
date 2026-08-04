@@ -157,7 +157,7 @@ export function GamePageLayout({ gameKey, badge, title, tagline, rulesIntro, rul
                 document.getElementById("how-to-play")?.scrollIntoView({ behavior: "smooth" });
               }}
               className="text-xs hover:underline"
-              style={{ color: "var(--muted-foreground)" }}
+              style={{ color: "var(--neon)" }}
             >
               ↓ Game instructions
             </a>
