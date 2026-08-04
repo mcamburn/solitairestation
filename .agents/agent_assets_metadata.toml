@@ -14,3 +14,17 @@ uri = "file://public/brand/facebook-profile.jpg"
 type = "image"
 title = "Facebook Profile Picture"
 description = "Square format, safe for circular crop — upload as your Facebook page's profile picture"
+
+[[outputs]]
+id = "yzUmmc1o-EBiGhTEJChQj"
+uri = "file://public/brand/facebook-cover_2.jpg"
+type = "image"
+title = "Facebook Cover Photo"
+description = "Gold card + serif wordmark on dark navy — matches the logo style"
+
+[[outputs]]
+id = "8uSUcuycL5emlRuLQ26bX"
+uri = "file://public/brand/facebook-profile_2.jpg"
+type = "image"
+title = "Facebook Profile Picture"
+description = "Gold card with dark green spade, safe for circular crop"
