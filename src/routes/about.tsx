@@ -136,6 +136,125 @@ function AboutPage() {
                 eye and a steady hand.
               </p>
             </div>
+            <div>
+              <h3 className="font-semibold text-foreground">⛳ Free Golf Solitaire</h3>
+              <p className="mt-1">
+                Free Golf Solitaire is one of the quickest games in the collection. Seven
+                columns of five cards form the "course," and you clear them by building a
+                single waste pile — playing any card one rank above or below the current
+                top card, regardless of suit. Sequences can wrap around (a King plays onto
+                a Queen or an Ace). Empty the tableau before the stock runs out to shoot
+                under par. Fast, satisfying, and endlessly replayable in short bursts.
+              </p>
+            </div>
+            <div>
+              <h3 className="font-semibold text-foreground">🎩 Free Forty Thieves</h3>
+              <p className="mt-1">
+                Forty Thieves is the most demanding game in the collection. Two full decks
+                are dealt into ten tableau columns of four cards, all face-up, and you must
+                build eight foundation piles — one per suit — from Ace to King. Only the
+                top card of each column can move, and columns build by suit in descending
+                rank, making every free space precious. Fewer than one deal in ten is
+                winnable, so every clear board is a genuine achievement.
+              </p>
+            </div>
+            <div>
+              <h3 className="font-semibold text-foreground">🌿 Free Yukon Solitaire</h3>
+              <p className="mt-1">
+                Yukon plays like Klondike with one liberating twist: any face-up card —
+                even one buried mid-column — can be moved along with everything above it.
+                There is no stock pile; every card is dealt to the tableau from the start.
+                That open layout makes Yukon more strategic than Klondike but also more
+                unforgiving, since there are no extra draws to bail you out. Building
+                foundations by suit from Ace to King requires careful column management
+                across the full board.
+              </p>
+            </div>
+            <div>
+              <h3 className="font-semibold text-foreground">🦂 Free Scorpion Solitaire</h3>
+              <p className="mt-1">
+                Scorpion is a Spider cousin played with a single deck in seven columns. The
+                goal is to build four King-to-Ace sequences within the tableau — completed
+                sequences are removed automatically. Any face-up card can be moved with
+                everything above it to any column where it fits in descending rank,
+                regardless of suit. Three reserve cards sit aside to be dealt as a last
+                resort. The game is beatable more often than it looks, but untangling the
+                columns requires careful planning from the opening moves.
+              </p>
+            </div>
+            <div>
+              <h3 className="font-semibold text-foreground">🗂️ Free Eight Off</h3>
+              <p className="mt-1">
+                Eight Off is FreeCell's strategic sibling. Eight tableau columns hold six
+                cards each, all face-up, and eight free cells — twice as many as FreeCell —
+                give you considerably more room to maneuver. Build four foundations by suit
+                from Ace to King by carefully freeing the cards buried underneath. The
+                extra free cells make Eight Off more approachable for newcomers to
+                open-information solitaire, while still rewarding methodical, forward-
+                thinking play.
+              </p>
+            </div>
+            <div>
+              <h3 className="font-semibold text-foreground">🎲 Free Canfield Solitaire</h3>
+              <p className="mt-1">
+                Canfield — named after the 19th-century gambling house where players paid
+                by the deck — is a fast, punishing game with a notoriously low win rate.
+                Thirteen cards form a reserve stack, one card starts each foundation, and
+                four tableau columns build in descending rank and alternating color. The
+                stock cycles quickly, options are limited, and most deals cannot be won.
+                It is the solitaire game that feels most like a wager against the deck.
+              </p>
+            </div>
+            <div>
+              <h3 className="font-semibold text-foreground">🃏 Free Addiction Solitaire</h3>
+              <p className="mt-1">
+                Addiction begins with a standard deck laid in four rows of thirteen cards.
+                Aces are removed, leaving four gaps. The rule is simple: move any card into
+                a gap, provided the card to the left of that gap is the same suit and one
+                rank lower. Twos must anchor the left of each row. When no legal move
+                remains you may shuffle the non-positioned cards — up to three times total.
+                The goal is to complete all four rows in ascending suit order, which is
+                clean in concept and surprisingly tricky in practice.
+              </p>
+            </div>
+            <div>
+              <h3 className="font-semibold text-foreground">📋 Free Baker's Dozen</h3>
+              <p className="mt-1">
+                Baker's Dozen deals all 52 cards face-up into thirteen columns of four.
+                Before play begins, Kings are automatically moved to the bottom of their
+                columns. After that, no card moves between tableau columns — the only legal
+                move is placing a card onto its foundation pile, built by suit from Ace to
+                King. With the full layout visible from the first move, Baker's Dozen is a
+                puzzle of pure sequencing: work out which Aces and suited runs you can
+                free, and in exactly what order.
+              </p>
+            </div>
+            <div>
+              <h3 className="font-semibold text-foreground">♟️ Free Baker's Game</h3>
+              <p className="mt-1">
+                Baker's Game uses the same four-free-cell, eight-column layout as FreeCell
+                but with one rule change that makes it significantly harder: tableau columns
+                must be built by suit in descending rank, not alternating color. That
+                restriction sharply limits where cards can be placed, demanding deeper
+                planning and making the free cells far more valuable. Fewer deals are
+                solvable than in FreeCell, and sequences unravel quickly when the free
+                cells fill up — a rewarding challenge for players who want more from their
+                open-cell solitaire.
+              </p>
+            </div>
+            <div>
+              <h3 className="font-semibold text-foreground">🕐 Free Clock Solitaire</h3>
+              <p className="mt-1">
+                Clock Solitaire is the only game in the collection where skill plays no
+                part — the outcome is decided the moment the deck is shuffled. Cards are
+                dealt face-down into thirteen piles arranged like a clock face, with Ace at
+                one o'clock and King at the center. Each turn, the top card of the current
+                pile is flipped and tucked face-up beneath its matching clock position. You
+                win if the King pile completes last; if all four Kings appear before every
+                other pile is finished, the game is lost. Simple, fast, and oddly
+                compelling.
+              </p>
+            </div>
           </div>
         </section>
 

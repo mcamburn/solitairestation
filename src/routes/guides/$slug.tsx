@@ -65,7 +65,31 @@ function GuidePage() {
     (g) => g.game === guide.game && g.slug !== guide.slug,
   ).slice(0, 3);
 
+  const articleLd = JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": `${guide.title} — Solitaire Station`,
+    "description": guide.description,
+    "url": `${SITE_URL}/guides/${guide.slug}`,
+    "inLanguage": "en-US",
+    "publisher": {
+      "@type": "Organization",
+      "name": "Solitaire Station",
+      "url": `${SITE_URL}/`,
+    },
+    "breadcrumb": {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": `${SITE_URL}/` },
+        { "@type": "ListItem", "position": 2, "name": "Guides", "item": `${SITE_URL}/guides` },
+        { "@type": "ListItem", "position": 3, "name": guide.title, "item": `${SITE_URL}/guides/${guide.slug}` },
+      ],
+    },
+  });
+
   return (
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: articleLd }} />
     <main className="mx-auto min-h-screen w-full max-w-[900px] px-4 py-10 sm:py-16">
       {/* Breadcrumb */}
       <nav
@@ -212,5 +236,6 @@ function GuidePage() {
 
       <SiteFooter showBackLink />
     </main>
+    </>
   );
 }

@@ -54,8 +54,24 @@ const TAG_COLOR: Record<GameTag, string> = {
   general:      "#4b5563",
 };
 
+const GUIDES_INDEX_LD = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "Solitaire Strategy Guides — Solitaire Station",
+  "description": "Strategy guides for 16 solitaire games: rules, win-rate breakdowns, tips, history, and glossary.",
+  "url": `${SITE_URL}/guides`,
+  "inLanguage": "en-US",
+  "publisher": {
+    "@type": "Organization",
+    "name": "Solitaire Station",
+    "url": `${SITE_URL}/`,
+  },
+});
+
 function GuidesPage() {
   return (
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: GUIDES_INDEX_LD }} />
     <main className="mx-auto min-h-screen w-full max-w-[900px] px-4 py-10 sm:py-16 xl:max-w-[1100px]">
       {/* Back link */}
       <Link
@@ -147,5 +163,6 @@ function GuidesPage() {
 
       <SiteFooter showBackLink />
     </main>
+    </>
   );
 }
