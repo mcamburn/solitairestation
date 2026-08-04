@@ -5,7 +5,7 @@ import { SITE_URL } from "@/lib/site";
 
 const TITLE = "Solitaire Station — Turn 3 Solitaire";
 const DESC = "Play Turn 3 (Draw 3) Klondike Solitaire free online at Solitaire Station — no download, no sign-up. Draw 3 cards at a time for a harder, more strategic challenge. Hints, undo, and auto-save included.";
-const OG_IMG = `${SITE_URL}/og/klondike.png?v=3`;
+const OG_IMG = `${SITE_URL}/og/klondike.png?v=4`;
 
 export const Route = createFileRoute("/turn-3-solitaire")({
   head: () => ({

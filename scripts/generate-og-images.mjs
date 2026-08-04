@@ -48,18 +48,19 @@ const CARD_SVG = `
 function makeSvg(game) {
   const W = 1200, H = 630;
 
-  // Card icon: scale the 110×138 base coords to ~130×163 px, centered horizontally.
-  // Kept small so all text fits within the top ~360 px that iMessage crops to.
-  const CARD_SCALE = 1.18; // 110 * 1.18 ≈ 130 px wide
-  const CARD_W = Math.round(110 * CARD_SCALE); // 130
-  const CARD_X = Math.round((W - CARD_W) / 2); // 535  — centered
-  const CARD_Y = 28;
-  const CARD_H = Math.round(138 * CARD_SCALE); // 163
+  // Card icon: scale to ~120×150 px, centered horizontally.
+  // Slightly smaller than before so text can be larger while still fitting
+  // within the top ~300 px that iMessage crops to.
+  const CARD_SCALE = 1.09; // 110 * 1.09 ≈ 120 px wide
+  const CARD_W = Math.round(110 * CARD_SCALE); // 120
+  const CARD_X = Math.round((W - CARD_W) / 2); // centered
+  const CARD_Y = 18;
+  const CARD_H = Math.round(138 * CARD_SCALE); // ~150
 
-  // Text baseline positions — all within top ~370 px so iMessage crops don't hide them
-  const brandY   = CARD_Y + CARD_H + 52;  // ~243
-  const nameY    = brandY + 56;            // ~299
-  const taglineY = nameY  + 46;            // ~345
+  // Text baseline positions — tight spacing so iMessage crop shows all content
+  const brandY   = CARD_Y + CARD_H + 36;  // ~204
+  const nameY    = brandY + 62;            // ~266
+  const taglineY = nameY  + 44;            // ~310
 
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">
   <defs>
@@ -92,39 +93,31 @@ function makeSvg(game) {
   <text
     x="${W / 2}" y="${brandY}"
     font-family="DejaVu Serif, serif"
-    font-size="66"
+    font-size="58"
     font-weight="700"
     fill="${game.accent}"
     text-anchor="middle"
   >Solitaire Station</text>
 
-  <!-- Thin separator line under brand -->
-  <line
-    x1="${W / 2 - 140}" y1="${brandY + 14}"
-    x2="${W / 2 + 140}" y2="${brandY + 14}"
-    stroke="${game.accent}" stroke-width="1" stroke-opacity="0.3"
-  />
-
-  <!-- Game name — centered -->
+  <!-- Game name — centered, large and bright for easy reading -->
   <text
     x="${W / 2}" y="${nameY}"
     font-family="DejaVu Serif, serif"
-    font-size="40"
-    font-weight="400"
-    fill="#e8dfc8"
+    font-size="64"
+    font-weight="700"
+    fill="#ffffff"
     text-anchor="middle"
-    opacity="0.92"
   >${game.label}</text>
 
   <!-- Tagline — centered -->
   <text
     x="${W / 2}" y="${taglineY}"
     font-family="DejaVu Sans, sans-serif"
-    font-size="21"
+    font-size="26"
     font-weight="400"
     fill="#a0c0a8"
     text-anchor="middle"
-    opacity="0.80"
+    opacity="0.90"
   >FREE  ·  NO ADS  ·  NO DOWNLOAD</text>
 
   <!-- Bottom domain — centered -->

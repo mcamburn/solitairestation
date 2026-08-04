@@ -6,7 +6,7 @@ import { SITE_URL } from "@/lib/site";
 
 const TITLE = "Solitaire Station — Free Spider Solitaire";
 const DESC = "Play free Spider Solitaire at Solitaire Station — choose 1, 2, or 4 suits across 10 columns. No download, no sign-up. Hints, undo, and auto-save progress.";
-const OG_IMG = `${SITE_URL}/og/spider.png?v=3`;
+const OG_IMG = `${SITE_URL}/og/spider.png?v=4`;
 
 export const Route = createFileRoute("/spider")({
   head: () => ({
