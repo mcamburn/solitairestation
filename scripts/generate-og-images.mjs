@@ -117,7 +117,7 @@ function makeSvg(game) {
     fill="#a0c0a8"
     text-anchor="middle"
     opacity="0.90"
-  >FREE  ·  NO ADS  ·  NO DOWNLOAD</text>
+  >FREE  ·  NO SIGN-UP  ·  NO DOWNLOAD</text>
 
   <!-- Bottom domain — centered -->
   <text
