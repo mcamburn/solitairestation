@@ -1,0 +1,16 @@
+uploads = []
+generated = []
+
+[[outputs]]
+id = "_k_MM-U52IrsW1XTqqfuR"
+uri = "file://public/brand/facebook-cover.jpg"
+type = "image"
+title = "Facebook Cover Photo"
+description = "820×312 banner — save and upload to your Facebook page's cover photo slot"
+
+[[outputs]]
+id = "plGs1z61_YSK4chg5TUDh"
+uri = "file://public/brand/facebook-profile.jpg"
+type = "image"
+title = "Facebook Profile Picture"
+description = "Square format, safe for circular crop — upload as your Facebook page's profile picture"
