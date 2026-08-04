@@ -140,6 +140,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       // Solitaire Station card icon favicon
       { rel: "icon", type: "image/svg+xml", href: "/favicon.svg" },
       { rel: "icon", type: "image/png", sizes: "32x32", href: "/favicon-32x32.png" },
+      // Social profile ownership signals (rel=me tells Google these profiles belong to this domain)
+      { rel: "me", href: "https://x.com/solitairestatn" },
+      { rel: "me", href: "https://www.facebook.com/solitairestation" },
     ],
   }),
   shellComponent: RootShell,
@@ -171,10 +174,18 @@ const WEBSITE_LD = JSON.stringify({
         "availability": "https://schema.org/InStock"
       },
       "publisher": {
-        "@type": "Organization",
-        "name": "Solitaire Station",
-        "url": `${SITE_URL}/`
+        "@id": `${SITE_URL}/#organization`
       }
+    },
+    {
+      "@type": "Organization",
+      "@id": `${SITE_URL}/#organization`,
+      "name": "Solitaire Station",
+      "url": `${SITE_URL}/`,
+      "sameAs": [
+        "https://x.com/solitairestatn",
+        "https://www.facebook.com/solitairestation"
+      ]
     },
     {
       "@type": "WebSite",
@@ -182,7 +193,7 @@ const WEBSITE_LD = JSON.stringify({
       "url": `${SITE_URL}/`,
       "name": "Solitaire Station",
       "publisher": {
-        "@id": `${SITE_URL}/#game`
+        "@id": `${SITE_URL}/#organization`
       }
     },
     {
