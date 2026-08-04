@@ -6,6 +6,7 @@ import { useDailyChallenge } from "@/contexts/DailyChallengeContext";
 import { getTodayKey } from "@/lib/daily";
 import { SITE_URL } from "@/lib/site";
 import { getGameLabel } from "@/lib/gameLabels";
+import { useShareStreak } from "@/hooks/useShareStreak";
 
 interface DailyWinBannerProps {
   message?: string;
@@ -23,7 +24,7 @@ interface DailyWinBannerProps {
 export function DailyWinBanner({ message, onNew, variant = "win", stats, modeLabel }: DailyWinBannerProps) {
   const { justWonDailyStreak, clearDailyWin, activateDaily, gameKey } = useDailyChallenge();
   const [celebrating, setCelebrating] = useState(true);
-  const [copied, setCopied] = useState(false);
+  const { share, buttonLabel } = useShareStreak();
 
   const handleNew = () => {
     clearDailyWin();
@@ -34,6 +35,9 @@ export function DailyWinBanner({ message, onNew, variant = "win", stats, modeLab
     // Re-deal today's seed without affecting the streak
     activateDaily();
   };
+
+  const gameLabel = getGameLabel(gameKey);
+  const gameUrl = `${SITE_URL}/${gameKey}`;
 
   const isStuck = variant === "stuck";
   const isDaily = !isStuck && justWonDailyStreak !== null;
@@ -75,13 +79,34 @@ export function DailyWinBanner({ message, onNew, variant = "win", stats, modeLab
           {statItems.length > 0 && (
             <p className="mt-3 text-xs text-muted-foreground">{statItems.join(" · ")}</p>
           )}
-          <button
-            onClick={handleNew}
-            className="mt-5 rounded-xl px-7 py-2.5 text-sm font-semibold text-primary-foreground transition hover:opacity-90"
-            style={{ background: "linear-gradient(135deg, var(--neon), var(--neon-2))" }}
-          >
-            {isStuck ? "New Game" : "Play Again"}
-          </button>
+          <div className={`mt-5 flex flex-col gap-2 ${!isStuck ? "sm:flex-row sm:justify-center" : ""}`}>
+            {!isStuck && (
+              <button
+                onClick={() => {
+                  const streak = stats?.currentStreak ?? 0;
+                  const text = streak >= 2
+                    ? `🔥 ${streak}-game win streak on Solitaire Station!\nPlaying ${gameLabel} — can you beat it?`
+                    : `🎉 Just won a game of ${gameLabel} on Solitaire Station!`;
+                  share({ title: "Solitaire Station", text, url: gameUrl });
+                }}
+                className="rounded-xl px-5 py-2.5 text-sm font-semibold transition hover:opacity-90"
+                style={{
+                  background: "color-mix(in srgb, var(--neon) 20%, transparent)",
+                  border: "1px solid color-mix(in srgb, var(--neon) 50%, transparent)",
+                  color: "var(--neon)",
+                }}
+              >
+                {buttonLabel("📤 Share")}
+              </button>
+            )}
+            <button
+              onClick={handleNew}
+              className="rounded-xl px-7 py-2.5 text-sm font-semibold text-primary-foreground transition hover:opacity-90"
+              style={{ background: "linear-gradient(135deg, var(--neon), var(--neon-2))" }}
+            >
+              {isStuck ? "New Game" : "Play Again"}
+            </button>
+          </div>
         </div>
       </>
     );
@@ -103,8 +128,7 @@ export function DailyWinBanner({ message, onNew, variant = "win", stats, modeLab
       : `${justWonDailyStreak}-day streak 🔥`;
 
   const siteHost = SITE_URL.replace(/^https?:\/\/(www\.)?/, "");
-  const gameLabel = getGameLabel(gameKey);
-  const shareText = [
+  const dailyShareText = [
     `🃏 Solitaire Station – Daily ${gameLabel}`,
     `📅 ${dateLabel} (local time)`,
     `🔥 ${streakLabel}`,
@@ -112,13 +136,11 @@ export function DailyWinBanner({ message, onNew, variant = "win", stats, modeLab
     `16 free card games at ${siteHost}`,
   ].join("\n");
 
-  const handleCopy = () => {
-    navigator.clipboard.writeText(shareText).then(() => {
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2500);
-    }).catch(() => {
-      // Fallback: prompt
-      window.prompt("Copy this result:", shareText);
+  const handleDailyShare = () => {
+    share({
+      title: `Solitaire Station – Daily ${gameLabel}`,
+      text: dailyShareText,
+      url: gameUrl,
     });
   };
 
@@ -188,17 +210,15 @@ export function DailyWinBanner({ message, onNew, variant = "win", stats, modeLab
         {/* Action buttons */}
         <div className="mt-5 flex flex-col gap-2 sm:flex-row sm:justify-center">
           <button
-            onClick={handleCopy}
+            onClick={handleDailyShare}
             className="rounded-xl px-5 py-2.5 text-sm font-semibold transition hover:opacity-90"
             style={{
-              background: copied
-                ? "linear-gradient(135deg, var(--neon), var(--neon-2))"
-                : "color-mix(in srgb, var(--neon-2) 20%, transparent)",
+              background: "color-mix(in srgb, var(--neon-2) 20%, transparent)",
               border: "1px solid color-mix(in srgb, var(--neon-2) 50%, transparent)",
-              color: copied ? "var(--primary-foreground)" : "var(--neon-2)",
+              color: "var(--neon-2)",
             }}
           >
-            {copied ? "✓ Copied!" : "📋 Share Result"}
+            {buttonLabel("📤 Share Result")}
           </button>
           <button
             onClick={handleNew}
