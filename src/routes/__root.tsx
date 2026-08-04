@@ -143,6 +143,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       // Social profile ownership signals (rel=me tells Google these profiles belong to this domain)
       { rel: "me", href: "https://x.com/solitairestatn" },
       { rel: "me", href: "https://www.facebook.com/solitairestation" },
+      { rel: "me", href: "https://www.pinterest.com/solitairestation/" },
     ],
   }),
   shellComponent: RootShell,
@@ -184,7 +185,8 @@ const WEBSITE_LD = JSON.stringify({
       "url": `${SITE_URL}/`,
       "sameAs": [
         "https://x.com/solitairestatn",
-        "https://www.facebook.com/solitairestation"
+        "https://www.facebook.com/solitairestation",
+        "https://www.pinterest.com/solitairestation/"
       ]
     },
     {
