@@ -147,22 +147,22 @@ export function GamePageLayout({ gameKey, badge, title, tagline, rulesIntro, rul
           style={{ scrollMarginTop: "var(--sticky-nav-height)" }}
         >
           {children}
-        </section>
 
-        {/* ── Scroll-to-instructions link (mobile only) ──────────────────── */}
-        <div className="md:hidden mx-auto mt-3 max-w-[900px] xl:max-w-[1200px] px-4 text-center">
-          <a
-            href="#how-to-play"
-            onClick={(e) => {
-              e.preventDefault();
-              document.getElementById("how-to-play")?.scrollIntoView({ behavior: "smooth" });
-            }}
-            className="text-xs hover:underline"
-            style={{ color: "var(--muted-foreground)" }}
-          >
-            ↓ Game instructions
-          </a>
-        </div>
+          {/* ── Scroll-to-instructions link (mobile only) ────────────────── */}
+          <div className="md:hidden mt-3 px-4 text-center">
+            <a
+              href="#how-to-play"
+              onClick={(e) => {
+                e.preventDefault();
+                document.getElementById("how-to-play")?.scrollIntoView({ behavior: "smooth" });
+              }}
+              className="text-xs hover:underline"
+              style={{ color: "var(--muted-foreground)" }}
+            >
+              ↓ Game instructions
+            </a>
+          </div>
+        </section>
 
         {/* ── Rules ──────────────────────────────────────────────────────── */}
         <section
