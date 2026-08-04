@@ -327,9 +327,9 @@ export function Canfield() {
         <div className="flex items-center gap-4">
           <span className="text-muted-foreground">Moves <span className="font-semibold text-foreground">{game.moves}</span></span>
           <span className="flex items-center gap-1.5 tabular-nums text-muted-foreground">
-            <button onClick={pause} title={isPaused ? "Resume timer" : "Pause timer"} aria-label={isPaused ? "Resume timer" : "Pause timer"} className="opacity-50 hover:opacity-100 transition-opacity text-[10px] leading-none select-none">{isPaused ? "▶" : "⏸"}</button>
+            <button onClick={pause} title={isPaused ? "Resume timer" : "Pause timer"} aria-label={isPaused ? "Resume timer" : "Pause timer"} className="text-[var(--neon)] opacity-80 hover:opacity-100 transition-opacity text-[10px] leading-none select-none">{isPaused ? "▶" : "⏸"}</button>
             <span className={isPaused ? "opacity-50" : ""}>{time}</span>
-            <button onClick={resetTimer} title="Restart timer" aria-label="Restart timer" className="opacity-50 hover:opacity-100 transition-opacity text-[10px] leading-none select-none">↺</button>
+            <button onClick={resetTimer} title="Restart timer" aria-label="Restart timer" className="text-[var(--neon)] opacity-80 hover:opacity-100 transition-opacity text-[10px] leading-none select-none">↺</button>
           </span>
           <span className="text-muted-foreground">Foundation <span className="font-semibold text-foreground">{totalFoundationCards}/52</span></span>
           {topBarStats.hasPlayed && (

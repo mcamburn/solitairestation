@@ -843,12 +843,12 @@ function TopBar({
       <div className="flex items-center gap-3 sm:gap-5" style={{ fontFamily: "var(--font-mono)" }}>
         <div className="text-right leading-tight">
           <div className="flex items-center justify-end gap-1 text-[9px] uppercase tracking-[0.22em] text-muted-foreground">
-            <button onClick={onPause} title={isPaused ? "Resume timer" : "Pause timer"} aria-label={isPaused ? "Resume timer" : "Pause timer"} className="opacity-50 hover:opacity-100 transition-opacity leading-none select-none">{isPaused ? "▶" : "⏸"}</button>
+            <button onClick={onPause} title={isPaused ? "Resume timer" : "Pause timer"} aria-label={isPaused ? "Resume timer" : "Pause timer"} className="text-[var(--neon)] opacity-80 hover:opacity-100 transition-opacity leading-none select-none">{isPaused ? "▶" : "⏸"}</button>
             TIME
           </div>
           <div className="flex items-center gap-1 text-sm font-semibold" style={isPaused ? { opacity: 0.5 } : undefined}>
             {time}
-            <button onClick={onReset} title="Restart timer" aria-label="Restart timer" className="opacity-50 hover:opacity-100 transition-opacity text-[9px] leading-none select-none">↺</button>
+            <button onClick={onReset} title="Restart timer" aria-label="Restart timer" className="text-[var(--neon)] opacity-80 hover:opacity-100 transition-opacity text-[9px] leading-none select-none">↺</button>
           </div>
         </div>
         <Stat label="MOVES" value={String(moves)} />
