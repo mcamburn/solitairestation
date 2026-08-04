@@ -5,7 +5,7 @@ import { SITE_URL } from "@/lib/site";
 
 const TITLE = "Solitaire Station — Klondike Solitaire";
 const DESC = "Play Klondike Solitaire free online at Solitaire Station — the classic card game, no download or sign-up needed. Choose Turn 1, Turn 3, Vegas, or Double mode. Hints, undo, and auto-save included.";
-const OG_IMG = `${SITE_URL}/og/klondike.png?v=4`;
+const OG_IMG = `${SITE_URL}/og/klondike.png?v=5`;
 
 export const Route = createFileRoute("/klondike-solitaire")({
   head: () => ({

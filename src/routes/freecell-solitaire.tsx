@@ -5,7 +5,7 @@ import { SITE_URL } from "@/lib/site";
 
 const TITLE = "Solitaire Station — FreeCell Solitaire";
 const DESC = "Play free FreeCell Solitaire online at Solitaire Station — all 52 cards are visible from the start. Nearly every deal is solvable with the right strategy. Hints, undo, and auto-save. No download required.";
-const OG_IMG = `${SITE_URL}/og/freecell.png?v=4`;
+const OG_IMG = `${SITE_URL}/og/freecell.png?v=5`;
 
 export const Route = createFileRoute("/freecell-solitaire")({
   head: () => ({

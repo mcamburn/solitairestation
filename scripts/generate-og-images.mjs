@@ -48,19 +48,18 @@ const CARD_SVG = `
 function makeSvg(game) {
   const W = 1200, H = 630;
 
-  // Card icon: scale to ~120×150 px, centered horizontally.
-  // Slightly smaller than before so text can be larger while still fitting
-  // within the top ~300 px that iMessage crops to.
-  const CARD_SCALE = 1.09; // 110 * 1.09 ≈ 120 px wide
-  const CARD_W = Math.round(110 * CARD_SCALE); // 120
+  // Card icon: scale to ~130×163 px, centered horizontally.
+  const CARD_SCALE = 1.18; // 110 * 1.18 ≈ 130 px wide
+  const CARD_W = Math.round(110 * CARD_SCALE); // 130
   const CARD_X = Math.round((W - CARD_W) / 2); // centered
-  const CARD_Y = 18;
-  const CARD_H = Math.round(138 * CARD_SCALE); // ~150
+  const CARD_Y = 72;
+  const CARD_H = Math.round(138 * CARD_SCALE); // ~163
 
-  // Text baseline positions — tight spacing so iMessage crop shows all content
-  const brandY   = CARD_Y + CARD_H + 36;  // ~204
-  const nameY    = brandY + 62;            // ~266
-  const taglineY = nameY  + 44;            // ~310
+  // Text baselines distributed across the full 630 px image height so
+  // iMessage's full-image preview has no large empty band in the middle.
+  const brandY   = CARD_Y + CARD_H + 78;  // ~313  (~60 px visual gap below card)
+  const nameY    = brandY + 110;           // ~423  (game name is the hero)
+  const taglineY = nameY  + 75;            // ~498
 
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">
   <defs>
