@@ -1,21 +1,27 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { SiteFooter } from "@/components/SiteFooter";
+import { SITE_URL } from "@/lib/site";
 
 export const Route = createFileRoute("/privacy")({
   component: PrivacyPage,
   head: () => ({
     meta: [
       { title: "Privacy Policy · Solitaire Station" },
-      { name: "description", content: "Privacy Policy for Solitaire Station." },
+      { name: "description", content: "Privacy Policy for Solitaire Station — free online solitaire. No account or sign-up required. Your game data stays on your device." },
       { name: "robots", content: "noindex, follow" },
       { property: "og:site_name", content: "Solitaire Station" },
       { property: "og:title", content: "Privacy Policy · Solitaire Station" },
+      { property: "og:description", content: "Privacy Policy for Solitaire Station. No account required. Your game data stays on your device." },
       { property: "og:type", content: "website" },
-      { property: "og:url", content: "https://www.solitairestation.com/privacy" },
+      { property: "og:url", content: `${SITE_URL}/privacy` },
+      { property: "og:image", content: `${SITE_URL}/og/klondike.png?v=6` },
+      { property: "og:image:width", content: "1200" },
+      { property: "og:image:height", content: "630" },
       { name: "twitter:card", content: "summary" },
+      { name: "twitter:image", content: `${SITE_URL}/og/klondike.png?v=6` },
     ],
     links: [
-      { rel: "canonical", href: "https://www.solitairestation.com/privacy" },
+      { rel: "canonical", href: `${SITE_URL}/privacy` },
     ],
   }),
 });

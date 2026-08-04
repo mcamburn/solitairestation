@@ -107,7 +107,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:description", content: "16 free solitaire games with customizable card backs and face styles — hints, undo, and auto-save included. No download or sign-up. Works on any device." },
       { property: "og:site_name", content: "Solitaire Station" },
       { property: "og:locale", content: "en_US" },
-      { property: "og:image", content: `${SITE_URL}/og/klondike.png?v=6?v=2` },
+      { property: "og:image", content: `${SITE_URL}/og/klondike.png?v=6` },
       { property: "og:image:width", content: "1200" },
       { property: "og:image:height", content: "630" },
       { property: "og:image:alt", content: "Solitaire Station — Play Free Online Solitaire Instantly" },
@@ -116,7 +116,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "twitter:url", content: `${SITE_URL}/` },
       { name: "twitter:title", content: "Solitaire Station — Play Free Online Solitaire Instantly" },
       { name: "twitter:description", content: "16 free solitaire games — customizable card designs, hints, and auto-save. Klondike, Spider, FreeCell, Golf, Mahjong, and more. No download." },
-      { name: "twitter:image", content: `${SITE_URL}/og/klondike.png?v=6?v=2` },
+      { name: "twitter:image", content: `${SITE_URL}/og/klondike.png?v=6` },
       // PWA / mobile
       { name: "theme-color", content: "#b8901e" },
       { name: "mobile-web-app-capable", content: "yes" },

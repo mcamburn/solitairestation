@@ -1,21 +1,27 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { SiteFooter } from "@/components/SiteFooter";
+import { SITE_URL } from "@/lib/site";
 
 export const Route = createFileRoute("/terms")({
   component: TermsPage,
   head: () => ({
     meta: [
       { title: "Terms of Use · Solitaire Station" },
-      { name: "description", content: "Terms of Use for Solitaire Station." },
+      { name: "description", content: "Terms of Use for Solitaire Station — free online solitaire with no sign-up required." },
       { name: "robots", content: "noindex, follow" },
       { property: "og:site_name", content: "Solitaire Station" },
       { property: "og:title", content: "Terms of Use · Solitaire Station" },
+      { property: "og:description", content: "Terms of Use for Solitaire Station. Free to play, no sign-up required." },
       { property: "og:type", content: "website" },
-      { property: "og:url", content: "https://www.solitairestation.com/terms" },
+      { property: "og:url", content: `${SITE_URL}/terms` },
+      { property: "og:image", content: `${SITE_URL}/og/klondike.png?v=6` },
+      { property: "og:image:width", content: "1200" },
+      { property: "og:image:height", content: "630" },
       { name: "twitter:card", content: "summary" },
+      { name: "twitter:image", content: `${SITE_URL}/og/klondike.png?v=6` },
     ],
     links: [
-      { rel: "canonical", href: "https://www.solitairestation.com/terms" },
+      { rel: "canonical", href: `${SITE_URL}/terms` },
     ],
   }),
 });

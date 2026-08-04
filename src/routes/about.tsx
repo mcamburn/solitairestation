@@ -7,15 +7,19 @@ export const Route = createFileRoute("/about")({
   head: () => ({
     meta: [
       { title: "About Solitaire Station — Free Online Solitaire Games" },
-      { name: "description", content: "About Solitaire Station — play free online solitaire including Klondike solitaire, free Spider Solitaire, free FreeCell, free Pyramid, free TriPeaks, and free Mahjong solitaire. No download, no sign-up." },
+      { name: "description", content: "About Solitaire Station — 16 free online solitaire games including Klondike, Spider, FreeCell, Pyramid, TriPeaks, Mahjong, Golf, Forty Thieves, Yukon, and more. No download, no sign-up." },
       { name: "robots", content: "index, follow" },
       { property: "og:site_name", content: "Solitaire Station" },
       { property: "og:locale", content: "en_US" },
       { property: "og:title", content: "About Solitaire Station — Free Online Solitaire Games" },
-      { property: "og:description", content: "Solitaire Station offers free online solitaire including Klondike, free Spider Solitaire, free FreeCell, free Pyramid, free TriPeaks, and free Mahjong solitaire." },
+      { property: "og:description", content: "Solitaire Station offers 16 free online solitaire games — Klondike, Spider, FreeCell, Pyramid, TriPeaks, Mahjong, Golf, Forty Thieves, Yukon, and more. No download, no sign-up." },
       { property: "og:type", content: "website" },
       { property: "og:url", content: `${SITE_URL}/about` },
-      { name: "twitter:card", content: "summary" },
+      { property: "og:image", content: `${SITE_URL}/og/klondike.png?v=6` },
+      { property: "og:image:width", content: "1200" },
+      { property: "og:image:height", content: "630" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:image", content: `${SITE_URL}/og/klondike.png?v=6` },
     ],
     links: [
       { rel: "canonical", href: `${SITE_URL}/about` },
@@ -40,7 +44,7 @@ function AboutPage() {
         About Solitaire Station
       </h1>
       <p className="mt-2 text-xs uppercase tracking-[0.22em] text-muted-foreground">
-        Free online solitaire — six games, zero friction
+        Free online solitaire — sixteen games, zero friction
       </p>
 
       <div className="mt-8 space-y-10 text-sm leading-relaxed text-muted-foreground">
@@ -56,7 +60,7 @@ function AboutPage() {
             site and start playing instantly on any device.
           </p>
           <p className="mt-3">
-            We offer six of the most popular solitaire variants in a single, unified app.
+            We offer sixteen of the most popular solitaire variants in a single, unified app.
             Every game shares the same polished neon aesthetic, consistent controls, and a
             full suite of quality-of-life features: undo, auto-save, move history, hints,
             and a timer — so you can focus on the cards.
@@ -65,7 +69,7 @@ function AboutPage() {
 
         <section>
           <h2 className="mb-3 text-base font-bold tracking-tight text-foreground">
-            The six games
+            The sixteen games
           </h2>
           <div className="space-y-5">
             <div>
@@ -143,7 +147,7 @@ function AboutPage() {
             {[
               ["No download required", "Every game runs entirely in your browser — desktop, tablet, or mobile."],
               ["Auto-save progress", "Your game state is saved automatically after every move using your browser's local storage. No account needed; your progress never leaves your device."],
-              ["Undo & hints", "All six games include unlimited undo and a built-in hint system so you never feel stuck."],
+              ["Undo & hints", "All sixteen games include unlimited undo and a built-in hint system so you never feel stuck."],
               ["Customisable card styles", "Choose from nine card back designs and nine card face styles to make the table feel like yours."],
               ["Completely free", "Solitaire Station is free to play with no paywalls, no mandatory sign-ups, and no ads interrupting your game."],
               ["Works on any device", "The layout adapts from a large desktop monitor down to a small phone screen, so you can play free online solitaire wherever you are."],
