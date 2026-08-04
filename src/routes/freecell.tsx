@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { FreeCell } from "@/components/FreeCell";
 import { GamePageLayout } from "@/components/GamePageLayout";
+import { FreeCellParkDemo } from "@/components/RuleDemo";
 import { SITE_URL } from "@/lib/site";
 
 export const Route = createFileRoute("/freecell")({
@@ -73,6 +74,7 @@ function FreeCellPage() {
         {
           title: "Free cells",
           body: "Each free cell holds exactly one card. Use them to temporarily park cards you can't place elsewhere. A free cell card can move to any valid tableau column or foundation.",
+          demo: <FreeCellParkDemo />,
         },
         {
           title: "Supermove",

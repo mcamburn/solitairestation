@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Spider } from "@/components/Spider";
 import { GamePageLayout } from "@/components/GamePageLayout";
+import { SpiderSameSuitDemo } from "@/components/RuleDemo";
 import { SITE_URL } from "@/lib/site";
 
 const TITLE = "Solitaire Station — Free Spider Solitaire";
@@ -73,6 +74,7 @@ function SpiderPage() {
         {
           title: "Any-suit stacking",
           body: "Cards of any suit can be stacked in descending order, but only same-suit runs are movable as a unit. Mixed stacks lock the lower cards until they're freed.",
+          demo: <SpiderSameSuitDemo />,
         },
         {
           title: "Dealing from stock",

@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Mahjong } from "@/components/Mahjong";
 import { GamePageLayout } from "@/components/GamePageLayout";
+import { MahjongFreeDemo } from "@/components/RuleDemo";
 import { SITE_URL } from "@/lib/site";
 
 export const Route = createFileRoute("/mahjong")({
@@ -65,6 +66,7 @@ function MahjongPage() {
         {
           title: "Free tiles",
           body: "A tile is free (playable) when: (1) no tile sits directly on top of it, AND (2) at least one of its sides (left or right) has no adjacent tile in the same layer.",
+          demo: <MahjongFreeDemo />,
         },
         {
           title: "Matching",

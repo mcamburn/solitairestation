@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Golf } from "@/components/Golf";
 import { GamePageLayout } from "@/components/GamePageLayout";
+import { GolfChainDemo } from "@/components/RuleDemo";
 import { SITE_URL } from "@/lib/site";
 
 export const Route = createFileRoute("/golf")({
@@ -69,6 +70,7 @@ function GolfPage() {
           {
             title: "Chain runs",
             body: "Once you start a run — say 5, 6, 7, 8 — you can keep going as long as each next card is ±1. Long chains clear columns quickly and are the key to scoring well.",
+            demo: <GolfChainDemo />,
           },
           {
             title: "Drawing from stock",

@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Yukon } from "@/components/Yukon";
 import { GamePageLayout } from "@/components/GamePageLayout";
+import { YukonGroupMoveDemo } from "@/components/RuleDemo";
 import { SITE_URL } from "@/lib/site";
 
 export const Route = createFileRoute("/yukon")({
@@ -65,6 +66,7 @@ function YukonPage() {
           {
             title: "Moving groups — Yukon's key rule",
             body: "You can pick up any face-up card together with ALL cards on top of it (regardless of order or suit) and move the group to another column. The only constraint: the bottom card of the moving group must be one rank lower and opposite color from the top card of the destination column.",
+            demo: <YukonGroupMoveDemo />,
           },
           {
             title: "Empty columns",

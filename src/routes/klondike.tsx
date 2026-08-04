@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Solitaire } from "@/components/Solitaire";
 import { GamePageLayout } from "@/components/GamePageLayout";
+import { AltColorDemo } from "@/components/RuleDemo";
 import { SITE_URL } from "@/lib/site";
 
 const TITLE = "Solitaire Station — Free Klondike Solitaire";
@@ -69,6 +70,7 @@ function KlondikePage() {
           {
             title: "Building the tableau",
             body: "Stack face-up cards in descending order and alternating colors (a red 7 goes on a black 8). You can move a single card or a properly-stacked run between columns. Empty columns accept only Kings.",
+            demo: <AltColorDemo />,
           },
           {
             title: "The foundations",

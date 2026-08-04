@@ -8,6 +8,7 @@ import { DailyChallengeProvider } from "@/contexts/DailyChallengeContext";
 export interface RuleItem {
   title: string;
   body: string;
+  demo?: React.ReactNode;
 }
 
 interface Props {
@@ -182,6 +183,7 @@ export function GamePageLayout({ gameKey, badge, title, tagline, rulesIntro, rul
                 <div key={i}>
                   <h3 className="text-sm font-semibold tracking-tight">{r.title}</h3>
                   <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">{r.body}</p>
+                  {r.demo}
                 </div>
               ))}
             </div>

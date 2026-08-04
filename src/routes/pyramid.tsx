@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Pyramid } from "@/components/Pyramid";
 import { GamePageLayout } from "@/components/GamePageLayout";
+import { PyramidAvailableDemo } from "@/components/RuleDemo";
 import { SITE_URL } from "@/lib/site";
 
 export const Route = createFileRoute("/pyramid")({
@@ -69,6 +70,7 @@ function PyramidPage() {
         {
           title: "Pair to 13 — the core mechanic",
           body: "Click any two available cards whose ranks sum to exactly 13 to remove both instantly. Card values: Ace=1, 2–10 face value, Jack=11, Queen=12, King=13. The valid pairs are: A+Q, 2+J, 3+10, 4+9, 5+8, 6+7. Kings stand alone.",
+          demo: <PyramidAvailableDemo />,
         },
         {
           title: "Kings remove themselves",
