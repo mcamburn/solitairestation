@@ -70,7 +70,10 @@ export function GameSwitcher() {
         {/* Left: emoji + name */}
         <span className="flex items-center gap-2 min-w-0">
           <span className="text-xl leading-none shrink-0">{active.emoji}</span>
-          <span className="text-sm font-semibold tracking-tight truncate">{active.title}</span>
+          <span className="text-sm font-semibold tracking-tight truncate">
+            <span className="md:hidden">{active.title}</span>
+            <span className="hidden md:inline">{active.title.replace(" Solitaire", "")}</span>
+          </span>
         </span>
 
         {/* Right: in-progress badge + chevron */}
@@ -155,7 +158,8 @@ export function GameSwitcher() {
                     className="mt-1.5 text-[11px] font-bold leading-tight tracking-tight w-full truncate"
                     style={isCurrent ? { color: "var(--neon)" } : { color: "var(--foreground)" }}
                   >
-                    {g.title}
+                    <span className="md:hidden">{g.title}</span>
+                    <span className="hidden md:inline">{g.title.replace(" Solitaire", "")}</span>
                   </span>
 
                   {/* Description */}

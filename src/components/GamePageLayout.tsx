@@ -149,8 +149,8 @@ export function GamePageLayout({ gameKey, badge, title, tagline, rulesIntro, rul
           {children}
         </section>
 
-        {/* ── Scroll-to-instructions link ────────────────────────────────── */}
-        <div className="mx-auto mt-3 max-w-[900px] xl:max-w-[1200px] px-4 text-center">
+        {/* ── Scroll-to-instructions link (mobile only) ──────────────────── */}
+        <div className="md:hidden mx-auto mt-3 max-w-[900px] xl:max-w-[1200px] px-4 text-center">
           <a
             href="#how-to-play"
             onClick={(e) => {
