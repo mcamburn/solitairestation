@@ -5,7 +5,7 @@ import { SITE_URL } from "@/lib/site";
 
 const TITLE = "Solitaire Station — Double Klondike Solitaire";
 const DESC = "Play Double Klondike Solitaire free online at Solitaire Station — two full decks, 9 columns, 8 foundation piles. A longer, more epic version of classic Klondike. No download, no sign-up.";
-const OG_IMG = `${SITE_URL}/og/klondike.png?v=2`;
+const OG_IMG = `${SITE_URL}/og/klondike.png?v=3`;
 
 export const Route = createFileRoute("/double-klondike")({
   head: () => ({

@@ -24,7 +24,7 @@ export const Route = createFileRoute("/canfield")({
       },
       { property: "og:type", content: "website" },
       { property: "og:url", content: `${SITE_URL}/canfield` },
-      { property: "og:image", content: `${SITE_URL}/og/canfield.png?v=2` },
+      { property: "og:image", content: `${SITE_URL}/og/canfield.png?v=3` },
       { property: "og:image:width", content: "1200" },
       { property: "og:image:height", content: "630" },
       { property: "og:image:alt", content: "Solitaire Station — Free Canfield Solitaire" },
@@ -35,7 +35,7 @@ export const Route = createFileRoute("/canfield")({
         content:
           "Play free Canfield solitaire — reserve pile, wrapping foundations, draw-3. No download or sign-up.",
       },
-      { name: "twitter:image", content: `${SITE_URL}/og/canfield.png?v=2` },
+      { name: "twitter:image", content: `${SITE_URL}/og/canfield.png?v=3` },
     ],
     links: [
       { rel: "canonical", href: `${SITE_URL}/canfield` },

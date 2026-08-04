@@ -5,7 +5,7 @@ import { SITE_URL } from "@/lib/site";
 
 const TITLE = "Solitaire Station — 1 Suit Spider Solitaire";
 const DESC = "Play 1 Suit Spider Solitaire free online at Solitaire Station — the easiest Spider variant, played entirely with spades. Build 8 complete K–A sequences across 10 columns. No download or sign-up.";
-const OG_IMG = `${SITE_URL}/og/spider.png?v=2`;
+const OG_IMG = `${SITE_URL}/og/spider.png?v=3`;
 
 export const Route = createFileRoute("/1-suit-spider-solitaire")({
   head: () => ({

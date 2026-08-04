@@ -24,7 +24,7 @@ export const Route = createFileRoute("/bakers-dozen")({
       },
       { property: "og:type", content: "website" },
       { property: "og:url", content: `${SITE_URL}/bakers-dozen` },
-      { property: "og:image", content: `${SITE_URL}/og/bakers-dozen.png?v=2` },
+      { property: "og:image", content: `${SITE_URL}/og/bakers-dozen.png?v=3` },
       { property: "og:image:width", content: "1200" },
       { property: "og:image:height", content: "630" },
       { property: "og:image:alt", content: "Solitaire Station — Free Baker's Dozen Solitaire" },
@@ -35,7 +35,7 @@ export const Route = createFileRoute("/bakers-dozen")({
         content:
           "Play free Baker's Dozen solitaire — 13 face-up columns, rank-only moves, Kings pinned. No download or sign-up.",
       },
-      { name: "twitter:image", content: `${SITE_URL}/og/bakers-dozen.png?v=2` },
+      { name: "twitter:image", content: `${SITE_URL}/og/bakers-dozen.png?v=3` },
     ],
     links: [
       { rel: "canonical", href: `${SITE_URL}/bakers-dozen` },
