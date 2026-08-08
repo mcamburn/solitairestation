@@ -33,7 +33,7 @@ function TermsPage() {
         to="/"
         className="text-xs uppercase tracking-[0.22em] text-muted-foreground transition hover:text-foreground"
       >
-        ← Back to game
+        ← Back to home
       </Link>
       <h1
         className="mt-6 text-3xl font-bold tracking-tight sm:text-4xl"
