@@ -1,9 +1,64 @@
 import { useEffect, useRef, useState } from "react";
+import { Link } from "@tanstack/react-router";
 import { GameSwitcher } from "./GameSwitcher";
 import { SiteFooter } from "./SiteFooter";
 import { SolitaireStationLogo } from "./SolitaireStationLogo";
 import { GameStatsBar } from "./GameStatsBar";
 import { DailyChallengeProvider } from "@/contexts/DailyChallengeContext";
+import { GUIDES, type GameTag } from "@/lib/guides";
+
+// Some game route keys differ from the guide GameTag values
+const GAME_KEY_TO_TAG: Record<string, GameTag> = {
+  "forty-thieves":  "fortythieves",
+  "eight-off":      "eightoff",
+  "bakers-dozen":   "bakersdozen",
+  "bakers-game":    "bakersgame",
+  "double-klondike": "klondike",
+};
+
+function GameGuides({ gameKey }: { gameKey: string }) {
+  const tag = (GAME_KEY_TO_TAG[gameKey] ?? gameKey) as GameTag;
+  const guides = GUIDES.filter((g) => g.game === tag).slice(0, 4);
+  if (guides.length === 0) return null;
+  return (
+    <section className="mx-auto mt-6 sm:mt-10 max-w-[900px] xl:max-w-[1200px] px-4">
+      <div className="glass rounded-2xl p-6 sm:p-8">
+        <div className="flex items-center justify-between gap-4 mb-5">
+          <h2
+            className="text-xl font-bold tracking-tight"
+            style={{ fontFamily: "var(--font-display)" }}
+          >
+            Strategy guides
+          </h2>
+          <Link
+            to="/guides"
+            className="text-xs font-medium transition hover:underline"
+            style={{ color: "var(--neon)" }}
+          >
+            All guides →
+          </Link>
+        </div>
+        <div className="grid gap-3 sm:grid-cols-2">
+          {guides.map((g) => (
+            <Link
+              key={g.slug}
+              to="/guides/$slug"
+              params={{ slug: g.slug }}
+              className="group flex flex-col gap-1 rounded-xl border border-border/40 bg-surface/40 p-4 transition hover:border-border hover:bg-surface/70"
+            >
+              <span className="text-sm font-semibold leading-snug text-foreground group-hover:underline">
+                {g.title}
+              </span>
+              <span className="line-clamp-2 text-xs leading-relaxed text-muted-foreground">
+                {g.description}
+              </span>
+            </Link>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
 
 export interface RuleItem {
   title: string;
@@ -189,6 +244,9 @@ export function GamePageLayout({ gameKey, badge, title, tagline, rulesIntro, rul
             </div>
           </div>
         </section>
+
+        {/* ── Strategy guides ────────────────────────────────────────────── */}
+        <GameGuides gameKey={gameKey} />
 
         {/* ── Footer ─────────────────────────────────────────────────────── */}
         <div className="mx-auto max-w-[900px] xl:max-w-[1200px] px-4">

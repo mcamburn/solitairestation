@@ -4,11 +4,16 @@ Allow: /
 # Solitaire Station — 16 free card games at solitairestation.com
 Sitemap: https://www.solitairestation.com/sitemap.xml
 
+# Allow AI search bots to index the site (ChatGPT browsing, Google AI Overviews)
+# These are search-serving bots, not training crawlers
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
 # Block AI training crawlers — content is commercially licensed
 User-agent: GPTBot
-Disallow: /
-
-User-agent: ChatGPT-User
 Disallow: /
 
 User-agent: ClaudeBot
@@ -18,9 +23,6 @@ User-agent: anthropic-ai
 Disallow: /
 
 User-agent: CCBot
-Disallow: /
-
-User-agent: Google-Extended
 Disallow: /
 
 User-agent: Amazonbot
