@@ -7,7 +7,7 @@ export const Route = createFileRoute("/terms")({
   head: () => ({
     meta: [
       { title: "Terms of Use · Solitaire Station" },
-      { name: "description", content: "Terms of Use for Solitaire Station — free online solitaire with no sign-up required." },
+      { name: "description", content: "Terms of Use for Solitaire Station — free online solitaire games including Klondike, Spider, FreeCell, and more. No sign-up or download required." },
       { name: "robots", content: "noindex, follow" },
       { property: "og:site_name", content: "Solitaire Station" },
       { property: "og:title", content: "Terms of Use · Solitaire Station" },
