@@ -383,14 +383,23 @@ export function mergeStats(existing: GameStats, imported: GameStats): GameStats 
   };
 }
 
+export interface ImportResult {
+  /** Number of game keys successfully imported. */
+  count: number;
+  /** Number of game keys skipped because their data was structurally invalid. */
+  skippedGames: number;
+  /** Number of individual history records removed because they were malformed. */
+  droppedRecords: number;
+}
+
 /**
  * Import a StatsExport object, merging each game's stats into localStorage.
  * Existing stats are never replaced outright — imported data is merged so the
  * player ends up with the union of both histories and the best aggregate values.
  * Throws on structurally invalid files; silently skips corrupted per-game entries.
- * Returns the number of games successfully imported.
+ * Returns an ImportResult with counts of successes, skipped games, and dropped records.
  */
-export function importStatsFromExport(data: unknown): number {
+export function importStatsFromExport(data: unknown): ImportResult {
   if (
     typeof data !== "object" ||
     data === null ||
@@ -404,15 +413,24 @@ export function importStatsFromExport(data: unknown): number {
   }
   const { games } = data as StatsExport;
   let count = 0;
+  let skippedGames = 0;
+  let droppedRecords = 0;
   for (const [gameKey, stats] of Object.entries(games)) {
     if (typeof gameKey !== "string") continue;
+    // Count raw history entries before validation so we can detect drops
+    const rawStats = stats as Record<string, unknown>;
+    const rawHistoryLen = Array.isArray(rawStats.history) ? rawStats.history.length : 0;
     const result = validateGameStats(stats);
-    if ("error" in result) continue; // skip corrupted entry
+    if ("error" in result) {
+      skippedGames++;
+      continue;
+    }
+    droppedRecords += rawHistoryLen - result.stats.history.length;
     const existing = loadStats(gameKey);
     saveStats(gameKey, mergeStats(existing, result.stats));
     count++;
   }
-  return count;
+  return { count, skippedGames, droppedRecords };
 }
 
 /** Win percentage (0–100), rounded to nearest integer. */

@@ -1287,16 +1287,27 @@ function ExportImportControls({ onImported }: { onImported: () => void }) {
     // Return focus to the trigger button (mirrors handleCancelImport)
     importBtnRef.current?.focus();
     try {
-      const count = importStatsFromExport(pendingImport.data);
+      const { count, skippedGames, droppedRecords } = importStatsFromExport(pendingImport.data);
       onImported();
-      setStatus({ kind: "success", message: `Imported stats for ${count} game${count !== 1 ? "s" : ""}.` });
+      let message = `Imported stats for ${count} game${count !== 1 ? "s" : ""}.`;
+      const warnings: string[] = [];
+      if (skippedGames > 0) {
+        warnings.push(`${skippedGames} game${skippedGames !== 1 ? "s" : ""} had unreadable data and were skipped`);
+      }
+      if (droppedRecords > 0) {
+        warnings.push(`${droppedRecords} history entr${droppedRecords !== 1 ? "ies" : "y"} had unreadable data and were removed`);
+      }
+      if (warnings.length > 0) {
+        message += ` Note: ${warnings.join("; ")}.`;
+      }
+      setStatus({ kind: "success", message });
     } catch (err) {
       setStatus({
         kind: "error",
         message: err instanceof Error ? err.message : "Could not import the file.",
       });
     }
-    setTimeout(() => setStatus(null), 5000);
+    setTimeout(() => setStatus(null), 8000);
   }
 
   function handleCancelImport() {
