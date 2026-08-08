@@ -102,7 +102,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "robots", content: "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" },
       // Open Graph
       { property: "og:type", content: "website" },
-      { property: "og:url", content: `${SITE_URL}/` },
+      // og:url is set per-route; no global default here
       { property: "og:title", content: "Solitaire Station — Play Free Online Solitaire Instantly" },
       { property: "og:description", content: "16 free solitaire games with customizable card backs and face styles — hints, undo, and auto-save included. No download or sign-up. Works on any device." },
       { property: "og:site_name", content: "Solitaire Station" },
@@ -113,7 +113,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:image:alt", content: "Solitaire Station — Play Free Online Solitaire Instantly" },
       // Twitter Card
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:url", content: `${SITE_URL}/` },
+      // twitter:url is set per-route
       { name: "twitter:title", content: "Solitaire Station — Play Free Online Solitaire Instantly" },
       { name: "twitter:description", content: "16 free solitaire games — customizable card designs, hints, and auto-save. Klondike, Spider, FreeCell, Golf, Mahjong, and more. No download." },
       { name: "twitter:image", content: `${SITE_URL}/og/klondike.png?v=6` },
@@ -125,7 +125,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "apple-mobile-web-app-title", content: "Solitaire Station" },
     ],
     links: [
-      { rel: "canonical", href: `${SITE_URL}/` },
+      // canonical is set per-route; no global fallback here
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
@@ -160,10 +160,8 @@ const WEBSITE_LD = JSON.stringify({
       "@id": `${SITE_URL}/#game`,
       "url": `${SITE_URL}/`,
       "name": "Solitaire Station",
-      "headline": "Play 16 Free Online Solitaire Games Instantly",
       "description": "Solitaire Station — play 16 free solitaire games instantly in your browser, with customizable card backs and face styles, hints, undo, and auto-save. Klondike, Spider, FreeCell, Pyramid, TriPeaks, Mahjong, Golf, Forty Thieves, Yukon, Scorpion, Eight Off, Canfield, Baker's Dozen, Baker's Game, Clock, and Addiction. No download or sign-up required.",
       "applicationCategory": "GameApplication",
-      "gameItem": "Card Game",
       "genre": ["Solitaire", "Card Game", "Casual Game"],
       "operatingSystem": "Any (Browser-based)",
       "inLanguage": "en",
@@ -198,36 +196,6 @@ const WEBSITE_LD = JSON.stringify({
         "@id": `${SITE_URL}/#organization`
       }
     },
-    {
-      "@type": "FAQPage",
-      "@id": `${SITE_URL}/#faq`,
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "Is this Klondike Solitaire game completely free to play?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Yes, Solitaire Station is 100% free to play directly in your web browser with no download, subscription, or account creation required."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "What is the difference between Solitaire Turn 1 and Turn 3?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "In Turn 1 Solitaire, one card is drawn from the stockpile at a time, making games easier to win. In Turn 3 Solitaire, three cards are drawn at a time, increasing difficulty and requiring deeper strategic planning."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Can I play Klondike Solitaire on mobile devices?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Yes, our game is fully optimized for touch controls on smartphones and tablets, compatible with both iOS and Android browsers."
-          }
-        }
-      ]
-    }
   ]
 });
 

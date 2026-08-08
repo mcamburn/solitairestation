@@ -72,6 +72,11 @@ function GuidePage() {
     "description": guide.description,
     "url": `${SITE_URL}/guides/${guide.slug}`,
     "inLanguage": "en-US",
+    "author": {
+      "@type": "Organization",
+      "name": "Solitaire Station",
+      "url": `${SITE_URL}/`,
+    },
     "publisher": {
       "@type": "Organization",
       "name": "Solitaire Station",

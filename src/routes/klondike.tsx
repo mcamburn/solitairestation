@@ -38,6 +38,38 @@ export const Route = createFileRoute("/klondike")({
   component: KlondikePage,
 });
 
+const FAQ_LD = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "@id": `${SITE_URL}/#faq`,
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Is this Klondike Solitaire game completely free to play?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, Solitaire Station is 100% free to play directly in your web browser with no download, subscription, or account creation required."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the difference between Solitaire Turn 1 and Turn 3?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "In Turn 1 Solitaire, one card is drawn from the stockpile at a time, making games easier to win. In Turn 3 Solitaire, three cards are drawn at a time, increasing difficulty and requiring deeper strategic planning."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I play Klondike Solitaire on mobile devices?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, our game is fully optimized for touch controls on smartphones and tablets, compatible with both iOS and Android browsers."
+      }
+    }
+  ]
+});
+
 const KLONDIKE_LD = JSON.stringify({
   "@context": "https://schema.org",
   "@type": "WebApplication",
@@ -56,6 +88,7 @@ function KlondikePage() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: KLONDIKE_LD }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: FAQ_LD }} />
       <GamePageLayout
         gameKey="klondike"
         badge="Klondike · Play instantly"

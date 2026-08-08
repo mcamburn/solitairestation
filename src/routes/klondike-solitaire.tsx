@@ -47,6 +47,8 @@ const LD = JSON.stringify({
   offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
   genre: ["Card Game", "Solitaire"],
   inLanguage: "en-US",
+  publisher: { "@type": "Organization", "name": "Solitaire Station", "url": `${SITE_URL}/` },
+  isAccessibleForFree: true,
 });
 
 function KlondikeSolitairePage() {
