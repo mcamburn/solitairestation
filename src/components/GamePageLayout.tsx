@@ -71,7 +71,7 @@ function GameVariants({ gameKey }: { gameKey: string }) {
 
 function GameGuides({ gameKey }: { gameKey: string }) {
   const tag = (GAME_KEY_TO_TAG[gameKey] ?? gameKey) as GameTag;
-  const guides = GUIDES.filter((g) => g.game === tag).slice(0, 4);
+  const guides = GUIDES.filter((g) => g.game === tag).slice(0, 5);
   if (guides.length === 0) return null;
   return (
     <section className="mx-auto mt-6 sm:mt-10 max-w-[900px] xl:max-w-[1200px] px-4">
