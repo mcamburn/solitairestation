@@ -16,6 +16,59 @@ const GAME_KEY_TO_TAG: Record<string, GameTag> = {
   "double-klondike": "klondike",
 };
 
+// ── Variant pages that should receive internal links from each game ──────────
+const GAME_VARIANTS: Record<string, Array<{ href: string; label: string; tagline: string }>> = {
+  klondike: [
+    { href: "/klondike-solitaire", label: "Klondike Solitaire", tagline: "Classic rules guide & win rates" },
+    { href: "/turn-1-solitaire",   label: "Turn 1 (Draw 1)",    tagline: "Easiest — flip one card at a time" },
+    { href: "/turn-3-solitaire",   label: "Turn 3 (Draw 3)",    tagline: "Harder — flip three cards at a time" },
+    { href: "/vegas-solitaire",    label: "Vegas Scoring",      tagline: "Casino-style wager and payout" },
+    { href: "/double-klondike",    label: "Double Klondike",    tagline: "Two decks, 9 columns, 8 foundations" },
+  ],
+  spider: [
+    { href: "/spider-solitaire",         label: "Spider Solitaire",   tagline: "Classic rules & strategy guide" },
+    { href: "/1-suit-spider-solitaire",  label: "1 Suit (Easy)",      tagline: "All spades — ideal for beginners" },
+    { href: "/2-suit-spider-solitaire",  label: "2 Suit (Medium)",    tagline: "Spades and hearts — middle ground" },
+    { href: "/4-suit-spider-solitaire",  label: "4 Suit (Expert)",    tagline: "All four suits — maximum difficulty" },
+  ],
+  freecell: [
+    { href: "/freecell-solitaire", label: "FreeCell Solitaire", tagline: "Rules, strategy & solvability guide" },
+  ],
+};
+
+function GameVariants({ gameKey }: { gameKey: string }) {
+  const variants = GAME_VARIANTS[gameKey];
+  if (!variants?.length) return null;
+  return (
+    <section className="mx-auto mt-6 sm:mt-10 max-w-[900px] xl:max-w-[1200px] px-4">
+      <div className="glass rounded-2xl p-6 sm:p-8">
+        <h2
+          className="mb-5 text-xl font-bold tracking-tight"
+          style={{ fontFamily: "var(--font-display)" }}
+        >
+          Variants &amp; modes
+        </h2>
+        <div className="grid gap-3 sm:grid-cols-2">
+          {variants.map((v) => (
+            <Link
+              key={v.href}
+              to={v.href as "/klondike-solitaire"}
+              className="group flex flex-col gap-1 rounded-xl border border-border/40 bg-surface/40 p-4 transition hover:border-border hover:bg-surface/70"
+            >
+              <span className="text-sm font-semibold leading-snug text-foreground group-hover:underline">
+                {v.label}
+              </span>
+              <span className="text-xs leading-relaxed text-muted-foreground">
+                {v.tagline}
+              </span>
+            </Link>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function GameGuides({ gameKey }: { gameKey: string }) {
   const tag = (GAME_KEY_TO_TAG[gameKey] ?? gameKey) as GameTag;
   const guides = GUIDES.filter((g) => g.game === tag).slice(0, 4);
@@ -244,6 +297,9 @@ export function GamePageLayout({ gameKey, badge, title, tagline, rulesIntro, rul
             </div>
           </div>
         </section>
+
+        {/* ── Variants & modes ───────────────────────────────────────────── */}
+        <GameVariants gameKey={gameKey} />
 
         {/* ── Strategy guides ────────────────────────────────────────────── */}
         <GameGuides gameKey={gameKey} />
