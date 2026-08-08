@@ -7,14 +7,13 @@ type ServerEntry = {
   fetch: (request: Request, env: unknown, ctx: unknown) => Promise<Response> | Response;
 };
 
-let serverEntryPromise: Promise<ServerEntry> | undefined;
+// Kick off the import at module load time so the handler is warm before
+// the first request arrives, reducing cold-start TTFB on the initial hit.
+const serverEntryPromise: Promise<ServerEntry> = import(
+  "@tanstack/react-start/server-entry"
+).then((m) => (m.default ?? m) as ServerEntry);
 
 async function getServerEntry(): Promise<ServerEntry> {
-  if (!serverEntryPromise) {
-    serverEntryPromise = import("@tanstack/react-start/server-entry").then(
-      (m) => (m.default ?? m) as ServerEntry,
-    );
-  }
   return serverEntryPromise;
 }
 
