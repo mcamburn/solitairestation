@@ -5,7 +5,7 @@ import { AltColorDemo } from "@/components/RuleDemo";
 import { SITE_URL } from "@/lib/site";
 
 const TITLE = "Solitaire Station — Free Klondike Solitaire";
-const DESC = "Play free Klondike solitaire online at Solitaire Station — no download, no sign-up. Draw 1 or Draw 3, hints, undo, and auto-save. One of sixteen free card games.";
+const DESC = "Play free Klondike solitaire — Draw 1 or Draw 3, hints, undo, and auto-save. No download or sign-up. One of sixteen free card games.";
 const OG_IMG = `${SITE_URL}/og/klondike.png?v=6`;
 
 export const Route = createFileRoute("/klondike")({

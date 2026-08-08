@@ -4,7 +4,7 @@ import { GamePageLayout } from "@/components/GamePageLayout";
 import { SITE_URL } from "@/lib/site";
 
 const TITLE = "Solitaire Station — Vegas Solitaire";
-const DESC = "Play Vegas Solitaire free online at Solitaire Station — the classic casino scoring variant. Start with a $52 wager, earn $5 per card on the foundation, and survive three passes through the stock. No download required.";
+const DESC = "Play Vegas Solitaire free — start with a $52 wager, earn $5 per card on the foundation, and survive three stock passes. No download.";
 const OG_IMG = `${SITE_URL}/og/klondike.png?v=6`;
 
 export const Route = createFileRoute("/vegas-solitaire")({

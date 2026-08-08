@@ -8,7 +8,7 @@ export const Route = createFileRoute("/yukon")({
   head: () => ({
     meta: [
       { title: "Solitaire Station — Free Yukon Solitaire" },
-      { name: "description", content: "Play free Yukon Solitaire at Solitaire Station — move any face-up group of cards in this challenging no-stock variant. Hints, undo, and auto-save. No download required." },
+      { name: "description", content: "Play free Yukon Solitaire — move any face-up group of cards in this challenging no-stock variant. Hints, undo, and auto-save. No download." },
       { name: "robots", content: "index, follow" },
       { property: "og:site_name", content: "Solitaire Station" },
       { property: "og:locale", content: "en_US" },

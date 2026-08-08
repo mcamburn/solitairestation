@@ -4,7 +4,7 @@ import { GamePageLayout } from "@/components/GamePageLayout";
 import { SITE_URL } from "@/lib/site";
 
 const TITLE = "Solitaire Station — 2 Suit Spider Solitaire";
-const DESC = "Play 2 Suit Spider Solitaire free online at Solitaire Station — spades and hearts across 10 tableau columns. The perfect middle ground between easy 1-suit and expert 4-suit Spider. No download required.";
+const DESC = "Play 2 Suit Spider Solitaire free — spades and hearts across 10 columns. The perfect middle ground between 1-suit and 4-suit Spider. No download.";
 const OG_IMG = `${SITE_URL}/og/spider.png?v=6`;
 
 export const Route = createFileRoute("/2-suit-spider-solitaire")({

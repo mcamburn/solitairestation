@@ -8,7 +8,7 @@ export const Route = createFileRoute("/tripeaks")({
   head: () => ({
     meta: [
       { title: "Solitaire Station — Free TriPeaks Solitaire" },
-      { name: "description", content: "Play free TriPeaks solitaire at Solitaire Station — clear three peaks by chaining cards one rank apart. Build streaks for bonus points. Hints and auto-save. No download or sign-up." },
+      { name: "description", content: "Play free TriPeaks solitaire — clear three peaks by chaining cards one rank apart. Build streaks for bonus points. Hints and auto-save. No download needed." },
       { name: "robots", content: "index, follow" },
       { property: "og:site_name", content: "Solitaire Station" },
       { property: "og:locale", content: "en_US" },

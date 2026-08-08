@@ -4,7 +4,7 @@ import { GamePageLayout } from "@/components/GamePageLayout";
 import { SITE_URL } from "@/lib/site";
 
 const TITLE = "Solitaire Station — Spider Solitaire";
-const DESC = "Play free Spider Solitaire at Solitaire Station — choose 1 suit, 2 suits, or 4 suits across 10 tableau columns. No download or sign-up. Hints, undo, and auto-save progress.";
+const DESC = "Play free Spider Solitaire — choose 1, 2, or 4 suits across 10 columns. No download or sign-up. Hints, undo, and auto-save progress.";
 const OG_IMG = `${SITE_URL}/og/spider.png?v=6`;
 
 export const Route = createFileRoute("/spider-solitaire")({

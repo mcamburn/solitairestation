@@ -4,7 +4,7 @@ import { GamePageLayout } from "@/components/GamePageLayout";
 import { SITE_URL } from "@/lib/site";
 
 const TITLE = "Solitaire Station — 4 Suit Spider Solitaire";
-const DESC = "Play 4 Suit Spider Solitaire free online at Solitaire Station — all four suits at expert difficulty. The hardest and most rewarding Spider variant. Full suit discipline required on every move. No download.";
+const DESC = "Play 4 Suit Spider Solitaire free — all four suits at expert difficulty. The hardest Spider variant. Full suit discipline required on every move. No download.";
 const OG_IMG = `${SITE_URL}/og/spider.png?v=6`;
 
 export const Route = createFileRoute("/4-suit-spider-solitaire")({

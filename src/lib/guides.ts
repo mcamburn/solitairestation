@@ -39,7 +39,7 @@ export const GUIDES: Guide[] = [
     game: "klondike",
     title: "Klondike Solitaire Rules & Win Rate",
     description:
-      "Learn the official rules of Klondike Solitaire, understand the real odds of winning Draw 1 vs Draw 3, and discover why this classic card game remains the world's most-played solitaire variant.",
+      "Learn the official rules of Klondike Solitaire and the real odds of winning Draw 1 vs Draw 3 in the world's most-played solitaire.",
     intro:
       "Klondike is the game most people picture when they hear the word \u201csolitaire.\u201d It has been the default card game on Windows since 1990, and estimates suggest billions of games are played each year worldwide. Yet despite its familiarity, many players don\u2019t know the actual rules in full \u2014 or how unlikely a typical win really is.",
     sections: [
@@ -80,7 +80,7 @@ export const GUIDES: Guide[] = [
     game: "klondike",
     title: "Solitaire Turn 1 vs Turn 3 Strategy",
     description:
-      "A complete breakdown of Draw 1 versus Draw 3 Klondike Solitaire — how the mechanics differ, which is harder, and the key strategy adjustments that improve your win rate in both modes.",
+      "Draw 1 vs Draw 3 Klondike Solitaire — how the mechanics differ, which is harder, and the key strategy adjustments for each mode.",
     intro:
       "Draw 1 and Draw 3 look like the same game at first glance, but they play very differently. Understanding why — and adjusting your strategy for each — is the fastest way to improve your win rate.",
     sections: [
@@ -122,7 +122,7 @@ export const GUIDES: Guide[] = [
     game: "klondike",
     title: "How to Win at Klondike Solitaire: Top 7 Strategies",
     description:
-      "Seven proven Klondike Solitaire strategies to raise your win rate — from managing empty columns to the right order for moving cards to foundations, explained clearly for all skill levels.",
+      "Seven proven Klondike Solitaire strategies — managing empty columns, the right order for foundations, and more, explained for all skill levels.",
     intro:
       "Winning at Klondike Solitaire more consistently comes down to a small set of prioritization rules. Most players learn these intuitively over hundreds of games; here they are laid out explicitly.",
     sections: [
@@ -218,7 +218,7 @@ export const GUIDES: Guide[] = [
     game: "spider",
     title: "Spider Solitaire: 1-Suit vs 2-Suit vs 4-Suit Difficulty",
     description:
-      "How do the three Spider Solitaire difficulty modes compare? This guide explains the win rates, strategic differences, and how to progress from 1-suit all the way to the 4-suit expert mode.",
+      "Compare Spider Solitaire's three difficulty modes — win rates, strategic differences, and how to progress from 1-suit to 4-suit.",
     intro:
       "Spider Solitaire's difficulty selection isn't just a label — the underlying mechanics change fundamentally between modes. Here's what to expect from each, and how to know when you're ready to move up.",
     sections: [
@@ -300,7 +300,7 @@ export const GUIDES: Guide[] = [
     game: "freecell",
     title: "Why Almost Every FreeCell Deal Is Solvable",
     description:
-      "FreeCell's remarkable near-100% solvability rate is no accident — it comes from the structure of the game itself. Here's the math and logic behind why skill almost always wins.",
+      "FreeCell's near-100% solvability rate comes from the structure of the game itself. Here's the math and logic behind why skill almost always wins.",
     intro:
       "If you've played FreeCell even a handful of times, you've heard the claim: 'almost every deal is winnable.' This turns out to be true — and understanding why makes you a better player.",
     sections: [
@@ -379,7 +379,7 @@ export const GUIDES: Guide[] = [
     game: "pyramid",
     title: "How to Beat Pyramid Solitaire More Often",
     description:
-      "Practical Pyramid Solitaire strategy: which cards to clear first, how to use the stock cycles efficiently, and the blocking patterns that end most games prematurely.",
+      "Practical Pyramid Solitaire strategy — which cards to clear first, how to use stock cycles, and the blocking patterns that end most games early.",
     intro:
       "Pyramid Solitaire can feel like pure luck, but play order matters more than most players realize. These strategies won't make every deal winnable, but they'll meaningfully improve your results.",
     sections: [
@@ -749,7 +749,7 @@ export const GUIDES: Guide[] = [
     game: "klondike",
     title: "Vegas Scoring Mode Explained: Rules, Strategy & Payouts",
     description:
-      "A complete guide to Vegas Scoring in Klondike Solitaire — how the wager and payout system works, what the pass limit means strategically, and how to maximize your return.",
+      "Vegas Scoring in Klondike Solitaire — how the wager and payout system works, what the pass limit means strategically, and how to maximize your return.",
     intro:
       "Vegas mode transforms Klondike from a puzzle into an economic problem. Every card you move to the foundation earns money; every pass through the stock costs you. Understanding the math changes how you play every hand.",
     sections: [
@@ -792,7 +792,7 @@ export const GUIDES: Guide[] = [
     game: "spider",
     title: "Mastering Empty Columns in Spider Solitaire",
     description:
-      "Empty tableau columns are the most powerful resource in Spider Solitaire. This guide explains when to create them, how to use them, and why protecting them separates intermediate from advanced players.",
+      "Empty tableau columns are Spider Solitaire's most powerful resource. Learn when to create them, how to use them, and why protecting them matters.",
     intro:
       "In Klondike, an empty column is valuable. In Spider, it is almost irreplaceable. The ability to create, protect, and exploit empty columns is the single biggest skill gap between players who clear boards regularly and those who get stuck.",
     sections: [
@@ -832,7 +832,7 @@ export const GUIDES: Guide[] = [
     game: "spider",
     title: "When to Deal in Spider Solitaire (and When to Wait)",
     description:
-      "Dealing from the stock in Spider Solitaire is irreversible and adds complexity. This guide explains the right conditions for dealing, what to do before each deal, and how to avoid burying progress.",
+      "When to deal from the stock in Spider Solitaire — the right conditions, what to check beforehand, and how to avoid burying your progress.",
     intro:
       "Each deal in Spider adds 10 new cards across all occupied columns — burying whatever was on top of each pile and resetting your options. The best Spider players treat dealing as a last resort, not a reflex.",
     sections: [
@@ -871,7 +871,7 @@ export const GUIDES: Guide[] = [
     game: "spider",
     title: "Why Building In-Suit Is the Key to Spider Solitaire",
     description:
-      "Spider allows off-suit builds but only rewards in-suit ones. This guide explains why mixed-suit sequences create long-term traps, how to break them up, and how to retrain your instincts for in-suit play.",
+      "Spider only rewards in-suit builds. Learn why mixed-suit sequences create traps, how to break them up, and how to retrain your instincts for in-suit play.",
     intro:
       "Spider Solitaire lets you place any card on any card one rank higher — suits don't matter for legality. This flexibility is a trap. Mixed-suit builds feel like progress but create rigid, unmovable structures that eventually block the entire board.",
     sections: [
@@ -912,7 +912,7 @@ export const GUIDES: Guide[] = [
     game: "freecell",
     title: "FreeCell for Beginners: Your First 10 Moves",
     description:
-      "A beginner-friendly FreeCell Solitaire guide — how to read the initial layout, which moves to make first, and the three principles that will make every deal feel more manageable.",
+      "A beginner FreeCell guide — how to read the layout, which moves to make first, and three principles that make every deal more manageable.",
     intro:
       "FreeCell is intimidating at first: 52 face-up cards and seemingly infinite choices. But the opening moves follow a clear logic, and once you understand the three beginner principles, the game unlocks quickly.",
     sections: [
@@ -998,7 +998,7 @@ export const GUIDES: Guide[] = [
     game: "freecell",
     title: "The Hardest FreeCell Deals and How to Think About Them",
     description:
-      "Some FreeCell deals are genuinely brutal even for experienced players. This guide explains what makes a deal difficult, how to recognize a hard layout, and the thinking process for working through the toughest positions.",
+      "What makes a FreeCell deal hard — how to recognize a brutal layout, and the thinking process for working through the toughest positions.",
     intro:
       "Nearly every FreeCell deal is solvable, but \u2018solvable\u2019 and \u2018easy to solve\u2019 are very different things. Some layouts require 30+ move sequences planned in advance. Here\u2019s how to approach them.",
     sections: [
@@ -1120,7 +1120,7 @@ export const GUIDES: Guide[] = [
     game: "pyramid",
     title: "Pyramid Solitaire Win Rates and Odds",
     description:
-      "How winnable is Pyramid Solitaire really? This guide covers theoretical win rates, how recycle limits affect solvability, why Pyramid is harder than it looks, and what the numbers mean for your experience.",
+      "How winnable is Pyramid Solitaire really? Win rates, how recycle limits affect solvability, and why Pyramid is harder than it looks.",
     intro:
       "Pyramid Solitaire has the lowest theoretical win rate of the solitaire games on this site. Understanding why — and what the actual numbers look like — helps set realistic expectations and sharpen your strategy.",
     sections: [
@@ -1243,7 +1243,7 @@ export const GUIDES: Guide[] = [
     game: "tripeaks",
     title: "Advanced TriPeaks Planning: Reading the Board Before Move One",
     description:
-      "Advanced TriPeaks strategy for experienced players — how to map potential chains across all three peaks, sequence unblocking moves, and plan 8\u201312 card chains before making the first play.",
+      "Advanced TriPeaks strategy — how to map chains across all three peaks, sequence unblocking moves, and plan long chains before the first play.",
     intro:
       "The gap between a good TriPeaks player and a great one comes down to pre-move board reading. Advanced players don\u2019t react to cards as they appear — they identify the best chain architecture before touching anything.",
     sections: [
@@ -1367,7 +1367,7 @@ export const GUIDES: Guide[] = [
     game: "mahjong",
     title: "Common Mahjong Solitaire Mistakes (and How to Fix Them)",
     description:
-      "The most frequent errors in Mahjong Solitaire — matching pairs that create unbreakable blocks, ignoring layer depth, removing the last accessible copy of a tile — explained with practical fixes.",
+      "The most frequent Mahjong Solitaire mistakes — creating unbreakable blocks, ignoring layer depth, and removing the last accessible copy of a tile.",
     intro:
       "Mahjong Solitaire mistakes are easy to make and often invisible until several moves later when the board suddenly has no valid pairs. These are the patterns that end games prematurely.",
     sections: [
@@ -1503,7 +1503,7 @@ export const GUIDES: Guide[] = [
     game: "fortythieves",
     title: "Forty Thieves Solitaire Rules & Strategy Guide",
     description:
-      "Learn the rules of Forty Thieves Solitaire, how the two-deck layout works, and the strategies that make one of the hardest solitaire variants winnable more often.",
+      "Learn the rules of Forty Thieves Solitaire and the strategies that make this hard two-deck variant winnable more often.",
     intro:
       "Forty Thieves is a two-deck solitaire game with a notoriously low win rate \u2014 estimates range from 5% to 15% even with good play. The name comes from the 40 tableau cards in the initial deal. Understanding why the game is hard, and where your few degrees of freedom lie, is the first step toward beating it.",
     sections: [

@@ -8,7 +8,7 @@ export const Route = createFileRoute("/pyramid")({
   head: () => ({
     meta: [
       { title: "Solitaire Station — Free Pyramid Solitaire" },
-      { name: "description", content: "Play free Pyramid solitaire at Solitaire Station — pair cards that sum to 13 to clear all 28 cards. Kings remove alone. Hints, undo, and auto-save. No download or sign-up." },
+      { name: "description", content: "Play free Pyramid solitaire — pair cards summing to 13 to clear all 28. Kings remove alone. Hints, undo, and auto-save. No download needed." },
       { name: "robots", content: "index, follow" },
       { property: "og:site_name", content: "Solitaire Station" },
       { property: "og:locale", content: "en_US" },

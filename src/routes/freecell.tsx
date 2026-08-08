@@ -8,7 +8,7 @@ export const Route = createFileRoute("/freecell")({
   head: () => ({
     meta: [
       { title: "Solitaire Station — Free FreeCell Solitaire" },
-      { name: "description", content: "Play free FreeCell solitaire at Solitaire Station — almost every deal is solvable. Use 4 free cells to plan your moves. Hints, undo, and auto-save. No download or sign-up." },
+      { name: "description", content: "Play free FreeCell solitaire at Solitaire Station — almost every deal is solvable. Use 4 free cells, hints, undo, and auto-save." },
       { name: "robots", content: "index, follow" },
       { property: "og:site_name", content: "Solitaire Station" },
       { property: "og:locale", content: "en_US" },

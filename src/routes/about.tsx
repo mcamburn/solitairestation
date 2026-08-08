@@ -7,7 +7,7 @@ export const Route = createFileRoute("/about")({
   head: () => ({
     meta: [
       { title: "About Solitaire Station — Free Online Solitaire Games" },
-      { name: "description", content: "About Solitaire Station — 16 free online solitaire games including Klondike, Spider, FreeCell, Pyramid, TriPeaks, Mahjong, Golf, Forty Thieves, Yukon, and more. No download, no sign-up." },
+      { name: "description", content: "About Solitaire Station — 16 free online solitaire games including Klondike, Spider, FreeCell, Pyramid, and more. No download, no sign-up." },
       { name: "robots", content: "index, follow" },
       { property: "og:site_name", content: "Solitaire Station" },
       { property: "og:locale", content: "en_US" },

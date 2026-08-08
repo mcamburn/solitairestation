@@ -8,7 +8,7 @@ export const Route = createFileRoute("/mahjong")({
   head: () => ({
     meta: [
       { title: "Solitaire Station — Free Mahjong Solitaire" },
-      { name: "description", content: "Play free Mahjong solitaire at Solitaire Station — match identical free tiles to clear all 144 from the board. Flowers and seasons match within their group. Hints and auto-save. No download or sign-up." },
+      { name: "description", content: "Play free Mahjong solitaire — match identical free tiles to clear all 144. Flowers and seasons pair within their group. Hints and auto-save. No download needed." },
       { name: "robots", content: "index, follow" },
       { property: "og:site_name", content: "Solitaire Station" },
       { property: "og:locale", content: "en_US" },
