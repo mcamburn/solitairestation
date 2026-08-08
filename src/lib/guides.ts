@@ -29,6 +29,8 @@ export interface Guide {
   description: string;
   intro: string;
   sections: GuideSection[];
+  /** ISO date (YYYY-MM-DD) the guide was first published. Defaults to "2025-06-01" when absent. */
+  datePublished?: string;
 }
 
 export const GUIDES: Guide[] = [

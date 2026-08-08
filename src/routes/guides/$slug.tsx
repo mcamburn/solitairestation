@@ -8,6 +8,9 @@ export const Route = createFileRoute("/guides/$slug")({
   head: ({ params }) => {
     const guide = GUIDES.find((g) => g.slug === (params as { slug: string }).slug);
     if (!guide) return {};
+    // Resolve the game-specific OG image (TAG_OG is defined below but hoisted as a const)
+    const ogFile = TAG_OG_STATIC[guide.game] ?? "klondike";
+    const ogImage = `${SITE_URL}/og/${ogFile}.png?v=6`;
     return {
       meta: [
         { title: `${guide.title} — Solitaire Station` },
@@ -19,16 +22,37 @@ export const Route = createFileRoute("/guides/$slug")({
         { property: "og:title", content: `${guide.title} — Solitaire Station` },
         { property: "og:description", content: guide.description },
         { property: "og:url", content: `${SITE_URL}/guides/${guide.slug}` },
-        { property: "og:image", content: `${SITE_URL}/og/klondike.png?v=6` },
+        { property: "og:image", content: ogImage },
         { property: "og:image:width", content: "1200" },
         { property: "og:image:height", content: "630" },
         { name: "twitter:card", content: "summary_large_image" },
-        { name: "twitter:image", content: `${SITE_URL}/og/klondike.png?v=6` },
+        { name: "twitter:image", content: ogImage },
       ],
       links: [{ rel: "canonical", href: `${SITE_URL}/guides/${guide.slug}` }],
     };
   },
 });
+
+/** Maps a GameTag to its corresponding public/og/*.png filename stem */
+const TAG_OG_STATIC: Record<GameTag, string> = {
+  klondike:     "klondike",
+  spider:       "spider",
+  freecell:     "freecell",
+  pyramid:      "pyramid",
+  tripeaks:     "tripeaks",
+  mahjong:      "mahjong",
+  golf:         "golf",
+  fortythieves: "forty-thieves",
+  yukon:        "yukon",
+  scorpion:     "scorpion",
+  eightoff:     "eight-off",
+  canfield:     "canfield",
+  addiction:    "addiction",
+  bakersdozen:  "bakers-dozen",
+  bakersgame:   "bakers-game",
+  clock:        "clock",
+  general:      "klondike", // fallback for cross-game guides
+};
 
 const TAG_COLOR: Record<GameTag, string> = {
   klondike:     "#16a34a",
@@ -65,6 +89,10 @@ function GuidePage() {
     (g) => g.game === guide.game && g.slug !== guide.slug,
   ).slice(0, 3);
 
+  const ogFile = TAG_OG_STATIC[guide.game] ?? "klondike";
+  const ogImage = `${SITE_URL}/og/${ogFile}.png?v=6`;
+  const datePublished = guide.datePublished ?? "2025-06-01";
+
   const articleLd = JSON.stringify({
     "@context": "https://schema.org",
     "@type": "Article",
@@ -72,6 +100,14 @@ function GuidePage() {
     "description": guide.description,
     "url": `${SITE_URL}/guides/${guide.slug}`,
     "inLanguage": "en-US",
+    "datePublished": datePublished,
+    "dateModified": datePublished,
+    "image": {
+      "@type": "ImageObject",
+      "url": ogImage,
+      "width": 1200,
+      "height": 630,
+    },
     "author": {
       "@type": "Organization",
       "name": "Solitaire Station",
@@ -81,6 +117,12 @@ function GuidePage() {
       "@type": "Organization",
       "name": "Solitaire Station",
       "url": `${SITE_URL}/`,
+      "logo": {
+        "@type": "ImageObject",
+        "url": `${SITE_URL}/og/klondike.png?v=6`,
+        "width": 1200,
+        "height": 630,
+      },
     },
     "breadcrumb": {
       "@type": "BreadcrumbList",
