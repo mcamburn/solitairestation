@@ -40,6 +40,22 @@ if [[ -n "${OG_TRIGGER}" ]]; then
   fi
 fi
 
+# ── Sitemap auto-regeneration ─────────────────────────────────────────────────
+# Runs whenever guides.ts (guide registry) or any route file is staged so the
+# sitemap never drifts after a new guide or page is added.
+SITEMAP_TRIGGER=$(git diff --cached --name-only --diff-filter=ACMR | \
+  grep -E '^(src/lib/guides\.ts|src/routes/.+\.tsx)$' || true)
+
+if [[ -n "${SITEMAP_TRIGGER}" ]]; then
+  echo "==> Regenerating sitemap.xml…"
+  if ! bun run scripts/generate-sitemap.ts; then
+    echo "Commit blocked: sitemap generation failed." >&2
+    exit 1
+  fi
+  git add public/sitemap.xml
+  echo "    public/sitemap.xml updated and staged."
+fi
+
 DOMAIN="free-klondike-solitaire\.com"
 ALLOWED="src/lib/site.ts"
 

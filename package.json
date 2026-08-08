@@ -7,14 +7,15 @@
     "prepare": "git config core.hooksPath .githooks",
     "dev": "vite dev",
     "start": "node .output/server/index.mjs",
-    "build": "vite build",
+    "build": "bun run generate:sitemap && vite build",
     "generate-og": "node scripts/generate-og-images.mjs",
     "build:dev": "vite build --mode development",
     "preview": "vite preview",
     "lint": "eslint .",
     "format": "prettier --write .",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "generate:sitemap": "bun run scripts/generate-sitemap.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.5.7",
