@@ -216,7 +216,7 @@ export const GUIDES: Guide[] = [
   {
     slug: "spider-solitaire-1-suit-vs-4-suit",
     game: "spider",
-    title: "Spider Solitaire: 1-Suit vs 2-Suit vs 4-Suit Difficulty",
+    title: "Spider Solitaire: 1 vs 2 vs 4 Suit",
     description:
       "Compare Spider Solitaire's three difficulty modes — win rates, strategic differences, and how to progress from 1-suit to 4-suit.",
     intro:
@@ -463,7 +463,7 @@ export const GUIDES: Guide[] = [
   {
     slug: "tripeaks-strategy-chain-combos-and-streaks",
     game: "tripeaks",
-    title: "TriPeaks Strategy: Chain Combos & Maximizing Streaks",
+    title: "TriPeaks Strategy: Chains & Streaks",
     description:
       "Advanced TriPeaks Solitaire strategy — how to plan chains before you start, when to break a streak intentionally, how to uncover peaks efficiently, and why card-rank sequencing is everything.",
     intro:
@@ -556,7 +556,7 @@ export const GUIDES: Guide[] = [
   {
     slug: "mahjong-solitaire-strategy-layers-and-blocking",
     game: "mahjong",
-    title: "Mahjong Solitaire Strategy: Managing Layers & Unblocking",
+    title: "Mahjong Strategy: Layers & Unblocking",
     description:
       "Practical Mahjong Solitaire strategy — how to read the layout, prioritize which tiles to clear, avoid unwinnable traps, and use the shuffle and hint features effectively.",
     intro:
@@ -601,7 +601,7 @@ export const GUIDES: Guide[] = [
   {
     slug: "history-of-solitaire",
     game: "general",
-    title: "History of Solitaire: From 18th-Century Europe to Your Browser",
+    title: "The History of Solitaire: Origins",
     description:
       "The fascinating history of solitaire card games — from their likely origins in Northern Europe and Scandinavia, through their popularization in 19th-century France and England, to the Windows 3.0 era and today's browser-based play.",
     intro:
@@ -747,7 +747,7 @@ export const GUIDES: Guide[] = [
   {
     slug: "klondike-solitaire-vegas-mode-explained",
     game: "klondike",
-    title: "Vegas Scoring Mode Explained: Rules, Strategy & Payouts",
+    title: "Klondike Vegas Mode: Rules & Strategy",
     description:
       "Vegas Scoring in Klondike Solitaire — how the wager and payout system works, what the pass limit means strategically, and how to maximize your return.",
     intro:
@@ -830,7 +830,7 @@ export const GUIDES: Guide[] = [
   {
     slug: "spider-solitaire-when-to-deal",
     game: "spider",
-    title: "When to Deal in Spider Solitaire (and When to Wait)",
+    title: "When to Deal in Spider Solitaire",
     description:
       "When to deal from the stock in Spider Solitaire — the right conditions, what to check beforehand, and how to avoid burying your progress.",
     intro:
@@ -869,7 +869,7 @@ export const GUIDES: Guide[] = [
   {
     slug: "spider-solitaire-building-in-suit",
     game: "spider",
-    title: "Why Building In-Suit Is the Key to Spider Solitaire",
+    title: "Spider Solitaire: Why Build In-Suit",
     description:
       "Spider only rewards in-suit builds. Learn why mixed-suit sequences create traps, how to break them up, and how to retrain your instincts for in-suit play.",
     intro:
@@ -996,7 +996,7 @@ export const GUIDES: Guide[] = [
   {
     slug: "freecell-solitaire-hardest-deals",
     game: "freecell",
-    title: "The Hardest FreeCell Deals and How to Think About Them",
+    title: "The Hardest FreeCell Deals Explained",
     description:
       "What makes a FreeCell deal hard — how to recognize a brutal layout, and the thinking process for working through the toughest positions.",
     intro:
@@ -1078,7 +1078,7 @@ export const GUIDES: Guide[] = [
   {
     slug: "pyramid-solitaire-variants-and-rules",
     game: "pyramid",
-    title: "Pyramid Solitaire Variants: Classic, Relaxed & Timer Modes",
+    title: "Pyramid Solitaire Variants & Rules",
     description:
       "Not all Pyramid Solitaire games play the same. This guide explains the differences between Classic, Relaxed, and Timer variants — recycle counts, scoring systems, and which mode suits different players.",
     intro:
@@ -1160,7 +1160,7 @@ export const GUIDES: Guide[] = [
   {
     slug: "tripeaks-solitaire-scoring-guide",
     game: "tripeaks",
-    title: "TriPeaks Solitaire Scoring: Streaks, Stars & Maximizing Points",
+    title: "TriPeaks Scoring: Streaks & Stars",
     description:
       "A complete breakdown of how TriPeaks Solitaire scoring works — the streak multiplier, how to build long chains, what stars require, and the specific plays that maximize your score on every hand.",
     intro:
@@ -1200,7 +1200,7 @@ export const GUIDES: Guide[] = [
   {
     slug: "tripeaks-solitaire-beginner-guide",
     game: "tripeaks",
-    title: "TriPeaks Solitaire Beginner\u2019s Guide: Rules, Tips & First Strategies",
+    title: "TriPeaks Solitaire: Beginner\u2019s Guide",
     description:
       "Everything a new TriPeaks Solitaire player needs to know — how the game works, why it\u2019s different from Klondike, the wrap rule, and three strategies to start winning immediately.",
     intro:
@@ -1241,7 +1241,7 @@ export const GUIDES: Guide[] = [
   {
     slug: "tripeaks-solitaire-advanced-planning",
     game: "tripeaks",
-    title: "Advanced TriPeaks Planning: Reading the Board Before Move One",
+    title: "Advanced TriPeaks: Read the Board First",
     description:
       "Advanced TriPeaks strategy — how to map chains across all three peaks, sequence unblocking moves, and plan long chains before the first play.",
     intro:
@@ -1283,7 +1283,7 @@ export const GUIDES: Guide[] = [
   {
     slug: "mahjong-solitaire-layouts-guide",
     game: "mahjong",
-    title: "Mahjong Solitaire Layouts: Turtle, Dragon, Pyramid & More",
+    title: "Mahjong Solitaire Layouts Guide",
     description:
       "A guide to the most common Mahjong Solitaire layouts — the classic Turtle, the linear Dragon, the challenging Pyramid, and others — with tips on how layout shape affects difficulty and strategy.",
     intro:
@@ -1365,7 +1365,7 @@ export const GUIDES: Guide[] = [
   {
     slug: "mahjong-solitaire-common-mistakes",
     game: "mahjong",
-    title: "Common Mahjong Solitaire Mistakes (and How to Fix Them)",
+    title: "Common Mahjong Solitaire Mistakes",
     description:
       "The most frequent Mahjong Solitaire mistakes — creating unbreakable blocks, ignoring layer depth, and removing the last accessible copy of a tile.",
     intro:
@@ -1979,7 +1979,7 @@ export const GUIDES: Guide[] = [
   {
     slug: "which-solitaire-game-should-you-play",
     game: "general",
-    title: "Which Solitaire Game Should You Play? A Beginner\u2019s Guide",
+    title: "Which Solitaire Game Should You Play?",
     description:
       "Not sure which solitaire game to start with? This guide matches different player types and preferences to the right game — whether you want quick sessions, deep strategy, all-skill play, or a meditative experience.",
     intro:
@@ -2196,7 +2196,7 @@ export const GUIDES: Guide[] = [
   {
     slug: "forty-thieves-strategy-guide",
     game: "fortythieves",
-    title: "Forty Thieves Strategy: Mastering a Near-Impossible Game",
+    title: "Forty Thieves Solitaire Strategy",
     description:
       "Advanced Forty Thieves Solitaire strategy — how to manage empty columns, survive a no-redeal stock, and maximize your win rate in one of solitaire's hardest variants.",
     intro:
@@ -2395,7 +2395,7 @@ export const GUIDES: Guide[] = [
   {
     slug: "eight-off-solitaire-rules",
     game: "eightoff",
-    title: "Eight Off Solitaire Rules & How It Differs from FreeCell",
+    title: "Eight Off Solitaire Rules & Strategy",
     description:
       "A complete guide to Eight Off Solitaire — the setup, rules, and the key differences from FreeCell that make Eight Off both easier and harder depending on how you approach it.",
     intro:
@@ -2433,7 +2433,7 @@ export const GUIDES: Guide[] = [
   {
     slug: "eight-off-solitaire-strategy",
     game: "eightoff",
-    title: "Eight Off Solitaire Strategy: Making the Most of Eight Free Cells",
+    title: "Eight Off Strategy: Using 8 Free Cells",
     description:
       "How to use Eight Off's eight free cells and same-suit building rule to your advantage — sequencing strategy, free-cell conservation, and how to avoid the common trap of filling all eight cells.",
     intro:
@@ -2511,7 +2511,7 @@ export const GUIDES: Guide[] = [
   {
     slug: "how-to-win-canfield-solitaire",
     game: "canfield",
-    title: "How to Win at Canfield Solitaire (and Why Most Games End Early)",
+    title: "How to Win at Canfield Solitaire",
     description:
       "Canfield Solitaire strategy — working with the reserve pile, using waste cycling, and recognizing the deal conditions that give you a realistic chance of winning.",
     intro:
@@ -2667,7 +2667,7 @@ export const GUIDES: Guide[] = [
   {
     slug: "bakers-dozen-strategy-guide",
     game: "bakersdozen",
-    title: "Baker's Dozen Strategy: Planning Every Move in a Fully Visible Game",
+    title: "Baker's Dozen: Planning Every Move",
     description:
       "Baker's Dozen Solitaire strategy — how to plan ahead in a fully visible game, manage Kings without empty columns, and find the move order that clears the most foundations.",
     intro:
@@ -2747,7 +2747,7 @@ export const GUIDES: Guide[] = [
   {
     slug: "bakers-game-strategy",
     game: "bakersgame",
-    title: "Baker's Game Strategy: In-Suit Building and Free Cell Discipline",
+    title: "Baker's Game: In-Suit Building Strategy",
     description:
       "Strategy guide for Baker's Game — how to build same-suit sequences, use free cells sparingly, and navigate a game that punishes FreeCell habits.",
     intro:
@@ -2826,7 +2826,7 @@ export const GUIDES: Guide[] = [
   {
     slug: "clock-solitaire-guide",
     game: "clock",
-    title: "Clock Solitaire: The One Solitaire Game With No Strategy",
+    title: "Clock Solitaire: The No-Strategy Game",
     description:
       "An exploration of Clock Solitaire — why it has no strategy, what makes it compelling despite that, and how it compares to every other solitaire variant in terms of player agency.",
     intro:
