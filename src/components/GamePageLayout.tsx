@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Link } from "@tanstack/react-router";
+import { Link, useLocation } from "@tanstack/react-router";
 import { GameSwitcher } from "./GameSwitcher";
 import { SiteFooter } from "./SiteFooter";
 import { SolitaireStationLogo } from "./SolitaireStationLogo";
@@ -19,6 +19,7 @@ const GAME_KEY_TO_TAG: Record<string, GameTag> = {
 // ── Variant pages that should receive internal links from each game ──────────
 const GAME_VARIANTS: Record<string, Array<{ href: string; label: string; tagline: string }>> = {
   klondike: [
+    { href: "/klondike",           label: "Play Klondike",      tagline: "Jump straight into the classic game" },
     { href: "/klondike-solitaire", label: "Klondike Solitaire", tagline: "Classic rules guide & win rates" },
     { href: "/turn-1-solitaire",   label: "Turn 1 (Draw 1)",    tagline: "Easiest — flip one card at a time" },
     { href: "/turn-3-solitaire",   label: "Turn 3 (Draw 3)",    tagline: "Harder — flip three cards at a time" },
@@ -26,18 +27,23 @@ const GAME_VARIANTS: Record<string, Array<{ href: string; label: string; tagline
     { href: "/double-klondike",    label: "Double Klondike",    tagline: "Two decks, 9 columns, 8 foundations" },
   ],
   spider: [
+    { href: "/spider",                   label: "Play Spider",        tagline: "Jump straight into the classic game" },
     { href: "/spider-solitaire",         label: "Spider Solitaire",   tagline: "Classic rules & strategy guide" },
     { href: "/1-suit-spider-solitaire",  label: "1 Suit (Easy)",      tagline: "All spades — ideal for beginners" },
     { href: "/2-suit-spider-solitaire",  label: "2 Suit (Medium)",    tagline: "Spades and hearts — middle ground" },
     { href: "/4-suit-spider-solitaire",  label: "4 Suit (Expert)",    tagline: "All four suits — maximum difficulty" },
   ],
   freecell: [
+    { href: "/freecell",           label: "Play FreeCell",      tagline: "Jump straight into the classic game" },
     { href: "/freecell-solitaire", label: "FreeCell Solitaire", tagline: "Rules, strategy & solvability guide" },
   ],
 };
 
 function GameVariants({ gameKey }: { gameKey: string }) {
-  const variants = GAME_VARIANTS[gameKey];
+  const { pathname } = useLocation();
+  const all = GAME_VARIANTS[gameKey];
+  // Exclude the current page so it doesn't link to itself
+  const variants = all?.filter((v) => v.href !== pathname);
   if (!variants?.length) return null;
   return (
     <section className="mx-auto mt-6 sm:mt-10 max-w-[900px] xl:max-w-[1200px] px-4">
