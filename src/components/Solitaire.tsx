@@ -395,6 +395,7 @@ export function Solitaire({ initialMode }: { initialMode?: KlondikeMode } = {}) 
         onHint={showHint}
         canUndo={history.length > 0}
         vegasPasses={vegasPasses}
+        mode={game.mode}
       />
 
       <AppearanceBar
@@ -818,8 +819,15 @@ function TableauColumn({
 
 // ─── TopBar ───────────────────────────────────────────────────────────────────
 
+const MODE_DISPLAY: Record<string, string> = {
+  draw1:  "Klondike",
+  draw3:  "Klondike · Turn 3",
+  vegas:  "Vegas Scoring",
+  double: "Double Klondike",
+};
+
 function TopBar({
-  moves, scoreLabel, scoreValue, time, isPaused, onPause, onReset, onUndo, onNew, onHint, canUndo, vegasPasses,
+  moves, scoreLabel, scoreValue, time, isPaused, onPause, onReset, onUndo, onNew, onHint, canUndo, vegasPasses, mode,
 }: {
   moves: number;
   scoreLabel: string;
@@ -833,12 +841,14 @@ function TopBar({
   onHint: () => void;
   canUndo: boolean;
   vegasPasses: { current: number; max: number } | null;
+  mode: string;
 }) {
+  const gameLabel = MODE_DISPLAY[mode] ?? "Klondike";
   return (
     <div className="game-controls glass flex items-center justify-between gap-3 rounded-2xl px-4 py-3">
       <div className="hidden sm:flex items-center gap-2">
         <div className="h-8 w-8 rounded-lg" style={{ background: "linear-gradient(135deg, var(--neon), var(--neon-2))", boxShadow: "0 0 20px -4px var(--neon)" }} />
-        <div className="text-sm font-semibold tracking-tight" style={{ fontFamily: "var(--font-display)" }}>Klondike</div>
+        <div className="text-sm font-semibold tracking-tight" style={{ fontFamily: "var(--font-display)" }}>{gameLabel}</div>
       </div>
       <div className="flex items-center gap-3 sm:gap-5" style={{ fontFamily: "var(--font-mono)" }}>
         <div className="text-right leading-tight">
