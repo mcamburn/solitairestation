@@ -323,7 +323,7 @@ export function FreeCell() {
       {/* Board */}
       <div className="game-board-glass glass mt-4 rounded-2xl p-4 sm:p-5" style={dragMode ? { touchAction: "none" } : undefined}>
         {/* Free cells + foundations */}
-        <div className="mb-4 grid gap-1.5" style={{ gridTemplateColumns: "repeat(9, minmax(0, 1fr))" }}>
+        <div className="mb-4 grid gap-1.5" style={{ gridTemplateColumns: "repeat(8, minmax(0, 1fr))" }}>
           {/* Free cells */}
           {game.freeCells.map((card, i) => {
             const { ring, shadow } = dropHighlight(`freecell-${i}`);
@@ -366,9 +366,6 @@ export function FreeCell() {
               </div>
             );
           })}
-
-          {/* Spacer */}
-          <div />
 
           {/* Foundations */}
           {game.foundations.map((pile, i) => {
