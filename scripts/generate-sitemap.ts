@@ -95,6 +95,7 @@ for (const guide of GUIDES) {
 // Utility pages
 sections.push("\n  <!-- ── Utility pages ────────────────────────────────────────── -->");
 sections.push(url(`${SITE}/about`,   TODAY, "monthly", "0.7"));
+sections.push(url(`${SITE}/stats`,   TODAY, "monthly", "0.5"));
 sections.push(url(`${SITE}/privacy`, TODAY, "yearly",  "0.3"));
 sections.push(url(`${SITE}/terms`,   TODAY, "yearly",  "0.3"));
 
