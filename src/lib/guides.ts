@@ -2867,9 +2867,9 @@ export const GUIDES: Guide[] = [
 ];
 
 export const GUIDE_GAMES: { tag: GameTag; label: string; emoji: string; path: string }[] = [
-  { tag: "klondike",    label: "Klondike",       emoji: "🃏", path: "/klondike"      },
-  { tag: "spider",      label: "Spider",         emoji: "🕷️", path: "/spider"        },
-  { tag: "freecell",    label: "FreeCell",       emoji: "🔲", path: "/freecell"      },
+  { tag: "klondike",    label: "Klondike",       emoji: "🃏", path: "/klondike-solitaire" },
+  { tag: "spider",      label: "Spider",         emoji: "🕷️", path: "/spider-solitaire"   },
+  { tag: "freecell",    label: "FreeCell",       emoji: "🔲", path: "/freecell-solitaire" },
   { tag: "pyramid",     label: "Pyramid",        emoji: "🔺", path: "/pyramid"       },
   { tag: "tripeaks",    label: "TriPeaks",       emoji: "⛰️", path: "/tripeaks"      },
   { tag: "mahjong",     label: "Mahjong",        emoji: "🀄", path: "/mahjong"       },
