@@ -30,7 +30,7 @@ function TermsPage() {
   return (
     <main className="mx-auto min-h-screen w-full max-w-[760px] px-4 py-10 sm:py-16">
       <Link
-        to="/"
+        to="/klondike"
         className="text-xs uppercase tracking-[0.22em] text-muted-foreground transition hover:text-foreground"
       >
         ← Back to home
