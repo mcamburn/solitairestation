@@ -26,7 +26,7 @@ export const Route = createFileRoute("/stats")({
         content:
           "View your lifetime solitaire stats: games played, win rate, best time, and longest streak across every game on Solitaire Station.",
       },
-      { name: "robots", content: "noindex, follow" },
+      { name: "robots", content: "index, follow" },
       { property: "og:title", content: "Solitaire Station — My Stats" },
       {
         property: "og:description",

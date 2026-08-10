@@ -8,7 +8,7 @@ export const Route = createFileRoute("/terms")({
     meta: [
       { title: "Terms of Use · Solitaire Station" },
       { name: "description", content: "Terms of Use for Solitaire Station — free online solitaire games including Klondike, Spider, FreeCell, and more. No sign-up or download required." },
-      { name: "robots", content: "noindex, follow" },
+      { name: "robots", content: "index, follow" },
       { property: "og:site_name", content: "Solitaire Station" },
       { property: "og:title", content: "Terms of Use · Solitaire Station" },
       { property: "og:description", content: "Terms of Use for Solitaire Station. Free to play, no sign-up required." },

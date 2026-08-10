@@ -8,7 +8,7 @@ export const Route = createFileRoute("/privacy")({
     meta: [
       { title: "Privacy Policy · Solitaire Station" },
       { name: "description", content: "Privacy Policy for Solitaire Station — free online solitaire. No account or sign-up required. Your game data stays on your device." },
-      { name: "robots", content: "noindex, follow" },
+      { name: "robots", content: "index, follow" },
       { property: "og:site_name", content: "Solitaire Station" },
       { property: "og:title", content: "Privacy Policy · Solitaire Station" },
       { property: "og:description", content: "Privacy Policy for Solitaire Station. No account required. Your game data stays on your device." },
