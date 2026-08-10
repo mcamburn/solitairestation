@@ -66,9 +66,8 @@ function url(
 
 const sections: string[] = [];
 
-// Homepage
-sections.push("  <!-- ── Homepage ───────────────────────────────────────────── -->");
-sections.push(url(`${SITE}`, TODAY, "weekly", "1.0"));
+// Homepage is currently a 302 redirect to /klondike — excluded from sitemap
+// until the route serves its own content (task: homepage SEO content).
 
 // Core game pages
 sections.push("\n  <!-- ── Core game pages ─────────────────────────────────────── -->");
@@ -114,5 +113,5 @@ const xml = [
 const outPath = resolve(import.meta.dir, "../public/sitemap.xml");
 writeFileSync(outPath, xml, "utf-8");
 
-const total = 1 + CORE_GAMES.length + SEO_VARIANTS.length + 1 + GUIDES.length + 3;
+const total = CORE_GAMES.length + SEO_VARIANTS.length + 1 + GUIDES.length + 3;
 console.log(`✓ sitemap.xml written — ${total} URLs (${GUIDES.length} guide articles)`);
