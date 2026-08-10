@@ -6,8 +6,10 @@ import {
   formatStatTime,
   downloadStatsExport,
   importStatsFromExport,
+  previewStatsImport,
   type GameStats,
   type GameRecord,
+  type ImportPreviewEntry,
 } from "@/lib/stats";
 import { GAMES } from "@/lib/games";
 import { SiteFooter } from "@/components/SiteFooter";
@@ -1197,6 +1199,96 @@ function HistoryMobileRow({ entry }: { entry: HistoryEntry }) {
   );
 }
 
+/* ── Import change summary (shown in confirmation dialog) ─────────────────── */
+
+function ImportChangeSummary({
+  preview,
+  totalNewRecords,
+}: {
+  preview: ImportPreviewEntry[];
+  totalNewRecords: number;
+}) {
+  const gamesWithNew = preview.filter((e) => e.newRecords > 0);
+  const alreadyUpToDate = preview.length - gamesWithNew.length;
+
+  // Build a lookup for display names/emoji from GAMES (explicit string key so
+  // gameMap.get(entry.gameKey) doesn't fail the union-narrowing check)
+  const gameMap = new Map<string, { title: string; emoji: string }>(
+    GAMES.map((g) => [g.saveKey, { title: g.title, emoji: g.emoji }])
+  );
+
+  return (
+    <div
+      className="rounded-xl overflow-hidden text-sm"
+      style={{
+        border: "1px solid color-mix(in oklab, var(--neon) 16%, transparent)",
+        background: "color-mix(in oklab, var(--neon) 3%, oklch(0.13 0.03 155))",
+      }}
+    >
+      {/* Header bar */}
+      <div
+        className="px-3 py-2 flex items-center justify-between"
+        style={{
+          borderBottom: "1px solid color-mix(in oklab, var(--neon) 12%, transparent)",
+          background: "color-mix(in oklab, var(--neon) 6%, oklch(0.14 0.03 155))",
+        }}
+      >
+        <span
+          className="text-[10px] uppercase tracking-[0.18em] font-semibold"
+          style={{ color: "color-mix(in oklab, var(--neon) 60%, white)" }}
+        >
+          What will change
+        </span>
+        {totalNewRecords > 0 ? (
+          <span
+            className="text-[10px] font-semibold tabular-nums"
+            style={{ color: "var(--neon)" }}
+          >
+            +{totalNewRecords} new record{totalNewRecords !== 1 ? "s" : ""}
+          </span>
+        ) : (
+          <span className="text-[10px] text-muted-foreground">Already up-to-date</span>
+        )}
+      </div>
+
+      {/* Per-game rows */}
+      <div className="max-h-44 overflow-y-auto">
+        {gamesWithNew.length === 0 && (
+          <p className="px-3 py-2 text-xs text-muted-foreground">
+            No new history entries found — your stats are already up-to-date.
+          </p>
+        )}
+        {gamesWithNew.map((entry) => {
+          const info = gameMap.get(entry.gameKey);
+          const label = info ? `${info.emoji} ${info.title}` : entry.gameKey;
+          return (
+            <div
+              key={entry.gameKey}
+              className="flex items-center justify-between px-3 py-1.5"
+              style={{
+                borderBottom: "1px solid color-mix(in oklab, var(--neon) 7%, transparent)",
+              }}
+            >
+              <span className="text-xs text-foreground truncate">{label}</span>
+              <span
+                className="text-xs font-semibold tabular-nums shrink-0 ml-3"
+                style={{ color: "var(--neon)" }}
+              >
+                +{entry.newRecords} new
+              </span>
+            </div>
+          );
+        })}
+        {alreadyUpToDate > 0 && gamesWithNew.length > 0 && (
+          <p className="px-3 py-2 text-[11px] text-muted-foreground">
+            {alreadyUpToDate} game{alreadyUpToDate !== 1 ? "s" : ""} already up-to-date
+          </p>
+        )}
+      </div>
+    </div>
+  );
+}
+
 /* ── Export / Import controls ─────────────────────────────────────────────── */
 
 function ExportImportControls({ onImported }: { onImported: () => void }) {
@@ -1205,8 +1297,13 @@ function ExportImportControls({ onImported }: { onImported: () => void }) {
   const cancelBtnRef = useRef<HTMLButtonElement>(null);
   const confirmBtnRef = useRef<HTMLButtonElement>(null);
   const [status, setStatus] = useState<{ kind: "success" | "error"; message: string } | null>(null);
-  // Pending import: hold parsed data until the player confirms
-  const [pendingImport, setPendingImport] = useState<{ data: unknown; count: number } | null>(null);
+  // Pending import: hold parsed data + change preview until the player confirms
+  const [pendingImport, setPendingImport] = useState<{
+    data: unknown;
+    count: number;
+    preview: ImportPreviewEntry[];
+    totalNewRecords: number;
+  } | null>(null);
 
   // Focus trap + Escape handler while modal is open
   useEffect(() => {
@@ -1259,19 +1356,9 @@ function ExportImportControls({ onImported }: { onImported: () => void }) {
     try {
       const text = await file.text();
       const data = JSON.parse(text) as unknown;
-      // Validate the file and count games without writing yet
-      const { games } = data as { games: Record<string, unknown> };
-      if (
-        typeof data !== "object" ||
-        data === null ||
-        (data as { version?: number }).version !== 1 ||
-        typeof games !== "object" ||
-        games === null
-      ) {
-        throw new Error("Invalid stats file — please use a file exported from Solitaire Station.");
-      }
-      const count = Object.keys(games).length;
-      setPendingImport({ data, count });
+      // Validate + compute a dry-run preview (throws on invalid file)
+      const { entries, totalNewRecords, validGameCount } = previewStatsImport(data);
+      setPendingImport({ data, count: validGameCount, preview: entries, totalNewRecords });
     } catch (err) {
       setStatus({
         kind: "error",
@@ -1349,6 +1436,10 @@ function ExportImportControls({ onImported }: { onImported: () => void }) {
               </span>
               . Your history and best scores are kept — the import only adds to them.
             </p>
+
+            {/* Per-game change preview */}
+            <ImportChangeSummary preview={pendingImport.preview} totalNewRecords={pendingImport.totalNewRecords} />
+
             <div className="flex gap-3 justify-end mt-1">
               <button
                 ref={cancelBtnRef}

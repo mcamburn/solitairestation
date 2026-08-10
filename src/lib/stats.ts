@@ -443,6 +443,70 @@ export function importStatsFromExport(data: unknown): ImportResult {
   return { count, skippedGames, droppedRecords };
 }
 
+/* ── Import preview (dry-run) ─────────────────────────────────────────────── */
+
+export interface ImportPreviewEntry {
+  /** The game key (e.g. "klondike"). */
+  gameKey: string;
+  /** History records in the imported file that aren't already in local storage. */
+  newRecords: number;
+  /** Total valid history records in the imported file for this game. */
+  totalRecords: number;
+}
+
+export interface ImportPreview {
+  /** Per-game breakdown; only games that pass validation are included. */
+  entries: ImportPreviewEntry[];
+  /** Sum of newRecords across all games. */
+  totalNewRecords: number;
+  /** Number of valid game keys found in the import. */
+  validGameCount: number;
+}
+
+/**
+ * Parse and validate an import file, then compute per-game counts of
+ * history records that would be added — without writing anything.
+ * Throws on a structurally invalid file (same as importStatsFromExport).
+ */
+export function previewStatsImport(data: unknown): ImportPreview {
+  if (
+    typeof data !== "object" ||
+    data === null ||
+    Array.isArray(data) ||
+    (data as StatsExport).version !== 1 ||
+    typeof (data as StatsExport).games !== "object" ||
+    (data as StatsExport).games === null ||
+    Array.isArray((data as StatsExport).games)
+  ) {
+    throw new Error("Invalid stats file — please use a file exported from Solitaire Station.");
+  }
+  const { games } = data as StatsExport;
+  const entries: ImportPreviewEntry[] = [];
+  let totalNewRecords = 0;
+
+  for (const [gameKey, rawStats] of Object.entries(games)) {
+    if (typeof gameKey !== "string") continue;
+    const result = validateGameStats(rawStats);
+    if ("error" in result) continue; // skip invalid games (same as importStatsFromExport)
+
+    const existing = loadStats(gameKey);
+    // Simulate the real merge so the count respects deduplication and the
+    // MAX_HISTORY cap — identical to what importStatsFromExport will do.
+    const merged = mergeStats(existing, result.stats);
+    const existingTimestamps = new Set(existing.history.map((r) => r.date));
+    const newRecords = merged.history.filter((r) => !existingTimestamps.has(r.date)).length;
+
+    entries.push({
+      gameKey,
+      newRecords,
+      totalRecords: result.stats.history.length,
+    });
+    totalNewRecords += newRecords;
+  }
+
+  return { entries, totalNewRecords, validGameCount: entries.length };
+}
+
 /** Win percentage (0–100), rounded to nearest integer. */
 export function getWinRate(stats: GameStats): number {
   if (stats.gamesPlayed === 0) return 0;
