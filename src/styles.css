@@ -344,10 +344,10 @@
 /* card-center-pip is hidden at normal widths; container queries enable it below */
 .card-center-pip { display: none; }
 
-/* Ultra-narrow cards (≤40 px) — Spider / Forty Thieves on 375 px portrait.
+/* Ultra-narrow cards (≤44 px) — Canfield (~41 px), Spider / Forty Thieves (~32 px) on 375 px portrait.
    Replace the corner layout with a single centred rank + suit pip so the
    card identity stays readable without crowding a tiny corner. */
-@container card-slot (max-width: 40px) {
+@container card-slot (max-width: 44px) {
   .playing-card { padding: 2px; }
   /* Hide the top-corner row and all centre decorative content */
   .card-corner                             { display: none !important; }
