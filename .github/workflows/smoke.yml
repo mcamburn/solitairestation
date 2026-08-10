@@ -53,8 +53,28 @@ jobs:
             --data '{"purge_everything":true}')
           echo "Cloudflare API response (HTTP ${http_status}):"
           cat /tmp/cf_response.json
+          echo ""
           if [ "${http_status}" != "200" ]; then
-            echo "Cache purge failed — HTTP ${http_status}"
+            echo "::error::Cache purge failed — HTTP ${http_status}"
+            if command -v jq &>/dev/null; then
+              errors=$(jq -r '.errors[]? | "  [\(.code)] \(.message)"' /tmp/cf_response.json 2>/dev/null)
+              if [ -n "${errors}" ]; then
+                echo "Cloudflare errors:"
+                echo "${errors}"
+              fi
+            fi
+            exit 1
+          fi
+          api_success=$(jq -r '.success' /tmp/cf_response.json 2>/dev/null)
+          if [ "${api_success}" != "true" ]; then
+            echo "::error::Cache purge returned HTTP 200 but success=false"
+            if command -v jq &>/dev/null; then
+              errors=$(jq -r '.errors[]? | "  [\(.code)] \(.message)"' /tmp/cf_response.json 2>/dev/null)
+              if [ -n "${errors}" ]; then
+                echo "Cloudflare errors:"
+                echo "${errors}"
+              fi
+            fi
             exit 1
           fi
           echo "Cache purge succeeded"
