@@ -156,14 +156,15 @@ const WEBSITE_LD = JSON.stringify({
   "@context": "https://schema.org",
   "@graph": [
     {
-      "@type": ["SoftwareApplication", "VideoGame"],
+      // VideoGame is a subtype of SoftwareApplication — no need to list both
+      "@type": "VideoGame",
       "@id": `${SITE_URL}/#game`,
       "url": `${SITE_URL}/`,
       "name": "Solitaire Station",
       "description": "Solitaire Station — play 16 free solitaire games instantly in your browser, with customizable card backs and face styles, hints, undo, and auto-save. Klondike, Spider, FreeCell, Pyramid, TriPeaks, Mahjong, Golf, Forty Thieves, Yukon, Scorpion, Eight Off, Canfield, Baker's Dozen, Baker's Game, Clock, and Addiction. No download or sign-up required.",
       "applicationCategory": "GameApplication",
       "genre": ["Solitaire", "Card Game", "Casual Game"],
-      "operatingSystem": "Any (Browser-based)",
+      "operatingSystem": "Web",
       "inLanguage": "en",
       "isAccessibleForFree": true,
       "offers": {
@@ -181,6 +182,11 @@ const WEBSITE_LD = JSON.stringify({
       "@id": `${SITE_URL}/#organization`,
       "name": "Solitaire Station",
       "url": `${SITE_URL}/`,
+      "logo": {
+        "@type": "ImageObject",
+        "url": `${SITE_URL}/favicon.svg`,
+        "contentUrl": `${SITE_URL}/favicon.svg`,
+      },
       "sameAs": [
         "https://x.com/solitairestatn",
         "https://www.facebook.com/solitairestation",

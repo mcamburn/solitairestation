@@ -95,43 +95,36 @@ function GuidePage() {
 
   const articleLd = JSON.stringify({
     "@context": "https://schema.org",
-    "@type": "Article",
-    "headline": `${guide.title} — Solitaire Station`,
-    "description": guide.description,
-    "url": `${SITE_URL}/guides/${guide.slug}`,
-    "inLanguage": "en-US",
-    "datePublished": datePublished,
-    "dateModified": datePublished,
-    "image": {
-      "@type": "ImageObject",
-      "url": ogImage,
-      "width": 1200,
-      "height": 630,
-    },
-    "author": {
-      "@type": "Organization",
-      "name": "Solitaire Station",
-      "url": `${SITE_URL}/`,
-    },
-    "publisher": {
-      "@type": "Organization",
-      "name": "Solitaire Station",
-      "url": `${SITE_URL}/`,
-      "logo": {
-        "@type": "ImageObject",
-        "url": `${SITE_URL}/og/klondike.png?v=6`,
-        "width": 1200,
-        "height": 630,
+    "@graph": [
+      {
+        "@type": "Article",
+        "@id": `${SITE_URL}/guides/${guide.slug}#article`,
+        "headline": guide.title,
+        "description": guide.description,
+        "url": `${SITE_URL}/guides/${guide.slug}`,
+        "inLanguage": "en-US",
+        "datePublished": datePublished,
+        "dateModified": datePublished,
+        "image": {
+          "@type": "ImageObject",
+          "url": ogImage,
+          "width": 1200,
+          "height": 630,
+        },
+        // Reference the global Organization entity defined in __root.tsx
+        "author": { "@id": `${SITE_URL}/#organization` },
+        "publisher": { "@id": `${SITE_URL}/#organization` },
+        "isPartOf": { "@id": `${SITE_URL}/#website` },
       },
-    },
-    "breadcrumb": {
-      "@type": "BreadcrumbList",
-      "itemListElement": [
-        { "@type": "ListItem", "position": 1, "name": "Home", "item": `${SITE_URL}/` },
-        { "@type": "ListItem", "position": 2, "name": "Guides", "item": `${SITE_URL}/guides` },
-        { "@type": "ListItem", "position": 3, "name": guide.title, "item": `${SITE_URL}/guides/${guide.slug}` },
-      ],
-    },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": `${SITE_URL}/` },
+          { "@type": "ListItem", "position": 2, "name": "Guides", "item": `${SITE_URL}/guides` },
+          { "@type": "ListItem", "position": 3, "name": guide.title, "item": `${SITE_URL}/guides/${guide.slug}` },
+        ],
+      },
+    ],
   });
 
   return (
