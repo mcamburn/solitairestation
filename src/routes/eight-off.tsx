@@ -8,7 +8,7 @@ export const Route = createFileRoute("/eight-off")({
   head: () => ({
     meta: [
       { title: "Solitaire Station — Free Eight Off Solitaire" },
-      { name: "description", content: "Play free Eight Off solitaire at Solitaire Station — a classic FreeCell variant with 8 free cells and same-suit tableau stacking. Hints, undo, and auto-save. No download or sign-up." },
+      { name: "description", content: "Play free Eight Off solitaire — FreeCell variant with 8 free cells and same-suit stacking. Hints, undo, and auto-save. No download or sign-up." },
       { name: "robots", content: "index, follow" },
       { property: "og:site_name", content: "Solitaire Station" },
       { property: "og:locale", content: "en_US" },

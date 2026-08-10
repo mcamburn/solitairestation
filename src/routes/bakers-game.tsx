@@ -8,7 +8,7 @@ export const Route = createFileRoute("/bakers-game")({
   head: () => ({
     meta: [
       { title: "Solitaire Station — Free Baker's Game Solitaire" },
-      { name: "description", content: "Play free Baker's Game solitaire at Solitaire Station — FreeCell with same-suit tableau stacking. A harder strategic challenge than standard FreeCell. Hints, undo, and auto-save. No download or sign-up." },
+      { name: "description", content: "Play free Baker's Game solitaire — FreeCell with same-suit stacking, for a harder strategic challenge. Hints, undo, and auto-save. No download or sign-up." },
       { name: "robots", content: "index, follow" },
       { property: "og:site_name", content: "Solitaire Station" },
       { property: "og:locale", content: "en_US" },

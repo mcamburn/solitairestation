@@ -343,7 +343,7 @@ export const GUIDES: Guide[] = [
     game: "pyramid",
     title: "Pyramid Solitaire Rules & Pairing Guide",
     description:
-      "Complete rules for Pyramid Solitaire — how the pyramid is built, which cards pair together to make 13, how the stock and waste work, and what 'fully exposed' means.",
+      "Complete rules for Pyramid Solitaire — how the pyramid is built, which cards pair to 13, how the stock and waste work, and what 'fully exposed' means.",
     intro:
       "Pyramid Solitaire challenges you to clear a 28-card pyramid by pairing cards that add up to 13. The math is simple but the strategy is surprisingly deep.",
     sections: [
@@ -425,7 +425,7 @@ export const GUIDES: Guide[] = [
     game: "tripeaks",
     title: "TriPeaks Solitaire Rules Explained",
     description:
-      "Everything you need to know about TriPeaks Solitaire — the three-peak layout, how chaining works, what makes a card playable, and how scoring rewards long streaks.",
+      "Complete rules for TriPeaks Solitaire — the three-peak layout, how chaining works, what makes a card playable, and how scoring rewards long streaks.",
     intro:
       "TriPeaks Solitaire was invented by Robert Hogue at Microsoft in 1994, and it's been one of the most popular casual card games ever since. Its fast pace and chain-combo scoring make it uniquely satisfying.",
     sections: [
@@ -467,7 +467,7 @@ export const GUIDES: Guide[] = [
     game: "tripeaks",
     title: "TriPeaks Strategy: Chains & Streaks",
     description:
-      "Advanced TriPeaks Solitaire strategy — how to plan chains before you start, when to break a streak intentionally, how to uncover peaks efficiently, and why card-rank sequencing is everything.",
+      "TriPeaks strategy: plan chains before you start, when to break a streak intentionally, uncover peaks efficiently, and why card-rank sequencing is everything.",
     intro:
       "TriPeaks Solitaire rewards players who plan their chains before making a single move. The score difference between reactive play (taking cards as they come) and planned play (building chains deliberately) is enormous.",
     sections: [
@@ -511,7 +511,7 @@ export const GUIDES: Guide[] = [
     game: "mahjong",
     title: "Mahjong Solitaire Rules & Complete Tile Guide",
     description:
-      "Learn the rules of Mahjong Solitaire — what makes a tile 'free,' how matching works, the special flower and season tiles, and the difference between Mahjong Solitaire and the multiplayer tile game.",
+      "Learn Mahjong Solitaire rules — what makes a tile 'free,' how matching works, flower and season tiles, and how it differs from the multiplayer tile game.",
     intro:
       "Mahjong Solitaire (sometimes called Shanghai Solitaire) is frequently confused with the multiplayer Mahjong tile game. They share pieces but play completely differently — this is a single-player puzzle about clearing a stacked tile layout, not a draw-and-discard game.",
     sections: [
@@ -560,7 +560,7 @@ export const GUIDES: Guide[] = [
     game: "mahjong",
     title: "Mahjong Strategy: Layers & Unblocking",
     description:
-      "Practical Mahjong Solitaire strategy — how to read the layout, prioritize which tiles to clear, avoid unwinnable traps, and use the shuffle and hint features effectively.",
+      "Practical Mahjong Solitaire strategy — read the layout, prioritize which tiles to clear, avoid unwinnable traps, and use shuffle and hint features effectively.",
     intro:
       "Mahjong Solitaire has a reputation as a relaxing, meditative game — and it is. But there's real strategy underneath the calm surface, and players who understand it will clear more boards and get stuck far less often.",
     sections: [
@@ -605,7 +605,7 @@ export const GUIDES: Guide[] = [
     game: "general",
     title: "The History of Solitaire: Origins",
     description:
-      "The fascinating history of solitaire card games — from their likely origins in Northern Europe and Scandinavia, through their popularization in 19th-century France and England, to the Windows 3.0 era and today's browser-based play.",
+      "The history of solitaire — from origins in Northern Europe, through 19th-century France and England, to the Windows 3.0 era and today's browser-based play.",
     intro:
       "Solitaire is one of the oldest and most widely played games in the world. Its origins are surprisingly obscure for something so ubiquitous — and its journey from handmade cards on Baltic estate tables to a built-in Windows application to instant browser play is a remarkable story.",
     sections: [
@@ -652,7 +652,7 @@ export const GUIDES: Guide[] = [
     game: "general",
     title: "Solitaire Glossary: Key Terms Across All Six Games",
     description:
-      "A clear, jargon-free glossary of solitaire terms used across Klondike, Spider, FreeCell, Pyramid, TriPeaks, and Mahjong Solitaire — foundations, tableau, free cells, stock, waste, and more.",
+      "A jargon-free glossary of solitaire terms — foundations, tableau, free cells, stock, waste — covering Klondike, Spider, FreeCell, Pyramid, TriPeaks, and more.",
     intro:
       "Solitaire games share a vocabulary built up over centuries of play. If you've ever wondered what 'tableau' means, why the discard pile is called the 'waste,' or what exactly a 'foundation' is, this glossary has you covered.",
     sections: [
@@ -960,7 +960,7 @@ export const GUIDES: Guide[] = [
     game: "freecell",
     title: "FreeCell Supermoves: How to Move Groups of Cards",
     description:
-      "FreeCell technically moves one card at a time, but the supermove rule lets you move sequences as a group. This guide explains the math, how to maximize your group move size, and why empty columns matter more than free cells.",
+      "FreeCell's supermove rule lets you move sequences as a group — the math, how to maximize move size, and why empty columns matter more than free cells.",
     intro:
       "A common misconception about FreeCell is that you can only move one card at a time. You can move sequences as a group — but only if you have the free space to do so. Understanding exactly how much space you need changes how you plan every position.",
     sections: [
@@ -1042,7 +1042,7 @@ export const GUIDES: Guide[] = [
     game: "pyramid",
     title: "Pyramid Solitaire Stock Cycling Strategy",
     description:
-      "How to use the stock and waste piles strategically in Pyramid Solitaire — when to draw, when to hold, how many recycles to expect, and the card-counting approach that improves your win rate.",
+      "Strategic stock use in Pyramid Solitaire — when to draw, when to hold, how many recycles to expect, and the card-counting approach that improves your win rate.",
     intro:
       "The stock in Pyramid Solitaire is your lifeline when the pyramid has no free pairs. How you use it — and how many times you cycle through it — often determines whether you win or lose.",
     sections: [
@@ -1082,7 +1082,7 @@ export const GUIDES: Guide[] = [
     game: "pyramid",
     title: "Pyramid Solitaire Variants & Rules",
     description:
-      "Not all Pyramid Solitaire games play the same. This guide explains the differences between Classic, Relaxed, and Timer variants — recycle counts, scoring systems, and which mode suits different players.",
+      "Classic, Relaxed, and Timer Pyramid Solitaire variants explained — recycle counts, scoring systems, and which mode suits different player preferences.",
     intro:
       "Pyramid Solitaire exists in several distinct variants with meaningfully different rules. Knowing which version you\u2019re playing — and what its specific constraints are — changes how you approach every hand.",
     sections: [
@@ -1164,7 +1164,7 @@ export const GUIDES: Guide[] = [
     game: "tripeaks",
     title: "TriPeaks Scoring: Streaks & Stars",
     description:
-      "A complete breakdown of how TriPeaks Solitaire scoring works — the streak multiplier, how to build long chains, what stars require, and the specific plays that maximize your score on every hand.",
+      "How TriPeaks Solitaire scoring works — the streak multiplier, how to build long chains, what stars require, and the plays that maximize your score.",
     intro:
       "TriPeaks scoring rewards streaks exponentially. A player who builds two 10-card chains will outscore a player who clears the whole board with ten 2-card chains. Understanding the math behind the scoring changes how you prioritize every move.",
     sections: [
@@ -1204,7 +1204,7 @@ export const GUIDES: Guide[] = [
     game: "tripeaks",
     title: "TriPeaks Solitaire: Beginner\u2019s Guide",
     description:
-      "Everything a new TriPeaks Solitaire player needs to know — how the game works, why it\u2019s different from Klondike, the wrap rule, and three strategies to start winning immediately.",
+      "What new TriPeaks Solitaire players need — how the game works, why it differs from Klondike, the wrap rule, and three strategies to start winning immediately.",
     intro:
       "TriPeaks Solitaire is one of the fastest and most satisfying solitaire games to learn. The rules are simple, a session takes 3\u20137 minutes, and the streak mechanic makes every good run feel rewarding. Here\u2019s how to get started.",
     sections: [
@@ -1287,7 +1287,7 @@ export const GUIDES: Guide[] = [
     game: "mahjong",
     title: "Mahjong Solitaire Layouts Guide",
     description:
-      "A guide to the most common Mahjong Solitaire layouts — the classic Turtle, the linear Dragon, the challenging Pyramid, and others — with tips on how layout shape affects difficulty and strategy.",
+      "The most common Mahjong Solitaire layouts — Turtle, Dragon, Pyramid, and more — with tips on how layout shape affects difficulty and strategy.",
     intro:
       "Mahjong Solitaire can be played on dozens of different tile layouts. The layout doesn\u2019t just change the aesthetics — it fundamentally alters the strategic challenges, which tiles become bottlenecks, and how often the game is winnable.",
     sections: [
@@ -1327,7 +1327,7 @@ export const GUIDES: Guide[] = [
     game: "mahjong",
     title: "How to Read Mahjong Tiles Quickly",
     description:
-      "A visual guide to recognizing Mahjong Solitaire tile types at a glance — how to tell Bamboo from Characters, distinguish Wind tiles, and handle the special Flower and Season tiles that confuse new players.",
+      "How to recognize Mahjong tile types — tell Bamboo from Characters, distinguish Wind tiles, and handle Flower and Season tiles that confuse new players.",
     intro:
       "Mahjong tile recognition is a skill that improves dramatically with practice. New players spend a lot of time squinting at tiles to figure out which suit they belong to. This guide will cut that learning curve significantly.",
     sections: [
@@ -1411,7 +1411,7 @@ export const GUIDES: Guide[] = [
     game: "golf",
     title: "Golf Solitaire Rules & Strategy Guide",
     description:
-      "Complete rules for Golf Solitaire, how scoring works, and the key strategies that separate a good round from a great one. Learn why card sequence planning is the heart of Golf.",
+      "Complete rules for Golf Solitaire — how scoring works, the key strategies that separate a good round from a great one, and why sequence planning matters.",
     intro:
       "Golf Solitaire earns its name from the scoring: like real golf, you want your count as low as possible. It\u2019s one of the fastest solitaire variants — a hand takes two to five minutes — and the simple rules hide a surprising amount of strategic depth around sequence planning.",
     sections: [
@@ -1465,7 +1465,7 @@ export const GUIDES: Guide[] = [
     game: "golf",
     title: "How to Lower Your Golf Solitaire Score",
     description:
-      "Practical tips for improving your Golf Solitaire score across nine holes: chain extension, column depth management, stock conservation, and the wrap-around rule explained.",
+      "Tips for improving your Golf Solitaire score: chain extension, column depth management, stock conservation, and the wrap-around rule explained.",
     intro:
       "Golf Solitaire rewards players who think one step ahead. If you\u2019re consistently finishing hands with 8\u201312 cards left, these strategies will cut that number significantly.",
     sections: [
@@ -1561,7 +1561,7 @@ export const GUIDES: Guide[] = [
     game: "yukon",
     title: "Yukon Solitaire Rules & Strategy Guide",
     description:
-      "Rules, setup, and complete strategy for Yukon Solitaire \u2014 the variant where any face-up card (and everything on top of it) can be moved as a group to a valid destination, regardless of sequence order.",
+      "Rules and strategy for Yukon Solitaire — move any face-up card and everything above it as a group to a valid destination, regardless of sequence order.",
     intro:
       "Yukon Solitaire looks like Klondike but plays very differently. The tableau uses the same Klondike diagonal deal with face-down base cards, but unlike Klondike you can pick up and move any face-up card along with all the cards on top of it \u2014 even if they don\u2019t form a valid sequence. This single rule change opens up a much richer set of strategic options.",
     sections: [
@@ -1660,7 +1660,7 @@ export const GUIDES: Guide[] = [
     game: "eightoff",
     title: "Eight Off Solitaire Rules & Strategy Guide",
     description:
-      "Rules and strategy for Eight Off Solitaire \u2014 the predecessor to FreeCell with eight free cells instead of four, and why those extra cells change the strategy fundamentally.",
+      "Rules and strategy for Eight Off — FreeCell's predecessor with eight free cells instead of four, and why those extra cells change the strategy fundamentally.",
     intro:
       "Eight Off Solitaire is historically significant: it is the direct ancestor of FreeCell. The games share the same goal and the same full-information tableau, but Eight Off gives you eight free cells instead of four and builds by suit rather than alternating color. More free cells sound easier \u2014 and they are \u2014 but Eight Off still rewards careful planning.",
     sections: [
@@ -1709,7 +1709,7 @@ export const GUIDES: Guide[] = [
     game: "canfield",
     title: "Canfield Solitaire Rules & Strategy Guide",
     description:
-      "Complete rules for Canfield Solitaire, the casino game with a random foundation starting rank, wrapping sequences, and one of the lowest win rates of any mainstream solitaire variant.",
+      "Canfield Solitaire rules — random foundation starting rank, wrapping sequences, and one of the lowest win rates of any mainstream solitaire variant.",
     intro:
       "Canfield is the solitaire variant historically sold as a casino game: players paid for a deck and earned back money for every card they got to the foundation. The house was always a winner because Canfield has a very low practical win rate \u2014 estimates put it at around 3% for skilled players. Understanding the rules fully is essential before the strategy makes sense.",
     sections: [
@@ -1764,7 +1764,7 @@ export const GUIDES: Guide[] = [
     game: "addiction",
     title: "Addiction Solitaire Rules & Strategy Guide",
     description:
-      "Rules and strategy for Addiction Solitaire \u2014 the unique gap-filling variant where you build rows by sliding cards into spaces, with up to three shuffles to rescue a stuck board.",
+      "Rules and strategy for Addiction Solitaire — build rows by sliding cards into gaps, with up to three shuffles to rescue a stuck board.",
     intro:
       "Addiction Solitaire is unlike any other solitaire game. There is no stock, no foundation building in the traditional sense, and no card sequences. Instead, you slide cards into gaps to build four rows sorted by suit from 2 through King. The three shuffles you\u2019re given are your lifeline when the board locks up.",
     sections: [
@@ -1818,7 +1818,7 @@ export const GUIDES: Guide[] = [
     game: "bakersdozen",
     title: "Baker\u2019s Dozen Solitaire Rules & Strategy Guide",
     description:
-      "Complete rules and strategy guide for Baker\u2019s Dozen Solitaire \u2014 the fully face-up, no-free-cell variant where only the top card of each column is playable and Kings automatically shift to the bottom.",
+      "Rules and strategy for Baker's Dozen — fully face-up, no free cells, only the top card is playable, and Kings automatically shift to the bottom.",
     intro:
       "Baker\u2019s Dozen is a solitaire variant defined by two unusual rules: all 52 cards are dealt face-up from the start, and at the beginning Kings are automatically moved to the bottom of their columns. Only the top card of any column is playable. No free cells. No stock. What you see at the start is what you work with.",
     sections: [
@@ -1874,7 +1874,7 @@ export const GUIDES: Guide[] = [
     game: "bakersgame",
     title: "Baker\u2019s Game Solitaire Rules & Strategy Guide",
     description:
-      "Rules and strategy for Baker\u2019s Game \u2014 FreeCell\u2019s harder sibling that builds tableau sequences by suit instead of alternating color, and why that one change makes everything harder.",
+      "Rules and strategy for Baker's Game — FreeCell with same-suit tableau building instead of alternating color, and why that one change makes everything harder.",
     intro:
       "Baker\u2019s Game is FreeCell with one rule change: tableau sequences build by suit instead of alternating color. That sounds minor until you play it. Suit-only building dramatically reduces the number of valid moves at any point, and what felt like an open FreeCell board can feel claustrophobic in Baker\u2019s Game. The four free cells and full-information deal remain the same.",
     sections: [
@@ -1983,7 +1983,7 @@ export const GUIDES: Guide[] = [
     game: "general",
     title: "Which Solitaire Game Should You Play?",
     description:
-      "Not sure which solitaire game to start with? This guide matches different player types and preferences to the right game — whether you want quick sessions, deep strategy, all-skill play, or a meditative experience.",
+      "Which solitaire game fits you? Matched by player type — quick sessions, deep strategy, all-skill play, or a meditative experience.",
     intro:
       "Six solitaire games live on this site, each with a distinct feel, difficulty level, and time commitment. This guide cuts through the choice paralysis with a direct recommendation for every player type.",
     sections: [
@@ -2029,7 +2029,7 @@ export const GUIDES: Guide[] = [
     game: "general",
     title: "The Mental Benefits of Playing Solitaire",
     description:
-      "Research and reasoning behind why solitaire is genuinely good for your brain — cognitive benefits, stress relief, pattern recognition, and why a short session might be better than scrolling.",
+      "Why solitaire is good for your brain — cognitive benefits, stress relief, pattern recognition, and why a short session beats scrolling.",
     intro:
       "Solitaire has a reputation as a way to pass time. The research suggests it\u2019s doing more than that — it engages attention, planning, and pattern recognition in ways that passive entertainment simply doesn\u2019t.",
     sections: [
@@ -2160,7 +2160,7 @@ export const GUIDES: Guide[] = [
     game: "fortythieves",
     title: "Forty Thieves Solitaire Rules & Setup",
     description:
-      "Everything you need to know to play Forty Thieves Solitaire — the two-deck setup, tableau rules, foundation building, and why this is one of the most challenging patience games.",
+      "How to play Forty Thieves Solitaire — the two-deck setup, tableau rules, foundation building, and why it’s one of the most challenging patience games.",
     intro:
       "Forty Thieves — also called Napoleon at St. Helena, Big Forty, or Roosevelt at San Juan — is one of the classic two-deck solitaire games. Its austere rules give you very little room to maneuver, making it far harder than Klondike despite looking deceptively similar.",
     sections: [
@@ -2200,7 +2200,7 @@ export const GUIDES: Guide[] = [
     game: "fortythieves",
     title: "Forty Thieves Solitaire Strategy",
     description:
-      "Advanced Forty Thieves Solitaire strategy — how to manage empty columns, survive a no-redeal stock, and maximize your win rate in one of solitaire's hardest variants.",
+      "Forty Thieves strategy — managing empty columns, surviving a no-redeal stock, and maximizing your win rate in one of solitaire’s hardest variants.",
     intro:
       "Forty Thieves has a win rate so low that even strong players expect to lose most games. The goal isn't mastery in the traditional sense — it's learning to recognize winnable deals quickly and squeezing every possible move out of them.",
     sections: [
@@ -2399,7 +2399,7 @@ export const GUIDES: Guide[] = [
     game: "eightoff",
     title: "Eight Off Solitaire Rules & Strategy",
     description:
-      "A complete guide to Eight Off Solitaire — the setup, rules, and the key differences from FreeCell that make Eight Off both easier and harder depending on how you approach it.",
+      "Eight Off Solitaire rules — the setup and key differences from FreeCell that make Eight Off both easier and harder depending on how you approach it.",
     intro:
       "Eight Off is FreeCell's older sibling — the game that FreeCell was directly based on. It looks nearly identical but plays differently in two important ways: columns are built by suit (not alternating color), and there are eight free cells instead of four. These changes create a very different strategic environment.",
     sections: [
@@ -2437,7 +2437,7 @@ export const GUIDES: Guide[] = [
     game: "eightoff",
     title: "Eight Off Strategy: Using 8 Free Cells",
     description:
-      "How to use Eight Off's eight free cells and same-suit building rule to your advantage — sequencing strategy, free-cell conservation, and how to avoid the common trap of filling all eight cells.",
+      "Eight Off strategy — sequencing, free-cell conservation, and how to avoid the trap of filling all eight cells with Eight Off’s same-suit building rule.",
     intro:
       "Eight Off is more forgiving than FreeCell, but players who treat the eight free cells as an unlimited buffer quickly find themselves with all cells occupied and no moves left. Disciplined cell use is the game's central challenge.",
     sections: [
@@ -2477,7 +2477,7 @@ export const GUIDES: Guide[] = [
     game: "canfield",
     title: "Canfield Solitaire Rules & History",
     description:
-      "The rules of Canfield Solitaire — including its unusual random starting foundation, reserve pile, and stock rotation — plus the casino origins that gave the game its name.",
+      "Canfield Solitaire rules — random starting foundation, reserve pile, and stock rotation — plus the casino origins that gave the game its name.",
     intro:
       "Canfield is named after Richard A. Canfield, an American casino owner who sold the game to customers in the 1890s: you paid $52 for a deck, earned $5 per card played to the foundations, and averaged a loss of around $25 per session. The clever mechanism that drives both the game's appeal and its difficulty is its random starting foundation rank.",
     sections: [
@@ -2515,7 +2515,7 @@ export const GUIDES: Guide[] = [
     game: "canfield",
     title: "How to Win at Canfield Solitaire",
     description:
-      "Canfield Solitaire strategy — working with the reserve pile, using waste cycling, and recognizing the deal conditions that give you a realistic chance of winning.",
+      "Canfield Solitaire strategy — the reserve pile, waste cycling, and recognizing the deal conditions that give you a realistic chance of winning.",
     intro:
       "Canfield is one of solitaire's hardest variants, with a full-clear win rate under 5%. Playing it well is less about achieving perfection and more about maximizing cards played before the game locks — and recognizing the rare deal that's actually clearable.",
     sections: [
@@ -2593,7 +2593,7 @@ export const GUIDES: Guide[] = [
     game: "addiction",
     title: "Addiction Solitaire Strategy: Managing Reshuffles",
     description:
-      "Addiction Solitaire strategy — how to sequence moves to lock in as many cards as possible before reshuffling, how to handle Kings, and how to read the board for optimal play.",
+      "Addiction Solitaire strategy — sequencing moves to lock in cards before reshuffling, handling Kings, and reading the board for optimal play.",
     intro:
       "Addiction rewards systematic play. Because moves are constrained — a card goes left of exactly the card one rank above it, same suit — there's rarely ambiguity about the best move. The real skill is sequencing moves to lock in runs and avoid King-block situations before reshuffles.",
     sections: [
@@ -2671,7 +2671,7 @@ export const GUIDES: Guide[] = [
     game: "bakersdozen",
     title: "Baker's Dozen: Planning Every Move",
     description:
-      "Baker's Dozen Solitaire strategy — how to plan ahead in a fully visible game, manage Kings without empty columns, and find the move order that clears the most foundations.",
+      "Baker’s Dozen strategy — planning in a fully visible game, managing Kings without empty columns, and finding the move order that clears the most foundations.",
     intro:
       "Baker's Dozen is one of the most 'pure' solitaire puzzles: no luck after the deal, all information visible, single-card moves. The game is entirely about finding the correct sequence of moves, which makes it closer to a logic puzzle than a card game.",
     sections: [
@@ -2791,7 +2791,7 @@ export const GUIDES: Guide[] = [
     game: "clock",
     title: "Clock Solitaire Rules & Odds of Winning",
     description:
-      "The complete rules of Clock Solitaire — how to set up the clock face, how cards are moved, and the exact mathematical probability of winning this purely luck-based game.",
+      "Clock Solitaire rules — setting up the clock face, how cards are moved, and the exact mathematical probability of winning this purely luck-based game.",
     intro:
       "Clock Solitaire is the only major solitaire variant with no decisions whatsoever. Every move is forced, the outcome depends entirely on the initial shuffle, and the exact probability of winning is mathematically known. It is pure solitaire in the literal sense — you play alone, against nothing but the deck.",
     sections: [
@@ -2830,7 +2830,7 @@ export const GUIDES: Guide[] = [
     game: "clock",
     title: "Clock Solitaire: The No-Strategy Game",
     description:
-      "An exploration of Clock Solitaire — why it has no strategy, what makes it compelling despite that, and how it compares to every other solitaire variant in terms of player agency.",
+      "Why Clock Solitaire has no strategy, what makes it compelling despite that, and how it compares to other solitaire variants in terms of player agency.",
     intro:
       "Clock Solitaire is worth understanding precisely because it eliminates the variable that defines every other solitaire: player skill. With no choices to make, Clock isolates the luck component of card games and makes it visible. Playing Clock is a reminder of how much agency other solitaire variants actually give you.",
     sections: [

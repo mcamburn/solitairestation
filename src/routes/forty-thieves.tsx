@@ -8,7 +8,7 @@ export const Route = createFileRoute("/forty-thieves")({
   head: () => ({
     meta: [
       { title: "Solitaire Station — Free Forty Thieves Solitaire" },
-      { name: "description", content: "Play free Forty Thieves Solitaire at Solitaire Station — a challenging two-deck game with 10 tableau columns and 8 foundations. Hints, undo, and auto-save. No download or sign-up." },
+      { name: "description", content: "Play free Forty Thieves Solitaire — two decks, 10 tableau columns, 8 foundations. Hints, undo, and auto-save. No download or sign-up." },
       { name: "robots", content: "index, follow" },
       { property: "og:site_name", content: "Solitaire Station" },
       { property: "og:locale", content: "en_US" },

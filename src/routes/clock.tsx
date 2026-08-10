@@ -8,7 +8,7 @@ export const Route = createFileRoute("/clock")({
   head: () => ({
     meta: [
       { title: "Solitaire Station — Free Clock Patience" },
-      { name: "description", content: "Play free Clock Patience at Solitaire Station — watch the cards automatically reveal themselves around the clock face. A mesmerizing, luck-based solitaire with Auto Play mode. No download or sign-up." },
+      { name: "description", content: "Play free Clock Patience — cards reveal themselves around the clock face automatically. A luck-based solitaire with Auto Play mode. No download or sign-up." },
       { name: "robots", content: "index, follow" },
       { property: "og:site_name", content: "Solitaire Station" },
       { property: "og:locale", content: "en_US" },

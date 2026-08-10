@@ -11,7 +11,7 @@ export const Route = createFileRoute("/bakers-dozen")({
       {
         name: "description",
         content:
-          "Play free Baker's Dozen solitaire at Solitaire Station — build 13 face-up columns by rank, no suit. Kings start at the bottom. Hints, undo, and auto-save. No download or sign-up.",
+          "Play free Baker's Dozen solitaire — build 13 face-up columns by rank, no suit. Kings start at the bottom. Hints, undo, and auto-save. No download or sign-up.",
       },
       { name: "robots", content: "index, follow" },
       { property: "og:site_name", content: "Solitaire Station" },

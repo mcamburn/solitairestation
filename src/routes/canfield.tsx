@@ -11,7 +11,7 @@ export const Route = createFileRoute("/canfield")({
       {
         name: "description",
         content:
-          "Play free Canfield solitaire at Solitaire Station — a challenging variant with a reserve pile, wrapping foundations, and draw-3 stock. Hints, undo, and auto-save. No download.",
+          "Play free Canfield solitaire — reserve pile, wrapping foundations, and draw-3 stock. Hints, undo, and auto-save. No download or sign-up.",
       },
       { name: "robots", content: "index, follow" },
       { property: "og:site_name", content: "Solitaire Station" },
