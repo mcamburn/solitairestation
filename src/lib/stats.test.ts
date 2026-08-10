@@ -623,6 +623,38 @@ describe("mergeStats – aggregate field merging", () => {
     const b = validStats({ lastPlayedAt: 2_000_000 });
     expect(mergeStats(a, b).lastPlayedAt).toBe(2_000_000);
   });
+
+  // ── Invariant: wins + losses ≤ gamesPlayed ──────────────────────────────
+
+  it("adjusts gamesPlayed upward when independently-maximised wins+losses would exceed it", () => {
+    // existing: 50 played / 40 wins / 5 losses
+    // imported: 60 played / 10 wins / 50 losses
+    // naïve max: gamesPlayed=60, wins=40, losses=50 → 40+50=90 > 60 (INVALID)
+    // correct:   gamesPlayed=max(60, 40+50)=90, wins=40, losses=50
+    const existing = validStats({ gamesPlayed: 50, wins: 40, losses: 5 });
+    const imported = validStats({ gamesPlayed: 60, wins: 10, losses: 50 });
+    const result = mergeStats(existing, imported);
+    expect(result.wins).toBe(40);
+    expect(result.losses).toBe(50);
+    expect(result.gamesPlayed).toBe(90);
+    expect(result.wins + result.losses).toBeLessThanOrEqual(result.gamesPlayed);
+  });
+
+  it("does not inflate gamesPlayed when wins+losses already fits within it", () => {
+    const a = validStats({ gamesPlayed: 20, wins: 10, losses: 5 });
+    const b = validStats({ gamesPlayed: 15, wins: 8, losses: 4 });
+    const result = mergeStats(a, b);
+    expect(result.gamesPlayed).toBe(20); // max of 20 and 15; wins+losses=14 ≤ 20
+    expect(result.wins + result.losses).toBeLessThanOrEqual(result.gamesPlayed);
+  });
+
+  it("satisfies the invariant when both sides have identical diverged counts", () => {
+    // Two devices that each recorded different outcomes from the same starting point
+    const a = validStats({ gamesPlayed: 10, wins: 10, losses: 0 });
+    const b = validStats({ gamesPlayed: 10, wins: 0, losses: 10 });
+    const result = mergeStats(a, b);
+    expect(result.wins + result.losses).toBeLessThanOrEqual(result.gamesPlayed);
+  });
 });
 
 // ---------------------------------------------------------------------------

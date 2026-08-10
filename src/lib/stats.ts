@@ -366,10 +366,20 @@ export function mergeStats(existing: GameStats, imported: GameStats): GameStats 
         ? existing.bestMoves
         : Math.min(existing.bestMoves, imported.bestMoves);
 
+  const wins = Math.max(existing.wins, imported.wins);
+  const losses = Math.max(existing.losses, imported.losses);
+  // Adjust gamesPlayed upward if the independently-maximised wins+losses would
+  // otherwise exceed it, preserving the invariant wins + losses ≤ gamesPlayed.
+  const gamesPlayed = Math.max(
+    existing.gamesPlayed,
+    imported.gamesPlayed,
+    wins + losses,
+  );
+
   return {
-    gamesPlayed: Math.max(existing.gamesPlayed, imported.gamesPlayed),
-    wins: Math.max(existing.wins, imported.wins),
-    losses: Math.max(existing.losses, imported.losses),
+    gamesPlayed,
+    wins,
+    losses,
     currentStreak: Math.max(existing.currentStreak, imported.currentStreak),
     longestStreak: Math.max(existing.longestStreak, imported.longestStreak),
     bestTime,
