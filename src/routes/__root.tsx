@@ -123,6 +123,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "apple-mobile-web-app-capable", content: "yes" },
       { name: "apple-mobile-web-app-status-bar-style", content: "black-translucent" },
       { name: "apple-mobile-web-app-title", content: "Solitaire Station" },
+      // IndexNow domain verification
+      { name: "indexnow-key", content: "905a663e-75b7-4f29-94ca-16346a932293" },
     ],
     links: [
       // canonical is set per-route; no global fallback here

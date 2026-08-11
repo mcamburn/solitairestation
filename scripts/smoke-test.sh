@@ -147,7 +147,19 @@ else
 fi
 
 
-# ── 7. Report ─────────────────────────────────────────────────────────────────
+# ── 7. IndexNow ping ──────────────────────────────────────────────────────────
+# Submits all sitemap URLs to Bing/IndexNow so new/updated pages are crawled
+# quickly. Runs only when the build passed all checks above.
+if [[ ${FAILED} -eq 0 ]]; then
+  echo "==> Pinging IndexNow…"
+  if bun run scripts/ping-indexnow.ts; then
+    echo "  PASS  IndexNow ping succeeded"
+  else
+    echo "  WARN  IndexNow ping failed (non-fatal)" >&2
+  fi
+fi
+
+# ── 8. Report ─────────────────────────────────────────────────────────────────
 echo ""
 if [[ ${FAILED} -eq 0 ]]; then
   echo "All checks passed. Smoke test passed."
