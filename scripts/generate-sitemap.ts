@@ -2,16 +2,19 @@
 /**
  * generate-sitemap.ts
  *
- * Regenerates public/sitemap.xml from the live GUIDES registry in
- * src/lib/guides.ts so the sitemap never drifts when articles are added.
+ * Regenerates public/sitemap.xml from:
+ *   - GAMES in src/lib/games.ts  (core game pages)
+ *   - src/routes/               (auto-discovered SEO variant pages)
+ *   - GUIDES in src/lib/guides.ts (guide articles)
  *
  * Usage:
  *   bun run scripts/generate-sitemap.ts
  *   (also called automatically as part of `bun run build`)
  */
 
-import { writeFileSync } from "fs";
+import { writeFileSync, readdirSync } from "fs";
 import { resolve } from "path";
+import { GAMES } from "../src/lib/games";
 import { GUIDES } from "../src/lib/guides";
 
 // ── Config ───────────────────────────────────────────────────────────────────
@@ -21,32 +24,73 @@ const SITE = "https://www.solitairestation.com";
 /** ISO date used as <lastmod> for game/SEO pages that change with deployments */
 const TODAY = new Date().toISOString().slice(0, 10);
 
-// ── Static route tables ──────────────────────────────────────────────────────
+const ROOT = resolve(import.meta.dir, "..");
 
-/** Core game pages — one per playable game */
-const CORE_GAMES = [
-  "klondike", "spider", "freecell", "pyramid", "tripeaks",
-  "mahjong", "golf", "forty-thieves", "yukon", "scorpion",
-  "eight-off", "canfield", "addiction", "bakers-dozen",
-  "bakers-game", "clock", "double-klondike",
+// ── Derive core game slugs from GAMES registry ───────────────────────────────
+
+/**
+ * Core game slugs derived from the canonical GAMES list in src/lib/games.ts.
+ * Strip the leading "/" from each `to` field.
+ */
+const coreGameSlugs: string[] = GAMES.map((g) => g.to.replace(/^\//, ""));
+
+/**
+ * Extra game routes that exist in src/routes/ but are not (yet) in the GAMES
+ * switcher list. Add slugs here when a route file is created before the game
+ * is promoted to the switcher.
+ */
+const EXTRA_GAME_SLUGS: string[] = [
+  "double-klondike",
 ];
 
-/** SEO landing/variant pages */
-const SEO_VARIANTS = [
-  "klondike-solitaire",
-  "spider-solitaire",
-  "freecell-solitaire",
-  "turn-1-solitaire",
-  "turn-3-solitaire",
-  "vegas-solitaire",
-  "1-suit-spider-solitaire",
-  "2-suit-spider-solitaire",
-  "4-suit-spider-solitaire",
-];
+const ALL_CORE_SLUGS = [...coreGameSlugs, ...EXTRA_GAME_SLUGS];
+
+// ── Auto-discover SEO variant pages from routes directory ────────────────────
+
+/**
+ * Pages that are NOT SEO variant pages — excluded from the auto-discovery scan.
+ * Includes core game slugs, utility pages, the guides folder, and special files.
+ */
+const NON_SEO_ROUTES = new Set([
+  ...ALL_CORE_SLUGS,
+  "about",
+  "stats",
+  "privacy",
+  "terms",
+  "index",
+  "__root",
+  "guides", // directory — handled separately
+]);
+
+/**
+ * Scan src/routes/ for .tsx files that are SEO variant landing pages.
+ * A file is considered an SEO variant if its slug is not in NON_SEO_ROUTES.
+ */
+function discoverSeoVariants(): string[] {
+  const routesDir = resolve(ROOT, "src/routes");
+  const entries = readdirSync(routesDir, { withFileTypes: true });
+  const variants: string[] = [];
+
+  for (const entry of entries) {
+    if (!entry.isFile()) continue;
+    if (!entry.name.endsWith(".tsx") && !entry.name.endsWith(".ts")) continue;
+
+    // Convert filename to URL slug: strip extension, leave hyphens/digits intact
+    const slug = entry.name.replace(/\.(tsx|ts)$/, "");
+    if (!NON_SEO_ROUTES.has(slug)) {
+      variants.push(slug);
+    }
+  }
+
+  // Sort for stable output
+  return variants.sort();
+}
+
+const SEO_VARIANTS = discoverSeoVariants();
 
 // ── XML helpers ──────────────────────────────────────────────────────────────
 
-function url(
+function urlEntry(
   loc: string,
   lastmod: string,
   changefreq: string,
@@ -71,33 +115,33 @@ const sections: string[] = [];
 
 // Core game pages
 sections.push("\n  <!-- ── Core game pages ─────────────────────────────────────── -->");
-for (const slug of CORE_GAMES) {
-  sections.push(url(`${SITE}/${slug}`, TODAY, "weekly", "0.9"));
+for (const slug of ALL_CORE_SLUGS) {
+  sections.push(urlEntry(`${SITE}/${slug}`, TODAY, "weekly", "0.9"));
 }
 
 // SEO variant pages
 sections.push("\n  <!-- ── SEO variant pages ────────────────────────────────────── -->");
 for (const slug of SEO_VARIANTS) {
-  sections.push(url(`${SITE}/${slug}`, TODAY, "weekly", "0.8"));
+  sections.push(urlEntry(`${SITE}/${slug}`, TODAY, "weekly", "0.8"));
 }
 
 // Guides index
 sections.push("\n  <!-- ── Guides index ─────────────────────────────────────────── -->");
-sections.push(url(`${SITE}/guides`, TODAY, "weekly", "0.8"));
+sections.push(urlEntry(`${SITE}/guides`, TODAY, "weekly", "0.8"));
 
 // Guide articles — sourced dynamically from GUIDES registry
 sections.push("\n  <!-- ── Guide articles ───────────────────────────────────────── -->");
 for (const guide of GUIDES) {
   const lastmod = guide.datePublished ?? "2025-06-01";
-  sections.push(url(`${SITE}/guides/${guide.slug}`, lastmod, "monthly", "0.7"));
+  sections.push(urlEntry(`${SITE}/guides/${guide.slug}`, lastmod, "monthly", "0.7"));
 }
 
 // Utility pages
 sections.push("\n  <!-- ── Utility pages ────────────────────────────────────────── -->");
-sections.push(url(`${SITE}/about`,   TODAY, "monthly", "0.7"));
-sections.push(url(`${SITE}/stats`,   TODAY, "monthly", "0.5"));
-sections.push(url(`${SITE}/privacy`, TODAY, "yearly",  "0.3"));
-sections.push(url(`${SITE}/terms`,   TODAY, "yearly",  "0.3"));
+sections.push(urlEntry(`${SITE}/about`,   TODAY, "monthly", "0.7"));
+sections.push(urlEntry(`${SITE}/stats`,   TODAY, "monthly", "0.5"));
+sections.push(urlEntry(`${SITE}/privacy`, TODAY, "yearly",  "0.3"));
+sections.push(urlEntry(`${SITE}/terms`,   TODAY, "yearly",  "0.3"));
 
 // ── Write file ───────────────────────────────────────────────────────────────
 
@@ -111,8 +155,12 @@ const xml = [
   "", // trailing newline
 ].join("\n");
 
-const outPath = resolve(import.meta.dir, "../public/sitemap.xml");
+const outPath = resolve(ROOT, "public/sitemap.xml");
 writeFileSync(outPath, xml, "utf-8");
 
-const total = CORE_GAMES.length + SEO_VARIANTS.length + 1 + GUIDES.length + 3;
-console.log(`✓ sitemap.xml written — ${total} URLs (${GUIDES.length} guide articles)`);
+const total =
+  ALL_CORE_SLUGS.length + SEO_VARIANTS.length + 1 + GUIDES.length + 4;
+console.log(
+  `✓ sitemap.xml written — ${total} URLs` +
+  ` (${ALL_CORE_SLUGS.length} games, ${SEO_VARIANTS.length} SEO variants, ${GUIDES.length} guide articles)`,
+);
