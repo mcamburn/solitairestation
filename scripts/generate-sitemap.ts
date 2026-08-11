@@ -110,8 +110,9 @@ function urlEntry(
 
 const sections: string[] = [];
 
-// Homepage is currently a 302 redirect to /klondike — excluded from sitemap
-// until the route serves its own content (task: homepage SEO content).
+// Homepage — real landing page with 16 game tiles
+sections.push("\n  <!-- ── Homepage ────────────────────────────────────────────── -->");
+sections.push(urlEntry(`${SITE}/`, TODAY, "weekly", "1.0"));
 
 // Core game pages
 sections.push("\n  <!-- ── Core game pages ─────────────────────────────────────── -->");
