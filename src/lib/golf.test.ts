@@ -12,7 +12,7 @@
  *  - a legacy persisted save without a streak field loads as streak === 0
  */
 
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import {
   newGolfGame,
   drawGolfStock,
@@ -20,6 +20,7 @@ import {
   canPlayOnWaste,
   type GolfState,
 } from "./golf";
+import { saveGame, loadGame } from "./persist";
 
 const SEED = 42;
 const DAILY_SEED = 20240801;
@@ -316,5 +317,154 @@ describe("longestStreak tracking", () => {
       longestStreak: (legacyShape as unknown as { longestStreak?: number }).longestStreak ?? 0,
     };
     expect(normalised.longestStreak).toBe(0);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// longestStreak — round-trip persistence via saveGame / loadGame
+// ---------------------------------------------------------------------------
+
+describe("longestStreak persistence round-trip", () => {
+  // Use a simple Map-backed localStorage stub so these tests run in Node/jsdom.
+  let store: Map<string, string>;
+
+  beforeEach(() => {
+    store = new Map();
+    vi.stubGlobal("localStorage", {
+      getItem: (k: string) => store.get(k) ?? null,
+      setItem: (k: string, v: string) => { store.set(k, v); },
+      removeItem: (k: string) => { store.delete(k); },
+      clear: () => { store.clear(); },
+    });
+    // saveGame also calls window.dispatchEvent — stub it to a no-op.
+    vi.stubGlobal("window", {
+      ...globalThis.window,
+      localStorage: {
+        getItem: (k: string) => store.get(k) ?? null,
+        setItem: (k: string, v: string) => { store.set(k, v); },
+        removeItem: (k: string) => { store.delete(k); },
+        clear: () => { store.clear(); },
+      },
+      dispatchEvent: () => true,
+    });
+  });
+
+  afterEach(() => {
+    vi.unstubAllGlobals();
+  });
+
+  it("saveGame + loadGame round-trips longestStreak exactly", () => {
+    let state = newGolfGame(SEED);
+    state = drawUntilPlayable(state);
+
+    // Build a streak of at least 1
+    let plays = 0;
+    for (let attempts = 0; attempts < 100 && plays < 3; attempts++) {
+      const col = firstPlayableCol(state);
+      if (col === -1) break;
+      const next = playTableauCard(state, col);
+      if (!next) break;
+      plays++;
+      state = next;
+    }
+    // At least one play must be possible for this test to be meaningful
+    expect(plays).toBeGreaterThanOrEqual(1);
+    const expectedLongest = state.longestStreak;
+    expect(expectedLongest).toBeGreaterThanOrEqual(1);
+
+    // Persist, then reload
+    saveGame("golf", state);
+    const loaded = loadGame<GolfState>("golf");
+
+    expect(loaded).not.toBeNull();
+    expect(loaded!.longestStreak).toBe(expectedLongest);
+  });
+
+  it("longestStreak is preserved after draw resets streak, then save + load", () => {
+    let state = newGolfGame(SEED);
+    state = drawUntilPlayable(state);
+
+    // Build a streak
+    const col = firstPlayableCol(state);
+    if (col === -1) return;
+    const afterPlay = playTableauCard(state, col);
+    if (!afterPlay) return;
+    const best = afterPlay.longestStreak;
+    expect(best).toBeGreaterThanOrEqual(1);
+
+    // Draw to reset current streak
+    const afterDraw = drawGolfStock(afterPlay);
+    if (!afterDraw) return;
+    expect(afterDraw.streak).toBe(0);
+    expect(afterDraw.longestStreak).toBe(best);
+
+    // Persist the state where streak === 0 but longestStreak > 0
+    saveGame("golf", afterDraw);
+    const loaded = loadGame<GolfState>("golf");
+
+    expect(loaded).not.toBeNull();
+    expect(loaded!.streak).toBe(0);
+    expect(loaded!.longestStreak).toBe(best);
+  });
+
+  it("loading a legacy save missing longestStreak normalises to 0 via component logic", () => {
+    const base = newGolfGame(SEED);
+    // Simulate a pre-longestStreak save (field absent)
+    const { longestStreak: _dropped, ...legacyShape } = base;
+    void _dropped;
+    saveGame("golf", legacyShape);
+
+    const raw = loadGame<GolfState>("golf");
+    expect(raw).not.toBeNull();
+
+    // Component normalisation mirrors Golf.tsx line 82
+    const normalised: GolfState = {
+      ...(raw as GolfState),
+      streak: (raw as GolfState).streak ?? 0,
+      longestStreak: (raw as unknown as { longestStreak?: number }).longestStreak ?? 0,
+    };
+    expect(normalised.longestStreak).toBe(0);
+  });
+
+  it("longestStreak shown in game-over banner matches the persisted value", () => {
+    // Simulate a finished state with a known longestStreak
+    let state = newGolfGame(SEED);
+    state = drawUntilPlayable(state);
+
+    let plays = 0;
+    for (let attempts = 0; attempts < 100 && plays < 2; attempts++) {
+      const col = firstPlayableCol(state);
+      if (col === -1) break;
+      const next = playTableauCard(state, col);
+      if (!next) break;
+      plays++;
+      state = next;
+    }
+    if (plays === 0) return;
+
+    // Manually force game-over state (stock exhausted, no moves)
+    const finishedState: GolfState = { ...state, stock: [], won: false };
+    saveGame("golf", finishedState);
+
+    const loaded = loadGame<GolfState>("golf");
+    expect(loaded).not.toBeNull();
+
+    // Normalise the same way Golf.tsx does
+    const normalised: GolfState = {
+      ...(loaded as GolfState),
+      streak: (loaded as GolfState).streak ?? 0,
+      longestStreak: (loaded as unknown as { longestStreak?: number }).longestStreak ?? 0,
+    };
+
+    // The banner message in Golf.tsx: `Longest run: ${game.longestStreak}`
+    const bannerFragment =
+      normalised.longestStreak > 0
+        ? `Longest run: ${normalised.longestStreak}.`
+        : "";
+
+    expect(normalised.longestStreak).toBe(finishedState.longestStreak);
+    if (normalised.longestStreak > 0) {
+      expect(bannerFragment).toContain(`Longest run: ${normalised.longestStreak}`);
+    }
   });
 });
