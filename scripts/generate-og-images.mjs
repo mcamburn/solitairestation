@@ -8,10 +8,12 @@
  */
 
 import { Resvg } from "@resvg/resvg-js";
-import { writeFileSync, mkdirSync } from "fs";
+import { writeFileSync, mkdirSync, existsSync } from "fs";
 import { join, dirname } from "path";
 import { fileURLToPath } from "url";
 import { OG_GAMES } from "./og-game-registry.mjs";
+
+const skipExisting = process.argv.includes("--skip-existing");
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const outDir = join(__dirname, "..", "public", "og");
@@ -132,7 +134,18 @@ function makeSvg(game) {
 </svg>`;
 }
 
+let generated = 0;
+let skipped = 0;
+
 for (const game of games) {
+  const outPath = join(outDir, `${game.id}.png`);
+
+  if (skipExisting && existsSync(outPath)) {
+    console.log(`–  ${outPath}  (skipped, already exists)`);
+    skipped++;
+    continue;
+  }
+
   const svg = makeSvg(game);
   const resvg = new Resvg(svg, {
     fitTo: { mode: "width", value: 1200 },
@@ -144,9 +157,13 @@ for (const game of games) {
   });
   const pngData = resvg.render();
   const png = pngData.asPng();
-  const outPath = join(outDir, `${game.id}.png`);
   writeFileSync(outPath, png);
   console.log(`✓  ${outPath}  (${(png.length / 1024).toFixed(0)} KB)`);
+  generated++;
 }
 
-console.log("\nDone — all OG images generated.");
+if (skipExisting) {
+  console.log(`\nDone — ${generated} generated, ${skipped} skipped (already up to date).`);
+} else {
+  console.log("\nDone — all OG images generated.");
+}

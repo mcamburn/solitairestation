@@ -7,7 +7,7 @@
     "prepare": "git config core.hooksPath .githooks",
     "dev": "vite dev",
     "start": "node .output/server/index.mjs",
-    "build": "bun run generate:sitemap && vite build",
+    "build": "bun run generate:sitemap && node scripts/generate-og-images.mjs --skip-existing && vite build",
     "generate-og": "node scripts/generate-og-images.mjs",
     "build:dev": "vite build --mode development",
     "preview": "vite preview",
