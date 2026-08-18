@@ -128,6 +128,13 @@ export function StatsModal({ gameKey, gameTitle, gameEmoji, open, onClose, daily
             <StatCard label="Avg Moves" value={stats.avgMoves !== null ? String(stats.avgMoves) : "—"} />
           </div>
 
+          {/* Best Run — only shown for games that track it (e.g. Pyramid) */}
+          {stats.bestRun > 0 && (
+            <div className="grid grid-cols-1 gap-2">
+              <StatCard label="Best Run" value={String(stats.bestRun)} highlight />
+            </div>
+          )}
+
           {/* Daily challenge */}
           {(dailyStats.streak > 0 || dailyStats.longestStreak > 0) && (
             <div
