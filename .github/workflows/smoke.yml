@@ -27,6 +27,13 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-npm-
 
+      - name: Normalize package-lock.json registry URLs
+        run: |
+          # Replit's internal package proxy (package-firewall.replit.local) is
+          # unreachable from GitHub Actions. Rewrite any such URLs to the public
+          # npm registry before npm ci runs, so CI never fails on this.
+          sed -i 's|http://package-firewall.replit.local/npm/|https://registry.npmjs.org/|g' package-lock.json
+
       - name: Install dependencies
         run: npm ci --legacy-peer-deps
 
