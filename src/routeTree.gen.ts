@@ -24,6 +24,7 @@ import { Route as EightOffRouteImport } from './routes/eight-off'
 import { Route as FortyThievesRouteImport } from './routes/forty-thieves'
 import { Route as FreecellRouteImport } from './routes/freecell'
 import { Route as FreecellSolitaireRouteImport } from './routes/freecell-solitaire'
+import { Route as GamesRouteImport } from './routes/games'
 import { Route as GolfRouteImport } from './routes/golf'
 import { Route as KlondikeRouteImport } from './routes/klondike'
 import { Route as KlondikeSolitaireRouteImport } from './routes/klondike-solitaire'
@@ -116,6 +117,11 @@ const FreecellRoute = FreecellRouteImport.update({
 const FreecellSolitaireRoute = FreecellSolitaireRouteImport.update({
   id: '/freecell-solitaire',
   path: '/freecell-solitaire',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GamesRoute = GamesRouteImport.update({
+  id: '/games',
+  path: '/games',
   getParentRoute: () => rootRouteImport,
 } as any)
 const GolfRoute = GolfRouteImport.update({
@@ -225,6 +231,7 @@ export interface FileRoutesByFullPath {
   '/forty-thieves': typeof FortyThievesRoute
   '/freecell': typeof FreecellRoute
   '/freecell-solitaire': typeof FreecellSolitaireRoute
+  '/games': typeof GamesRoute
   '/golf': typeof GolfRoute
   '/klondike': typeof KlondikeRoute
   '/klondike-solitaire': typeof KlondikeSolitaireRoute
@@ -260,6 +267,7 @@ export interface FileRoutesByTo {
   '/forty-thieves': typeof FortyThievesRoute
   '/freecell': typeof FreecellRoute
   '/freecell-solitaire': typeof FreecellSolitaireRoute
+  '/games': typeof GamesRoute
   '/golf': typeof GolfRoute
   '/klondike': typeof KlondikeRoute
   '/klondike-solitaire': typeof KlondikeSolitaireRoute
@@ -296,6 +304,7 @@ export interface FileRoutesById {
   '/forty-thieves': typeof FortyThievesRoute
   '/freecell': typeof FreecellRoute
   '/freecell-solitaire': typeof FreecellSolitaireRoute
+  '/games': typeof GamesRoute
   '/golf': typeof GolfRoute
   '/klondike': typeof KlondikeRoute
   '/klondike-solitaire': typeof KlondikeSolitaireRoute
@@ -333,6 +342,7 @@ export interface FileRouteTypes {
     | '/forty-thieves'
     | '/freecell'
     | '/freecell-solitaire'
+    | '/games'
     | '/golf'
     | '/klondike'
     | '/klondike-solitaire'
@@ -368,6 +378,7 @@ export interface FileRouteTypes {
     | '/forty-thieves'
     | '/freecell'
     | '/freecell-solitaire'
+    | '/games'
     | '/golf'
     | '/klondike'
     | '/klondike-solitaire'
@@ -403,6 +414,7 @@ export interface FileRouteTypes {
     | '/forty-thieves'
     | '/freecell'
     | '/freecell-solitaire'
+    | '/games'
     | '/golf'
     | '/klondike'
     | '/klondike-solitaire'
@@ -439,6 +451,7 @@ export interface RootRouteChildren {
   FortyThievesRoute: typeof FortyThievesRoute
   FreecellRoute: typeof FreecellRoute
   FreecellSolitaireRoute: typeof FreecellSolitaireRoute
+  GamesRoute: typeof GamesRoute
   GolfRoute: typeof GolfRoute
   KlondikeRoute: typeof KlondikeRoute
   KlondikeSolitaireRoute: typeof KlondikeSolitaireRoute
@@ -564,6 +577,13 @@ declare module '@tanstack/react-router' {
       path: '/freecell-solitaire'
       fullPath: '/freecell-solitaire'
       preLoaderRoute: typeof FreecellSolitaireRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/games': {
+      id: '/games'
+      path: '/games'
+      fullPath: '/games'
+      preLoaderRoute: typeof GamesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/golf': {
@@ -711,6 +731,7 @@ const rootRouteChildren: RootRouteChildren = {
   FortyThievesRoute: FortyThievesRoute,
   FreecellRoute: FreecellRoute,
   FreecellSolitaireRoute: FreecellSolitaireRoute,
+  GamesRoute: GamesRoute,
   GolfRoute: GolfRoute,
   KlondikeRoute: KlondikeRoute,
   KlondikeSolitaireRoute: KlondikeSolitaireRoute,

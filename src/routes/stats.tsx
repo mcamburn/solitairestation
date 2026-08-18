@@ -426,7 +426,7 @@ function StatsPage() {
 
       {/* Back link */}
       <Link
-        to="/klondike"
+        to="/"
         className="text-xs uppercase tracking-[0.22em] text-muted-foreground transition hover:text-foreground"
       >
         ← Back to game

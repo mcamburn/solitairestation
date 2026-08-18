@@ -19,7 +19,7 @@ const GAME_KEY_TO_TAG: Record<string, GameTag> = {
 // ── Variant pages that should receive internal links from each game ──────────
 const GAME_VARIANTS: Record<string, Array<{ href: string; label: string; tagline: string }>> = {
   klondike: [
-    { href: "/klondike",           label: "Play Klondike",      tagline: "Jump straight into the classic game" },
+    { href: "/",                   label: "Play Klondike",      tagline: "Jump straight into the classic game" },
     { href: "/klondike-solitaire", label: "Klondike Solitaire", tagline: "Classic rules guide & win rates" },
     { href: "/turn-1-solitaire",   label: "Turn 1 (Draw 1)",    tagline: "Easiest — flip one card at a time" },
     { href: "/turn-3-solitaire",   label: "Turn 3 (Draw 3)",    tagline: "Harder — flip three cards at a time" },

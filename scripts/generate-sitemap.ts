@@ -29,10 +29,18 @@ const ROOT = resolve(import.meta.dir, "..");
 // ── Derive core game slugs from GAMES registry ───────────────────────────────
 
 /**
- * Core game slugs derived from the canonical GAMES list in src/lib/games.ts.
- * Strip the leading "/" from each `to` field.
+ * Games whose route now returns a 301 redirect and must not appear in the
+ * sitemap. The canonical URL for each is listed elsewhere (e.g. "/" for
+ * Klondike, which now lives at the domain root).
  */
-const coreGameSlugs: string[] = GAMES.map((g) => g.to.replace(/^\//, ""));
+const REDIRECT_SLUGS = new Set(["klondike"]);
+
+/**
+ * Core game slugs derived from the canonical GAMES list in src/lib/games.ts.
+ * Strip the leading "/" from each `to` field, then drop any that redirect.
+ */
+const coreGameSlugs: string[] = GAMES.map((g) => g.to.replace(/^\//, ""))
+  .filter((slug) => !REDIRECT_SLUGS.has(slug));
 
 /**
  * Extra game routes that exist in src/routes/ but are not (yet) in the GAMES
@@ -139,6 +147,7 @@ for (const guide of GUIDES) {
 
 // Utility pages
 sections.push("\n  <!-- ── Utility pages ────────────────────────────────────────── -->");
+sections.push(urlEntry(`${SITE}/games`,   TODAY, "monthly", "0.7"));
 sections.push(urlEntry(`${SITE}/about`,   TODAY, "monthly", "0.7"));
 sections.push(urlEntry(`${SITE}/stats`,   TODAY, "monthly", "0.5"));
 sections.push(urlEntry(`${SITE}/privacy`, TODAY, "yearly",  "0.3"));
@@ -160,8 +169,8 @@ const outPath = resolve(ROOT, "public/sitemap.xml");
 writeFileSync(outPath, xml, "utf-8");
 
 const total =
-  ALL_CORE_SLUGS.length + SEO_VARIANTS.length + 1 + GUIDES.length + 4;
+  1 + ALL_CORE_SLUGS.length + SEO_VARIANTS.length + 1 + GUIDES.length + 5;
 console.log(
   `✓ sitemap.xml written — ${total} URLs` +
-  ` (${ALL_CORE_SLUGS.length} games, ${SEO_VARIANTS.length} SEO variants, ${GUIDES.length} guide articles)`,
+  ` (${ALL_CORE_SLUGS.length} games + root, ${SEO_VARIANTS.length} SEO variants, ${GUIDES.length} guide articles)`,
 );

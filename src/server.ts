@@ -35,7 +35,9 @@ async function getServerEntry(): Promise<ServerEntry> {
 const LONG_CACHE_PATHS = new Set(["/terms", "/privacy"]);
 
 const GAME_AND_LANDING_PATHS = new Set([
-  // 16 core game routes
+  // Domain root serves Klondike — cache like a game page
+  "/",
+  // 16 core game routes (klondike now redirects to /, kept for redirect caching)
   "/klondike", "/spider", "/freecell", "/pyramid", "/tripeaks", "/mahjong",
   "/golf", "/forty-thieves", "/yukon", "/scorpion", "/eight-off", "/canfield",
   "/addiction", "/bakers-dozen", "/bakers-game", "/clock",
@@ -45,7 +47,7 @@ const GAME_AND_LANDING_PATHS = new Set([
   "/2-suit-spider-solitaire", "/4-suit-spider-solitaire", "/1-suit-spider-solitaire",
   "/double-klondike",
   // Info pages
-  "/about", "/guides",
+  "/about", "/guides", "/games",
 ]);
 
 function isCacheablePath(pathname: string): "long" | "short" | null {

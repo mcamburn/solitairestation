@@ -136,7 +136,7 @@ function GuidePage() {
         className="flex items-center gap-2 text-xs text-muted-foreground"
         aria-label="Breadcrumb"
       >
-        <Link to="/klondike" className="transition hover:text-foreground">
+        <Link to="/" className="transition hover:text-foreground">
           Home
         </Link>
         <span>/</span>

@@ -13,7 +13,7 @@ interface Props {
 export function SolitaireStationLogo({ variant = "full", className = "" }: Props) {
   if (variant === "mark") {
     return (
-      <Link to="/klondike" aria-label="Solitaire Station — home" className={`inline-flex shrink-0 ${className}`}>
+      <Link to="/" aria-label="Solitaire Station — home" className={`inline-flex shrink-0 ${className}`}>
         <svg
           viewBox="0 0 36 44"
           xmlns="http://www.w3.org/2000/svg"
@@ -28,7 +28,7 @@ export function SolitaireStationLogo({ variant = "full", className = "" }: Props
   }
 
   return (
-    <Link to="/klondike" aria-label="Solitaire Station — home" className={`inline-flex shrink-0 items-center gap-2.5 ${className}`}>
+    <Link to="/" aria-label="Solitaire Station — home" className={`inline-flex shrink-0 items-center gap-2.5 ${className}`}>
       {/* Card icon */}
       <svg
         viewBox="0 0 36 44"

@@ -43,7 +43,7 @@ export function SiteFooter({ showBackLink }: SiteFooterProps) {
             style={{ borderBottom: "1px solid rgba(255,255,255,0.06)" }}
           >
             <Link
-              to="/klondike"
+              to="/"
               className="uppercase tracking-[0.22em] transition hover:text-foreground"
             >
               ← Back to game

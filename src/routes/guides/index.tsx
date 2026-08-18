@@ -75,7 +75,7 @@ function GuidesPage() {
     <main className="mx-auto min-h-screen w-full max-w-[900px] px-4 py-10 sm:py-16 xl:max-w-[1100px]">
       {/* Back link */}
       <Link
-        to="/klondike"
+        to="/"
         className="text-xs uppercase tracking-[0.22em] text-muted-foreground transition hover:text-foreground"
       >
         ← Back to game
