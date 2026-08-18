@@ -199,6 +199,40 @@ describe("persist – Pyramid streak survives save/reload", () => {
 });
 
 // ---------------------------------------------------------------------------
+// TriPeaks streak (run counter) round-trip
+// ---------------------------------------------------------------------------
+
+describe("persist – TriPeaks streak survives save/reload", () => {
+  beforeEach(() => {
+    localStorage.clear();
+  });
+
+  it("streak > 0 is preserved exactly after saveGame → loadGame", () => {
+    const base = newTriPeaksGame(SEED);
+    const state: TriPeaksState = { ...base, streak: 5 };
+    saveGame<TriPeaksState>("tripeaks", state);
+    const loaded = loadGame<TriPeaksState>("tripeaks");
+    expect(loaded?.streak).toBe(5);
+  });
+
+  it("streak === 0 round-trips without change (baseline)", () => {
+    const state = newTriPeaksGame(SEED);
+    expect(state.streak).toBe(0);
+    saveGame<TriPeaksState>("tripeaks", state);
+    const loaded = loadGame<TriPeaksState>("tripeaks");
+    expect(loaded?.streak).toBe(0);
+  });
+
+  it("full state equality is preserved when streak > 0 (no other fields corrupted)", () => {
+    const base = newTriPeaksGame(SEED);
+    const state: TriPeaksState = { ...base, streak: 3 };
+    saveGame<TriPeaksState>("tripeaks", state);
+    const loaded = loadGame<TriPeaksState>("tripeaks");
+    expect(loaded).toEqual(state);
+  });
+});
+
+// ---------------------------------------------------------------------------
 // Zero-move save regression
 // ---------------------------------------------------------------------------
 // Games must NOT show "In Progress" for a save that has moves === 0.
